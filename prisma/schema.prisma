@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  website   String?
+  apiKey    String     @unique @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  urls          AuditURL[]
+  subscriptions Subscription[]
+  
+  @@map("clients")
+}
+
+model AuditURL {
+  id          String   @id @default(cuid())
+  url         String
+  title       String
+  description String?
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  audits          ContentAudit[]
+  recommendations Recommendation[]
+  
+  @@unique([clientId, url])
+  @@map("audit_urls")
+}
+
+model ContentAudit {
+  id          String   @id @default(cuid())
+  urlId       String
+  url         AuditURL @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  aiEngine    String   // 'chatgpt' | 'perplexity' | 'google-ai' | 'bing' | 'duckduckgo'
+  citedStatus String   // 'cited' | 'not-cited' | 'partial'
+  snippet     String?
+  position    Int?
+  lastChecked DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([urlId, aiEngine])
+  @@index([urlId])
+  @@map("content_audits")
+}
+
+model Recommendation {
+  id             String   @id @default(cuid())
+  urlId          String
+  url            AuditURL @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  engine         String   // AI Engine type
+  type           String   // 'keyword' | 'content' | 'structure' | 'semantic'
+  priority       String   // 'high' | 'medium' | 'low'
+  description    String
+  actionItems    String[] // Array of action items
+  estimatedImpact Int      // 0-100
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  @@index([urlId])
+  @@map("recommendations")
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  plan      String   // 'starter' | 'pro' | 'enterprise'
+  status    String   // 'active' | 'cancelled' | 'expired'
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([clientId])
+  @@map("subscriptions")
+}

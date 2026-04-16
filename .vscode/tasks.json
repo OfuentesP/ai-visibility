@@ -1,0 +1,100 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Frontend Dev",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\s*npm",
+          "endsPattern": "ready - started server on"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Backend Dev",
+      "type": "shell",
+      "command": "cd backend && python main.py",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*Uvicorn running",
+          "endsPattern": "^.*Application startup complete"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Frontend Build",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "Frontend Start",
+      "type": "shell",
+      "command": "npm",
+      "args": ["start"],
+      "isBackground": false,
+      "problemMatcher": [],
+      "group": {
+        "kind": "test"
+      }
+    },
+    {
+      "label": "Backend Install",
+      "type": "shell",
+      "command": "cd backend && pip install -r requirements.txt",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test"
+      }
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "lint"],
+      "problemMatcher": [],
+      "group": {
+        "kind": "test"
+      }
+    }
+  ]
+}
