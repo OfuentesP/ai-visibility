@@ -16,86 +16,95 @@ load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-async def obtener_personas_sinteticas(cantidad: int = 5) -> List[dict]:
-    """
-    Obtiene perfiles dinámicos y realistas del dataset PersonaHub de Hugging Face.
-    Usa streaming=True para no descargar el dataset completo.
-    Fallback a PERSONAS_CHILE si falla la conexión.
-    """
-    try:
-        logger.info(f"🔄 Descargando {cantidad} personas sintéticas de Hugging Face...")
-        
-        # Cargar dataset con streaming para no descargar completamente
-        dataset = load_dataset(
-            'proj-persona/PersonaHub',
-            streaming=True,
-            split='train'
-        )
-        
-        personas_hf = []
-        for idx, item in enumerate(dataset):
-            if idx >= cantidad:
-                break
-            
-            # Adaptar campos del dataset a nuestro formato
-            persona = {
-                "id": f"persona_{idx}",
-                "nombre": item.get('persona_name', f'Persona {idx}'),
-                "edad": item.get('age', 30),
-                "descripcion": item.get('persona_description', '')[:200],  # Limitar a 200 chars
-                "poder_adquisitivo": item.get('income_level', 'medio'),
-                "tech_savvy": item.get('tech_expertise', 'medio'),
-                "origen": "hugging_face"  # Marcar que vino de HF
-            }
-            personas_hf.append(persona)
-        
-        if personas_hf:
-            logger.info(f"✅ Cargadas {len(personas_hf)} personas de Hugging Face")
-            return personas_hf
-        else:
-            logger.warning("⚠️  Dataset vacío, usando fallback local")
-            return PERSONAS_CHILE
-            
-    except Exception as e:
-        logger.warning(f"⚠️  No se pudo conectar a Hugging Face: {e}")
-        logger.info(f"📦 Usando {len(PERSONAS_CHILE)} personas locales como fallback")
-        return PERSONAS_CHILE
-
-
-PERSONAS_DINAMICAS = []  # Se cargará en async
+# Fallback local (perfiles por defecto si falla HF)
+PERSONAS_FALLBACK = [
     {
-        "id": "estudiante",
-        "nombre": "Estudiante Universitario",
-        "edad": 20,
-        "descripcion": "Estudia administración en universidad. Le importa no pagar comisiones.",
-        "poder_adquisitivo": "bajo",
-        "tech_savvy": "alto"
+        "id": "ingeniero_comercial",
+        "perfil_base": "Ingeniero Comercial de 35 años, buscando invertir en fondos mutuos con asesoría profesional. Nivel tech alto, poder adquisitivo medio-alto. Busca maximizar retorno con riesgo moderado.",
+        "origen": "local"
     },
     {
-        "id": "emprendedor",
-        "nombre": "Emprendedor de PYME",
-        "edad": 40,
-        "descripcion": "Dueño de ferretería. Necesita gestionar flujo de caja.",
-        "poder_adquisitivo": "medio",
-        "tech_savvy": "bajo"
+        "id": "estudiante_tarjeta",
+        "perfil_base": "Estudiante de Administración de 22 años, obteniendo su primera tarjeta de crédito. Bajo poder adquisitivo, tech savvy alto. Busca beneficios en compras online y sin comisiones.",
+        "origen": "local"
     },
     {
-        "id": "familia",
-        "nombre": "Padre de familia buscando ahorro",
-        "edad": 35,
-        "descripcion": "Mamá de 2 hijos. Busca seguridad y ahorro en compras.",
-        "poder_adquisitivo": "medio",
-        "tech_savvy": "medio"
+        "id": "mama_ahorro",
+        "perfil_base": "Madre soltera de 38 años, gerenta administrativo. Poder adquisitivo medio, tech medio. Busca formas seguras de ahorrar para educación de sus 2 hijos.",
+        "origen": "local"
     },
     {
-        "id": "adulto_mayor",
-        "nombre": "Adulto Mayor",
-        "edad": 65,
-        "descripcion": "Jubilado. Valora seguridad y atención personalizada.",
-        "poder_adquisitivo": "medio",
-        "tech_savvy": "bajo"
+        "id": "emprendedor_flujo",
+        "perfil_base": "Dueño de pequeña ferretería en Santiago, 42 años. Bajo tech, poder adquisitivo medio. Necesita soluciones para gestionar flujo de caja diario de su negocio.",
+        "origen": "local"
+    },
+    {
+        "id": "jubilado_digital",
+        "perfil_base": "Jubilado de 68 años, recibe pensión. Tech bajo, busca usar canales digitales pero valora atención personalizada. Desconfiado de plataformas nuevas.",
+        "origen": "local"
     }
 ]
+
+
+async def obtener_personas_huggingface(cantidad: int = 5) -> List[dict]:
+    """
+    Obtiene perfiles sintéticos de grado investigación desde PersonaHub (Hugging Face).
+    Usa streaming=True para no descargar dataset completo.
+    
+    Timeout: 5 segundos. Si falla, retorna fallback local.
+    Retorna: [{perfil_base, origen}, ...]
+    """
+    async def cargar_hf():
+        try:
+            logger.info(f"🔄 Cargando {cantidad} personas de investigación desde PersonaHub...")
+            dataset = load_dataset(
+                'proj-persona/PersonaHub',
+                streaming=True,
+                split='train'
+            )
+            
+            personas_hf = []
+            for idx, item in enumerate(dataset):
+                if idx >= cantidad:
+                    break
+                
+                # Extraer descripción psicológica detallada
+                perfil_completo = item.get('persona_description', '')
+                if not perfil_completo:
+                    continue
+                
+                persona = {
+                    "id": f"hf_persona_{idx}",
+                    "perfil_base": perfil_completo[:500],  # Descripción completa de investigación
+                    "nombre": item.get('persona_name', f'Persona {idx}'),
+                    "origen": "hugging_face"
+                }
+                personas_hf.append(persona)
+            
+            if personas_hf:
+                logger.info(f"✅ Cargadas {len(personas_hf)} personas de PersonaHub")
+                return personas_hf
+            else:
+                logger.warning("⚠️  PersonaHub vacío, usando fallback")
+                return None
+                
+        except Exception as e:
+            logger.warning(f"⚠️  Error cargando PersonaHub: {e}")
+            return None
+    
+    # Ejecutar con timeout de 5 segundos
+    try:
+        result = await asyncio.wait_for(cargar_hf(), timeout=5.0)
+        if result:
+            return result
+    except asyncio.TimeoutError:
+        logger.warning("⚠️  Timeout descargando PersonaHub (>5s), usando fallback")
+    except Exception as e:
+        logger.error(f"❌ Error en obtener_personas_huggingface: {e}")
+    
+    # Fallback: usar personas locales
+    logger.info(f"📦 Usando {len(PERSONAS_FALLBACK)} personas locales como fallback")
+    return PERSONAS_FALLBACK[:cantidad]
 
 
 # ==================== FUNCIONES ====================
@@ -201,96 +210,105 @@ IMPORTANTE: Devuelve SOLO JSON válido, sin texto adicional. Usa topicos reales 
 
 async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict]:
     """
-    Genera escenarios naturales chilenos para cada persona basado en tendencias.
-    Usa personas dinámicas de Hugging Face o fallback a locales.
-    Retorna: [{persona, prompt_ia, preocupacion_principal}, ...]
+    Genera preguntas naturales en jerga chilena para cada persona de investigación.
+    Usa contexto psicológico detallado de PersonaHub.
+    
+    Retorna: [{perfil_base, prompt_ia, persona_id, origen}, ...]
     """
-    # Obtener personas dinámicas (primera vez carga desde HF, después usa cache)
-    personas = await obtener_personas_sinteticas(cantidad=5)
+    # Cargar personas de grado investigación (HF o fallback)
+    personas = await obtener_personas_huggingface(cantidad=5)
     
     escenarios = []
     tendencias_str = ", ".join(tendencias) if tendencias else "el tópico general"
     
     for persona in personas:
         try:
-            # Crear contexto enriquecido con el perfil dinámico
-            perfil_texto = f"{persona['nombre']}, {persona['edad']} años. {persona['descripcion']}"
+            perfil_base = persona.get('perfil_base', '')
             
-            # Generar prompt con IA
+            # Prompt actualizado según especificación
+            prompt_sistema = """Eres un analista de mercado especializado en comportamiento de consumidores chilenos.
+
+Tu tarea: Toma la descripción psicológica detallada de un usuario y contextualiza esa persona en Chile.
+Luego escribe la pregunta EXACTA (en jerga chilena natural) que este usuario escribiría en ChatGPT.
+
+La pregunta debe:
+- Usar lenguaje coloquial chileno auténtico (NO formal)
+- Reflejar motivaciones y necesidades específicas del perfil psicológico
+- Ser práctica, urgente y realista
+- Incluir contexto local chileno (ciudades, bancos, contexto económico, etc.)
+
+Retorna JSON válido con exactamente este formato:
+{
+    "prompt": "la pregunta exacta en jerga chilena",
+    "razon": "por qué esta persona hace esta pregunta"
+}"""
+            
+            prompt_usuario = f"""Descripción psicológica detallada del usuario:
+{perfil_base}
+
+Tópico de búsqueda: {topico}
+Tendencias relacionadas en Chile: {tendencias_str}
+
+Genera la pregunta exacta (en jerga chilena natural) que ESTA PERSONA escribiría en ChatGPT para {topico}.
+Retorna JSON con 'prompt' y 'razon'."""
+            
             response = await client.chat.completions.create(
                 model="gpt-4o-mini",
                 response_format={"type": "json_object"},
                 temperature=0.7,
                 messages=[
-                    {
-                        "role": "system",
-                        "content": """Eres un experto en lenguaje coloquial chileno. 
-                        Adapta este perfil a contexto chileno y genera una pregunta natural que haría en ChatGPT.
-                        La pregunta debe:
-                        - Usar lenguaje chileno natural (NO formal)
-                        - Reflejar la necesidad específica de la persona
-                        - Ser práctica y urgente
-                        - Incorporar contexto local chileno
-                        
-                        Retorna JSON: {"prompt": "pregunta aquí", "preocupacion": "necesidad principal"}"""
-                    },
-                    {
-                        "role": "user",
-                        "content": f"""Perfil: {perfil_texto}
-                        Nivel tech: {persona.get('tech_savvy', 'medio')}
-                        Poder adquisitivo: {persona.get('poder_adquisitivo', 'medio')}
-                        Tópico: {topico}
-                        Tendencias en Chile: {tendencias_str}
-                        
-                        Genera pregunta natural que haría esta persona sobre {topico}.
-                        Retorna JSON con prompt y preocupacion."""
-                    }
+                    {"role": "system", "content": prompt_sistema},
+                    {"role": "user", "content": prompt_usuario}
                 ]
             )
             
             data = json.loads(response.choices[0].message.content)
             
             escenarios.append({
-                "persona": f"{persona['nombre']} ({persona['edad']} años)",
-                "prompt_ia": data.get("prompt", ""),
-                "preocupacion_principal": data.get("preocupacion", ""),
-                "persona_id": persona['id'],
+                "perfil_base": perfil_base,  # Descripción completa de investigación
+                "prompt_ia": data.get("prompt", ""),  # Pregunta generada
+                "razon": data.get("razon", ""),
+                "persona_id": persona.get('id', ''),
                 "origen": persona.get('origen', 'local')
             })
             
-            logger.info(f"✅ Generado escenario: {persona['nombre']} - {data.get('prompt', '')[:60]}...")
+            logger.info(f"✅ Generado escenario: {persona.get('id')} - {data.get('prompt', '')[:50]}...")
             
         except Exception as e:
-            logger.error(f"❌ Error generando escenario para {persona['nombre']}: {e}")
+            logger.error(f"❌ Error generando escenario para persona {persona.get('id')}: {e}")
             continue
     
     return escenarios
 
 
 if __name__ == "__main__":
-    # Test: obtener tendencias, detectar territorios desatendidos y generar escenarios
+    # Test: Flujo completo de descubrimiento
     async def test():
         topico = "mejor banco en chile"
         marca = "MiBanco"
         comunicacion_actual = "Enfocados en cuentas corrientes y depósitos a plazo. No tenemos comunicación sobre tarjetas, cashback o servicios digitales."
         
+        # 1. Obtener tendencias
         tendencias = await obtener_tendencias_chile(topico)
-        print(f"\n✅ Tendencias: {tendencias}\n")
+        print(f"\n✅ TENDENCIAS EN CHILE:\n{tendencias}\n")
         
-        # NUEVO: Detectar territorios desatendidos
+        # 2. Detectar territorios desatendidos
         territorios = await detectar_territorios_desatendidos(topico, tendencias, marca, comunicacion_actual)
-        print("📍 TERRITORIOS DESATENDIDOS DETECTADOS:\n")
+        print("📍 TERRITORIOS DESATENDIDOS:")
         for terr in territorios:
             print(f"  • {terr['topico_emergente']}")
             print(f"    └─ Oportunidad: {terr['porque_es_oportunidad']}")
-            print(f"    └─ Volumen: {terr['volumen_busqueda']}")
-            print(f"    └─ Intención: {terr['intension_usuario']}\n")
+            print(f"    └─ Volumen: {terr['volumen_busqueda']}\n")
         
+        # 3. Generar escenarios con personas de investigación
         escenarios = await generar_escenarios_ia(topico, tendencias)
-        print("\n👥 ESCENARIOS DE USUARIOS:\n")
+        print("\n👥 ESCENARIOS CON PERSONAS DE INVESTIGACIÓN (PersonaHub):\n")
         for esc in escenarios:
-            print(f"Persona: {esc['persona']}")
-            print(f"Prompt: {esc['prompt_ia']}")
-            print(f"Preocupación: {esc['preocupacion_principal']}\n")
+            print(f"Persona ID: {esc['persona_id']}")
+            print(f"Origen: {esc['origen']}")
+            print(f"Perfil Base:\n{esc['perfil_base']}\n")
+            print(f"Pregunta (jerga chilena):\n{esc['prompt_ia']}\n")
+            print(f"Razón: {esc['razon']}\n")
+            print("-" * 80 + "\n")
     
     asyncio.run(test())
