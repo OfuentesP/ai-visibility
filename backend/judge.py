@@ -24,7 +24,7 @@ async def extraer_metricas(texto_ia: str, mi_marca: str) -> AnalisisMarca:
         messages=[
             {
                 "role": "system",
-                "content": """Eres un experto en análisis de mercado. DEBES extraer EXACTAMENTE 5 campos en JSON válido:
+                "content": f"""Eres un experto en análisis de mercado. DEBES extraer EXACTAMENTE 6 campos en JSON válido:
 
 1. "marcas_mencionadas": Array de TODAS las marcas, empresas, bancos o tiendas detectadas. Sé EXTREMADAMENTE minucioso:
    - Si dice "el Santander" o "Santander" → "Banco Santander"
@@ -40,7 +40,14 @@ async def extraer_metricas(texto_ia: str, mi_marca: str) -> AnalisisMarca:
 
 4. "sentimiento": Una ÚNICA palabra: "positivo", "negativo" o "neutral"
 
-5. "recomendacion_ia": Recomendación accionable en una frase (máx 150 caracteres):
+5. "competidor_principal": REGLA ESTRICTA:
+   - Si posicion_mi_marca es 1 (mi_marca es #1): competidor_principal = la marca en posición #2 (segunda marca más mencionada positivamente)
+   - Si posicion_mi_marca NO es 1 (mi_marca no es #1 o no aparece): competidor_principal = marca_ganadora (la marca #1)
+   - Si no hay suficientes marcas, usa la marca_ganadora
+   - IMPORTANTE: competidor_principal NUNCA debe ser igual a mi_marca
+   - Retorna string vacío "" si no se puede determinar
+
+6. "recomendacion_ia": Recomendación accionable en una frase (máx 150 caracteres):
    - Si mi_marca NO aparece: "Aumenta tu presencia en este tema [tema]. Posiciónate como experto en [característica]"
    - Si es #1 o #2: "Refuerza tu comunicación sobre [punto fuerte del ganador] para mantener liderazgo"
    - Si está más abajo: "Enfatiza [diferenciador de ganador]. Mi_marca debe comunicar mejor sobre [aspecto]"
@@ -50,11 +57,14 @@ REGLAS:
 - marca_ganadora puede ser null
 - sentimiento siempre es uno de los 3 valores
 - marcas_mencionadas puede estar vacía si no hay marcas
-- recomendacion_ia SIEMPRE debe tener un valor específico y accionable"""
+- recomendacion_ia SIEMPRE debe tener un valor específico y accionable
+- competidor_principal es CRÍTICO para el Mapa de Diferenciación
+
+Marca a buscar: {mi_marca}"""
             },
             {
                 "role": "user",
-                "content": f"Marca a buscar: {mi_marca}\n\nTexto para analizar:\n{texto_ia}\n\nRetorna JSON con los 5 campos."
+                "content": f"Marca a buscar: {mi_marca}\n\nTexto para analizar:\n{texto_ia}\n\nRetorna JSON con los 6 campos. ESPECIALMENTE IMPORTANTE: calcula competidor_principal según la regla."
             }
         ]
     )
@@ -70,6 +80,18 @@ REGLAS:
         response_json["posicion_mi_marca"] = 0
     if "recomendacion_ia" not in response_json or not response_json["recomendacion_ia"]:
         response_json["recomendacion_ia"] = f"Analiza el mercado y mejora tu posicionamiento frente a {response_json.get('marca_ganadora', 'la competencia')}"
+    
+    # Validar competidor_principal según la regla
+    if "competidor_principal" not in response_json or not response_json["competidor_principal"]:
+        posicion = response_json.get("posicion_mi_marca", 0)
+        marca_ganadora = response_json.get("marca_ganadora", "")
+        
+        # Si mi_marca es #1 o no aparece pero tenemos marca_ganadora, usarla como fallback
+        response_json["competidor_principal"] = marca_ganadora or ""
+    
+    # Asegurar que competidor_principal nunca sea igual a mi_marca
+    if response_json.get("competidor_principal", "").lower() == mi_marca.lower():
+        response_json["competidor_principal"] = response_json.get("marca_ganadora", "")
     
     logger.info(f"Extracted metrics for {mi_marca}: {response_json}")
     return AnalisisMarca(**response_json)

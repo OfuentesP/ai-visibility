@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 interface AnalisisMarca {
   marcas_mencionadas: string[]
   marca_ganadora: string | null
+  competidor_principal: string
   posicion_mi_marca: number
   sentimiento: string
   recomendacion_ia: string
@@ -368,15 +369,24 @@ export default function Dashboard() {
               </motion.div>
             )}
 
-            {/* MAPA DE DIFERENCIACIÓN */}
+            {/* MAPA DE DIFERENCIACIÓN - DINÁMICO SEGÚN POSICIÓN */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-slate-900 border border-slate-800 rounded-sm p-6 space-y-6"
             >
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-slate-50 mb-1">📊 Mapa de Diferenciación</h3>
-                <p className="text-slate-400 text-xs">Conceptos que maneja {result.resultados[0].marca_ganadora} vs tú</p>
+                {result.resultados[0].posicion_mi_marca === 1 ? (
+                  <>
+                    <h3 className="text-lg font-bold text-slate-50 mb-1">🛡️ Defensa de Posición: Tú vs {result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora}</h3>
+                    <p className="text-slate-400 text-xs">Mantén tu liderazgo identificando lo que amenaza tu posición</p>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-lg font-bold text-slate-50 mb-1">📊 Brecha Competitiva: Tú vs {result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora}</h3>
+                    <p className="text-slate-400 text-xs">Identifica qué comunica tu competidor que tú no</p>
+                  </>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -384,7 +394,11 @@ export default function Dashboard() {
                 <div className="bg-green-500/5 border border-green-500/30 rounded-sm p-4">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="text-slate-400 text-lg">✓</span>
-                    <p className="text-slate-300 text-xs font-bold">LO QUE YA COMUNICAS</p>
+                    <p className="text-slate-300 text-xs font-bold">
+                      {result.resultados[0].posicion_mi_marca === 1 
+                        ? "TUS FORTALEZAS (Por qué eres #1)" 
+                        : "LO QUE YA COMUNICAS"}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     {["Seguridad", "Confianza", "Atención al cliente"].map((c, idx) => (
@@ -400,7 +414,11 @@ export default function Dashboard() {
                 <div className="bg-orange-500/5 border border-orange-500/30 rounded-sm p-4">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="text-slate-400 text-lg">⚠</span>
-                    <p className="text-slate-300 text-xs font-bold">LO QUE {result.resultados[0].marca_ganadora?.toUpperCase() || 'LA COMPETENCIA'} COMUNICA (Y TÚ NO)</p>
+                    <p className="text-slate-300 text-xs font-bold">
+                      {result.resultados[0].posicion_mi_marca === 1 
+                        ? `AMENAZAS EMERGENTES (Lo que ${result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora} intenta posicionar)` 
+                        : `LO QUE ${(result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora)?.toUpperCase() || 'LA COMPETENCIA'} COMUNICA (Y TÚ NO)`}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     {result.resultados[0].conceptos_faltantes.map((c, idx) => (

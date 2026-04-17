@@ -120,6 +120,10 @@ class AnalisisMarca(BaseModel):
         default_factory=list,
         description="3 conceptos o palabras clave que usa la marca ganadora pero mi_marca no tiene (Mapa de Conceptos Perdidos)"
     )
+    competidor_principal: str = Field(
+        default="",
+        description="Competidor principal con el que se compara: Si mi_marca es #1, es marca en posición #2. Si no es #1, es la marca_ganadora (#1)."
+    )
     estado_invisibilidad: str = Field(
         default="invisible",
         description="Estado de invisibilidad: 'visible' (top 3 + sentimiento positivo), 'en_riesgo' (mencionada pero con problemas), 'invisible' (no mencionada)"
