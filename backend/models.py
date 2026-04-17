@@ -28,6 +28,29 @@ class PrioridadEjecutiva(BaseModel):
     )
 
 
+class OpcionImplementacion(BaseModel):
+    """Una vía de implementación para comunicar un concepto faltante."""
+    tipo: str = Field(
+        description="Tipo de opción: 'Ágil', 'Externa' o 'Estructural'"
+    )
+    accion_especifica: str = Field(
+        description="Acción concreta y específica a ejecutar (sin blog posts genéricos)"
+    )
+    tiempo_estimado: str = Field(
+        description="Tiempo estimado de implementación (ej: '48h', '1 semana', '2 semanas')"
+    )
+
+
+class VehiculoContenido(BaseModel):
+    """Vehículo de contenido para comunicar un concepto faltante."""
+    concepto: str = Field(
+        description="El concepto faltante que se busca comunicar"
+    )
+    opciones_implementacion: List[OpcionImplementacion] = Field(
+        description="3 vías de implementación: Ágil (modificar existente), Externa (cero código), Estructural (crear nuevo)"
+    )
+
+
 class AccionMejora(BaseModel):
     """Una acción específica de mejora para visibilidad."""
     accion: str = Field(description="Descripción clara de la acción a tomar")
@@ -37,12 +60,10 @@ class AccionMejora(BaseModel):
 
 
 class PlanAccion(BaseModel):
-    """Plan de rescate de visibilidad con quick wins y acciones estratégicas."""
-    quick_win: AccionMejora = Field(
-        description="Acción rápida, bajo costo, sin IT, 48-72h"
-    )
-    estrategico: AccionMejora = Field(
-        description="Cambio estratégico más profundo, requiere inversión, 1 mes+"
+    """Menú de implementación con vehículos de contenido por velocidad de ejecución."""
+    vehiculos: List[VehiculoContenido] = Field(
+        default_factory=list,
+        description="Lista de vehículos de contenido, uno por concepto faltante"
     )
     roi_estimado: str = Field(
         description="Estimación de ROI (ej: Reducción CAC 15%, aumento de mentions 40%)"

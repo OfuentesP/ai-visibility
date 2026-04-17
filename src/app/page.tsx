@@ -25,18 +25,14 @@ interface AnalisisMarca {
     clasificacion: string
   }
   plan_accion?: {
-    quick_win: {
-      accion: string
-      esfuerzo: string
-      tiempo: string
-      costo_estimado: string
-    }
-    estrategico: {
-      accion: string
-      esfuerzo: string
-      tiempo: string
-      costo_estimado: string
-    }
+    vehiculos: Array<{
+      concepto: string
+      opciones_implementacion: Array<{
+        tipo: string
+        accion_especifica: string
+        tiempo_estimado: string
+      }>
+    }>
     roi_estimado: string
   }
   territorios_desatendidos?: Array<{
@@ -480,82 +476,61 @@ export default function Dashboard() {
               )}
             </motion.div>
 
-            {/* PLAN DE RESCATE DE VISIBILIDAD */}
+            {/* PLAN DE RESCATE: MENÚ DE IMPLEMENTACIÓN */}
             {result.resultados[0].plan_accion && 
              (result.resultados[0].estado_invisibilidad === 'invisible' || result.resultados[0].estado_invisibilidad === 'en_riesgo') && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-br bg-slate-900 border border-slate-800 rounded-sm p-6"
+                className="bg-slate-900 border border-slate-800 rounded-sm p-6"
               >
                 <div className="mb-6">
-                  <h3 className="text-lg font-bold text-slate-100 mb-1">🚀 Plan de Rescate de Visibilidad</h3>
-                  <p className="text-slate-300 text-xs">Senior Growth Marketer | Acciones específicas y accionables</p>
+                  <h3 className="text-lg font-bold text-slate-100 mb-1">🚀 Vehículos de Contenido</h3>
+                  <p className="text-slate-400 text-xs">Menú de implementación según velocidad y recursos disponibles</p>
                 </div>
 
-                {/* Quick Win vs Estratégico */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  {/* QUICK WIN */}
-                  <div className="bg-slate-800 border border-slate-700 rounded-sm p-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Zap size={18} className="text-slate-400" />
-                      <h4 className="font-bold text-slate-100">Quick Win (48-72h)</h4>
-                    </div>
-                    <div className="space-y-3 text-sm">
-                      <div>
-                        <p className="text-slate-300 text-xs font-bold">Acción</p>
-                        <p className="text-slate-100">{result.resultados[0].plan_accion.quick_win.accion}</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <p className="text-slate-300 text-xs font-bold">Esfuerzo</p>
-                          <p className="text-slate-100 font-semibold">{result.resultados[0].plan_accion.quick_win.esfuerzo}</p>
-                        </div>
-                        <div>
-                          <p className="text-slate-300 text-xs font-bold">Tiempo</p>
-                          <p className="text-slate-100 font-semibold">{result.resultados[0].plan_accion.quick_win.tiempo}</p>
-                        </div>
-                      </div>
-                      <div className="bg-green-900/50 rounded p-2">
-                        <p className="text-slate-300 text-xs font-bold">Costo Estimado</p>
-                        <p className="text-slate-100 font-bold">{result.resultados[0].plan_accion.quick_win.costo_estimado} UF</p>
-                      </div>
-                    </div>
-                  </div>
+                {/* Leyenda de tipos */}
+                <div className="flex gap-3 mb-6 flex-wrap">
+                  <span className="px-2 py-1 bg-sky-900/40 border border-sky-700/40 rounded text-sky-300 text-xs font-semibold">⚡ Ágil — Modificar existente</span>
+                  <span className="px-2 py-1 bg-violet-900/40 border border-violet-700/40 rounded text-violet-300 text-xs font-semibold">🌐 Externa — Cero TI</span>
+                  <span className="px-2 py-1 bg-amber-900/40 border border-amber-700/40 rounded text-amber-300 text-xs font-semibold">🏗 Estructural — Crear nuevo</span>
+                </div>
 
-                  {/* ESTRATÉGICO */}
-                  <div className="bg-slate-800 border border-slate-700 rounded-sm p-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <TrendingUp size={18} className="text-slate-400" />
-                      <h4 className="font-bold text-slate-100">Estratégico (1 mes)</h4>
+                {/* Vehículos por concepto */}
+                <div className="space-y-6">
+                  {result.resultados[0].plan_accion.vehiculos.map((vehiculo, vIdx) => (
+                    <div key={vIdx} className="border border-slate-700 rounded-sm p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-orange-400 text-xs font-bold uppercase tracking-wide">Concepto</span>
+                        <span className="text-slate-100 font-semibold text-sm">{vehiculo.concepto}</span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {vehiculo.opciones_implementacion.map((opcion, oIdx) => {
+                          const estilos: Record<string, { bg: string; border: string; badge: string; text: string; icon: string }> = {
+                            'Ágil': { bg: 'bg-sky-900/20', border: 'border-sky-700/30', badge: 'bg-sky-900/40 text-sky-300 border-sky-700/40', text: 'text-sky-200', icon: '⚡' },
+                            'Externa': { bg: 'bg-violet-900/20', border: 'border-violet-700/30', badge: 'bg-violet-900/40 text-violet-300 border-violet-700/40', text: 'text-violet-200', icon: '🌐' },
+                            'Estructural': { bg: 'bg-amber-900/20', border: 'border-amber-700/30', badge: 'bg-amber-900/40 text-amber-300 border-amber-700/40', text: 'text-amber-200', icon: '🏗' },
+                          }
+                          const estilo = estilos[opcion.tipo] || estilos['Ágil']
+                          return (
+                            <div key={oIdx} className={`${estilo.bg} border ${estilo.border} rounded-sm p-3`}>
+                              <span className={`inline-block px-2 py-0.5 ${estilo.badge} border rounded text-xs font-bold mb-3`}>
+                                {estilo.icon} {opcion.tipo}
+                              </span>
+                              <p className={`text-sm leading-snug mb-3 ${estilo.text}`}>{opcion.accion_especifica}</p>
+                              <p className="text-slate-500 text-xs">⏱ {opcion.tiempo_estimado}</p>
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
-                    <div className="space-y-3 text-sm">
-                      <div>
-                        <p className="text-slate-300 text-xs font-bold">Acción</p>
-                        <p className="text-slate-100">{result.resultados[0].plan_accion.estrategico.accion}</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <p className="text-slate-300 text-xs font-bold">Esfuerzo</p>
-                          <p className="text-slate-100 font-semibold">{result.resultados[0].plan_accion.estrategico.esfuerzo}</p>
-                        </div>
-                        <div>
-                          <p className="text-slate-300 text-xs font-bold">Tiempo</p>
-                          <p className="text-slate-100 font-semibold">{result.resultados[0].plan_accion.estrategico.tiempo}</p>
-                        </div>
-                      </div>
-                      <div className="bg-orange-900/50 rounded p-2">
-                        <p className="text-slate-300 text-xs font-bold">Costo Estimado</p>
-                        <p className="text-slate-100 font-bold">{result.resultados[0].plan_accion.estrategico.costo_estimado} UF</p>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 {/* ROI Estimado */}
-                <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-sm p-4">
-                  <p className="text-slate-300 text-xs font-bold mb-2">💡 ROI Estimado</p>
-                  <p className="text-slate-100 font-semibold">{result.resultados[0].plan_accion.roi_estimado}</p>
+                <div className="mt-6 bg-yellow-900/20 border border-yellow-500/30 rounded-sm p-4">
+                  <p className="text-slate-400 text-xs font-bold mb-1">💡 ROI Estimado</p>
+                  <p className="text-slate-100 font-semibold text-sm">{result.resultados[0].plan_accion.roi_estimado}</p>
                 </div>
               </motion.div>
             )}

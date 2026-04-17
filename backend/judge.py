@@ -5,7 +5,7 @@ import logging
 from typing import List, Optional
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
-from models import AnalisisMarca, PrioridadEjecutiva, PlanAccion, AccionMejora
+from models import AnalisisMarca, PrioridadEjecutiva, PlanAccion, AccionMejora, VehiculoContenido, OpcionImplementacion
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -425,45 +425,70 @@ async def generar_plan_accion(
     texto_ia: str
 ) -> Optional[PlanAccion]:
     """
-    Senior Growth Marketer: Genera plan de rescate con quick wins y acciones estratégicas.
-    - Quick win: Acción sin IT, bajo costo, 48-72h
-    - Estratégico: Cambio profundo, 1 mes, mayor inversión
-    - ROI estimado: Cuantificable
+    Genera Menu de Implementacion con Vehiculos de Contenido.
+    Por cada concepto faltante propone 3 vias segun velocidad/recursos:
+    - Agil: Modificar pagina existente (FAQ, landing, meta-tags)
+    - Externa: Cero TI (LinkedIn, X, PR digital)
+    - Estructural: Crear landing page dedicada
     """
     
     if estado_invisibilidad == "visible":
-        return None  # No necesita plan de rescate
+        return None
     
     try:
-        prompt_content = f"""Eres un Senior Growth Marketer en Chile con experiencia en posicionamiento de marcas ante IA.
+        conceptos_str = ', '.join(conceptos_faltantes[:3]) if conceptos_faltantes else "tu propuesta de valor"
+        
+        prompt_content = f"""Eres un Senior Growth Marketer en Chile especializado en posicionamiento ante motores IA.
 
-Tu marca: {mi_marca}
-Estado: {estado_invisibilidad}
-Posición: #{posicion_mi_marca if posicion_mi_marca > 0 else "No detectada"}
-Competidor principal: {marca_ganadora or "Varios"}
-Conceptos que falta comunicar: {', '.join(conceptos_faltantes[:3]) if conceptos_faltantes else "N/A"}
+Mi marca: {mi_marca}
+Estado de visibilidad: {estado_invisibilidad}
+Posicion actual: #{posicion_mi_marca if posicion_mi_marca > 0 else 'No detectada'}
+Competidor principal: {marca_ganadora or 'Varios'}
+Conceptos faltantes a comunicar: {conceptos_str}
 
-Contexto de búsqueda:
-{texto_ia[:800]}
+Contexto:
+{texto_ia[:600]}
 
-Genera un plan de rescate en JSON con:
+PARA CADA CONCEPTO FALTANTE, genera 3 opciones de implementacion.
 
-1. QUICK WIN (48-72h, SIN IT, costo bajo):
-   - Acción específica y accionable (ej: "Crear 5 posts en LinkedIn sobre [concepto]", "Responder FAQs en foros")
-   - Esfuerzo: "Bajo"
-   - Tiempo: "48-72h"
-   - Costo estimado en UF: 3-8 UF (ej: "5-8 UF")
+REGLA ESTRICTA:
+- PROHIBIDO sugerir genericamente 'Crear un blog post' - las empresas corporativas no siempre tienen blogs.
+- PROHIBIDO ser vago. Cada accion debe ser especifica, ejecutable e identificar el canal exacto.
 
-2. ESTRATÉGICO (1 mes+, requiere inversión):
-   - Acción concreta (ej: "Landing page optimizada para [concepto]", "Actualizar sección de [tema] en web")
-   - Esfuerzo: "Medio" o "Alto"
-   - Tiempo: "1 mes" o "6 semanas"
-   - Costo estimado en UF: 15-30 UF (ej: "15-25 UF")
+Las 3 opciones por concepto son:
+1. AGIL (tipo: "Agil"): Modificar algo que ya existe. Ejemplos validos:
+   - "Agregar una pregunta '{concepto}' a la seccion FAQ de la pagina de productos"
+   - "Actualizar los meta-tags de la landing principal incluyendo '{concepto}' en el titulo H1"
+   - "Anadir un parrafo sobre '{concepto}' al final de la pagina 'Acerca de'"
+   Tiempo: 48h a 1 semana.
 
-3. ROI ESTIMADO:
-   - Cuantificable (ej: "Aumento en mentions de 35%, reducción CAC 20%", "Posicionarse en top 3 en 30 días")
+2. EXTERNA (tipo: "Externa"): Sin tocar el sitio web. Ejemplos validos:
+   - "Publicar hilo en LinkedIn corporativo: '3 razones por que {mi_marca} lidera en {concepto}'"
+   - "Emitir comunicado de prensa digital en Emol/BioBioChile sobre {concepto}"
+   - "Responder consultas sobre {concepto} en foros de Reddit Chile o Quora en espanol"
+   Tiempo: 24h a 3 dias.
 
-Retorna SOLO JSON válido."""
+3. ESTRUCTURAL (tipo: "Estructural"): Creacion nueva solo si aplica. Ejemplos:
+   - "Crear landing page /[concepto-slug] con estructura FAQ para indexacion en ChatGPT"
+   - "Desarrollar micrositio comparativo: '{mi_marca} vs competencia en {concepto}'"
+   Tiempo: 1 a 2 semanas.
+
+Retorna JSON valido con exactamente esta estructura:
+{{
+  "vehiculos": [
+    {{
+      "concepto": "nombre del concepto faltante",
+      "opciones_implementacion": [
+        {{"tipo": "Agil", "accion_especifica": "...", "tiempo_estimado": "..."}},
+        {{"tipo": "Externa", "accion_especifica": "...", "tiempo_estimado": "..."}},
+        {{"tipo": "Estructural", "accion_especifica": "...", "tiempo_estimado": "..."}}
+      ]
+    }}
+  ],
+  "roi_estimado": "..."
+}}
+
+Devuelve SOLO el JSON. Genera vehiculos para los {len(conceptos_faltantes[:3])} conceptos faltantes."""
 
         response = await client.chat.completions.create(
             model="gpt-4o-mini",
@@ -472,7 +497,7 @@ Retorna SOLO JSON válido."""
             messages=[
                 {
                     "role": "system",
-                    "content": "Eres un analista experto en growth marketing. Retorna SOLO JSON válido con estructura exacta."
+                    "content": "Eres un analista experto en growth marketing. Retorna SOLO JSON valido con estructura exacta. NUNCA sugiereas blog posts genericos."
                 },
                 {
                     "role": "user",
@@ -483,28 +508,43 @@ Retorna SOLO JSON válido."""
         
         data = json.loads(response.choices[0].message.content)
         
-        # Extrae campos
-        quick_win_data = data.get("quick_win", {})
-        estrategico_data = data.get("estrategico", {})
-        roi = data.get("roi_estimado", "Aumento en visibilidad y mentions")
+        # Construir vehiculos
+        vehiculos_raw = data.get("vehiculos", [])
+        vehiculos = []
+        for v in vehiculos_raw:
+            opciones_raw = v.get("opciones_implementacion", [])
+            opciones = [
+                OpcionImplementacion(
+                    tipo=o.get("tipo", "Agil"),
+                    accion_especifica=o.get("accion_especifica", ""),
+                    tiempo_estimado=o.get("tiempo_estimado", "1 semana")
+                )
+                for o in opciones_raw if o.get("accion_especifica")
+            ]
+            if opciones:
+                vehiculos.append(VehiculoContenido(
+                    concepto=v.get("concepto", ""),
+                    opciones_implementacion=opciones
+                ))
+        
+        # Fallback si el LLM no devolvio vehiculos validos
+        if not vehiculos and conceptos_faltantes:
+            for concepto in conceptos_faltantes[:3]:
+                vehiculos.append(VehiculoContenido(
+                    concepto=concepto,
+                    opciones_implementacion=[
+                        OpcionImplementacion(tipo="Agil", accion_especifica=f"Agregar pregunta sobre '{concepto}' en la seccion FAQ de tu sitio", tiempo_estimado="48h"),
+                        OpcionImplementacion(tipo="Externa", accion_especifica=f"Publicar hilo en LinkedIn sobre '{concepto}' con datos del mercado chileno", tiempo_estimado="24h"),
+                        OpcionImplementacion(tipo="Estructural", accion_especifica=f"Crear landing page /{concepto.lower().replace(' ', '-')} con contenido SEO para motores IA", tiempo_estimado="2 semanas")
+                    ]
+                ))
         
         plan = PlanAccion(
-            quick_win=AccionMejora(
-                accion=quick_win_data.get("accion", f"Crear contenido sobre '{conceptos_faltantes[0] if conceptos_faltantes else 'tu propuesta'}'"),
-                esfuerzo=quick_win_data.get("esfuerzo", "Bajo"),
-                tiempo=quick_win_data.get("tiempo", "48-72h"),
-                costo_estimado=quick_win_data.get("costo_estimado", "5-8 UF")
-            ),
-            estrategico=AccionMejora(
-                accion=estrategico_data.get("accion", f"Optimizar web con conceptos clave: {', '.join(conceptos_faltantes[:2])}"),
-                esfuerzo=estrategico_data.get("esfuerzo", "Medio"),
-                tiempo=estrategico_data.get("tiempo", "1 mes"),
-                costo_estimado=estrategico_data.get("costo_estimado", "15-25 UF")
-            ),
-            roi_estimado=str(roi)
+            vehiculos=vehiculos,
+            roi_estimado=str(data.get("roi_estimado", "Aumento en mentions y visibilidad en motores IA en 30 dias"))
         )
         
-        logger.info(f"Generated action plan for {mi_marca}")
+        logger.info(f"Generated {len(vehiculos)} vehiculos de contenido para {mi_marca}")
         return plan
         
     except Exception as e:
