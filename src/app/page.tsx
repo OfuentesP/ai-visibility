@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, TrendingUp, Zap, Cpu, Lightbulb, Copy, Check, Lock, Flame, BarChart3, AlertTriangle } from 'lucide-react'
+import { Search, Lightbulb, BarChart3, Terminal } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 interface AnalisisMarca {
@@ -57,748 +57,513 @@ export default function Dashboard() {
   const [loadingPhase, setLoadingPhase] = useState('')
   const [result, setResult] = useState<ResultadoBusqueda | null>(null)
   const [error, setError] = useState('')
-  const [expandDetails, setExpandDetails] = useState(false)
 
   const handleAudit = async () => {
     if (!brand.trim() || !query.trim()) {
       setError('Completa ambos campos')
       return
     }
-
     setError('')
     setLoading(true)
     setLoadingPhase('Inicializando análisis...')
-
     try {
       const phases = [
         { text: 'Buscando con Google Trends...', progress: 20 },
         { text: 'Consultando con GPT-4o...', progress: 40 },
-        { text: 'Analizando con Lighthouse...', progress: 60 },
+        { text: 'Analizando competidores...', progress: 60 },
         { text: 'Generando recomendaciones...', progress: 80 },
-        { text: 'Finalizando análisis...', progress: 100 }
+        { text: 'Finalizando análisis...', progress: 100 },
       ]
-
       for (let i = 0; i < phases.length; i++) {
         setLoadingPhase(`${phases[i].text} ${phases[i].progress}%`)
-        await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 700))
+        await new Promise((r) => setTimeout(r, 300 + Math.random() * 700))
       }
-
       const url = `http://localhost:8000/api/audit?query=${encodeURIComponent(query)}&brand=${encodeURIComponent(brand)}`
       const response = await fetch(url, { method: 'POST' })
-
       if (!response.ok) {
         const text = await response.text()
         throw new Error(`Error ${response.status}: ${text}`)
       }
-
       const data: ResultadoBusqueda = await response.json()
       setResult(data)
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error de conexión'
-      setError(message)
+      setError(err instanceof Error ? err.message : 'Error de conexión')
     } finally {
       setLoading(false)
       setLoadingPhase('')
     }
   }
 
-  const getSentimentStyle = (sentiment: string) => {
-    switch (sentiment.toLowerCase()) {
-      case 'positivo':
-        return 'bg-emerald-900/20 border-emerald-800/50 text-emerald-300'
-      case 'negativo':
-        return 'bg-red-900/20 border-red-800/50 text-red-300'
-      default:
-        return 'bg-slate-700/20 border-slate-700/50 text-slate-300'
-    }
+  const getScoreColor = (estado: string) => {
+    if (estado === 'visible') return 'border-emerald-800/40'
+    if (estado === 'en_riesgo') return 'border-orange-800/40'
+    return 'border-red-800/40'
   }
 
-  const getInvisibilityColor = (estado: string) => {
-    switch (estado) {
-      case 'visible':
-        return 'bg-slate-900 border-emerald-800/40'
-      case 'en_riesgo':
-        return 'bg-slate-900 border-orange-800/40'
-      default:
-        return 'bg-slate-900 border-red-800/40'
-    }
+  const getScoreTextColor = (estado: string) => {
+    if (estado === 'visible') return 'text-emerald-400'
+    if (estado === 'en_riesgo') return 'text-orange-400'
+    return 'text-red-400'
   }
 
-  const getInvisibilityTextColor = (estado: string) => {
-    switch (estado) {
-      case 'visible':
-        return 'text-emerald-400'
-      case 'en_riesgo':
-        return 'text-slate-400'
-      default:
-        return 'text-red-400'
-    }
+  const getScoreBarColor = (estado: string) => {
+    if (estado === 'visible') return 'bg-emerald-700'
+    if (estado === 'en_riesgo') return 'bg-orange-700'
+    return 'bg-red-800'
   }
 
-  const getInvisibilityBg = (estado: string) => {
-    switch (estado) {
-      case 'visible':
-        return 'bg-emerald-700/30'
-      case 'en_riesgo':
-        return 'bg-orange-700/30'
-      default:
-        return 'bg-red-800/30'
-    }
-  }
+  const d = result?.resultados[0]
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
       <div className="flex-1 p-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header: Título + ID de Auditoría + PDF Button */}
+        <div className="max-w-5xl mx-auto">
+
+          {/* HEADER */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 border-b border-slate-800 pb-6 flex items-start justify-between"
           >
             <div>
-              <div className="flex items-baseline gap-4 mb-2">
-                <h1 className="text-3xl font-semibold text-slate-100 tracking-tight">
-                  AI Visibility Auditor
-                </h1>
-              </div>
-              <p className="text-slate-500 text-sm font-light mb-3">
-                Análisis de posicionamiento en motores de búsqueda con IA
-              </p>
-              {/* ID de Auditoría y Timestamp - Monoespaciado */}
+              <h1 className="text-3xl font-semibold text-slate-100 tracking-tight mb-1">AI Visibility Auditor</h1>
+              <p className="text-slate-500 text-sm font-light">Análisis de posicionamiento en motores de búsqueda con IA</p>
               {result && (
-                <div className="text-xs font-mono text-slate-600 space-y-1">
-                  <div>AUDIT-2026-CL-{String(Math.floor(Math.random() * 1000)).padStart(3, '0')}</div>
-                  <div>{new Date().toLocaleDateString('es-CL')} • {new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}</div>
-                </div>
+                <p className="text-[10px] font-mono text-slate-700 mt-2">
+                  {new Date().toLocaleDateString('es-CL')} · {new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
+                </p>
               )}
             </div>
             {result && (
-              <button className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-sm text-slate-300 text-sm font-medium transition flex items-center gap-2">
+              <button className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-sm text-slate-400 text-sm transition flex items-center gap-2">
                 ⬇ PDF
               </button>
             )}
           </motion.div>
 
-          {/* Input Section */}
+          {/* BUSCADOR */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.1 }}
             className="bg-slate-900 border border-slate-800 rounded-sm p-6 mb-8"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Marca</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca</label>
                 <input
                   type="text"
                   placeholder="Banco Santander"
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAudit()}
-                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-700 text-sm transition"
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Búsqueda</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Búsqueda</label>
                 <input
                   type="text"
                   placeholder="mejor banco en chile"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleAudit()}
-                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-700 text-sm transition"
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
                 />
               </div>
             </div>
-
             <button
               onClick={handleAudit}
               disabled={loading}
-              className="w-full px-6 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-slate-50 font-medium rounded-sm transition flex items-center justify-center gap-2 text-sm"
+              className="w-full px-6 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-slate-50 font-medium rounded-sm transition flex items-center justify-center gap-2 text-sm"
             >
               <Search className="w-4 h-4" />
               {loading ? loadingPhase : 'Auditar'}
             </button>
-
-            {loading && loadingPhase && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="mt-3 p-3 bg-slate-800 border border-slate-700 rounded-sm text-slate-300 text-xs flex items-center gap-2"
-              >
+            {loading && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-3 p-3 bg-slate-800 border border-slate-700 rounded-sm text-slate-400 text-xs flex items-center gap-2">
                 <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse" />
                 {loadingPhase}
               </motion.div>
             )}
-
             {error && (
-              <div className="mt-4 p-3 bg-red-900/20 border border-red-800/50 rounded-sm text-red-300 text-sm">
-                {error}
-              </div>
+              <div className="mt-4 p-3 bg-red-900/20 border border-red-800/50 rounded-sm text-red-300 text-sm">{error}</div>
             )}
           </motion.div>
 
-        {/* Results */}
-        {result && (
-          <div className="space-y-6">
-            {/* INDICADOR DE VISIBILIDAD - MINIMALISTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`${getInvisibilityColor(result.resultados[0].estado_invisibilidad)} border rounded-sm p-6`}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Score */}
-                <div>
-                  <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-3">Visibilidad</p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-baseline gap-2">
-                      <span className={`text-4xl font-light ${getInvisibilityTextColor(result.resultados[0].estado_invisibilidad)}`}>
-                        {result.resultados[0].invisibilidad_score}
-                      </span>
-                      <span className="text-slate-500 text-sm">/100</span>
-                    </div>
-                    <div className="w-full bg-slate-800 h-1 rounded-sm overflow-hidden">
-                      <div
-                        className={`h-full transition-all ${
-                          result.resultados[0].estado_invisibilidad === 'visible'
-                            ? 'bg-emerald-700'
-                            : result.resultados[0].estado_invisibilidad === 'en_riesgo'
-                            ? 'bg-orange-700'
-                            : 'bg-red-800'
-                        }`}
-                        style={{ width: `${result.resultados[0].invisibilidad_score}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
+          {/* RESULTADOS */}
+          {result && d && (
+            <div className="space-y-5">
 
-                {/* Estado */}
-                <div>
-                  <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-3">Estado</p>
-                  <div className={`text-2xl font-semibold capitalize ${
-                    result.resultados[0].estado_invisibilidad === 'visible'
-                      ? 'text-emerald-300'
-                      : result.resultados[0].estado_invisibilidad === 'en_riesgo'
-                      ? 'text-slate-300'
-                      : 'text-red-300'
-                  }`}>
-                    {result.resultados[0].estado_invisibilidad === 'visible'
-                      ? 'Consolidada'
-                      : result.resultados[0].estado_invisibilidad === 'en_riesgo'
-                      ? 'En Riesgo'
-                      : 'Invisible'}
-                  </div>
-                  <p className="text-slate-400 text-xs mt-2">
-                    {result.resultados[0].posicion_mi_marca === 0
-                      ? 'No detectada'
-                      : `Posición #${result.resultados[0].posicion_mi_marca}`}
-                  </p>
-                </div>
+              {/* ─── FASE 1: EL DIAGNÓSTICO ────────────── */}
 
-                {/* Descripción */}
-                <div>
-                  <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-3">Análisis</p>
-                  <p className="text-slate-300 text-sm leading-relaxed">
-                    {result.resultados[0].posicion_mi_marca === 0
-                      ? `No apareces en búsquedas sobre "${result.prompt_original}"`
-                      : result.resultados[0].estado_invisibilidad === 'visible'
-                      ? `Presencia consolidada. Mantén la estrategia actual.`
-                      : `Mencionado pero sin prominencia. Acción necesaria.`}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* PRIORIDAD EJECUTIVA - CEO VIEW */}
-            {result.resultados[0].prioridad_ejecutiva && (
+              {/* 1 · TERMÓMETRO */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-br bg-slate-900 border border-slate-800 rounded-sm p-6"
+                className={`bg-slate-900 border ${getScoreColor(d.estado_invisibilidad)} rounded-sm p-6`}
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/40 rounded-full">
-                    <span className="text-xs font-bold text-slate-300">📊 CEO VIEW</span>
-                  </div>
-                  <h2 className="text-xl font-bold text-slate-50">Plan de Acción Inmediato</h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Foco Principal */}
-                  <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-sm p-4">
-                    <p className="text-slate-300 text-xs font-bold mb-2">Foco Principal</p>
-                    <p className="text-slate-100 font-semibold text-sm mb-3">{result.resultados[0].prioridad_ejecutiva.foco_principal}</p>
-                  </div>
-
-                  {/* Esfuerzo y Tiempo */}
-                  <div className="space-y-3">
-                    <div className="bg-slate-800/50 border border-slate-700 rounded-sm p-3">
-                      <p className="text-slate-400 text-xs font-bold mb-1">Esfuerzo</p>
-                      <p className="text-slate-200 font-semibold">{result.resultados[0].prioridad_ejecutiva.esfuerzo}</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div>
+                    <p className="text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-3">Visibilidad IA</p>
+                    <div className="flex items-baseline gap-2 mb-2">
+                      <span className={`text-5xl font-light tabular-nums ${getScoreTextColor(d.estado_invisibilidad)}`}>{d.invisibilidad_score}</span>
+                      <span className="text-slate-600 text-sm">/100</span>
                     </div>
-                    <div className="bg-slate-800/50 border border-slate-700 rounded-sm p-3">
-                      <p className="text-slate-400 text-xs font-bold mb-1">Tiempo Estimado</p>
-                      <p className="text-slate-200 font-semibold">{result.resultados[0].prioridad_ejecutiva.tiempo_estimado}</p>
+                    <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                      <div className={`h-full ${getScoreBarColor(d.estado_invisibilidad)} transition-all duration-700`} style={{ width: `${d.invisibilidad_score}%` }} />
                     </div>
                   </div>
-                </div>
-
-                {/* Clasificación */}
-                <div className="mt-4">
-                  <p className="text-slate-400 text-xs font-bold mb-2">Estrategia</p>
-                  <div className={`inline-block px-4 py-2 rounded-full font-bold text-sm ${
-                    result.resultados[0].invisibilidad_score >= 80
-                      ? 'bg-green-500/20 text-emerald-300'
-                      : result.resultados[0].invisibilidad_score >= 50
-                      ? 'bg-yellow-500/20 text-yellow-300'
-                      : 'bg-red-500/20 text-red-300'
-                  }`}>
-                    {result.resultados[0].invisibilidad_score >= 80
-                      ? 'Mantener'
-                      : result.resultados[0].invisibilidad_score >= 50
-                      ? 'Defender / Pivotal'
-                      : '🚨 Pivotar / Intervenir'}
+                  <div>
+                    <p className="text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-3">Estado</p>
+                    <p className={`text-2xl font-semibold ${getScoreTextColor(d.estado_invisibilidad)}`}>
+                      {d.estado_invisibilidad === 'visible' ? 'Consolidada' : d.estado_invisibilidad === 'en_riesgo' ? 'En Riesgo' : 'Invisible'}
+                    </p>
+                    <p className="text-slate-500 text-xs mt-2">
+                      {d.posicion_mi_marca === 0 ? 'No detectada en respuesta' : `Posición #${d.posicion_mi_marca}`}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-slate-500 text-[10px] font-semibold uppercase tracking-widest mb-3">Diagnóstico</p>
+                    <p className="text-slate-300 text-sm leading-relaxed">
+                      {d.posicion_mi_marca === 0
+                        ? `No apareces en búsquedas sobre "${result.prompt_original}"`
+                        : d.estado_invisibilidad === 'visible'
+                        ? 'Presencia consolidada. Mantén la estrategia actual.'
+                        : 'Mencionado pero sin prominencia. Acción necesaria.'}
+                    </p>
                   </div>
                 </div>
               </motion.div>
-            )}
 
-            {/* MAPA DE DIFERENCIACIÓN - DINÁMICO SEGÚN POSICIÓN */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-slate-900 border border-slate-800 rounded-sm p-6 space-y-6"
-            >
-              <div className="mb-6">
-                {result.resultados[0].posicion_mi_marca === 1 ? (
-                  <>
-                    <h3 className="text-lg font-bold text-slate-50 mb-1">🛡️ Defensa de Posición: Tú vs {result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora}</h3>
-                    <p className="text-slate-400 text-xs">Mantén tu liderazgo identificando lo que amenaza tu posición</p>
-                  </>
-                ) : (
-                  <>
-                    <h3 className="text-lg font-bold text-slate-50 mb-1">📊 Brecha Competitiva: Tú vs {result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora}</h3>
-                    <p className="text-slate-400 text-xs">Identifica qué comunica tu competidor que tú no</p>
-                  </>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Tu Marca */}
-                <div className="bg-green-500/5 border border-green-500/30 rounded-sm p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-slate-400 text-lg">✓</span>
-                    <p className="text-slate-300 text-xs font-bold">
-                      {result.resultados[0].posicion_mi_marca === 1 
-                        ? "TUS FORTALEZAS (Por qué eres #1)" 
-                        : "LO QUE YA COMUNICAS"}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    {["Seguridad", "Confianza", "Atención al cliente"].map((c, idx) => (
-                      <div key={idx} className="flex items-center gap-2 px-3 py-2 bg-green-950/40 border border-green-500/20 rounded-sm">
-                        <span className="text-slate-400 text-sm">•</span>
-                        <p className="text-slate-100 text-sm font-medium">{c}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Competencia */}
-                <div className="bg-orange-500/5 border border-orange-500/30 rounded-sm p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-slate-400 text-lg">⚠</span>
-                    <p className="text-slate-300 text-xs font-bold">
-                      {result.resultados[0].posicion_mi_marca === 1 
-                        ? `AMENAZAS EMERGENTES (Lo que ${result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora} intenta posicionar)` 
-                        : `LO QUE ${(result.resultados[0].competidor_principal || result.resultados[0].marca_ganadora)?.toUpperCase() || 'LA COMPETENCIA'} COMUNICA (Y TÚ NO)`}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    {result.resultados[0].conceptos_faltantes.map((c, idx) => (
-                      <div key={idx} className="flex items-center gap-2 px-3 py-2 bg-orange-950/40 border border-orange-500/20 rounded-sm">
-                        <span className="text-slate-400 text-sm">•</span>
-                        <p className="text-slate-100 text-sm font-medium">{c}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* CALCULADORA DE MEJORA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br bg-slate-900 border border-slate-800 rounded-sm p-6"
-            >
-              <div className="mb-6">
-                <h3 className="text-lg font-bold text-indigo-100 mb-1">💰 Inversión para Subir en Ranking</h3>
-                <p className="text-indigo-300 text-xs">Estimado por expertos</p>
-              </div>
-
-              {result.resultados[0].invisibilidad_score < 50 ? (
-                <div className="space-y-4">
-                  <div className="bg-red-900/40 border border-red-500/40 rounded-sm p-4 mb-4">
-                    <p className="text-red-100 font-bold mb-2">⚠️ Alerta de Pérdida de Mercado</p>
-                    <p className="text-red-200 text-sm">Tu visibilidad está en riesgo. Intervención urgente recomendada.</p>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-indigo-900/30 border border-indigo-500/20 rounded-sm p-4">
-                      <p className="text-indigo-300 text-xs font-bold mb-3">Acciones Necesarias</p>
-                      <ul className="text-indigo-100 text-sm space-y-1">
-                        <li>✓ Actualizar metadatos</li>
-                        <li>✓ 2 landing pages</li>
-                        <li>✓ Contenido SEO</li>
-                      </ul>
+              {/* 2 · SHARE OF VOICE — Progress Bars */}
+              {d.marcas_mencionadas.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-slate-900 border border-slate-800 rounded-sm p-6"
+                >
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <h3 className="text-sm font-semibold text-slate-100">
+                        🇨🇱 Share of Voice — <span className="text-slate-400 font-normal">{result.prompt_original}</span>
+                      </h3>
+                      <p className="text-slate-600 text-xs mt-1">Orden de aparición en la respuesta IA como proxy de cuota de voz</p>
                     </div>
-
-                    <div className="bg-purple-900/30 border border-purple-500/20 rounded-sm p-4">
-                      <p className="text-purple-300 text-xs font-bold mb-2">Costo Estimado</p>
-                      <p className="text-purple-100 text-xl font-bold">15-20 UF</p>
-                      <p className="text-purple-300 text-xs">~USD 700-950</p>
-                    </div>
-
-                    <div className="bg-indigo-900/30 border border-indigo-500/20 rounded-sm p-4">
-                      <p className="text-indigo-300 text-xs font-bold mb-2">Tiempo</p>
-                      <p className="text-indigo-100 text-xl font-bold">10 días</p>
-                      <p className="text-indigo-300 text-xs">Implementación ágil</p>
-                    </div>
+                    <span className="text-[10px] font-mono text-slate-600 bg-slate-800 border border-slate-700 px-2 py-1 rounded shrink-0">
+                      {d.marcas_mencionadas.length} marcas
+                    </span>
                   </div>
-                </div>
-              ) : (
-                <div className="bg-green-900/30 border border-green-500/20 rounded-sm p-4 text-center">
-                  <p className="text-slate-100 font-semibold mb-2">✓ Posición Consolidada</p>
-                  <p className="text-slate-300 text-sm">Mantén tu estrategia actual. Enfócate en defender tu posición.</p>
-                </div>
+                  <div className="space-y-3">
+                    {d.marcas_mencionadas.map((marca, idx) => {
+                      const total = d.marcas_mencionadas.length
+                      const barWidth = Math.max(Math.round(100 - idx * (70 / Math.max(total - 1, 1))), 14)
+                      const isWinner = marca === d.marca_ganadora
+                      const isUser = marca.toLowerCase() === brand.toLowerCase()
+                      return (
+                        <div key={idx} className="flex items-center gap-3">
+                          <span className="text-slate-700 text-[10px] font-mono w-5 shrink-0 text-right">#{idx + 1}</span>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <span className={`text-xs font-medium ${isUser ? 'text-emerald-300' : isWinner ? 'text-slate-200' : 'text-slate-500'}`}>{marca}</span>
+                              {isWinner && !isUser && <span className="text-[9px] bg-slate-800 border border-slate-700 text-slate-400 px-1.5 py-0.5 rounded font-semibold">LÍDER</span>}
+                              {isUser && isWinner && <span className="text-[9px] bg-emerald-900/40 border border-emerald-800/50 text-emerald-400 px-1.5 py-0.5 rounded font-semibold">TÚ · LÍDER</span>}
+                              {isUser && !isWinner && <span className="text-[9px] bg-emerald-900/30 border border-emerald-800/40 text-emerald-400 px-1.5 py-0.5 rounded font-semibold">TÚ</span>}
+                            </div>
+                            <div className="h-1.5 bg-slate-800 rounded-sm overflow-hidden">
+                              <div
+                                className={`h-full rounded-sm transition-all duration-700 ${isUser ? 'bg-emerald-700' : isWinner ? 'bg-slate-500' : 'bg-slate-700'}`}
+                                style={{ width: `${barWidth}%` }}
+                              />
+                            </div>
+                          </div>
+                          <span className="text-slate-700 text-[10px] font-mono w-8 text-right shrink-0">{barWidth}%</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  {d.posicion_mi_marca === 0 && (
+                    <p className="mt-4 text-slate-600 text-xs border-t border-slate-800 pt-3">⚠ Tu marca no fue detectada en esta consulta.</p>
+                  )}
+                </motion.div>
               )}
-            </motion.div>
 
-            {/* PLAN DE ACCIÓN: DÓNDE AGREGAR ESTOS CONTENIDOS */}
-            {result.resultados[0].plan_accion && 
-             (result.resultados[0].estado_invisibilidad === 'invisible' || result.resultados[0].estado_invisibilidad === 'en_riesgo') && (
+              {/* ─── FASE 2: LA AUTOPSIA ───────────────── */}
+
+              {/* 3 · MAPA DE DIFERENCIACIÓN */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-slate-900 border border-slate-800 rounded-sm p-6"
               >
-                {/* Header */}
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h3 className="text-base font-semibold text-slate-100 mb-1">Plan de Acción: Dónde Agregar Estos Contenidos</h3>
-                    <p className="text-slate-500 text-xs">Selecciona la vía según los recursos disponibles de tu equipo</p>
-                  </div>
-                  {/* Leyenda compacta */}
-                  <div className="hidden md:flex flex-col gap-1.5 items-end">
-                    <span className="px-2 py-0.5 bg-[#1a2a3a] border border-[#2a4060] rounded text-[#6b9ec4] text-[10px] font-medium tracking-wide">Modificación Rápida</span>
-                    <span className="px-2 py-0.5 bg-[#1a2e24] border border-[#2a4a34] rounded text-[#6bab84] text-[10px] font-medium tracking-wide">Acción Externa / Redes</span>
-                    <span className="px-2 py-0.5 bg-[#252525] border border-[#383838] rounded text-[#888888] text-[10px] font-medium tracking-wide">Creación de Landing</span>
-                  </div>
+                <div className="mb-5">
+                  {d.posicion_mi_marca === 1 ? (
+                    <>
+                      <h3 className="text-sm font-semibold text-slate-100 mb-0.5">
+                        🛡️ Defensa de Posición — Tú vs <span className="text-slate-400">{d.competidor_principal || d.marca_ganadora}</span>
+                      </h3>
+                      <p className="text-slate-600 text-xs">Identifica qué intenta posicionar tu competidor para desplazarte</p>
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="text-sm font-semibold text-slate-100 mb-0.5">
+                        📊 Brecha Competitiva — Tú vs <span className="text-slate-400">{d.competidor_principal || d.marca_ganadora}</span>
+                      </h3>
+                      <p className="text-slate-600 text-xs">Qué comunica tu competidor en IA que tú no</p>
+                    </>
+                  )}
                 </div>
-
-                {/* Tarjetas por concepto */}
-                <div className="space-y-4">
-                  {result.resultados[0].plan_accion.vehiculos.map((vehiculo, vIdx) => {
-                    // Config de estilos Dark Corporate por tipo
-                    const BADGE_CONFIG: Record<string, { label: string; badgeBg: string; badgeBorder: string; badgeText: string; rowBorder: string; timeBg: string }> = {
-                      'Ágil': {
-                        label: 'Modificación Rápida',
-                        badgeBg: 'bg-[#1a2a3a]',
-                        badgeBorder: 'border-[#2a4060]',
-                        badgeText: 'text-[#6b9ec4]',
-                        rowBorder: 'border-l-[#2a4060]',
-                        timeBg: 'bg-[#0f1e2e]'
-                      },
-                      'Externa': {
-                        label: 'Acción Externa / Redes',
-                        badgeBg: 'bg-[#1a2e24]',
-                        badgeBorder: 'border-[#2a4a34]',
-                        badgeText: 'text-[#6bab84]',
-                        rowBorder: 'border-l-[#2a4a34]',
-                        timeBg: 'bg-[#0f1e18]'
-                      },
-                      'Estructural': {
-                        label: 'Creación de Landing',
-                        badgeBg: 'bg-[#252525]',
-                        badgeBorder: 'border-[#383838]',
-                        badgeText: 'text-[#888888]',
-                        rowBorder: 'border-l-[#383838]',
-                        timeBg: 'bg-[#1a1a1a]'
-                      }
-                    }
-
-                    return (
-                      <div key={vIdx} className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden">
-                        {/* Encabezado del concepto */}
-                        <div className="px-4 py-3 border-b border-slate-800 flex items-center gap-3">
-                          <span className="w-5 h-5 flex items-center justify-center bg-orange-900/40 border border-orange-700/40 rounded text-orange-400 text-[10px] font-bold">{vIdx + 1}</span>
-                          <span className="text-slate-200 text-sm font-medium">{vehiculo.concepto}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border border-emerald-800/30 bg-emerald-950/10 rounded-sm p-4">
+                    <p className="text-emerald-700 text-[10px] font-semibold uppercase tracking-widest mb-3">
+                      {d.posicion_mi_marca === 1 ? '✓ Tus fortalezas actuales' : '✓ Lo que ya comunicas'}
+                    </p>
+                    <div className="space-y-1.5">
+                      {['Seguridad', 'Confianza', 'Atención al cliente'].map((c, idx) => (
+                        <div key={idx} className="flex items-center gap-2 px-3 py-1.5 bg-emerald-950/30 rounded-sm">
+                          <span className="text-emerald-800 text-xs">—</span>
+                          <p className="text-slate-200 text-xs">{c}</p>
                         </div>
-
-                        {/* Lista de vías de implementación */}
-                        <div className="divide-y divide-slate-800/60">
-                          {vehiculo.opciones_implementacion.map((opcion, oIdx) => {
-                            const cfg = BADGE_CONFIG[opcion.tipo] || BADGE_CONFIG['Ágil']
-                            return (
-                              <div key={oIdx} className={`flex items-start gap-4 px-4 py-3 border-l-2 ${cfg.rowBorder}`}>
-                                {/* Badge tipo */}
-                                <span className={`shrink-0 mt-0.5 px-2 py-0.5 ${cfg.badgeBg} border ${cfg.badgeBorder} rounded ${cfg.badgeText} text-[10px] font-semibold tracking-wide whitespace-nowrap`}>
-                                  {cfg.label}
-                                </span>
-                                {/* Acción */}
-                                <p className="text-slate-300 text-sm leading-snug flex-1">{opcion.accion_especifica}</p>
-                                {/* Tiempo */}
-                                <span className={`shrink-0 mt-0.5 px-2 py-0.5 ${cfg.timeBg} border border-slate-800 rounded text-slate-500 text-[10px] whitespace-nowrap`}>
-                                  {opcion.tiempo_estimado}
-                                </span>
-                              </div>
-                            )
-                          })}
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border border-orange-800/30 bg-orange-950/10 rounded-sm p-4">
+                    <p className="text-orange-700 text-[10px] font-semibold uppercase tracking-widest mb-3">
+                      {d.posicion_mi_marca === 1
+                        ? `⚠ Amenazas emergentes de ${d.competidor_principal || d.marca_ganadora}`
+                        : `⚠ Lo que ${(d.competidor_principal || d.marca_ganadora || 'la competencia').toUpperCase()} comunica (y tú no)`}
+                    </p>
+                    <div className="space-y-1.5">
+                      {d.conceptos_faltantes.map((c, idx) => (
+                        <div key={idx} className="flex items-center gap-2 px-3 py-1.5 bg-orange-950/30 rounded-sm">
+                          <span className="text-orange-800 text-xs">—</span>
+                          <p className="text-slate-200 text-xs">{c}</p>
                         </div>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                {/* ROI Estimado */}
-                <div className="mt-5 flex items-center gap-3 px-4 py-3 bg-slate-950 border border-slate-800 rounded-sm">
-                  <span className="text-slate-500 text-xs font-semibold uppercase tracking-widest shrink-0">ROI Estimado</span>
-                  <span className="w-px h-4 bg-slate-700" />
-                  <p className="text-slate-300 text-sm">{result.resultados[0].plan_accion.roi_estimado}</p>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
-            )}
 
-            {/* RADAR DE INTENCIÓN: LO QUE CHILENOS BUSCAN Y NO RESPONDES */}
-            {result.resultados[0].territorios_desatendidos && result.resultados[0].territorios_desatendidos.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-br bg-slate-900 border border-slate-800 rounded-sm p-8"
-              >
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-slate-100 mb-2">📡 Radar de Intención</h3>
-                  <p className="text-slate-300 text-sm">Lo que los chilenos buscan activamente... y tú NO respondes</p>
-                </div>
-
-                {/* Grid de 3 Tarjetas */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-                  {result.resultados[0].territorios_desatendidos.slice(0, 3).map((territorio, idx) => {
-                    const segmentos: Record<number, string> = {
-                      0: 'Millennials Ahorradores',
-                      1: 'Viajeros Digitales',
-                      2: 'Tech Adopters'
-                    };
-
-                    return (
-                      <motion.div
-                        key={idx}
-                        whileHover={{ y: -4 }}
-                        className="bg-rose-900/40 border border-rose-500/40 rounded-sm p-5 backdrop-blur-sm"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-3xl">{['🔍', '📲', '💰'][idx]}</span>
-                          <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                            INVISIBILIDAD TOTAL
-                          </span>
-                        </div>
-
-                        <p className="text-slate-100 font-bold text-sm mb-3">{territorio.topico_emergente}</p>
-
-                        <div className="mb-3 pb-3 border-b border-rose-500/20">
-                          <p className="text-slate-400 text-xs font-semibold">👥 Segmento</p>
-                          <p className="text-slate-200 text-sm">{segmentos[idx]}</p>
-                        </div>
-
-                        <p className="text-slate-300 text-xs italic">💡 {territorio.intension_usuario}</p>
-
-                        <div className="mt-3 pt-3 border-t border-rose-500/20">
-                          <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                            territorio.volumen_busqueda === 'Alto'
-                              ? 'bg-red-600/30 text-red-200 border border-red-500/50'
-                              : 'bg-orange-600/30 text-orange-200 border border-orange-500/50'
-                          }`}>
-                            Volumen: {territorio.volumen_busqueda}
-                          </span>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* Impacto en Share of Voice */}
+              {/* 4 · EVIDENCIA DE LA IA — Raw Output terminal */}
+              {result.texto_original_ia && (
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="bg-slate-800 border border-slate-700 rounded-sm p-5 text-center"
-                >
-                  <p className="text-slate-100 font-bold mb-2">📊 IMPACTO POTENCIAL EN SHARE OF VOICE</p>
-                  <p className="text-rose-50 text-lg font-bold mb-1">
-                    Si capturamos estas 3 tendencias, aumentaríamos nuestro Share of Voice en un <span className="text-slate-300 text-2xl">+34%</span>
-                  </p>
-                  <p className="text-slate-300 text-xs">Datos basados en volumen de búsquedas en Google Trends Chile (últimos 7 días)</p>
-                </motion.div>
-
-                {/* Mini Plan: Dónde Hacer Estos Cambios */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="bg-slate-900/50 border border-slate-700/50 rounded-sm p-6 mt-6"
+                  className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden"
                 >
-                  <div className="mb-4">
-                    <h4 className="text-slate-100 font-bold text-sm mb-3">✅ Plan de Acción: Dónde Agregar Estos Contenidos</h4>
+                  <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-800 bg-slate-900">
+                    <Terminal className="w-3.5 h-3.5 text-slate-600" />
+                    <span className="text-slate-500 text-[10px] font-mono uppercase tracking-widest">Evidencia de la IA — Raw Output</span>
+                    <span className="ml-auto text-[9px] font-mono text-slate-700 bg-slate-800 border border-slate-700 px-1.5 py-0.5 rounded">LLM response</span>
                   </div>
-                  <div className="space-y-3">
-                    {result.resultados[0].territorios_desatendidos?.slice(0, 3).map((territorio, idx) => (
-                      <div key={idx} className="bg-slate-800/30 border border-slate-700/30 rounded-sm p-3 text-xs">
-                        <div className="flex gap-2 mb-2">
-                          <span className="text-slate-400 font-mono bg-slate-800 px-2 py-1 rounded">#{idx + 1}</span>
-                          <div className="flex-1">
-                            <p className="text-slate-100 font-semibold mb-1">{territorio.topico_emergente}</p>
-                            <div className="space-y-1 text-slate-400">
-                              <p>📝 <span className="text-slate-300">Crear blog post:</span> "{territorio.topico_emergente} para {['Millennials Ahorradores', 'Viajeros Digitales', 'Tech Adopters'][idx]}"</p>
-                              <p>🎯 <span className="text-slate-300">Meta:</span> {territorio.volumen_busqueda} volumen de búsqueda mensual</p>
-                              <p>💬 <span className="text-slate-300">Enfoque:</span> {territorio.intension_usuario}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 p-3 bg-sky-900/20 border border-sky-700/30 rounded-sm text-sky-300 text-xs">
-                    <p className="font-semibold mb-1">💡 Recomendación: Publica estos contenidos en las próximas 2 semanas</p>
-                    <p>Esto posicionará a {brand} como autoridad en estos tópicos emergentes.</p>
+                  <div className="p-4 max-h-32 overflow-hidden relative">
+                    <p className="text-slate-500 text-xs font-mono leading-relaxed whitespace-pre-wrap">
+                      {result.texto_original_ia.slice(0, 480)}{result.texto_original_ia.length > 480 ? '…' : ''}
+                    </p>
+                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none" />
                   </div>
                 </motion.div>
-              </motion.div>
-            )}
+              )}
 
-            {/* Expandible: Detalles Técnicos */}
-            <motion.button
-              onClick={() => setExpandDetails(!expandDetails)}
-              className="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-sm text-slate-300 hover:text-slate-50 transition font-semibold text-sm flex items-center justify-center gap-2"
-            >
-              {expandDetails ? '▼ Ocultar' : '▶ Ver'} Análisis Técnico Detallado
-            </motion.button>
-
-            {expandDetails && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="space-y-6"
-              >
-                {/* Share of Voice */}
-                <div className="bg-slate-900 border border-slate-800 rounded-sm p-6">
-                  <h3 className="text-lg font-semibold text-slate-50 mb-4">🇨🇱 Share of Voice en Chile</h3>
-                  <p className="text-slate-400 text-xs mb-4">Marcas mencionadas por la IA</p>
-                  <div className="flex flex-wrap gap-3">
-                    {result.resultados[0].marcas_mencionadas.map((marca, idx) => (
-                      <div
-                        key={idx}
-                        className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-full text-slate-300 text-sm hover:bg-slate-700 transition cursor-default"
-                      >
-                        {marca}
-                        {marca === result.resultados[0].marca_ganadora && <span className="ml-2">👑</span>}
-                        {marca.toLowerCase() === brand.toLowerCase() && <span className="ml-2">🎯</span>}
+              {/* 5 · RADAR DE INTENCIÓN */}
+              {d.territorios_desatendidos && d.territorios_desatendidos.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-slate-900 border border-slate-800 rounded-sm p-6"
+                >
+                  <div className="mb-5">
+                    <h3 className="text-sm font-semibold text-slate-100 mb-0.5">📡 Radar de Intención</h3>
+                    <p className="text-slate-600 text-xs">Tópicos que los usuarios buscan activamente y tu marca no cubre</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {d.territorios_desatendidos.slice(0, 3).map((t, idx) => (
+                      <div key={idx} className="bg-slate-800 border border-slate-700/60 rounded-sm p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border ${
+                            t.volumen_busqueda === 'Alto'
+                              ? 'bg-red-900/30 text-red-400 border-red-800/40'
+                              : 'bg-orange-900/30 text-orange-400 border-orange-800/40'
+                          }`}>
+                            {t.volumen_busqueda}
+                          </span>
+                          <span className="text-slate-700 text-[9px] font-mono">#{idx + 1}</span>
+                        </div>
+                        <p className="text-slate-100 font-semibold text-xs mb-2">{t.topico_emergente}</p>
+                        <p className="text-slate-500 text-[10px] leading-relaxed mb-3">{t.porque_es_oportunidad}</p>
+                        <div className="border-t border-slate-700 pt-2">
+                          <p className="text-slate-600 text-[9px] uppercase tracking-widest mb-1">Intención</p>
+                          <p className="text-slate-400 text-[10px] italic">{t.intension_usuario}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
+                  <div className="mt-4 flex items-start gap-3 p-3 bg-slate-800/50 border border-slate-700/40 rounded-sm">
+                    <BarChart3 className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
+                    <p className="text-slate-500 text-xs">Captura de demanda orgánica en segmentos desatendidos. Ventaja competitiva potencial frente a marcas que aún no cubren estos tópicos.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ─── FASE 3: EL RESCATE ────────────────── */}
+
+              {/* 6 · DIRECTIVA DE EJECUCIÓN ESTRATÉGICA */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden"
+              >
+                <div className="px-6 py-4 border-b border-slate-800 flex items-start justify-between">
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-100">⚡ Directiva de Ejecución Estratégica</h3>
+                    <p className="text-slate-600 text-xs mt-0.5">Matriz de acción ordenada por esfuerzo técnico requerido</p>
+                  </div>
+                  <div className={`text-[10px] font-semibold px-2 py-1 rounded border ${
+                    d.invisibilidad_score >= 80
+                      ? 'bg-emerald-900/30 text-emerald-400 border-emerald-800/40'
+                      : d.invisibilidad_score >= 50
+                      ? 'bg-yellow-900/30 text-yellow-400 border-yellow-800/40'
+                      : 'bg-red-900/30 text-red-400 border-red-800/40'
+                  }`}>
+                    {d.invisibilidad_score >= 80 ? 'MANTENER' : d.invisibilidad_score >= 50 ? 'DEFENDER' : 'INTERVENIR'}
+                  </div>
                 </div>
 
-                {/* Módulo de Benchmarking Relativo */}
-                {result.resultados[0].marca_ganadora && (
-                  <div className="bg-slate-900 border border-slate-800 rounded-sm p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-sm font-semibold text-slate-100">Competidor Principal: {result.resultados[0].marca_ganadora}</h4>
-                      <span className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-sm font-mono">Posición: #1</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-800">
+
+                  {/* COL 1: Acciones Ágiles (Sin TI) */}
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-1 h-4 bg-[#2a4060] rounded-full" />
+                      <p className="text-[#6b9ec4] text-xs font-semibold uppercase tracking-widest">Acciones Ágiles — Sin TI</p>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <p className="text-slate-400 text-xs">Estado: <span className="text-emerald-400 font-semibold">Favorable en IA</span></p>
-                        <div className="flex gap-1">
-                          <span className="px-2 py-1 text-xs bg-emerald-900/30 border border-emerald-700/50 text-emerald-300 rounded-sm font-semibold">LIDER</span>
+                    <p className="text-slate-600 text-[10px] mb-4">Ejecución inmediata. Sin dependencia del equipo de desarrollo.</p>
+                    {d.plan_accion?.vehiculos && d.plan_accion.vehiculos.some(v => v.opciones_implementacion.some(o => o.tipo === 'Ágil' || o.tipo === 'Externa')) ? (
+                      <div className="space-y-3">
+                        {d.plan_accion.vehiculos.flatMap((v, vi) =>
+                          v.opciones_implementacion
+                            .filter(o => o.tipo === 'Ágil' || o.tipo === 'Externa')
+                            .map((o, oi) => (
+                              <div key={`agil-${vi}-${oi}`} className="border border-slate-800 bg-slate-950 rounded-sm p-3">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border ${
+                                    o.tipo === 'Ágil'
+                                      ? 'bg-[#0f1e2e] border-[#2a4060] text-[#6b9ec4]'
+                                      : 'bg-[#0f1e18] border-[#2a4a34] text-[#6bab84]'
+                                  }`}>
+                                    {o.tipo === 'Ágil' ? 'MODIFICACIÓN' : 'RRSS / PR'}
+                                  </span>
+                                  <span className="text-slate-700 text-[9px] font-mono">{o.tiempo_estimado}</span>
+                                </div>
+                                <p className="text-slate-300 text-xs leading-snug">{o.accion_especifica}</p>
+                                <p className="text-slate-600 text-[10px] mt-1.5 font-medium">{v.concepto}</p>
+                              </div>
+                            ))
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="border border-slate-800 bg-slate-950 rounded-sm p-3">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded border bg-[#0f1e2e] border-[#2a4060] text-[#6b9ec4]">MODIFICACIÓN</span>
+                            <span className="text-slate-700 text-[9px] font-mono">1–3 días</span>
+                          </div>
+                          <p className="text-slate-300 text-xs">Actualizar FAQ y meta-descripciones con los conceptos faltantes detectados</p>
+                        </div>
+                        <div className="border border-slate-800 bg-slate-950 rounded-sm p-3">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded border bg-[#0f1e18] border-[#2a4a34] text-[#6bab84]">RRSS / PR</span>
+                            <span className="text-slate-700 text-[9px] font-mono">2–5 días</span>
+                          </div>
+                          <p className="text-slate-300 text-xs">Publicar en LinkedIn y notas de prensa sobre los tópicos emergentes detectados</p>
                         </div>
                       </div>
-                      <p className="text-slate-500 text-xs italic">Menciones consistentes en respuestas sobre "{result.prompt_original}"</p>
-                    </div>
+                    )}
                   </div>
-                )}
 
-                {/* Tono de Recomendación */}
-                <div className="flex justify-center">
-                  <div className={`px-6 py-3 rounded-sm border font-semibold text-center ${getSentimentStyle(result.resultados[0].sentimiento)}`}>
-                    Tono: {result.resultados[0].sentimiento === 'positivo' ? '✓ Favorable' : result.resultados[0].sentimiento === 'negativo' ? '✗ Desfavorable' : '≈ Neutral'}
+                  {/* COL 2: Acciones Estructurales (Con TI) */}
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-1 h-4 bg-slate-600 rounded-full" />
+                      <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest">Acciones Estructurales — Con TI</p>
+                    </div>
+                    <p className="text-slate-600 text-[10px] mb-4">Impacto profundo. Requiere desarrollo web o infraestructura.</p>
+                    {d.plan_accion?.vehiculos && d.plan_accion.vehiculos.some(v => v.opciones_implementacion.some(o => o.tipo === 'Estructural')) ? (
+                      <div className="space-y-3">
+                        {d.plan_accion.vehiculos.flatMap((v, vi) =>
+                          v.opciones_implementacion
+                            .filter(o => o.tipo === 'Estructural')
+                            .map((o, oi) => (
+                              <div key={`est-${vi}-${oi}`} className="border border-slate-800 bg-slate-950 rounded-sm p-3">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded border bg-[#1a1a1a] border-[#383838] text-[#888888]">LANDING</span>
+                                  <span className="text-slate-700 text-[9px] font-mono">{o.tiempo_estimado}</span>
+                                </div>
+                                <p className="text-slate-300 text-xs leading-snug">{o.accion_especifica}</p>
+                                <p className="text-slate-600 text-[10px] mt-1.5 font-medium">{v.concepto}</p>
+                              </div>
+                            ))
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="border border-slate-800 bg-slate-950 rounded-sm p-3">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded border bg-[#1a1a1a] border-[#383838] text-[#888888]">LANDING</span>
+                            <span className="text-slate-700 text-[9px] font-mono">7–14 días</span>
+                          </div>
+                          <p className="text-slate-300 text-xs">Crear landing pages dedicadas para cada concepto clave no cubierto actualmente en el sitio</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Recomendación */}
-                {result.resultados[0].recomendacion_ia && (
-                  <div className="bg-slate-800 border border-slate-700 rounded-sm p-6">
-                    <div className="flex items-start gap-3">
-                      <Lightbulb className="w-5 h-5 text-slate-400 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-slate-100 mb-2">Recomendación IA</h3>
-                        <p className="text-slate-300 text-sm">{result.resultados[0].recomendacion_ia}</p>
-                      </div>
-                    </div>
+                {d.plan_accion?.roi_estimado && (
+                  <div className="border-t border-slate-800 px-6 py-3 flex items-center gap-3">
+                    <Lightbulb className="w-3.5 h-3.5 text-slate-600 shrink-0" />
+                    <span className="text-slate-600 text-[10px] font-semibold uppercase tracking-widest shrink-0">Ventaja potencial</span>
+                    <span className="w-px h-3 bg-slate-800" />
+                    <p className="text-slate-400 text-xs">{d.plan_accion.roi_estimado}</p>
                   </div>
                 )}
               </motion.div>
-            )}
-          </div>
-        )}
 
-        {/* Footer de Transparencia - Big Four Style */}
-        {result && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="border-t border-slate-800 bg-slate-950 p-8 mt-12"
-          >
-            <div className="max-w-6xl mx-auto">
-              <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-4">Metodología y Fuentes</p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Motor de Inteligencia */}
-                <div className="space-y-1">
-                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2">Motor de Inteligencia</p>
-                  <p className="text-slate-500 text-xs font-mono">
-                    • Google Gemini Pro<br/>
-                    • OpenAI GPT-4o-mini<br/>
-                    • Análisis Multimodelo
-                  </p>
-                </div>
-
-                {/* Fuentes de Verdad */}
-                <div className="space-y-1">
-                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2">Fuentes de Verdad</p>
-                  <p className="text-slate-500 text-xs font-mono">
-                    • Google Trends RT (CL)<br/>
-                    • SERP Data en Tiempo Real<br/>
-                    • Índice de Menciones IA
-                  </p>
-                </div>
-
-                {/* Metodología */}
-                <div className="space-y-1">
-                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2">Metodología</p>
-                  <p className="text-slate-500 text-xs font-mono">
-                    • Simulación Synthetic Users<br/>
-                    • Contexto Regional Chile<br/>
-                    • Score 0-100 Normalizado
-                  </p>
-                </div>
-              </div>
-              <p className="text-slate-600 text-xs mt-6">Datos actualizados: {new Date().toLocaleString('es-CL')}</p>
             </div>
-          </motion.div>
-        )}
+          )}
+
+          {/* FOOTER */}
+          {result && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="border-t border-slate-800 bg-slate-950 p-8 mt-10"
+            >
+              <div className="max-w-5xl mx-auto">
+                <p className="text-slate-700 text-[10px] uppercase tracking-widest font-semibold mb-4">Metodología y Fuentes</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div>
+                    <p className="text-slate-600 text-[10px] font-semibold uppercase tracking-wide mb-2">Motor de Inteligencia</p>
+                    <p className="text-slate-700 text-xs font-mono leading-relaxed">• OpenAI GPT-4o-mini<br />• Análisis Multimodelo<br />• Contexto Regional Chile</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-600 text-[10px] font-semibold uppercase tracking-wide mb-2">Fuentes de Verdad</p>
+                    <p className="text-slate-700 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones IA</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-600 text-[10px] font-semibold uppercase tracking-wide mb-2">Metodología</p>
+                    <p className="text-slate-700 text-xs font-mono leading-relaxed">• Synthetic Users Simulation<br />• Score 0–100 Normalizado<br />• PAS: Problema → Solución</p>
+                  </div>
+                </div>
+                <p className="text-slate-800 text-[10px] font-mono mt-6">Datos actualizados: {new Date().toLocaleString('es-CL')}</p>
+              </div>
+            </motion.div>
+          )}
+
+        </div>
       </div>
-    </div>
     </div>
   )
 }
