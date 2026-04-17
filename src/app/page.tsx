@@ -476,7 +476,7 @@ export default function Dashboard() {
               )}
             </motion.div>
 
-            {/* PLAN DE RESCATE: MENÚ DE IMPLEMENTACIÓN */}
+            {/* PLAN DE ACCIÓN: DÓNDE AGREGAR ESTOS CONTENIDOS */}
             {result.resultados[0].plan_accion && 
              (result.resultados[0].estado_invisibilidad === 'invisible' || result.resultados[0].estado_invisibilidad === 'en_riesgo') && (
               <motion.div
@@ -484,53 +484,89 @@ export default function Dashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-slate-900 border border-slate-800 rounded-sm p-6"
               >
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-slate-100 mb-1">🚀 Vehículos de Contenido</h3>
-                  <p className="text-slate-400 text-xs">Menú de implementación según velocidad y recursos disponibles</p>
+                {/* Header */}
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-100 mb-1">Plan de Acción: Dónde Agregar Estos Contenidos</h3>
+                    <p className="text-slate-500 text-xs">Selecciona la vía según los recursos disponibles de tu equipo</p>
+                  </div>
+                  {/* Leyenda compacta */}
+                  <div className="hidden md:flex flex-col gap-1.5 items-end">
+                    <span className="px-2 py-0.5 bg-[#1a2a3a] border border-[#2a4060] rounded text-[#6b9ec4] text-[10px] font-medium tracking-wide">Modificación Rápida</span>
+                    <span className="px-2 py-0.5 bg-[#1a2e24] border border-[#2a4a34] rounded text-[#6bab84] text-[10px] font-medium tracking-wide">Acción Externa / Redes</span>
+                    <span className="px-2 py-0.5 bg-[#252525] border border-[#383838] rounded text-[#888888] text-[10px] font-medium tracking-wide">Creación de Landing</span>
+                  </div>
                 </div>
 
-                {/* Leyenda de tipos */}
-                <div className="flex gap-3 mb-6 flex-wrap">
-                  <span className="px-2 py-1 bg-sky-900/40 border border-sky-700/40 rounded text-sky-300 text-xs font-semibold">⚡ Ágil — Modificar existente</span>
-                  <span className="px-2 py-1 bg-violet-900/40 border border-violet-700/40 rounded text-violet-300 text-xs font-semibold">🌐 Externa — Cero TI</span>
-                  <span className="px-2 py-1 bg-amber-900/40 border border-amber-700/40 rounded text-amber-300 text-xs font-semibold">🏗 Estructural — Crear nuevo</span>
-                </div>
+                {/* Tarjetas por concepto */}
+                <div className="space-y-4">
+                  {result.resultados[0].plan_accion.vehiculos.map((vehiculo, vIdx) => {
+                    // Config de estilos Dark Corporate por tipo
+                    const BADGE_CONFIG: Record<string, { label: string; badgeBg: string; badgeBorder: string; badgeText: string; rowBorder: string; timeBg: string }> = {
+                      'Ágil': {
+                        label: 'Modificación Rápida',
+                        badgeBg: 'bg-[#1a2a3a]',
+                        badgeBorder: 'border-[#2a4060]',
+                        badgeText: 'text-[#6b9ec4]',
+                        rowBorder: 'border-l-[#2a4060]',
+                        timeBg: 'bg-[#0f1e2e]'
+                      },
+                      'Externa': {
+                        label: 'Acción Externa / Redes',
+                        badgeBg: 'bg-[#1a2e24]',
+                        badgeBorder: 'border-[#2a4a34]',
+                        badgeText: 'text-[#6bab84]',
+                        rowBorder: 'border-l-[#2a4a34]',
+                        timeBg: 'bg-[#0f1e18]'
+                      },
+                      'Estructural': {
+                        label: 'Creación de Landing',
+                        badgeBg: 'bg-[#252525]',
+                        badgeBorder: 'border-[#383838]',
+                        badgeText: 'text-[#888888]',
+                        rowBorder: 'border-l-[#383838]',
+                        timeBg: 'bg-[#1a1a1a]'
+                      }
+                    }
 
-                {/* Vehículos por concepto */}
-                <div className="space-y-6">
-                  {result.resultados[0].plan_accion.vehiculos.map((vehiculo, vIdx) => (
-                    <div key={vIdx} className="border border-slate-700 rounded-sm p-4">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="text-orange-400 text-xs font-bold uppercase tracking-wide">Concepto</span>
-                        <span className="text-slate-100 font-semibold text-sm">{vehiculo.concepto}</span>
+                    return (
+                      <div key={vIdx} className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden">
+                        {/* Encabezado del concepto */}
+                        <div className="px-4 py-3 border-b border-slate-800 flex items-center gap-3">
+                          <span className="w-5 h-5 flex items-center justify-center bg-orange-900/40 border border-orange-700/40 rounded text-orange-400 text-[10px] font-bold">{vIdx + 1}</span>
+                          <span className="text-slate-200 text-sm font-medium">{vehiculo.concepto}</span>
+                        </div>
+
+                        {/* Lista de vías de implementación */}
+                        <div className="divide-y divide-slate-800/60">
+                          {vehiculo.opciones_implementacion.map((opcion, oIdx) => {
+                            const cfg = BADGE_CONFIG[opcion.tipo] || BADGE_CONFIG['Ágil']
+                            return (
+                              <div key={oIdx} className={`flex items-start gap-4 px-4 py-3 border-l-2 ${cfg.rowBorder}`}>
+                                {/* Badge tipo */}
+                                <span className={`shrink-0 mt-0.5 px-2 py-0.5 ${cfg.badgeBg} border ${cfg.badgeBorder} rounded ${cfg.badgeText} text-[10px] font-semibold tracking-wide whitespace-nowrap`}>
+                                  {cfg.label}
+                                </span>
+                                {/* Acción */}
+                                <p className="text-slate-300 text-sm leading-snug flex-1">{opcion.accion_especifica}</p>
+                                {/* Tiempo */}
+                                <span className={`shrink-0 mt-0.5 px-2 py-0.5 ${cfg.timeBg} border border-slate-800 rounded text-slate-500 text-[10px] whitespace-nowrap`}>
+                                  {opcion.tiempo_estimado}
+                                </span>
+                              </div>
+                            )
+                          })}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        {vehiculo.opciones_implementacion.map((opcion, oIdx) => {
-                          const estilos: Record<string, { bg: string; border: string; badge: string; text: string; icon: string }> = {
-                            'Ágil': { bg: 'bg-sky-900/20', border: 'border-sky-700/30', badge: 'bg-sky-900/40 text-sky-300 border-sky-700/40', text: 'text-sky-200', icon: '⚡' },
-                            'Externa': { bg: 'bg-violet-900/20', border: 'border-violet-700/30', badge: 'bg-violet-900/40 text-violet-300 border-violet-700/40', text: 'text-violet-200', icon: '🌐' },
-                            'Estructural': { bg: 'bg-amber-900/20', border: 'border-amber-700/30', badge: 'bg-amber-900/40 text-amber-300 border-amber-700/40', text: 'text-amber-200', icon: '🏗' },
-                          }
-                          const estilo = estilos[opcion.tipo] || estilos['Ágil']
-                          return (
-                            <div key={oIdx} className={`${estilo.bg} border ${estilo.border} rounded-sm p-3`}>
-                              <span className={`inline-block px-2 py-0.5 ${estilo.badge} border rounded text-xs font-bold mb-3`}>
-                                {estilo.icon} {opcion.tipo}
-                              </span>
-                              <p className={`text-sm leading-snug mb-3 ${estilo.text}`}>{opcion.accion_especifica}</p>
-                              <p className="text-slate-500 text-xs">⏱ {opcion.tiempo_estimado}</p>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
 
                 {/* ROI Estimado */}
-                <div className="mt-6 bg-yellow-900/20 border border-yellow-500/30 rounded-sm p-4">
-                  <p className="text-slate-400 text-xs font-bold mb-1">💡 ROI Estimado</p>
-                  <p className="text-slate-100 font-semibold text-sm">{result.resultados[0].plan_accion.roi_estimado}</p>
+                <div className="mt-5 flex items-center gap-3 px-4 py-3 bg-slate-950 border border-slate-800 rounded-sm">
+                  <span className="text-slate-500 text-xs font-semibold uppercase tracking-widest shrink-0">ROI Estimado</span>
+                  <span className="w-px h-4 bg-slate-700" />
+                  <p className="text-slate-300 text-sm">{result.resultados[0].plan_accion.roi_estimado}</p>
                 </div>
               </motion.div>
             )}
