@@ -224,3 +224,22 @@ class ResultadoBusqueda(BaseModel):
         if not v.strip():
             raise ValueError("El prompt no puede estar vacío")
         return v.strip()
+
+
+class OportunidadAuditada(BaseModel):
+    """Resultado de auditar un escenario generado por Discovery."""
+    segmento: str = Field(..., description="Descripción del perfil de persona")
+    tendencia_base: str = Field(..., description="Pregunta generada en jerga chilena")
+    pregunta_generada: str = Field(..., description="Prompt exacto enviado al LLM")
+    resultado_auditoria: AnalisisMarca = Field(..., description="Análisis completo del juez")
+    error: Optional[str] = Field(None, description="Error si falló esta auditoría")
+
+
+class DiscoveryResponse(BaseModel):
+    """Respuesta del endpoint /api/discovery con auditorías concurrentes."""
+    marca_analizada: str
+    topico: str
+    oportunidades_auditadas: List[OportunidadAuditada]
+    amenaza_principal: Optional[str] = None
+    total_auditados: int = 0
+    total_errores: int = 0

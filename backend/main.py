@@ -8,7 +8,7 @@ import logging
 from collections import Counter
 import asyncio
 
-from models import ResultadoBusqueda, AnalisisMarca
+from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse
 from database import get_db, test_connection
 from crud import (
     crear_cliente, obtener_cliente, listar_clientes, obtener_urls_cliente,
@@ -420,104 +420,157 @@ async def audit_pipeline(query: str, brand: str) -> ResultadoBusqueda:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/discovery")
-async def discovery_masivo(brand: str, topico: str) -> dict:
+@app.post("/api/discovery", response_model=DiscoveryResponse)
+async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
     """
-    Endpoint Maestro: Orquestador de Auditoría Masiva.
-    
-    Genera 4 escenarios con personas chilenas, obtiene tendencias,
-    y ejecuta 4 auditorías simultáneamente usando asyncio.gather.
-    
-    Args:
-        brand: Marca del cliente a analizar
-        topico: Tópico a auditar (ej: "tarjetas de crédito")
-        
-    Returns:
-        {
-            "escenarios_auditados": Lista con resultados por persona,
-            "score_general": Promedio de posición de la marca,
-            "amenaza_principal": Marca competidora que más veces ganó
-        }
+    Escáner Concurrente: genera escenarios (PersonaHub + Google Trends) y
+    audita cada pregunta en paralelo con asyncio.gather.
+
+    Cada auditoría corre el pipeline completo:
+      consultar_openai → extraer_metricas → calcular_estado_invisibilidad
+
+    Timeout por auditoría individual: 25 s.
     """
     try:
         from discovery import obtener_tendencias_chile, generar_escenarios_ia
         from searcher import consultar_openai
-        from judge import extraer_metricas
-        from collections import Counter
-        
-        logger.info(f"🚀 [Discovery Masivo] Iniciando: {topico} | Brand: {brand}")
-        
-        # PASO 1: Obtener tendencias de Google Trends Chile
+        from judge import (
+            extraer_metricas,
+            extraer_conceptos_faltantes,
+            calcular_estado_invisibilidad,
+            generar_plan_accion,
+        )
+
+        logger.info(f"🚀 [Discovery] topico='{topico}' brand='{brand}'")
+
+        # ── 1. Tendencias + escenarios ──────────────────────────────────────
         tendencias = await obtener_tendencias_chile(topico)
-        logger.info(f"✅ Tendencias encontradas: {tendencias}")
-        
-        # PASO 2: Generar escenarios IA con personas chilenas
         escenarios = await generar_escenarios_ia(topico, tendencias)
-        logger.info(f"✅ Escenarios generados: {len(escenarios)}")
-        
-        # PASO 3: Función auxiliar para auditar un escenario
-        async def auditar_escenario(escenario):
-            """Ejecuta auditoría completa para un escenario específico."""
+        logger.info(f"✅ {len(escenarios)} escenarios generados")
+
+        # ── 2. Auditoría individual (con timeout) ───────────────────────────
+        async def auditar_uno(escenario: dict) -> OportunidadAuditada:
+            perfil   = escenario.get("perfil_base", "")
+            pregunta = escenario.get("prompt_ia", "")
+
             try:
-                # Buscar con el prompt específico
-                texto_busqueda = await consultar_openai(escenario["prompt_ia"])
-                
-                # Extraer métricas
-                resultado = await extraer_metricas(texto_busqueda, brand)
-                
-                return {
-                    "persona": escenario["persona"],
-                    "preocupacion_principal": escenario["preocupacion_principal"],
-                    "prompt_ia": escenario["prompt_ia"],
-                    "posicion_marca": resultado.posicion_mi_marca,
-                    "marca_ganadora": resultado.marca_ganadora,
-                    "marcas_mencionadas": resultado.marcas_mencionadas,
-                    "sentimiento": resultado.sentimiento
-                }
-            except Exception as e:
-                logger.error(f"❌ Error auditando escenario {escenario['persona']}: {e}")
-                return {
-                    "persona": escenario["persona"],
-                    "error": str(e)
-                }
-        
-        # PASO 4: Ejecutar todas las auditorías en paralelo con asyncio.gather
-        logger.info("⚡ Ejecutando 4 auditorías en paralelo...")
-        auditorias = await asyncio.gather(*[auditar_escenario(esc) for esc in escenarios])
-        
-        # PASO 5: Compilar resumen con estadísticas agregadas
-        posiciones_validas = []
-        todas_marcas_ganadoras = []
-        
-        for auditoria in auditorias:
-            if "error" not in auditoria:
-                pos = auditoria.get("posicion_marca", 0)
-                if pos and pos > 0:
-                    posiciones_validas.append(pos)
-                
-                ganadora = auditoria.get("marca_ganadora")
-                if ganadora:
-                    todas_marcas_ganadoras.append(ganadora)
-        
-        # Calcular estadísticas
-        score_general = round(sum(posiciones_validas) / len(posiciones_validas), 2) if posiciones_validas else None
-        amenaza_principal = Counter(todas_marcas_ganadoras).most_common(1)[0][0] if todas_marcas_ganadoras else None
-        
-        resumen = {
-            "topico": topico,
-            "brand": brand,
-            "tendencias_identificadas": tendencias,
-            "escenarios_auditados": auditorias,
-            "score_general": score_general,
-            "amenaza_principal": amenaza_principal,
-            "total_escenarios": len(auditorias)
-        }
-        
-        logger.info(f"✅ [Discovery Masivo] Completado. Score: {score_general} | Amenaza: {amenaza_principal}")
-        return resumen
-        
+                async def _pipeline():
+                    texto = await consultar_openai(pregunta)
+                    resultado = await extraer_metricas(texto, brand)
+
+                    # conceptos faltantes
+                    conceptos = await extraer_conceptos_faltantes(
+                        texto, resultado.marca_ganadora, brand
+                    )
+                    resultado.conceptos_faltantes = conceptos
+
+                    # estado de invisibilidad
+                    estado, score = calcular_estado_invisibilidad(
+                        resultado.posicion_mi_marca,
+                        resultado.sentimiento,
+                        resultado.marcas_mencionadas,
+                        brand,
+                    )
+                    resultado.estado_invisibilidad = estado
+                    resultado.invisibilidad_score  = score
+
+                    # plan de acción liviano (solo si invisible/en riesgo)
+                    if estado in ("invisible", "en_riesgo"):
+                        plan = await generar_plan_accion(
+                            estado,
+                            resultado.posicion_mi_marca,
+                            resultado.marca_ganadora,
+                            brand,
+                            conceptos,
+                            texto,
+                        )
+                        resultado.plan_accion = plan
+
+                    return resultado
+
+                analisis = await asyncio.wait_for(_pipeline(), timeout=25.0)
+
+                return OportunidadAuditada(
+                    segmento=perfil[:200],
+                    tendencia_base=escenario.get("razon", ""),
+                    pregunta_generada=pregunta,
+                    resultado_auditoria=analisis,
+                )
+
+            except asyncio.TimeoutError:
+                logger.warning(f"⏱ Timeout auditando escenario: {pregunta[:60]}")
+                return OportunidadAuditada(
+                    segmento=perfil[:200],
+                    tendencia_base=escenario.get("razon", ""),
+                    pregunta_generada=pregunta,
+                    resultado_auditoria=AnalisisMarca(
+                        marcas_mencionadas=[],
+                        marca_ganadora=None,
+                        competidor_principal="",
+                        posicion_mi_marca=0,
+                        sentimiento="neutral",
+                        recomendacion_ia="",
+                        content_ideas=[],
+                        plan_accion_pro="",
+                        conceptos_faltantes=[],
+                        estado_invisibilidad="invisible",
+                        invisibilidad_score=0,
+                    ),
+                    error="timeout",
+                )
+            except Exception as exc:
+                logger.error(f"❌ Error en escenario: {exc}")
+                return OportunidadAuditada(
+                    segmento=perfil[:200],
+                    tendencia_base=escenario.get("razon", ""),
+                    pregunta_generada=pregunta,
+                    resultado_auditoria=AnalisisMarca(
+                        marcas_mencionadas=[],
+                        marca_ganadora=None,
+                        competidor_principal="",
+                        posicion_mi_marca=0,
+                        sentimiento="neutral",
+                        recomendacion_ia="",
+                        content_ideas=[],
+                        plan_accion_pro="",
+                        conceptos_faltantes=[],
+                        estado_invisibilidad="invisible",
+                        invisibilidad_score=0,
+                    ),
+                    error=str(exc),
+                )
+
+        # ── 3. gather concurrente ───────────────────────────────────────────
+        logger.info(f"⚡ Lanzando {len(escenarios)} auditorías en paralelo...")
+        oportunidades: list[OportunidadAuditada] = list(
+            await asyncio.gather(*[auditar_uno(esc) for esc in escenarios])
+        )
+
+        # ── 4. Amenaza principal ────────────────────────────────────────────
+        ganadoras = [
+            op.resultado_auditoria.marca_ganadora
+            for op in oportunidades
+            if not op.error and op.resultado_auditoria.marca_ganadora
+        ]
+        amenaza = Counter(ganadoras).most_common(1)[0][0] if ganadoras else None
+        errores = sum(1 for op in oportunidades if op.error)
+
+        logger.info(
+            f"✅ [Discovery] completado | auditados={len(oportunidades)} "
+            f"errores={errores} amenaza='{amenaza}'"
+        )
+
+        return DiscoveryResponse(
+            marca_analizada=brand,
+            topico=topico,
+            oportunidades_auditadas=oportunidades,
+            amenaza_principal=amenaza,
+            total_auditados=len(oportunidades) - errores,
+            total_errores=errores,
+        )
+
     except Exception as e:
-        logger.error(f"❌ Error en discovery masivo: {e}")
+        logger.error(f"❌ Error en /api/discovery: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
