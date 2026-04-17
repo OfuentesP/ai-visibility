@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from pytrends.request import TrendReq
+from datasets import load_dataset
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -15,8 +16,53 @@ load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-# ==================== PERSONAS CHILE ====================
-PERSONAS_CHILE = [
+async def obtener_personas_sinteticas(cantidad: int = 5) -> List[dict]:
+    """
+    Obtiene perfiles dinámicos y realistas del dataset PersonaHub de Hugging Face.
+    Usa streaming=True para no descargar el dataset completo.
+    Fallback a PERSONAS_CHILE si falla la conexión.
+    """
+    try:
+        logger.info(f"🔄 Descargando {cantidad} personas sintéticas de Hugging Face...")
+        
+        # Cargar dataset con streaming para no descargar completamente
+        dataset = load_dataset(
+            'proj-persona/PersonaHub',
+            streaming=True,
+            split='train'
+        )
+        
+        personas_hf = []
+        for idx, item in enumerate(dataset):
+            if idx >= cantidad:
+                break
+            
+            # Adaptar campos del dataset a nuestro formato
+            persona = {
+                "id": f"persona_{idx}",
+                "nombre": item.get('persona_name', f'Persona {idx}'),
+                "edad": item.get('age', 30),
+                "descripcion": item.get('persona_description', '')[:200],  # Limitar a 200 chars
+                "poder_adquisitivo": item.get('income_level', 'medio'),
+                "tech_savvy": item.get('tech_expertise', 'medio'),
+                "origen": "hugging_face"  # Marcar que vino de HF
+            }
+            personas_hf.append(persona)
+        
+        if personas_hf:
+            logger.info(f"✅ Cargadas {len(personas_hf)} personas de Hugging Face")
+            return personas_hf
+        else:
+            logger.warning("⚠️  Dataset vacío, usando fallback local")
+            return PERSONAS_CHILE
+            
+    except Exception as e:
+        logger.warning(f"⚠️  No se pudo conectar a Hugging Face: {e}")
+        logger.info(f"📦 Usando {len(PERSONAS_CHILE)} personas locales como fallback")
+        return PERSONAS_CHILE
+
+
+PERSONAS_DINAMICAS = []  # Se cargará en async
     {
         "id": "estudiante",
         "nombre": "Estudiante Universitario",
@@ -156,13 +202,20 @@ IMPORTANTE: Devuelve SOLO JSON válido, sin texto adicional. Usa topicos reales 
 async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict]:
     """
     Genera escenarios naturales chilenos para cada persona basado en tendencias.
+    Usa personas dinámicas de Hugging Face o fallback a locales.
     Retorna: [{persona, prompt_ia, preocupacion_principal}, ...]
     """
+    # Obtener personas dinámicas (primera vez carga desde HF, después usa cache)
+    personas = await obtener_personas_sinteticas(cantidad=5)
+    
     escenarios = []
     tendencias_str = ", ".join(tendencias) if tendencias else "el tópico general"
     
-    for persona in PERSONAS_CHILE:
+    for persona in personas:
         try:
+            # Crear contexto enriquecido con el perfil dinámico
+            perfil_texto = f"{persona['nombre']}, {persona['edad']} años. {persona['descripcion']}"
+            
             # Generar prompt con IA
             response = await client.chat.completions.create(
                 model="gpt-4o-mini",
@@ -172,7 +225,7 @@ async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict
                     {
                         "role": "system",
                         "content": """Eres un experto en lenguaje coloquial chileno. 
-                        Genera una pregunta natural que haría esta persona en ChatGPT.
+                        Adapta este perfil a contexto chileno y genera una pregunta natural que haría en ChatGPT.
                         La pregunta debe:
                         - Usar lenguaje chileno natural (NO formal)
                         - Reflejar la necesidad específica de la persona
@@ -183,11 +236,13 @@ async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict
                     },
                     {
                         "role": "user",
-                        "content": f"""Genera pregunta para: {persona['nombre']} ({persona['edad']} años)
-                        Descripción: {persona['descripcion']}
+                        "content": f"""Perfil: {perfil_texto}
+                        Nivel tech: {persona.get('tech_savvy', 'medio')}
+                        Poder adquisitivo: {persona.get('poder_adquisitivo', 'medio')}
                         Tópico: {topico}
-                        Tendencias relacionadas en Chile: {tendencias_str}
+                        Tendencias en Chile: {tendencias_str}
                         
+                        Genera pregunta natural que haría esta persona sobre {topico}.
                         Retorna JSON con prompt y preocupacion."""
                     }
                 ]
@@ -199,10 +254,11 @@ async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict
                 "persona": f"{persona['nombre']} ({persona['edad']} años)",
                 "prompt_ia": data.get("prompt", ""),
                 "preocupacion_principal": data.get("preocupacion", ""),
-                "persona_id": persona['id']
+                "persona_id": persona['id'],
+                "origen": persona.get('origen', 'local')
             })
             
-            logger.info(f"✅ Generado escenario: {persona['nombre']} - {data['prompt'][:60]}...")
+            logger.info(f"✅ Generado escenario: {persona['nombre']} - {data.get('prompt', '')[:60]}...")
             
         except Exception as e:
             logger.error(f"❌ Error generando escenario para {persona['nombre']}: {e}")
