@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+_api_key = os.getenv("OPENAI_API_KEY")
+client = AsyncOpenAI(api_key=_api_key) if _api_key else None
 
 
 async def consultar_openai(prompt: str) -> str:

@@ -2,109 +2,62 @@ import asyncio
 import json
 import os
 import logging
-from typing import List, Optional
-from pydantic import BaseModel, Field
+from typing import List
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from pytrends.request import TrendReq
-from datasets import load_dataset
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+_api_key = os.getenv("OPENAI_API_KEY")
+client = AsyncOpenAI(api_key=_api_key) if _api_key else None
 
 
-# Fallback local (perfiles por defecto si falla HF)
-PERSONAS_FALLBACK = [
+# Arquetipos Enterprise de decisión de compra (reemplazan personas genéricas)
+ARQUETIPOS_COMPRA = [
     {
-        "id": "ingeniero_comercial",
-        "perfil_base": "Ingeniero Comercial de 35 años, buscando invertir en fondos mutuos con asesoría profesional. Nivel tech alto, poder adquisitivo medio-alto. Busca maximizar retorno con riesgo moderado.",
-        "origen": "local"
+        "id": "racional_economico",
+        "arquetipo": "El Racional / Económico",
+        "perfil_base": (
+            "Comprador metódico que compara precios antes de decidir. Prioriza descuentos, "
+            "comisiones bajas, ROI directo y relación calidad-precio. Usa planillas Excel para "
+            "comparar opciones. Desconfía de promesas vagas. Pregunta siempre '¿cuánto me sale?' "
+            "antes de '¿qué beneficios tiene?'. Sensible a cargos ocultos y letra chica."
+        ),
+        "driver": "precio, descuentos, ROI directo, sin comisiones",
+        "dealbreaker": "costos ocultos, comisiones no declaradas, falta de transparencia en precios, letra chica",
+        "origen": "arquetipo"
     },
     {
-        "id": "estudiante_tarjeta",
-        "perfil_base": "Estudiante de Administración de 22 años, obteniendo su primera tarjeta de crédito. Bajo poder adquisitivo, tech savvy alto. Busca beneficios en compras online y sin comisiones.",
-        "origen": "local"
+        "id": "premium_seguro",
+        "arquetipo": "El Premium / Seguro",
+        "perfil_base": (
+            "Comprador que prioriza reputación de marca, coberturas amplias y cero fricción. "
+            "No le importa pagar más si la experiencia es impecable. Valora respaldo institucional, "
+            "atención preferencial y exclusividad. Busca tranquilidad total: si algo sale mal, "
+            "quiere que alguien resuelva sin que él mueva un dedo. Asocia precio alto con calidad."
+        ),
+        "driver": "reputación, cobertura total, cero fricción, exclusividad",
+        "dealbreaker": "mala reputación, coberturas limitadas, exclusiones en letra chica, mala atención postventa",
+        "origen": "arquetipo"
     },
     {
-        "id": "mama_ahorro",
-        "perfil_base": "Madre soltera de 38 años, gerenta administrativo. Poder adquisitivo medio, tech medio. Busca formas seguras de ahorrar para educación de sus 2 hijos.",
-        "origen": "local"
+        "id": "impaciente_digital",
+        "arquetipo": "El Impaciente / Digital",
+        "perfil_base": (
+            "Nativo digital que vive en el celular. Prioriza agilidad, onboarding 100% online "
+            "y resolución instantánea. Si un proceso toma más de 3 clics, abandona. Valora apps "
+            "bien diseñadas, notificaciones inteligentes y autoservicio. Detesta llamar por teléfono "
+            "o ir a una sucursal. Compara en redes sociales y confía en reviews de otros usuarios."
+        ),
+        "driver": "velocidad, 100% digital, autoservicio, UX mobile",
+        "dealbreaker": "lentitud, burocracia, procesos presenciales, tener que llamar por teléfono, app mala o inexistente",
+        "origen": "arquetipo"
     },
-    {
-        "id": "emprendedor_flujo",
-        "perfil_base": "Dueño de pequeña ferretería en Santiago, 42 años. Bajo tech, poder adquisitivo medio. Necesita soluciones para gestionar flujo de caja diario de su negocio.",
-        "origen": "local"
-    },
-    {
-        "id": "jubilado_digital",
-        "perfil_base": "Jubilado de 68 años, recibe pensión. Tech bajo, busca usar canales digitales pero valora atención personalizada. Desconfiado de plataformas nuevas.",
-        "origen": "local"
-    }
 ]
 
-
-async def obtener_personas_huggingface(cantidad: int = 5) -> List[dict]:
-    """
-    Obtiene perfiles sintéticos de grado investigación desde PersonaHub (Hugging Face).
-    Usa streaming=True para no descargar dataset completo.
-    
-    Timeout: 5 segundos. Si falla, retorna fallback local.
-    Retorna: [{perfil_base, origen}, ...]
-    """
-    async def cargar_hf():
-        try:
-            logger.info(f"🔄 Cargando {cantidad} personas de investigación desde PersonaHub...")
-            dataset = load_dataset(
-                'proj-persona/PersonaHub',
-                streaming=True,
-                split='train'
-            )
-            
-            personas_hf = []
-            for idx, item in enumerate(dataset):
-                if idx >= cantidad:
-                    break
-                
-                # Extraer descripción psicológica detallada
-                perfil_completo = item.get('persona_description', '')
-                if not perfil_completo:
-                    continue
-                
-                persona = {
-                    "id": f"hf_persona_{idx}",
-                    "perfil_base": perfil_completo[:500],  # Descripción completa de investigación
-                    "nombre": item.get('persona_name', f'Persona {idx}'),
-                    "origen": "hugging_face"
-                }
-                personas_hf.append(persona)
-            
-            if personas_hf:
-                logger.info(f"✅ Cargadas {len(personas_hf)} personas de PersonaHub")
-                return personas_hf
-            else:
-                logger.warning("⚠️  PersonaHub vacío, usando fallback")
-                return None
-                
-        except Exception as e:
-            logger.warning(f"⚠️  Error cargando PersonaHub: {e}")
-            return None
-    
-    # Ejecutar con timeout de 5 segundos
-    try:
-        result = await asyncio.wait_for(cargar_hf(), timeout=5.0)
-        if result:
-            return result
-    except asyncio.TimeoutError:
-        logger.warning("⚠️  Timeout descargando PersonaHub (>5s), usando fallback")
-    except Exception as e:
-        logger.error(f"❌ Error en obtener_personas_huggingface: {e}")
-    
-    # Fallback: usar personas locales
-    logger.info(f"📦 Usando {len(PERSONAS_FALLBACK)} personas locales como fallback")
-    return PERSONAS_FALLBACK[:cantidad]
 
 
 # ==================== FUNCIONES ====================
@@ -145,7 +98,7 @@ async def detectar_territorios_desatendidos(
     Detecta 'Territorios Desatendidos': temas emergentes con búsquedas altas
     pero donde la marca NO tiene comunicación o oferta clara.
     
-    Retorna: [{topico_emergente, porque_es_oportunidad, volumen_busqueda}, ...]
+    Retorna: [{topico_emergente, porque_es_oportunidad, nivel_oportunidad}, ...]
     """
     try:
         tendencias_str = ", ".join(tendencias) if tendencias else topico
@@ -158,9 +111,11 @@ TENDENCIAS EMERGENTES EN GOOGLE: {tendencias_str}
 COMUNICACIÓN ACTUAL DE LA MARCA: {comunicacion_actual}
 
 Identifica 3 'Territorios Desatendidos': temas específicos donde:
-- Hay búsquedas altas en Google Trends Chile
+- Existe una tendencia narrativa emergente en el mercado chileno
 - La marca NO comunica activamente sobre esto
 - Es una oportunidad de posicionamiento para {marca}
+
+REGLA CLAVE: Evalúa el nivel_oportunidad basándote en la tendencia narrativa del mercado (conversaciones en redes, cobertura mediática, relevancia cultural), NO en volumen de búsquedas de Google. No tienes acceso a datos SEO reales, así que no inventes métricas.
 
 EJEMPLOS de territorios desatendidos:
 - Para banco: "cashback en bencina", "tarjetas para nómadas digitales", "pago con reloj"
@@ -172,7 +127,7 @@ Retorna JSON VÁLIDO con exactamente este formato:
         {{
             "topico_emergente": "tema específico (máx 8 palabras)",
             "porque_es_oportunidad": "explicación concisa por qué es oportunidad (máx 20 palabras)",
-            "volumen_busqueda": "Alto" o "Medio",
+            "nivel_oportunidad": "Alto" o "Medio",
             "intension_usuario": "qué busca el usuario en este tema"
         }},
         ...
@@ -208,15 +163,20 @@ IMPORTANTE: Devuelve SOLO JSON válido, sin texto adicional. Usa topicos reales 
         return []
 
 
-async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict]:
+async def generar_escenarios_ia(topico: str, tendencias: List[str], personas: List[dict] = None) -> List[dict]:
     """
-    Genera preguntas naturales en jerga chilena para cada persona de investigación.
-    Usa contexto psicológico detallado de PersonaHub.
+    Genera preguntas naturales en jerga chilena para cada arquetipo de compra.
     
-    Retorna: [{perfil_base, prompt_ia, persona_id, origen}, ...]
+    Args:
+        topico: Tema a auditar
+        tendencias: Keywords de Google Trends
+        personas: Lista de arquetipos a usar. Si es None, usa ARQUETIPOS_COMPRA (los 3 genéricos).
+                  Acepta arquetipos dinámicos generados por url_analyzer.generar_arquetipos_para_categoria()
+    
+    Retorna: [{perfil_base, prompt_ia, persona_id, arquetipo, driver, origen}, ...]
     """
-    # Cargar personas de grado investigación (HF o fallback)
-    personas = await obtener_personas_huggingface(cantidad=5)
+    # Usar arquetipos recibidos o los genéricos como fallback
+    personas = personas if personas is not None else ARQUETIPOS_COMPRA
     
     escenarios = []
     tendencias_str = ", ".join(tendencias) if tendencias else "el tópico general"
@@ -224,32 +184,49 @@ async def generar_escenarios_ia(topico: str, tendencias: List[str]) -> List[dict
     for persona in personas:
         try:
             perfil_base = persona.get('perfil_base', '')
+            arquetipo = persona.get('arquetipo', '')
+            driver = persona.get('driver', '')
             
-            # Prompt actualizado según especificación
-            prompt_sistema = """Eres un analista de mercado especializado en comportamiento de consumidores chilenos.
+            prompt_sistema = f"""Eres un simulador de usuarios reales chilenos para investigación de mercado.
 
-Tu tarea: Toma la descripción psicológica detallada de un usuario y contextualiza esa persona en Chile.
-Luego escribe la pregunta EXACTA (en jerga chilena natural) que este usuario escribiría en ChatGPT.
+ARQUETIPO DE COMPRA: {arquetipo}
+DRIVER DE DECISIÓN: {driver}
+DEALBREAKER (lo que lo hace abandonar): {persona.get('dealbreaker', '')}
 
-La pregunta debe:
-- Usar lenguaje coloquial chileno auténtico (NO formal)
-- Reflejar motivaciones y necesidades específicas del perfil psicológico
-- Ser práctica, urgente y realista
-- Incluir contexto local chileno (ciudades, bancos, contexto económico, etc.)
+Tu tarea: Genera la pregunta EXACTA que este arquetipo escribiría en ChatGPT.
 
-Retorna JSON válido con exactamente este formato:
-{
+REGLAS ESTRICTAS:
+1. La pregunta DEBE reflejar el driver de decisión del arquetipo:
+   - Racional/Económico → pregunta sobre precios, comisiones, comparativas de costo
+   - Premium/Seguro → pregunta sobre reputación, coberturas, respaldo, experiencia
+   - Impaciente/Digital → pregunta sobre apps, procesos online, velocidad, UX
+2. La pregunta DEBE incluir una sub-pregunta que testee el dealbreaker:
+   - Si dealbreaker es "costos ocultos", incluir algo como "¿tiene comisiones escondidas?"
+   - Si dealbreaker es "lentitud", incluir algo como "¿cuánto demora el proceso?"
+   - Si dealbreaker es "mala atención", incluir algo como "¿qué pasa si tengo un reclamo?"
+3. Usar jerga chilena natural (NO formal, NO genérico)
+4. Incluir contexto local chileno real (ciudades, instituciones, situaciones cotidianas)
+5. La pregunta debe ser específica y accionable, NO vaga
+
+EJEMPLO para "Mejor Cuenta Corriente Chile":
+- Racional: "¿Cuál banco cobra menos mantención de cuenta corriente en Chile? ¿Hay comisiones ocultas que no digan al principio?"
+- Premium: "¿Qué banco tiene la mejor banca preferencial en Chile? ¿Y si tengo un problema, me resuelven rápido?"  
+- Digital: "¿Qué banco tiene la mejor app para manejar la cuenta corriente? ¿Se puede hacer todo sin ir a sucursal?"
+
+Retorna JSON válido:
+{{
     "prompt": "la pregunta exacta en jerga chilena",
-    "razon": "por qué esta persona hace esta pregunta"
-}"""
+    "razon": "por qué este arquetipo hace esta pregunta específica"
+}}"""
             
-            prompt_usuario = f"""Descripción psicológica detallada del usuario:
+            prompt_usuario = f"""Perfil completo del arquetipo:
 {perfil_base}
 
 Tópico de búsqueda: {topico}
 Tendencias relacionadas en Chile: {tendencias_str}
 
-Genera la pregunta exacta (en jerga chilena natural) que ESTA PERSONA escribiría en ChatGPT para {topico}.
+Genera la pregunta exacta que ESTE ARQUETIPO ({arquetipo}) escribiría en ChatGPT para {topico}.
+Recuerda: su driver es [{driver}]. La pregunta DEBE girar en torno a eso.
 Retorna JSON con 'prompt' y 'razon'."""
             
             response = await client.chat.completions.create(
@@ -265,17 +242,20 @@ Retorna JSON con 'prompt' y 'razon'."""
             data = json.loads(response.choices[0].message.content)
             
             escenarios.append({
-                "perfil_base": perfil_base,  # Descripción completa de investigación
-                "prompt_ia": data.get("prompt", ""),  # Pregunta generada
+                "perfil_base": perfil_base,
+                "prompt_ia": data.get("prompt", ""),
                 "razon": data.get("razon", ""),
                 "persona_id": persona.get('id', ''),
-                "origen": persona.get('origen', 'local')
+                "arquetipo": arquetipo,
+                "driver": driver,
+                "dealbreaker": persona.get('dealbreaker', ''),
+                "origen": persona.get('origen', 'arquetipo')
             })
             
-            logger.info(f"✅ Generado escenario: {persona.get('id')} - {data.get('prompt', '')[:50]}...")
+            logger.info(f"✅ [{arquetipo}] → {data.get('prompt', '')[:60]}...")
             
         except Exception as e:
-            logger.error(f"❌ Error generando escenario para persona {persona.get('id')}: {e}")
+            logger.error(f"❌ Error generando escenario para {persona.get('id')}: {e}")
             continue
     
     return escenarios
@@ -298,7 +278,7 @@ if __name__ == "__main__":
         for terr in territorios:
             print(f"  • {terr['topico_emergente']}")
             print(f"    └─ Oportunidad: {terr['porque_es_oportunidad']}")
-            print(f"    └─ Volumen: {terr['volumen_busqueda']}\n")
+            print(f"    └─ Oportunidad: {terr['nivel_oportunidad']}\n")
         
         # 3. Generar escenarios con personas de investigación
         escenarios = await generar_escenarios_ia(topico, tendencias)

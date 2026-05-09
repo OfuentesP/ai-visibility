@@ -5,15 +5,57 @@ export type AIEngine = 'chatgpt' | 'perplexity' | 'google-ai' | 'bing' | 'duckdu
 export type Sentimiento = 'positivo' | 'negativo' | 'neutral';
 
 // Brand Analysis Models (Pydantic equivalents in TypeScript)
+export interface PrioridadEjecutiva {
+  clasificacion: string;
+  veredicto_ejecutivo: string;
+  riesgo_inaccion: string;
+}
+
+export interface PlanAccion {
+  quick_wins: string[];
+  estrategia_mediano_plazo: string[];
+  roi_estimado: string;
+}
+
+export interface TerritorioDesatendido {
+  topico_emergente: string;
+  porque_es_oportunidad: string;
+  nivel_oportunidad: string;
+  intension_usuario: string;
+  crecimiento_trends: string;
+}
+
 export interface AnalisisMarca {
   /** Lista de marcas encontradas en el resultado */
   marcas_mencionadas: string[];
   /** Marca con mejor posicionamiento o recomendación */
-  marca_ganadora: string;
+  marca_ganadora: string | null;
+  /** Competidor principal contra el que se compara */
+  competidor_principal: string;
   /** Posición de tu marca (0 si no aparece) */
   posicion_mi_marca: number;
   /** Sentimiento general: 'positivo', 'negativo' o 'neutral' */
-  sentimiento_general: Sentimiento;
+  sentimiento: Sentimiento;
+  /** Recomendación basada en IA */
+  recomendacion_ia: string;
+  /** 3 títulos de contenido sugeridos */
+  content_ideas: string[];
+  /** Brief estratégico PRO */
+  plan_accion_pro: string;
+  /** Priorización ejecutiva */
+  prioridad_ejecutiva?: PrioridadEjecutiva;
+  /** Atributos genéricos que la IA asocia con mi_marca pero no son relevantes */
+  percepciones_genericas: string[];
+  /** Diferenciadores del ganador que mi_marca omite */
+  conceptos_faltantes: string[];
+  /** Estado: 'visible', 'en_riesgo', 'invisible' */
+  estado_invisibilidad: string;
+  /** 0-100, donde 100 es completamente invisible */
+  invisibilidad_score: number;
+  /** Plan de rescate con quick wins y estrategia */
+  plan_accion?: PlanAccion;
+  /** Territorios desatendidos con alto potencial */
+  territorios_desatendidos: TerritorioDesatendido[];
 }
 
 export interface ResultadoBusqueda {
@@ -92,4 +134,33 @@ export interface AnalyticsMetrics {
   citationRate: number;
   engineBreakdown: Record<AIEngine, number>;
   lastUpdated: Date;
+}
+
+// Discovery: Arquetipos Enterprise
+export type Arquetipo = 'El Racional / Económico' | 'El Premium / Seguro' | 'El Impaciente / Digital';
+
+export interface OportunidadAuditada {
+  arquetipo: string;
+  necesidad_principal: string;
+  segmento: string;
+  tendencia_base: string;
+  pregunta_generada: string;
+  marca_elegida: string;
+  justificacion_basada_en_datos: string;
+  segunda_opcion: string;
+  factor_desempate: string;
+  certeza: number; // 50-100
+  dealbreaker_activado: boolean;
+  dealbreaker_detalle: string;
+  resultado_auditoria: AnalisisMarca;
+  error?: string;
+}
+
+export interface DiscoveryResponse {
+  marca_analizada: string;
+  topico: string;
+  oportunidades_auditadas: OportunidadAuditada[];
+  amenaza_principal?: string;
+  total_auditados: number;
+  total_errores: number;
 }

@@ -1,12 +1,95 @@
-# 🚀 AI Visibility - SaaS para Auditoría en AI Search Engines
+# AI Visibility — La plataforma que pone a tu marca en la mente de la IA
 
-> Audita, rastrea y optimiza tu visibilidad en **ChatGPT, Perplexity, Google AI Overviews** y más.
+> **Tu marca existe para Google. ¿Pero existe para ChatGPT?**
 
-Una plataforma SaaS completa que ayuda marcas a:
-- 📊 **Auditar** su presencia en motores de búsqueda con IA
-- 🔍 **Rastrear** citas en respuestas de ChatGPT, Perplexity, Google AI
-- 💡 **Optimizar** contenido para aparecer en respuestas AI
-- 📈 **Analizar** competidores y posicionamiento
+Cuando un cliente hoy busca "el mejor banco para cuenta corriente" o "qué fintech me conviene", no lo googlea: **le pregunta a la IA**. ChatGPT, Perplexity y Google AI Overviews responden al instante con una recomendación. Si tu marca no aparece en esa respuesta, no existes para ese cliente.
+
+**AI Visibility** es la primera plataforma en Latinoamérica que audita, mide y mejora tu posición en los motores de IA — igual que el SEO lo hizo por Google, pero para la era de las respuestas generativas.
+
+---
+
+## El problema que resolvemos
+
+Las empresas hoy gastan millones en SEO y pauta, pero están **completamente ciegas** ante el canal que ya captura el 30-40% de las decisiones de compra informadas: la IA conversacional.
+
+Un Gerente de Marketing no sabe hoy:
+- ¿Me está recomendando ChatGPT a mí o a mi competencia?
+- ¿Cómo habla la IA de mi marca — positivo, negativo, neutral?
+- ¿Qué argumento usa la IA para preferir a Banco Santander sobre Banco de Chile?
+- ¿Cómo subo en ese ranking?
+
+**Sin datos, no hay estrategia. Sin estrategia, pierden share of voice sin saberlo.**
+
+---
+
+## Lo que entregamos
+
+Ingresa tu marca y una consulta de mercado. En segundos obtienes:
+
+| Métrica | Descripción |
+|---|---|
+| **Posición en IA** | En qué lugar te pone ChatGPT, Claude o Gemini vs tu competencia |
+| **Sentimiento** | Positivo / Neutral / Negativo — con las frases exactas que usa la IA |
+| **Share of Voice** | Qué % de las respuestas de IA mencionan tu marca vs el mercado total |
+| **Radar de intención** | Qué perfiles de cliente buscan tu categoría y qué marcas les recomienda la IA |
+| **Plan de acción** | Qué cambiar en tu contenido público para subir en el ranking de la IA |
+
+---
+
+## A quién va dirigido
+
+**Cliente ideal (ICP):**
+
+- Gerentes de Marketing y Brand de bancos, retail y fintechs
+- Agencias de marketing digital que reportan share of voice a sus clientes
+- Empresas con presencia en Chile que compiten en mercados donde la IA ya influye la decisión de compra
+
+**El early adopter** es cualquier empresa que hoy paga por SEO y quiere la misma visibilidad, pero en el canal de mayor crecimiento: la búsqueda por IA.
+
+---
+
+## Por qué ahora
+
+- **ChatGPT superó los 200M de usuarios activos semanales** (2025). En Chile, más del 60% de los profesionales lo usan regularmente.
+- Google AI Overviews ya responde el 40% de las búsquedas antes de mostrar links.
+- **No existe una solución equivalente en español ni orientada al mercado latinoamericano.**
+- Las marcas que actúen primero construirán una ventaja de datos que será muy difícil de alcanzar después.
+
+---
+
+## Modelo de negocio
+
+| Plan | Precio estimado | Incluye |
+|---|---|---|
+| **Starter** | $99 USD/mes | 50 auditorías/mes, 1 marca, 2 motores de IA |
+| **Growth** | $299 USD/mes | 300 auditorías/mes, 5 marcas, 4 motores de IA, histórico |
+| **Enterprise** | A convenir | Auditorías ilimitadas, API, reportes PDF, SLA, onboarding dedicado |
+
+---
+
+## Estado actual del producto
+
+| Componente | Estado |
+|---|---|
+| Motor de auditoría (ChatGPT + análisis estructurado) | ✅ Producción |
+| Dashboard de resultados en tiempo real | ✅ Producción |
+| Base de datos histórica (Supabase PostgreSQL) | ✅ Conectado |
+| Discovery de intención por perfil de cliente | ✅ Producción |
+| Plan de acción con acciones priorizadas (ICE Score) | ✅ Producción |
+| Soporte multi-motor (Claude, Gemini, Perplexity) | 🔄 En desarrollo |
+| Reportes PDF descargables | 📋 Roadmap Q3 |
+| Alertas automáticas de cambio de posición | 📋 Roadmap Q3 |
+| API para integraciones externas | 📋 Roadmap Q4 |
+
+---
+
+## Stack tecnológico
+
+- **Backend:** Python / FastAPI — robusto, escalable, listo para producción
+- **Frontend:** Next.js 16 / React 19 / Tailwind CSS — interfaz moderna y rápida
+- **Base de datos:** PostgreSQL en Supabase — histórico de auditorías, multi-tenant
+- **IA:** OpenAI GPT-4o con salidas estructuradas + validación Pydantic — resultados confiables y auditables
+- **Arquitectura:** 4 capas con defensa determinística — la IA extrae, Python decide (sin alucinaciones en métricas)
 
 ---
 

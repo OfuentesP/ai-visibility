@@ -7,7 +7,11 @@ from typing import List, Optional
 import logging
 from collections import Counter
 import asyncio
+import json
 
+from openai import AsyncOpenAI
+import httpx
+from pydantic import BaseModel, Field
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse
 from database import get_db, test_connection
 from crud import (
@@ -20,6 +24,56 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+_openai_api_key = os.getenv("OPENAI_API_KEY")
+_openai_client = None
+if _openai_api_key:
+    _openai_client = AsyncOpenAI(
+        api_key=_openai_api_key,
+        timeout=httpx.Timeout(15.0, connect=5.0)
+    )
+else:
+    logger.warning("⚠️  OPENAI_API_KEY not set. AI features disabled.")
+
+
+class SanitizedInputs(BaseModel):
+    marca_normalizada: str
+    busqueda_corregida: str
+
+
+async def sanitizar_inputs(marca_raw: str, busqueda_raw: str) -> SanitizedInputs:
+    """Normaliza marca y consulta usando LLM antes de procesar."""
+    try:
+        response = await _openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            temperature=0,
+            response_format={"type": "json_object"},
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Eres un experto en normalización de datos. Tu trabajo es corregir errores de tipeo, "
+                        "espacios extra y capitalización en nombres de marcas y consultas de búsqueda. "
+                        "Reglas: Si recibes 'bancodechile' o 'banco . de chile', devuelve 'Banco de Chile'. "
+                        "Si recibes 'targeta de credito', devuelve 'tarjeta de crédito'. "
+                        "Mantén la intención original de la búsqueda, solo corrige la ortografía y el formato. "
+                        "Devuelve SOLO JSON con dos campos: marca_normalizada (str) y busqueda_corregida (str)."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": f'marca: "{marca_raw}"\nbusqueda: "{busqueda_raw}"'
+                }
+            ]
+        )
+        data = json.loads(response.choices[0].message.content)
+        return SanitizedInputs(
+            marca_normalizada=data.get("marca_normalizada", marca_raw).strip(),
+            busqueda_corregida=data.get("busqueda_corregida", busqueda_raw).strip()
+        )
+    except Exception as e:
+        logger.warning(f"sanitizar_inputs falló ({e}), usando inputs originales")
+        return SanitizedInputs(marca_normalizada=marca_raw.strip(), busqueda_corregida=busqueda_raw.strip())
 
 app = FastAPI(
     title="AI Visibility - Brand Analysis API",
@@ -296,19 +350,40 @@ async def obtener_esquema():
     }
 
 
+class AuditRequest(BaseModel):
+    query: str = Field(..., min_length=1, max_length=200)
+    brand: str = Field(..., min_length=1, max_length=120)
+
+
+class DiscoveryRequest(BaseModel):
+    brand: str = Field(..., min_length=1, max_length=120)
+    topico: str = Field(..., min_length=1, max_length=200)
+
+
 @app.post("/api/audit", response_model=ResultadoBusqueda)
-async def audit_pipeline(query: str, brand: str) -> ResultadoBusqueda:
+async def audit_pipeline(
+    body: AuditRequest | None = None,
+    query: str | None = None,
+    brand: str | None = None,
+) -> ResultadoBusqueda:
     """
     Pipeline completo: Paso 2 (Buscar) + Paso 3 (Juzgar) + Paso 4 (Brief) + Paso 5 (Plan PRO) + Paso 6 (Prioridad Ejecutiva)
-    
-    Args:
-        query: Pregunta de búsqueda
-        brand: Marca a analizar
-        
-    Returns:
-        ResultadoBusqueda con análisis completo incluyendo prioridad ejecutiva
+    Accepts JSON body {query, brand} or query params for backward compat.
     """
+    # Resolve from body or query params
+    q = (body.query if body else None) or query
+    b = (body.brand if body else None) or brand
+    if not q or not b:
+        raise HTTPException(status_code=422, detail="query and brand are required")
+    query = q[:200].strip()
+    brand = b[:120].strip()
     try:
+        # Sanitizar inputs antes de procesar
+        sanitized = await sanitizar_inputs(brand, query)
+        brand = sanitized.marca_normalizada
+        query = sanitized.busqueda_corregida
+        logger.info(f"[Sanitized] brand='{brand}' query='{query}'")
+
         from searcher import consultar_openai
         from judge import extraer_metricas, generar_content_brief, generar_plan_accion_pro, generar_prioridad_ejecutiva, extraer_conceptos_faltantes, calcular_estado_invisibilidad, generar_plan_accion
         from discovery import obtener_tendencias_chile, detectar_territorios_desatendidos
@@ -354,14 +429,15 @@ async def audit_pipeline(query: str, brand: str) -> ResultadoBusqueda:
         )
         resultado.prioridad_ejecutiva = prioridad
         
-        # Paso 7: Mapa de Conceptos Perdidos (Competitive Intelligence)
-        logger.info(f"[Paso 7] Extrayendo conceptos faltantes para: {brand}")
-        conceptos = await extraer_conceptos_faltantes(
+        # Paso 7: Diagnóstico de Vacíos de Contenido (Content Gap Analysis)
+        logger.info(f"[Paso 7] Analizando content gap para: {brand}")
+        gap_data = await extraer_conceptos_faltantes(
             texto_busqueda,
             resultado.marca_ganadora,
             brand
         )
-        resultado.conceptos_faltantes = conceptos
+        resultado.percepciones_genericas = gap_data.get("percepciones_genericas", [])
+        resultado.conceptos_faltantes = gap_data.get("diferenciadores_ganador", [])
         
         # Paso 8: Termómetro de Invisibilidad
         logger.info(f"[Paso 8] Calculando estado de invisibilidad para: {brand}")
@@ -382,7 +458,8 @@ async def audit_pipeline(query: str, brand: str) -> ResultadoBusqueda:
             resultado.marca_ganadora,
             brand,
             resultado.conceptos_faltantes,
-            texto_busqueda
+            texto_busqueda,
+            busqueda_usuario=query
         )
         resultado.plan_accion = plan_accion
         
@@ -402,12 +479,29 @@ async def audit_pipeline(query: str, brand: str) -> ResultadoBusqueda:
                 brand,
                 comunicacion_actual
             )
+            
+            # Enriquecer con Google Trends real
+            from trends import enriquecer_territorios
+            territorios = enriquecer_territorios(territorios)
+            
             resultado.territorios_desatendidos = territorios
             logger.info(f"✅ Detectados {len(territorios)} territorios desatendidos")
         except Exception as e:
             logger.warning(f"⚠️  No se pudieron detectar territorios desatendidos: {e}")
             resultado.territorios_desatendidos = []
-        
+
+        # Paso 11: Tabla de Ventajas del Competidor
+        rival = resultado.competidor_principal or resultado.marca_ganadora
+        if rival and rival.lower() != brand.lower():
+            logger.info(f"[Paso 11] Analizando ventajas de '{rival}' vs '{brand}'")
+            try:
+                from judge import analyze_competitor_advantage
+                resultado.competitor_advantage = await analyze_competitor_advantage(
+                    texto_busqueda, rival, brand
+                )
+            except Exception as e:
+                logger.warning(f"⚠️  competitor_advantage falló: {e}")
+
         # Retornar ResultadoBusqueda completo
         return ResultadoBusqueda(
             prompt_original=query,
@@ -421,16 +515,23 @@ async def audit_pipeline(query: str, brand: str) -> ResultadoBusqueda:
 
 
 @app.post("/api/discovery", response_model=DiscoveryResponse)
-async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
+async def discovery_masivo(
+    body: DiscoveryRequest | None = None,
+    brand: str | None = None,
+    topico: str | None = None,
+) -> DiscoveryResponse:
     """
     Escáner Concurrente: genera escenarios (PersonaHub + Google Trends) y
     audita cada pregunta en paralelo con asyncio.gather.
-
-    Cada auditoría corre el pipeline completo:
-      consultar_openai → extraer_metricas → calcular_estado_invisibilidad
-
-    Timeout por auditoría individual: 25 s.
+    Accepts JSON body {brand, topico} or query params for backward compat.
     """
+    # Resolve from body or query params
+    b = (body.brand if body else None) or brand
+    t = (body.topico if body else None) or topico
+    if not b or not t:
+        raise HTTPException(status_code=422, detail="brand and topico are required")
+    brand = b[:120].strip()
+    topico = t[:200].strip()
     try:
         from discovery import obtener_tendencias_chile, generar_escenarios_ia
         from searcher import consultar_openai
@@ -439,6 +540,7 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
             extraer_conceptos_faltantes,
             calcular_estado_invisibilidad,
             generar_plan_accion,
+            justificar_eleccion_arquetipo,
         )
 
         logger.info(f"🚀 [Discovery] topico='{topico}' brand='{brand}'")
@@ -447,6 +549,11 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
         tendencias = await obtener_tendencias_chile(topico)
         escenarios = await generar_escenarios_ia(topico, tendencias)
         logger.info(f"✅ {len(escenarios)} escenarios generados")
+
+        # ── 1b. Base audit: posición real de mi_marca en el tópico ──────────
+        texto_base = await consultar_openai(topico)
+        resultado_base = await extraer_metricas(texto_base, brand)
+        base_pos_mi_marca = resultado_base.posicion_mi_marca
 
         # ── 2. Auditoría individual (con timeout) ───────────────────────────
         async def auditar_uno(escenario: dict) -> OportunidadAuditada:
@@ -458,10 +565,12 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
                     texto = await consultar_openai(pregunta)
                     resultado = await extraer_metricas(texto, brand)
 
-                    # conceptos faltantes
-                    conceptos = await extraer_conceptos_faltantes(
+                    # content gap analysis
+                    gap_data = await extraer_conceptos_faltantes(
                         texto, resultado.marca_ganadora, brand
                     )
+                    resultado.percepciones_genericas = gap_data.get("percepciones_genericas", [])
+                    conceptos = gap_data.get("diferenciadores_ganador", [])
                     resultado.conceptos_faltantes = conceptos
 
                     # estado de invisibilidad
@@ -483,33 +592,71 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
                             brand,
                             conceptos,
                             texto,
+                            busqueda_usuario=escenario.get('query', ''),
                         )
                         resultado.plan_accion = plan
 
-                    return resultado
+                    return texto, resultado
 
-                analisis = await asyncio.wait_for(_pipeline(), timeout=25.0)
+                texto_raw, analisis = await asyncio.wait_for(_pipeline(), timeout=55.0)
+
+                # ── Guards + Justificación (mismo pipeline que batch_qa) ──
+                marca_elegida = analisis.marca_ganadora or ""
+                pos_mi_marca = analisis.posicion_mi_marca
+                brand_lower = brand.lower()
+
+                # GUARD A: Anti-Resurrección
+                if base_pos_mi_marca == 0:
+                    if marca_elegida and marca_elegida.lower() == brand_lower:
+                        otras = [m for m in analisis.marcas_mencionadas
+                                 if m.lower() != brand_lower]
+                        marca_elegida = otras[0] if otras else analisis.competidor_principal or "Sin marca dominante"
+                    if pos_mi_marca > 0:
+                        pos_mi_marca = 0
+
+                # GUARD B: Anti-Horóscopo + Dealbreaker + Consideration Set
+                veredicto = await justificar_eleccion_arquetipo(
+                    texto_raw,
+                    marca_elegida,
+                    escenario.get("arquetipo", ""),
+                    escenario.get("driver", ""),
+                    escenario.get("dealbreaker", ""),
+                    brand,
+                    analisis.marcas_mencionadas,
+                    texto_base=texto_base,
+                )
 
                 return OportunidadAuditada(
+                    arquetipo=escenario.get("arquetipo", ""),
+                    necesidad_principal=escenario.get("driver", ""),
                     segmento=perfil[:200],
                     tendencia_base=escenario.get("razon", ""),
                     pregunta_generada=pregunta,
+                    marca_elegida=marca_elegida,
+                    justificacion_basada_en_datos=veredicto["justificacion"],
+                    segunda_opcion=veredicto["segunda_opcion"],
+                    factor_desempate=veredicto["factor_desempate"],
+                    certeza=veredicto["certeza"],
+                    dealbreaker_activado=veredicto["dealbreaker_activado"],
+                    dealbreaker_detalle=veredicto["dealbreaker_detalle"],
                     resultado_auditoria=analisis,
                 )
 
             except asyncio.TimeoutError:
                 logger.warning(f"⏱ Timeout auditando escenario: {pregunta[:60]}")
                 return OportunidadAuditada(
+                    arquetipo=escenario.get("arquetipo", ""),
+                    necesidad_principal=escenario.get("driver", ""),
                     segmento=perfil[:200],
                     tendencia_base=escenario.get("razon", ""),
                     pregunta_generada=pregunta,
                     resultado_auditoria=AnalisisMarca(
                         marcas_mencionadas=[],
-                        marca_ganadora=None,
-                        competidor_principal="",
+                        marca_ganadora="Múltiples competidores",
+                        competidor_principal="Múltiples competidores",
                         posicion_mi_marca=0,
                         sentimiento="neutral",
-                        recomendacion_ia="",
+                        recomendacion_ia="Análisis no disponible por timeout.",
                         content_ideas=[],
                         plan_accion_pro="",
                         conceptos_faltantes=[],
@@ -519,18 +666,20 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
                     error="timeout",
                 )
             except Exception as exc:
-                logger.error(f"❌ Error en escenario: {exc}")
+                logger.error(f"\u274c Error en escenario: {exc}")
                 return OportunidadAuditada(
+                    arquetipo=escenario.get("arquetipo", ""),
+                    necesidad_principal=escenario.get("driver", ""),
                     segmento=perfil[:200],
                     tendencia_base=escenario.get("razon", ""),
                     pregunta_generada=pregunta,
                     resultado_auditoria=AnalisisMarca(
                         marcas_mencionadas=[],
-                        marca_ganadora=None,
-                        competidor_principal="",
+                        marca_ganadora="Empate t\u00e9cnico",
+                        competidor_principal="Empate t\u00e9cnico",
                         posicion_mi_marca=0,
                         sentimiento="neutral",
-                        recomendacion_ia="",
+                        recomendacion_ia="Análisis no disponible por error.",
                         content_ideas=[],
                         plan_accion_pro="",
                         conceptos_faltantes=[],
@@ -545,6 +694,13 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
         oportunidades: list[OportunidadAuditada] = list(
             await asyncio.gather(*[auditar_uno(esc) for esc in escenarios])
         )
+
+        # ── 3b. GUARD C: Anti-Eco (diversidad) ─────────────────────────────
+        ops_ok = [op for op in oportunidades if not op.error and op.marca_elegida]
+        if len(ops_ok) >= 2:
+            elegidas = [op.marca_elegida.lower() for op in ops_ok]
+            if len(set(elegidas)) == 1:
+                logger.warning(f"⚠️ EFECTO_ECO: Todos los arquetipos eligieron '{ops_ok[0].marca_elegida}'")
 
         # ── 4. Amenaza principal ────────────────────────────────────────────
         ganadoras = [
@@ -571,6 +727,155 @@ async def discovery_masivo(brand: str, topico: str) -> DiscoveryResponse:
 
     except Exception as e:
         logger.error(f"❌ Error en /api/discovery: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── /api/audit/from-url ─────────────────────────────────────────────────────
+
+class AuditFromUrlRequest(BaseModel):
+    url: str = Field(..., description="URL del sitio web del cliente a auditar")
+    pais: str = Field(default="Chile", description="País de referencia para las queries")
+
+
+class AuditFromUrlResponse(BaseModel):
+    marca: str
+    categoria: str
+    mercado: str
+    diferenciadores: list[str]
+    resumen_pagina: str
+    arquetipos: list[dict]         # 3 arquetipos dinámicos generados para esta categoría
+    resultados: list[dict]          # 1 resultado por arquetipo (query + auditoría IA)
+    queries_con_mencion: int
+    total_queries: int
+    visibilidad_pct: float
+    plan_accion: dict = {}          # acciones AEO con ICE scoring para aparecer
+    keyword_trend: str = "Estable"  # 'Al alza', 'Estable' o 'Baja' via Google Trends
+
+
+@app.post("/api/audit/from-url", response_model=AuditFromUrlResponse)
+async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
+    """
+    Pipeline completo desde URL:
+    1. Scraping de la página
+    2. GPT infiere marca, categoría, diferenciadores
+    3. GPT genera 3 arquetipos de compradores específicos para esa categoría
+    4. Cada arquetipo genera su propia query de búsqueda en ChatGPT
+    5. Audita cada query y detecta si la marca aparece en la respuesta de la IA
+    6. Retorna score de visibilidad + detalle por arquetipo
+    """
+    from url_analyzer import analizar_url
+    from discovery import generar_escenarios_ia
+    from searcher import consultar_openai
+    from judge import extraer_metricas
+
+    # Validar URL básica
+    url = body.url.strip()
+    if not url.startswith(("http://", "https://")):
+        raise HTTPException(status_code=422, detail="La URL debe comenzar con http:// o https://")
+
+    try:
+        # ── 1. Scraping + comprensión + arquetipos dinámicos ─────────────
+        logger.info(f"[from-url] Analizando: {url}")
+        context = await analizar_url(url, pais_hint=body.pais)
+        logger.info(f"[from-url] marca='{context.marca}' arquetipos={len(context.arquetipos)}")
+
+        # ── 2. Cada arquetipo genera su query específica ─────────────────
+        # generar_escenarios_ia acepta arquetipos dinámicos via parámetro 'personas'
+        escenarios = await generar_escenarios_ia(
+            topico=context.categoria,
+            tendencias=[],             # sin Google Trends para esta vía (más rápido)
+            personas=context.arquetipos,
+        )
+        logger.info(f"[from-url] {len(escenarios)} escenarios generados por arquetipos")
+
+        # ── 3. Auditoría concurrente: 1 query por arquetipo ──────────────
+        async def auditar_escenario(escenario: dict) -> dict:
+            query = escenario.get("prompt_ia", "")
+            try:
+                texto_ia = await asyncio.wait_for(consultar_openai(query), timeout=30.0)
+                analisis = await extraer_metricas(texto_ia, context.marca)
+                mencionada = analisis.posicion_mi_marca > 0
+                return {
+                    "arquetipo": escenario.get("arquetipo", ""),
+                    "driver": escenario.get("driver", ""),
+                    "dealbreaker": escenario.get("dealbreaker", ""),
+                    "query": query,
+                    "mencionada": mencionada,
+                    "posicion": analisis.posicion_mi_marca,
+                    "marcas_mencionadas": analisis.marcas_mencionadas[:6],
+                    "marca_ganadora": analisis.marca_ganadora,
+                    "sentimiento": analisis.sentimiento,
+                    "snippet": analisis.recomendacion_ia or "",
+                    "competitor_winning_reasons": analisis.competitor_winning_reasons,
+                    "cited_sources_types": analisis.cited_sources_types,
+                }
+            except asyncio.TimeoutError:
+                return {
+                    "arquetipo": escenario.get("arquetipo", ""),
+                    "driver": escenario.get("driver", ""),
+                    "dealbreaker": escenario.get("dealbreaker", ""),
+                    "query": query, "mencionada": False, "posicion": 0,
+                    "marcas_mencionadas": [], "marca_ganadora": "",
+                    "sentimiento": "neutral", "snippet": "", "error": "timeout",
+                }
+            except Exception as exc:
+                logger.warning(f"[from-url] Error en escenario '{query[:50]}': {exc}")
+                return {
+                    "arquetipo": escenario.get("arquetipo", ""),
+                    "driver": escenario.get("driver", ""),
+                    "dealbreaker": escenario.get("dealbreaker", ""),
+                    "query": query, "mencionada": False, "posicion": 0,
+                    "marcas_mencionadas": [], "marca_ganadora": "",
+                    "sentimiento": "neutral", "snippet": "", "error": str(exc),
+                }
+
+        logger.info(f"[from-url] Auditando {len(escenarios)} escenarios en paralelo...")
+        resultados: list[dict] = list(
+            await asyncio.gather(*[auditar_escenario(e) for e in escenarios])
+        )
+
+        # ── 4. Métricas globales ─────────────────────────────────────────
+        total = len(resultados)
+        con_mencion = sum(1 for r in resultados if r.get("mencionada"))
+        visibilidad_pct = round(con_mencion / total * 100, 1) if total > 0 else 0.0
+
+        logger.info(f"[from-url] ✅ visibilidad={visibilidad_pct}% ({con_mencion}/{total})")
+
+        # ── 4b. Tendencia de mercado via Google Trends ───────────────────
+        from trends import get_keyword_trend_direction
+        keyword_trend = await asyncio.to_thread(get_keyword_trend_direction, context.categoria)
+        logger.info(f"[from-url] Trend '{context.categoria}': {keyword_trend}")
+
+        # ── 5. Plan de acción AEO ────────────────────────────────────────
+        from url_analyzer import generar_plan_url
+        plan = await generar_plan_url(
+            marca=context.marca,
+            categoria=context.categoria,
+            mercado=context.mercado,
+            diferenciadores=context.diferenciadores,
+            resultados=resultados,
+        )
+        logger.info(f"[from-url] Plan: {len(plan.get('vehiculos', []))} vehículos")
+
+        return AuditFromUrlResponse(
+            marca=context.marca,
+            categoria=context.categoria,
+            mercado=context.mercado,
+            diferenciadores=context.diferenciadores,
+            resumen_pagina=context.resumen_pagina,
+            arquetipos=context.arquetipos,
+            resultados=resultados,
+            queries_con_mencion=con_mencion,
+            total_queries=total,
+            visibilidad_pct=visibilidad_pct,
+            plan_accion=plan,
+            keyword_trend=keyword_trend,
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error en /api/audit/from-url: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -678,6 +983,387 @@ async def batch_audit_masivo(topico: str, mi_marca: str) -> dict:
     except Exception as e:
         logger.error(f"Error en batch audit: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── /api/audit/comparison ────────────────────────────────────────────────────
+
+class ComparisonRequest(BaseModel):
+    marca_a: str = Field(..., description="Primera marca a comparar")
+    marca_b: str = Field(..., description="Segunda marca a comparar (el rival)")
+    categoria: str = Field(..., description="Categoría o rubro del mercado (ej: 'jeans de mujer')")
+    mercado: str = Field(default="Chile", description="País de referencia")
+
+
+class ComparisonResponse(BaseModel):
+    marca_a: str
+    marca_b: str
+    categoria: str
+    ventajas_marca_a: list[str]
+    debilidades_marca_a: list[str]
+    ventajas_marca_b: list[str]
+    debilidades_marca_b: list[str]
+    veredicto_ia: str
+    marca_recomendada: str
+    razon_recomendacion: str
+    score_marca_a: int   # 0-100 según percepción IA
+    score_marca_b: int
+
+
+@app.post("/api/audit/comparison", response_model=ComparisonResponse)
+async def audit_comparison(body: ComparisonRequest) -> ComparisonResponse:
+    """
+    Compara dos marcas en una categoría desde la perspectiva de la IA.
+    Devuelve ventajas, debilidades y veredicto estructurado.
+    """
+    if not _openai_client:
+        raise HTTPException(status_code=503, detail="OpenAI API key no configurada")
+
+    prompt = f"""Eres un motor de búsqueda con IA (como ChatGPT o Perplexity) en {body.mercado}.
+Un usuario pregunta: "¿Cuál es mejor entre {body.marca_a} y {body.marca_b} para {body.categoria}?"
+
+Analiza AMBAS marcas con el conocimiento que tienes sobre ellas hasta tu fecha de corte.
+Sé directo, concreto y basado en percepción real del mercado, no en suposiciones genéricas.
+
+Devuelve SOLO JSON con exactamente esta estructura:
+{{
+  "ventajas_marca_a": ["ventaja 1 concreta", "ventaja 2", "ventaja 3"],
+  "debilidades_marca_a": ["debilidad 1 concreta", "debilidad 2"],
+  "ventajas_marca_b": ["ventaja 1 concreta", "ventaja 2", "ventaja 3"],
+  "debilidades_marca_b": ["debilidad 1 concreta", "debilidad 2"],
+  "veredicto_ia": "Párrafo de 2-3 oraciones explicando por qué recomendarías una sobre la otra para {body.categoria} en {body.mercado}. Menciona ambas marcas por nombre.",
+  "marca_recomendada": "{body.marca_a} o {body.marca_b} — solo el nombre de la que recomendarías",
+  "razon_recomendacion": "Una oración concisa con el factor decisivo",
+  "score_marca_a": 75,
+  "score_marca_b": 68
+}}
+
+REGLAS:
+- Los scores reflejan la percepción y presencia de cada marca en la IA (0-100)
+- Si no conoces bien una marca, indícalo en las debilidades ("Poca presencia en fuentes de IA")
+- No inventes datos específicos (precios, fechas exactas)
+- Las ventajas/debilidades deben ser específicas para {body.categoria}, no genéricas"""
+
+    try:
+        response = await _openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            temperature=0.3,
+            response_format={"type": "json_object"},
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        f"Eres un motor de IA analizando marcas en {body.mercado}. "
+                        "Devuelve SOLO JSON válido. Sé específico y directo."
+                    ),
+                },
+                {"role": "user", "content": prompt},
+            ],
+        )
+
+        data = json.loads(response.choices[0].message.content)
+
+        return ComparisonResponse(
+            marca_a=body.marca_a,
+            marca_b=body.marca_b,
+            categoria=body.categoria,
+            ventajas_marca_a=data.get("ventajas_marca_a", []),
+            debilidades_marca_a=data.get("debilidades_marca_a", []),
+            ventajas_marca_b=data.get("ventajas_marca_b", []),
+            debilidades_marca_b=data.get("debilidades_marca_b", []),
+            veredicto_ia=data.get("veredicto_ia", ""),
+            marca_recomendada=data.get("marca_recomendada", ""),
+            razon_recomendacion=data.get("razon_recomendacion", ""),
+            score_marca_a=int(data.get("score_marca_a", 50)),
+            score_marca_b=int(data.get("score_marca_b", 50)),
+        )
+
+    except Exception as e:
+        logger.error(f"[comparison] Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── /api/trends/related ──────────────────────────────────────────────────────
+
+class TrendsRelatedRequest(BaseModel):
+    queries: list[str] = Field(..., description="Queries de usuarios sintéticos para buscar en Google Trends")
+    geo: str = Field(default="CL", description="Código de país para Google Trends")
+    max_per_query: int = Field(default=5, description="Máximo de queries relacionadas por cada query de entrada")
+
+
+class TrendItem(BaseModel):
+    query: str
+    value: int          # interés relativo 0-100
+    fuente: str         # query sintética que generó este resultado
+
+
+class TrendsRelatedResponse(BaseModel):
+    resultados: list[TrendItem]
+    total: int
+    geo: str
+
+
+@app.post("/api/trends/related", response_model=TrendsRelatedResponse)
+async def trends_related(body: TrendsRelatedRequest) -> TrendsRelatedResponse:
+    """
+    Recibe las queries de los usuarios sintéticos y devuelve las búsquedas
+    relacionadas de mayor volumen en Google Trends, deduplicadas y ordenadas.
+    """
+    import asyncio
+    from pytrends.request import TrendReq
+
+    def _fetch_related(query: str, geo: str, max_per_query: int) -> list[dict]:
+        """Llamada síncrona a pytrends — se ejecuta en threadpool."""
+        try:
+            pt = TrendReq(hl="es-CL", tz=360, timeout=(6, 12))
+            pt.build_payload([query], cat=0, timeframe="now 7-d", geo=geo)
+            related = pt.related_queries()
+            if not related or query not in related:
+                return []
+            top = related[query].get("top")
+            if top is None or top.empty:
+                return []
+            rows = top.head(max_per_query).to_dict(orient="records")
+            return [{"query": r["query"], "value": int(r["value"]), "fuente": query} for r in rows]
+        except Exception as e:
+            logger.warning(f"[trends/related] '{query[:40]}': {e}")
+            return []
+
+    loop = asyncio.get_event_loop()
+    tasks = [
+        loop.run_in_executor(None, _fetch_related, q, body.geo, body.max_per_query)
+        for q in body.queries[:6]          # máx 6 queries para no agotar la cuota
+    ]
+    results_nested = await asyncio.gather(*tasks)
+
+    # Aplanar, deduplicar por query (mantener el de mayor value), ordenar
+    seen: dict[str, TrendItem] = {}
+    for batch in results_nested:
+        for item in batch:
+            key = item["query"].lower().strip()
+            if key not in seen or item["value"] > seen[key].value:
+                seen[key] = TrendItem(**item)
+
+    sorted_items = sorted(seen.values(), key=lambda x: x.value, reverse=True)
+
+    logger.info(f"[trends/related] {len(sorted_items)} queries únicas para {len(body.queries)} inputs")
+    return TrendsRelatedResponse(
+        resultados=sorted_items,
+        total=len(sorted_items),
+        geo=body.geo,
+    )
+
+
+# ── /api/audit/citability ────────────────────────────────────────────────────
+
+# Marcas líderes globales y retailers chilenos que significan dificultad ALTA
+_MARCAS_LIDERES = {
+    # Jeans / Ropa global
+    "levi's", "levis", "diesel", "wrangler", "lee", "calvin klein", "tommy hilfiger",
+    "gap", "h&m", "zara", "uniqlo", "forever 21", "pull&bear", "bershka",
+    # Retailers chilenos grandes (dificultad alta = ya están dominando)
+    "falabella", "paris", "ripley", "la polar", "abcdin",
+    # Deporte
+    "nike", "adidas", "puma", "under armour", "new balance",
+    # Genéricos grandes
+    "amazon", "mercadolibre", "aliexpress",
+}
+
+# Fuentes genéricas / ambiguas → dificultad BAJA
+_FUENTES_GENERICAS = {
+    "blog", "revista", "guía", "consejos", "tips", "artículo", "post",
+    "medium", "quora", "reddit", "wikipedia", "pinterest",
+}
+
+
+def calculate_citability_score(marcas_mencionadas: list[str]) -> dict:
+    """
+    Calcula el score de dificultad de un territorio (0-100).
+    Bajo = fácil de posicionar (oportunidad). Alto = dominado por líderes.
+
+    Returns:
+        dict con keys: score (int), nivel (str), razon (str)
+    """
+    if not marcas_mencionadas:
+        return {
+            "score": 15,
+            "nivel": "baja",
+            "razon": "La IA no identifica ninguna marca clara — territorio sin dueño."
+        }
+
+    normalized = [m.lower().strip() for m in marcas_mencionadas]
+
+    # Contar cuántas son líderes
+    lideres_presentes = [m for m in normalized if any(lider in m for lider in _MARCAS_LIDERES)]
+    genericas_presentes = [m for m in normalized if any(g in m for g in _FUENTES_GENERICAS)]
+
+    proporcion_lideres = len(lideres_presentes) / len(normalized)
+
+    if proporcion_lideres >= 0.5:
+        score = 85 + min(10, len(lideres_presentes) * 3)
+        return {
+            "score": min(score, 99),
+            "nivel": "alta",
+            "razon": f"La IA menciona directamente a {', '.join(set(lideres_presentes[:2]))} — territorio dominado."
+        }
+    elif proporcion_lideres > 0:
+        score = 55 + int(proporcion_lideres * 30)
+        return {
+            "score": score,
+            "nivel": "media",
+            "razon": f"La IA mezcla marcas líderes con otras — hay espacio pero hay competencia."
+        }
+    elif genericas_presentes:
+        score = 20
+        return {
+            "score": score,
+            "nivel": "baja",
+            "razon": "La IA responde con blogs o consejos genéricos — sin marca dominante local."
+        }
+    else:
+        # Marcas desconocidas o extranjeras no líderes → oportunidad
+        score = 30
+        return {
+            "score": score,
+            "nivel": "baja",
+            "razon": "La IA menciona marcas poco conocidas o extranjeras — posicionamiento local viable."
+        }
+
+
+class CitabilityRequest(BaseModel):
+    marca: str = Field(..., description="Tu marca (ej: 'Amalia Jeans')")
+    categoria: str = Field(..., description="Categoría de producto (ej: 'jeans de mujer Chile')")
+    mercado: str = Field(default="Chile", description="País de referencia")
+    num_territorios: int = Field(default=12, ge=6, le=20)
+
+
+class CitabilityTerritory(BaseModel):
+    query: str
+    dificultad: int          # 0-100 (bajo = oportunidad)
+    nivel: str               # "baja" | "media" | "alta"
+    marcas_mencionadas: list[str]
+    razon: str
+    recomendacion: str       # Acción concreta para capturar este territorio
+
+
+class CitabilityResponse(BaseModel):
+    marca: str
+    categoria: str
+    territorios: list[CitabilityTerritory]   # sorted por dificultad ASC
+    resumen: str
+    total_bajas: int
+    total_medias: int
+    total_altas: int
+
+
+@app.post("/api/audit/citability", response_model=CitabilityResponse)
+async def audit_citability(body: CitabilityRequest) -> CitabilityResponse:
+    """
+    Gap Analysis de Territorios: encuentra queries donde la IA no tiene respuesta
+    favorita clara y la marca podría posicionarse fácilmente.
+    """
+    if not _openai_client:
+        raise HTTPException(status_code=503, detail="OpenAI API key no configurada")
+
+    # ── Paso 1: Generar queries de nicho ────────────────────────────────────
+    gen_prompt = f"""Eres un experto en AEO (Answer Engine Optimization) para {body.mercado}.
+Tu tarea: generar {body.num_territorios} queries de nicho muy específicas sobre "{body.categoria}" en {body.mercado}.
+
+Reglas:
+- Cada query debe ser una pregunta real que haría un comprador concreto
+- Deben cubrir nichos específicos: post-parto, tallas grandes, ocasiones especiales, materiales, dudas técnicas, comparativas de precio, etc.
+- Deben ser búsquedas en español, naturales para Chile
+- NO incluyas el nombre "{body.marca}" en las queries (queremos ver si la IA ya tiene respuesta sin tu ayuda)
+
+Devuelve SOLO JSON:
+{{"queries": ["query 1", "query 2", ..., "query {body.num_territorios}"]}}"""
+
+    try:
+        gen_response = await _openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            temperature=0.8,
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": "Generador de queries de nicho. Devuelve SOLO JSON válido."},
+                {"role": "user", "content": gen_prompt},
+            ],
+        )
+        queries_data = json.loads(gen_response.choices[0].message.content)
+        queries = queries_data.get("queries", [])[:body.num_territorios]
+    except Exception as e:
+        logger.error(f"[citability] Error generando queries: {e}")
+        raise HTTPException(status_code=500, detail="Error generando territorios")
+
+    if not queries:
+        raise HTTPException(status_code=500, detail="No se generaron queries")
+
+    # ── Paso 2: Mini-auditoría paralela ─────────────────────────────────────
+    async def audit_one(query: str) -> CitabilityTerritory:
+        audit_prompt = f"""Eres ChatGPT/Perplexity respondiendo en {body.mercado}.
+Un usuario pregunta: "{query}"
+
+Responde como lo harías normalmente. Luego devuelve SOLO JSON con:
+{{
+  "marcas_mencionadas": ["marca1", "marca2"],   // marcas, tiendas, blogs o fuentes que citarías
+  "recomendacion_para_{body.marca.replace(' ', '_')}": "Qué debería publicar o crear {body.marca} para aparecer en esta respuesta (1-2 oraciones accionables)"
+}}
+
+Si no mencionarías ninguna marca específica, devuelve marcas_mencionadas como lista vacía o con fuentes genéricas como ["blogs de moda", "guías generales"]."""
+
+        try:
+            resp = await _openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                temperature=0.2,
+                response_format={"type": "json_object"},
+                messages=[
+                    {"role": "system", "content": "Motor de búsqueda IA. Devuelve SOLO JSON."},
+                    {"role": "user", "content": audit_prompt},
+                ],
+                timeout=12,
+            )
+            data = json.loads(resp.choices[0].message.content)
+            marcas = data.get("marcas_mencionadas", [])
+            recomendacion_key = f"recomendacion_para_{body.marca.replace(' ', '_')}"
+            recomendacion = data.get(recomendacion_key) or data.get("recomendacion", "Crear contenido específico sobre este tema.")
+
+        except Exception as e:
+            logger.warning(f"[citability] query '{query[:40]}' falló: {e}")
+            marcas = []
+            recomendacion = "Crear contenido específico sobre este tema en el blog."
+
+        score_data = calculate_citability_score(marcas)
+        return CitabilityTerritory(
+            query=query,
+            dificultad=score_data["score"],
+            nivel=score_data["nivel"],
+            marcas_mencionadas=marcas,
+            razon=score_data["razon"],
+            recomendacion=recomendacion,
+        )
+
+    territorios = await asyncio.gather(*[audit_one(q) for q in queries])
+
+    # ── Paso 3: Ordenar por dificultad ASC (mejores oportunidades primero) ──
+    territorios_sorted = sorted(territorios, key=lambda t: t.dificultad)
+
+    bajas = [t for t in territorios_sorted if t.nivel == "baja"]
+    medias = [t for t in territorios_sorted if t.nivel == "media"]
+    altas = [t for t in territorios_sorted if t.nivel == "alta"]
+
+    resumen = (
+        f"Se encontraron {len(bajas)} territorios de oportunidad inmediata, "
+        f"{len(medias)} de dificultad media y {len(altas)} ya dominados por marcas líderes. "
+        f"Prioriza los territorios en verde: publica un artículo o landing page esta semana."
+    )
+
+    return CitabilityResponse(
+        marca=body.marca,
+        categoria=body.categoria,
+        territorios=list(territorios_sorted),
+        resumen=resumen,
+        total_bajas=len(bajas),
+        total_medias=len(medias),
+        total_altas=len(altas),
+    )
 
 
 if __name__ == "__main__":

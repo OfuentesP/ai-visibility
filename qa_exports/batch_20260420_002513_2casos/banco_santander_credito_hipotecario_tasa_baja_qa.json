@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "marca": "Banco Santander",
+    "busqueda": "Crédito Hipotecario Tasa Baja",
+    "timestamp": "2026-04-20T00:27:57.039548Z",
+    "texto_ia_raw": "Si estás buscando un crédito hipotecario con tasas bajas en Chile, hay varias opciones que podrías considerar. Aquí te dejo algunas recomendaciones de bancos y entidades financieras que suelen ofrecer condiciones competitivas:\n\n1. **Banco de Chile**: Este banco frecuentemente tiene promociones y tasas competitivas en créditos hipotecarios. Te recomiendo revisar su sitio web o visitar una sucursal para obtener información actualizada sobre sus ofertas.\n\n2. **Banco Santander**: Ofrece diversas opciones de créditos hipotecarios, incluyendo tasas preferenciales para clientes con buen historial crediticio. También tienen simuladores en línea que te permiten calcular tu cuota.\n\n3. **Banco BICE**: Conocido por sus tasas competitivas y atención personalizada, Banco BICE puede ser una buena opción si buscas un crédito hipotecario. Es recomendable consultar directamente con ellos para conocer sus condiciones actuales.\n\n4. **Scotiabank**: Este banco también ofrece créditos hipotecarios con tasas atractivas y condiciones flexibles. Puedes acceder a su simulador en línea para ver qué opción se ajusta mejor a tus necesidades.\n\n5. **BancoEstado**: Como banco estatal, BancoEstado ofrece créditos hipotecarios con tasas accesibles, especialmente para personas que compran su primera vivienda. Además, tienen programas especiales para sectores vulnerables.\n\n6. **Corpbanca (ahora Itaú)**: Ofrece créditos hipotecarios con tasas competitivas y diversas opciones de financiamiento. Es recomendable revisar su página web para conocer las últimas ofertas.\n\n7. **Financieras y cooperativas**: También puedes considerar opciones de financieras y cooperativas de ahorro y crédito, que a veces ofrecen tasas más bajas o condiciones más flexibles.\n\nTe sugiero que compares las tasas de interés, plazos y condiciones de cada entidad, y que utilices simuladores de crédito hipotecario disponibles en sus sitios web para tener una idea clara de lo que puedes esperar. Además, es importante que revises tu situación financiera y tu capacidad de pago antes de tomar una decisión."
+  },
+  "veredicto_ejecutivo": {
+    "foco_principal": "Lanzar campaña de tasas preferenciales en créditos hipotecarios",
+    "esfuerzo": "Medio",
+    "tiempo_estimado": "1 mes",
+    "impacto_esperado": "Aumentar la captación de clientes en un 15%",
+    "roi_score": 8,
+    "clasificacion": "Mantener"
+  },
+  "share_of_voice": {
+    "posicion": 2,
+    "estado": "visible",
+    "score": 90,
+    "marcas_mencionadas": [
+      "Banco Santander",
+      "Banco de Chile",
+      "Banco BICE",
+      "Scotiabank",
+      "BancoEstado",
+      "Corpbanca (ahora Itaú)"
+    ],
+    "ganador": "Banco Santander",
+    "competidor_principal": "Banco de Chile"
+  },
+  "diferenciadores": {
+    "percepciones_genericas": [
+      "tasas preferenciales limitadas",
+      "simuladores en línea básicos",
+      "opciones de crédito hipotecario genéricas"
+    ],
+    "conceptos_faltantes": [
+      "promociones en créditos hipotecarios",
+      "tasas competitivas",
+      "atención personalizada"
+    ]
+  },
+  "plan_accion": {
+    "vehiculos": [
+      {
+        "concepto": "promociones en créditos hipotecarios",
+        "acciones": [
+          {
+            "tactica_tecnica": "Inyección de Schema FAQ (JSON-LD)",
+            "area_responsable": "TI / Desarrollo",
+            "concepto_objetivo": "promociones en créditos hipotecarios",
+            "impacto": 9,
+            "confianza": 7,
+            "esfuerzo": 6,
+            "ice_score": 7.3,
+            "segmento_impactado": "Usuario que busca 'promociones en créditos hipotecarios' en Perplexity antes de tomar una decisión de compra",
+            "tiempo_indexacion_ia": "3 - 7 días (Requiere forzar re-indexación manual en Google Search Console)",
+            "pasos_ejecucion": [
+              "Crear bloque JSON-LD @type:FAQPage en la URL principal de Banco Santander",
+              "Insertar Q: '¿Qué es [promociones en créditos hipotecarios]?' + respuesta de 50 palabras mencionando Banco Santander y diferenciándolo de Banco Santander",
+              "Verificar markup en Rich Results Test y enviar sitemap actualizado a Google Search Console"
+            ],
+            "riesgo_inaccion": "Si no se inyecta [promociones en créditos hipotecarios], Banco Santander perderá relevancia en las búsquedas de IA, permitiendo que otros competidores se posicionen como la opción preferida en menos de 30 días."
+          },
+          {
+            "tactica_tecnica": "Inyección de Schema FAQ (JSON-LD)",
+            "area_responsable": "Marketing / Contenido",
+            "concepto_objetivo": "tasas competitivas",
+            "impacto": 8,
+            "confianza": 6,
+            "esfuerzo": 5,
+            "ice_score": 6.3,
+            "segmento_impactado": "Usuario que busca 'tasas competitivas' en motores de búsqueda antes de decidir un crédito hipotecario",
+            "tiempo_indexacion_ia": "1 - 2 semanas (Depende del Crawl Budget orgánico de GPTBot)",
+            "pasos_ejecucion": [
+              "Desarrollar una landing page en el sitio de Banco Santander enfocada en [tasas competitivas] con contenido optimizado y atractivo.",
+              "Incluir secciones que comparen las [tasas competitivas] de Banco Santander con las de otros bancos, destacando beneficios y promociones.",
+              "Implementar enlaces internos hacia esta landing desde otras páginas relevantes de Banco Santander para mejorar su visibilidad."
+            ],
+            "riesgo_inaccion": "Sin una landing page dedicada a [tasas competitivas], Banco Santander podría perder la oportunidad de captar clientes que buscan activamente las mejores ofertas en créditos hipotecarios."
+          }
+        ]
+      }
+    ],
+    "roi_estimado": "Entrada al Top 3 de menciones IA para [promociones en créditos hipotecarios] frente a Banco Santander, ejecutando las 2 tácticas en orden de prioridad ICE."
+  },
+  "territorios_desatendidos": [
+    {
+      "topico_emergente": "Créditos hipotecarios para viviendas sustentables",
+      "porque_es_oportunidad": "Creciente interés en sostenibilidad y eficiencia energética en el hogar.",
+      "nivel_oportunidad": "Alto",
+      "intension_usuario": "Buscar financiamiento para viviendas que cumplen con estándares ecológicos."
+    },
+    {
+      "topico_emergente": "Asesoría personalizada en compra de vivienda",
+      "porque_es_oportunidad": "Usuarios buscan orientación y apoyo en el proceso de compra de propiedades.",
+      "nivel_oportunidad": "Medio",
+      "intension_usuario": "Obtener ayuda y consejos para adquirir una vivienda adecuada."
+    },
+    {
+      "topico_emergente": "Créditos hipotecarios para proyectos de remodelación",
+      "porque_es_oportunidad": "Aumento en la demanda de mejoras y ampliaciones en viviendas existentes.",
+      "nivel_oportunidad": "Medio",
+      "intension_usuario": "Financiar remodelaciones y mejoras en propiedades ya adquiridas."
+    }
+  ],
+  "radar_intencion": [
+    {
+      "arquetipo": "El Racional / Económico",
+      "necesidad_principal": "precio, descuentos, ROI directo, sin comisiones",
+      "dealbreaker": "costos ocultos, comisiones no declaradas, falta de transparencia en precios, letra chica",
+      "pregunta_generada": "¿Cuál es la entidad que ofrece la tasa de interés más baja para créditos hipotecarios en Chile? ¿Hay costos ocultos o comisiones que no mencionen al principio?",
+      "marca_elegida": "Banco Santander",
+      "justificacion_basada_en_datos": "Banco Santander ofrece tasas preferenciales para clientes con buen historial crediticio, lo que se alinea con la búsqueda de la mejor tasa de interés.",
+      "segunda_opcion": "Banco de Chile",
+      "factor_desempate": "Banco Santander tiene simuladores en línea que permiten calcular la cuota de los créditos, facilitando la transparencia en precios.",
+      "certeza": 85,
+      "dealbreaker_activado": false,
+      "dealbreaker_detalle": "Sin fricción detectada",
+      "posicion_mi_marca": 2
+    },
+    {
+      "arquetipo": "El Premium / Seguro",
+      "necesidad_principal": "reputación, cobertura total, cero fricción, exclusividad",
+      "dealbreaker": "mala reputación, coberturas limitadas, exclusiones en letra chica, mala atención postventa",
+      "pregunta_generada": "¿Cuál es el banco con mejor reputación en Chile para créditos hipotecarios con tasas bajas? ¿Si tengo un problema, me atenderán de inmediato sin complicaciones?",
+      "marca_elegida": "Banco de Chile",
+      "justificacion_basada_en_datos": "El texto menciona que 'Banco de Chile' es uno de los bancos con mejor reputación en créditos hipotecarios, lo cual se alinea con el driver de reputación del arquetipo seleccionado.",
+      "segunda_opcion": "Banco Santander",
+      "factor_desempate": "Banco de Chile tiene una atención al cliente reconocida como buena, mientras que se sugiere tener paciencia con Banco Santander para resolver problemas más complejos.",
+      "certeza": 85,
+      "dealbreaker_activado": true,
+      "dealbreaker_detalle": "El texto menciona que con Banco Santander 'la rapidez de la atención puede variar según la demanda y el tipo de consulta', sugiriendo una posible fricción en la atención postventa.",
+      "posicion_mi_marca": 2
+    },
+    {
+      "arquetipo": "El Impaciente / Digital",
+      "necesidad_principal": "velocidad, 100% digital, autoservicio, UX mobile",
+      "dealbreaker": "lentitud, burocracia, procesos presenciales, tener que llamar por teléfono, app mala o inexistente",
+      "pregunta_generada": "¿Cuál es el banco en Chile que ofrece la mejor tasa de crédito hipotecario y que tenga una app fácil de usar para todo el proceso? ¿Cuánto demora en aprobar la solicitud sin tener que ir a sucursal?",
+      "marca_elegida": "Banco Santander",
+      "justificacion_basada_en_datos": "Banco Santander tiene una app fácil de usar donde puedes realizar la solicitud y seguimiento del crédito sin necesidad de ir a una sucursal.",
+      "segunda_opcion": "Banco BICE",
+      "factor_desempate": "Banco BICE, aunque tiene una app intuitiva, no menciona la velocidad y facilidad de gestión que ofrece Banco Santander para hacer seguimientos sin ir a sucursal.",
+      "certeza": 85,
+      "dealbreaker_activado": false,
+      "dealbreaker_detalle": "Sin fricción detectada",
+      "posicion_mi_marca": 2
+    }
+  ]
+}

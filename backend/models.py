@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict, field_validator
-from typing import Optional, List
+from typing import Optional, List, Literal
 from datetime import datetime
 
 
@@ -28,16 +28,94 @@ class PrioridadEjecutiva(BaseModel):
     )
 
 
-class OpcionImplementacion(BaseModel):
-    """Una vía de implementación para comunicar un concepto faltante."""
-    tipo: str = Field(
-        description="Tipo de opción: 'Ágil', 'Externa' o 'Estructural'"
+class CompetitorAdvantageRow(BaseModel):
+    """Una fila de la tabla comparativa de ventajas del competidor."""
+    atributo_ganador: str = Field(description="Atributo que el competidor comunica mejor (ej: 'Durabilidad comprobada')")
+    fuente_de_verdad: str = Field(description="De dónde obtiene la IA esta percepción (ej: 'Citado en blogs de moda chilenos')")
+    gap_nuestra_marca: str = Field(description="Qué le falta a nuestra marca para competir en este atributo (ej: 'Ausencia de información sobre materiales en su web')")
+
+
+class CompetitorAdvantage(BaseModel):
+    """Análisis de ventajas competitivas del rival según la IA."""
+    rival: str
+    nuestra_marca: str
+    filas: List[CompetitorAdvantageRow]
+    conclusion: str = Field(description="Síntesis ejecutiva de 1-2 oraciones sobre la brecha más crítica")
+
+
+# Catálogo oficial de tácticas AEO — la IA SÓLO puede elegir de esta lista
+CATALOGO_TACTICAS_AEO = [
+    "Inyección de Schema FAQ (JSON-LD)",
+    "Reestructuración de Tablas de Datos HTML",
+    "Optimización de Meta-Entidades para Knowledge Graph",
+    "Inyección Semántica en Landing Page Principal",
+    "Digital PR en Medios Autorizados",
+]
+
+
+class AccionICE(BaseModel):
+    """Acción AEO evaluada con Framework ICE (Impact, Confidence, Effort)."""
+    tactica_tecnica: Literal[
+        "Inyección de Schema FAQ (JSON-LD)",
+        "Reestructuración de Tablas de Datos HTML",
+        "Optimización de Meta-Entidades para Knowledge Graph",
+        "Inyección Semántica en Landing Page Principal",
+        "Digital PR en Medios Autorizados",
+    ] = Field(
+        description=(
+            "Táctica AEO del catálogo oficial. "
+            "REGLA DE COHERENCIA: "
+            "'Inyección de Schema FAQ (JSON-LD)' → area='TI / Desarrollo', pasos técnicos de JSON-LD. "
+            "'Reestructuración de Tablas de Datos HTML' → area='TI / Desarrollo', pasos técnicos de HTML. "
+            "'Optimización de Meta-Entidades para Knowledge Graph' → area='TI / Desarrollo', pasos de Knowledge Graph. "
+            "'Inyección Semántica en Landing Page Principal' → area='Marketing / Contenido', pasos de contenido landing. "
+            "'Digital PR en Medios Autorizados' → area='PR / Agencia', pasos de nota de prensa en medios."
+        )
     )
-    accion_especifica: str = Field(
-        description="Acción concreta y específica a ejecutar (sin blog posts genéricos)"
+    area_responsable: Literal[
+        "TI / Desarrollo",
+        "Marketing / Contenido",
+        "PR / Agencia",
+    ] = Field(
+        description=(
+            "Área responsable. CORRELACIÓN OBLIGATORIA con tactica_tecnica: "
+            "Schema FAQ / Tablas HTML / Knowledge Graph → 'TI / Desarrollo'. "
+            "Inyección Semántica Landing → 'Marketing / Contenido'. "
+            "Digital PR → 'PR / Agencia'. "
+            "NO MEZCLAR."
+        )
     )
-    tiempo_estimado: str = Field(
-        description="Tiempo estimado de implementación (ej: '48h', '1 semana', '2 semanas')"
+    concepto_objetivo: str = Field(
+        ...,
+        description="ESTRICTAMENTE PROHIBIDO usar frases genéricas. DEBE ser la palabra clave exacta del negocio. Ejemplo Correcto: 'Seguros de Vida'. Ejemplo Incorrecto: 'conceptos faltantes'."
+    )
+    impacto: int = Field(
+        ge=1, le=10,
+        description="Impacto esperado en visibilidad IA (1=mínimo, 10=máximo)"
+    )
+    confianza: int = Field(
+        ge=1, le=10,
+        description="Confianza en éxito de la táctica dado el contexto (1=baja, 10=alta)"
+    )
+    esfuerzo: int = Field(
+        ge=1, le=10,
+        description="Facilidad de implementación (1=muy difícil, 10=muy fácil)"
+    )
+    ice_score: float = Field(
+        description="Promedio simple: (impacto + confianza + esfuerzo) / 3"
+    )
+    segmento_impactado: str = Field(
+        description="Perfil del usuario objetivo que realiza esta busqueda (ej: 'Dueno de PYME que busca seguros')"
+    )
+    tiempo_indexacion_ia: str = Field(
+        description="Debe ser asignado ESTRICTAMENTE según la matriz de tácticas de la industria. PROHIBIDO inventar tiempos libres. Usar exactamente el valor correspondiente a la táctica seleccionada."
+    )
+    pasos_ejecucion: List[str] = Field(
+        description="3 pasos tecnicos concretos para implementar esta tactica (sin generalidades)"
+    )
+    riesgo_inaccion: str = Field(
+        default="Sin acción, la IA continuará excluyendo esta marca de las recomendaciones sobre este concepto.",
+        description="Una frase corta y directa sobre el costo de NO implementar esta táctica. Menciona el competidor ganador y el plazo."
     )
 
 
@@ -46,8 +124,8 @@ class VehiculoContenido(BaseModel):
     concepto: str = Field(
         description="El concepto faltante que se busca comunicar"
     )
-    opciones_implementacion: List[OpcionImplementacion] = Field(
-        description="3 vías de implementación: Ágil (modificar existente), Externa (cero código), Estructural (crear nuevo)"
+    acciones: List[AccionICE] = Field(
+        description="Tácticas AEO con scoring ICE para inyectar este concepto en motores IA"
     )
 
 
@@ -78,11 +156,15 @@ class TerritorioDesatendido(BaseModel):
     porque_es_oportunidad: str = Field(
         description="Por qué representa una oportunidad para la marca"
     )
-    volumen_busqueda: str = Field(
-        description="Volumen de búsqueda: Alto, Medio"
+    nivel_oportunidad: str = Field(
+        description="Nivel de oportunidad narrativa: Alto, Medio. Basado en tendencia del mercado, NO en volumen de búsquedas de Google."
     )
     intension_usuario: str = Field(
         description="Qué busca el usuario cuando realiza búsquedas en este tema"
+    )
+    crecimiento_trends: str = Field(
+        default="Buscando datos...",
+        description="Crecimiento real según Google Trends (ej: '+120% de interés', 'Tendencia estable')"
     )
 
 
@@ -137,9 +219,13 @@ class AnalisisMarca(BaseModel):
         default=None,
         description="Priorización ejecutiva para gerentes: Lo más importante"
     )
+    percepciones_genericas: List[str] = Field(
+        default_factory=list,
+        description="Atributos genéricos que la IA asocia con mi_marca pero que NO son relevantes para la búsqueda específica (por eso es invisible)"
+    )
     conceptos_faltantes: List[str] = Field(
         default_factory=list,
-        description="3 conceptos o palabras clave que usa la marca ganadora pero mi_marca no tiene (Mapa de Conceptos Perdidos)"
+        description="Diferenciadores específicos que usa el ganador y que mi_marca omite completamente en su contenido"
     )
     competidor_principal: str = Field(
         default="",
@@ -163,7 +249,25 @@ class AnalisisMarca(BaseModel):
         default_factory=list,
         description="Territorios desatendidos: temas emergentes que la marca no está cubriendo pero tienen alto potencial de búsqueda"
     )
-    
+    competitor_advantage: Optional['CompetitorAdvantage'] = Field(
+        default=None,
+        description="Tabla comparativa de ventajas del competidor principal vs nuestra marca"
+    )
+    estimated_search_volume: int = Field(
+        default=0,
+        ge=0,
+        le=100,
+        description="Volumen de búsqueda relativo estimado por la IA (0-100) basado en la intención de búsqueda"
+    )
+    competitor_winning_reasons: List[str] = Field(
+        default_factory=list,
+        description="Razones concretas por las que el competidor principal gana (ej: 'Autoridad de dominio', 'Menciones en prensa')"
+    )
+    cited_sources_types: List[str] = Field(
+        default_factory=list,
+        description="Tipos de fuentes que la IA consulta mentalmente para validar (ej: 'Revistas de moda', 'Blogs locales')"
+    )
+
     @field_validator('sentimiento')
     @classmethod
     def validate_sentimiento(cls, v: str) -> str:
@@ -228,9 +332,18 @@ class ResultadoBusqueda(BaseModel):
 
 class OportunidadAuditada(BaseModel):
     """Resultado de auditar un escenario generado por Discovery."""
+    arquetipo: str = Field("", description="Arquetipo de compra: Racional/Económico, Premium/Seguro, Impaciente/Digital")
+    necesidad_principal: str = Field("", description="Driver de decisión del arquetipo (ej: precio, reputación, velocidad)")
     segmento: str = Field(..., description="Descripción del perfil de persona")
     tendencia_base: str = Field(..., description="Pregunta generada en jerga chilena")
     pregunta_generada: str = Field(..., description="Prompt exacto enviado al LLM")
+    marca_elegida: Optional[str] = Field("", description="Marca que el LLM recomendó como ganadora para este arquetipo")
+    justificacion_basada_en_datos: str = Field("", description="Razón concreta por la que el LLM eligió esa marca, extraída del texto raw")
+    segunda_opcion: str = Field("", description="Segunda marca en la terna del arquetipo")
+    factor_desempate: str = Field("", description="Factor concreto que hizo ganar a marca_elegida sobre segunda_opcion")
+    certeza: int = Field(75, ge=50, le=100, description="Nivel de certeza del arquetipo en su decisión (50-100)")
+    dealbreaker_activado: bool = Field(False, description="True si el texto asocia a mi_marca con una fricción intolerable")
+    dealbreaker_detalle: str = Field("Sin fricción detectada", description="Evidencia del dealbreaker en el texto")
     resultado_auditoria: AnalisisMarca = Field(..., description="Análisis completo del juez")
     error: Optional[str] = Field(None, description="Error si falló esta auditoría")
 

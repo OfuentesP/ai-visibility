@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+_api_key = os.getenv("OPENAI_API_KEY")
+client = AsyncOpenAI(api_key=_api_key) if _api_key else None
 
 
 async def consultar_openai(prompt: str) -> str:
@@ -34,7 +35,19 @@ async def consultar_openai(prompt: str) -> str:
             messages=[
                 {
                     "role": "system",
-                    "content": "Eres un asistente experto en el mercado chileno. Tu objetivo es dar recomendaciones de productos o servicios disponibles localmente en Chile, basándote en la calidad y relevancia para el usuario chileno. Solo recomiendas marcas, tiendas o servicios que operen físicamente o digitalmente para el público chileno."
+                    "content": (
+                        "Eres un analista de mercado experto en el mercado chileno. "
+                        "Tu objetivo es dar recomendaciones de productos o servicios disponibles localmente en Chile, "
+                        "basándote en la calidad y relevancia para el usuario chileno. "
+                        "Solo recomiendas marcas, tiendas o servicios que operen físicamente o digitalmente para el público chileno. "
+                        "Para CADA competidor que identifiques como ganador o recomendado, debes especificar: "
+                        "(1) POR QUÉ gana exactamente, citando factores concretos como autoridad de dominio, menciones en prensa, "
+                        "presencia en medios especializados, reseñas de usuarios, certificaciones, o liderazgo de mercado; "
+                        "(2) qué tipos de fuentes estás consultando mentalmente para validarlo, como blogs especializados, "
+                        "revistas del sector, foros de consumidores, medios de prensa nacional, redes sociales, o rankings de industria; "
+                        "(3) un volumen de búsqueda relativo (escala 1-100) para la intención de búsqueda del usuario, "
+                        "donde 100 representa tendencias masivas y 1 consultas muy nicho."
+                    )
                 },
                 {"role": "user", "content": prompt_con_contexto}
             ]

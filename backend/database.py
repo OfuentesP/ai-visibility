@@ -16,50 +16,47 @@ logger = logging.getLogger(__name__)
 # Database URL from environment
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not DATABASE_URL:
-    raise ValueError(
-        "DATABASE_URL not found. "
-        "Set it in .env.local or as environment variable. "
-        "Example: DATABASE_URL=postgresql://user:pass@host:5432/dbname"
-    )
+DB_AVAILABLE = bool(DATABASE_URL)
 
-# Para desarrollo local, reemplaza el driver si es necesario
-# Si usas Supabase, la URL ya está completa
-if "localhost" in DATABASE_URL:
-    # Local development
-    engine = create_engine(DATABASE_URL)
+if not DB_AVAILABLE:
+    logger.warning(
+        "⚠️  DATABASE_URL not set. Running in demo mode (no DB persistence). "
+        "Set DATABASE_URL in .env to enable full functionality."
+    )
+    engine = None
+    SessionLocal = None
 else:
-    # Supabase o remote - agregar parámetros SSL
-    engine = create_engine(
-        DATABASE_URL,
-        echo=False,
-        connect_args={
-            "connect_timeout": 10,
-            "keepalives": 1,
-            "keepalives_idle": 30,
-        }
+    # Para desarrollo local, reemplaza el driver si es necesario
+    if "localhost" in DATABASE_URL:
+        engine = create_engine(DATABASE_URL)
+    else:
+        engine = create_engine(
+            DATABASE_URL,
+            echo=False,
+            connect_args={
+                "connect_timeout": 10,
+                "keepalives": 1,
+                "keepalives_idle": 30,
+            }
+        )
+    SessionLocal = sessionmaker(
+        autocommit=False,
+        autoflush=False,
+        bind=engine
     )
-
-# Session factory
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
 
 # Base para modelos
 Base = declarative_base()
 
 
-def get_db() -> Session:
+def get_db():
     """
-    Dependency para obtener session de BD en FastAPI
-    
-    Usage:
-        @app.get("/items")
-        def get_items(db: Session = Depends(get_db)):
-            return db.query(Item).all()
+    Dependency para obtener session de BD en FastAPI.
+    En modo demo (sin DB) retorna None.
     """
+    if not DB_AVAILABLE:
+        yield None
+        return
     db = SessionLocal()
     try:
         yield db
@@ -68,10 +65,9 @@ def get_db() -> Session:
 
 
 def init_db():
-    """
-    Inicializa las tablas en la base de datos
-    Ejecutar después de migrar con Prisma
-    """
+    if not DB_AVAILABLE:
+        logger.warning("⚠️  init_db() skipped — no DATABASE_URL configured")
+        return
     try:
         Base.metadata.create_all(bind=engine)
         logger.info("✅ Database tables created successfully")
@@ -81,12 +77,12 @@ def init_db():
 
 
 def test_connection():
-    """
-    Prueba la conexión a la base de datos
-    """
+    if not DB_AVAILABLE:
+        return False
     try:
+        from sqlalchemy import text
         connection = engine.connect()
-        result = connection.execute("SELECT 1")
+        connection.execute(text("SELECT 1"))
         connection.close()
         logger.info("✅ Database connection successful")
         return True

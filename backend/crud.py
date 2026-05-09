@@ -4,8 +4,8 @@ Operaciones con la base de datos
 """
 
 from sqlalchemy.orm import Session
-from database import Client, AuditURL, ContentAudit, Recommendation, Subscription
-from models import AnalisisMarca, ResultadoBusqueda
+from database import Client, AuditURL, ContentAudit, Recommendation
+from models import AnalisisMarca
 from datetime import datetime
 import uuid
 import logging
