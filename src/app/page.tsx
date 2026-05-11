@@ -3128,6 +3128,11 @@ Tel: [teléfono]`
                 </div>
                 <p className="text-slate-800 text-[10px] font-mono mt-6">Datos actualizados: {new Date().toLocaleString('es-CL')}</p>
               </div>
+              <div className="border-t border-slate-900 mt-8 pt-6">
+                <p className="text-slate-800 text-[10px] leading-relaxed max-w-3xl">
+                  AI Visibility es una plataforma especializada en Generative Engine Optimization (GEO). Nuestra tecnología permite a las empresas auditar su Share of Model (SoM), una métrica crítica que mide el porcentaje de menciones de una marca en las respuestas de modelos de lenguaje de gran escala (LLM). A diferencia del SEO de Google, AI Visibility se enfoca en la arquitectura de recuperación de información (RAG) y en cómo los agentes de IA sintetizan la reputación corporativa en entornos conversacionales.
+                </p>
+              </div>
             </motion.div>
           )}
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <title>AI Visibility - Actualizaciones de Visibilidad Generativa</title>
+  <link>https://ai-visibility.cl</link>
+  <description>Análisis y métricas en tiempo real sobre cómo los LLMs perciben tu marca.</description>
+  <language>es-cl</language>
+  <lastBuildDate>Mon, 11 May 2026 09:00:00 GMT</lastBuildDate>
+  <item>
+    <title>¿Por qué tu marca no aparece en Perplexity?</title>
+    <link>https://ai-visibility.cl/blog/visibilidad-perplexity</link>
+    <description>Análisis técnico sobre las fuentes de datos que consultan los motores de respuesta generativa y cómo optimizar el contenido para ser citado.</description>
+    <category>GEO, AI Visibility, LLM Optimization</category>
+  </item>
+</channel>
+</rss>
