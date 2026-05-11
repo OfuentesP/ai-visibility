@@ -1,6 +1,11 @@
 """Validación de territorios desatendidos contra Google Trends."""
 import logging
+import time
 from pytrends.request import TrendReq
+
+_PYTRENDS_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
+}
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +16,8 @@ def consultar_crecimiento(topico: str, geo: str = "CL", timeframe: str = "today 
     con el crecimiento porcentual en los últimos 3 meses.
     """
     try:
-        pytrends = TrendReq(hl="es-CL", tz=360, timeout=(4, 8))
+        pytrends = TrendReq(hl='es-CL', tz=240, timeout=(10, 25), retries=2, backoff_factor=0.1, requests_args={'headers': _PYTRENDS_HEADERS})
+        time.sleep(2)
         pytrends.build_payload([topico], cat=0, timeframe=timeframe, geo=geo)
         df = pytrends.interest_over_time()
 
@@ -66,7 +72,8 @@ def get_keyword_trend_direction(keyword: str, geo: str = "CL", timeframe: str = 
         str: 'Al alza', 'Estable' o 'Baja'
     """
     try:
-        pytrends = TrendReq(hl="es-CL", tz=360, timeout=(4, 8))
+        pytrends = TrendReq(hl='es-CL', tz=240, timeout=(10, 25), retries=2, backoff_factor=0.1, requests_args={'headers': _PYTRENDS_HEADERS})
+        time.sleep(2)
         pytrends.build_payload([keyword], cat=0, timeframe=timeframe, geo=geo)
         df = pytrends.interest_over_time()
 
