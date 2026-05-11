@@ -4,7 +4,6 @@ import { useState, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import ExecutiveReportTemplate from '@/components/ExecutiveReportTemplate'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, FileText } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList } from 'recharts'
@@ -315,7 +314,7 @@ export default function Dashboard() {
     setCitaLoading(true)
     setCitaResult(null)
     try {
-      const res = await fetch(`${API_URL}/api/audit/citability`, {
+      const res = await fetch('/api/audit/citability', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -344,7 +343,7 @@ export default function Dashboard() {
     setCompareLoading(true)
     setCompareResult(null)
     try {
-      const res = await fetch(`${API_URL}/api/audit/comparison`, {
+      const res = await fetch('/api/audit/comparison', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -387,7 +386,7 @@ export default function Dashboard() {
         setLoadingPhase(`${phases[i].text} ${phases[i].progress}%`)
         await new Promise((r) => setTimeout(r, 300 + Math.random() * 700))
       }
-      const response = await fetch(`${API_URL}/api/audit`, {
+      const response = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: query.trim(), brand: brand.trim() }),
@@ -402,7 +401,7 @@ export default function Dashboard() {
       setDiscoveryResult(null)
       setTrendsResult(null)
       setDiscoveryLoading(true)
-      fetch(`${API_URL}/api/discovery`, {
+      fetch('/api/discovery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ brand: brand.trim(), topico: query.trim() }),
@@ -421,7 +420,7 @@ export default function Dashboard() {
             .slice(0, 6)
           if (syntheticQueries.length > 0) {
             setTrendsLoading(true)
-            fetch(`${API_URL}/api/trends/related`, {
+            fetch('/api/trends/related', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ queries: syntheticQueries, geo: 'CL', max_per_query: 5 }),
@@ -461,7 +460,7 @@ export default function Dashboard() {
         setLoadingPhase(p)
         await new Promise((r) => setTimeout(r, 400 + Math.random() * 600))
       }
-      const res = await fetch(`${API_URL}/api/audit/from-url`, {
+      const res = await fetch('/api/audit/from-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, pais: 'Chile' }),
@@ -1934,8 +1933,7 @@ Tel: [teléfono]`
                                                   setBriefLoading(true)
                                                   setBriefData(null)
                                                   try {
-                                                    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
-                                                    const res = await fetch(`${backendUrl}/api/marketing/brief`, {
+                                                    const res = await fetch('/api/marketing/brief', {
                                                       method: 'POST',
                                                       headers: { 'Content-Type': 'application/json' },
                                                       body: JSON.stringify({
@@ -2017,8 +2015,7 @@ Tel: [teléfono]`
                                                     setBriefLoading(true)
                                                     setBriefData(null)
                                                     try {
-                                                      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
-                                                      const res = await fetch(`${backendUrl}/api/marketing/brief`, {
+                                                      const res = await fetch('/api/marketing/brief', {
                                                         method: 'POST',
                                                         headers: { 'Content-Type': 'application/json' },
                                                         body: JSON.stringify({
