@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { useReactToPrint } from 'react-to-print'
-import ExecutiveReportTemplate from '@/components/ExecutiveReportTemplate'
+import html2canvas from 'html2canvas'
 
-import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, FileText } from 'lucide-react'
+import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList } from 'recharts'
 
@@ -195,19 +194,23 @@ export default function Dashboard() {
   const [showPerfilesDetalle, setShowPerfilesDetalle] = useState(false)
   const [showModalCode, setShowModalCode] = useState(false)
 
-  // ── PDF Export ────────────────────────────────────────────────────────────
-  const reportRef = useRef<HTMLDivElement>(null)
-  const handlePrint = useReactToPrint({
-    contentRef: reportRef,
-    documentTitle: `AI Visibility - Informe`,
-    pageStyle: `
-      @page { size: A4 portrait; margin: 0; }
-      @media print {
-        html, body { background: white !important; }
-        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-      }
-    `,
-  })
+  // ── PNG Export ───────────────────────────────────────────────────────────
+  const urlReportRef = useRef<HTMLDivElement>(null)
+  const brandReportRef = useRef<HTMLDivElement>(null)
+
+  const handleExportPng = async (ref: React.RefObject<HTMLDivElement | null>, filename: string) => {
+    if (!ref.current) return
+    const canvas = await html2canvas(ref.current, {
+      backgroundColor: '#0f172a',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    })
+    const link = document.createElement('a')
+    link.download = `${filename}-${new Date().toISOString().slice(0,10)}.png`
+    link.href = canvas.toDataURL('image/png')
+    link.click()
+  }
 
   // ── Modo URL ──────────────────────────────────────────────────────────────
   const [mode, setMode] = useState<'brand' | 'url' | 'compare' | 'cita'>('brand')
@@ -880,8 +883,11 @@ Tel: [teléfono]`
               </div>
             </div>
             {result && (
-              <button id="btn-pdf" className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-sm text-slate-400 text-sm transition flex items-center gap-2">
-                ⬇ PDF
+              <button
+                onClick={() => handleExportPng(brandReportRef, `ai-visibility-${brand || 'informe'}`)}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-sm text-slate-400 text-sm transition flex items-center gap-2"
+              >
+                <Download size={14} /> PNG
               </button>
             )}
           </motion.div>
@@ -1320,6 +1326,7 @@ Tel: [teléfono]`
           {/* RESULTADOS URL */}
           {urlResult && (<>
             <motion.div
+              ref={urlReportRef}
               id="zone-url-resultados"
               className="space-y-6 mb-8"
               initial="hidden"
@@ -1804,11 +1811,11 @@ Tel: [teléfono]`
                       </div>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => handlePrint()}
+                          onClick={() => handleExportPng(urlReportRef, `ai-visibility-url-${urlResult?.marca || 'informe'}`)}
                           className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded border border-slate-600 text-slate-400 hover:border-slate-400 hover:text-slate-200 transition-colors"
                         >
-                          <FileText size={12} />
-                          Exportar PDF
+                          <Download size={12} />
+                          Exportar PNG
                         </button>
                         <div className={`text-xs font-semibold px-2.5 py-1 rounded border ${
                           urlResult.visibilidad_pct === 0
@@ -2302,16 +2309,14 @@ Tel: [teléfono]`
 
             </motion.div>
 
-            {/* ── Hidden PDF template (fuera de pantalla, accesible al motor de impresión) ── */}
-            <div id="executive-report-print" style={{ position: 'fixed', top: '-9999px', left: '-9999px', zIndex: -1 }} aria-hidden="true">
-              <ExecutiveReportTemplate ref={reportRef} urlResult={urlResult!} />
-            </div>
+
           </>)}
 
 
           {/* RESULTADOS */}
           {result && d && (
             <motion.div
+              ref={brandReportRef}
               id="zone-resultados"
               className="space-y-6"
               initial="hidden"
