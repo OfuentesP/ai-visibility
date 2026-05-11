@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Visibility — Auditoría de posicionamiento IA",
-  description: "Analiza cómo tu marca aparece en ChatGPT, Perplexity y motores de búsqueda con IA",
+  title: "AI Visibility | Auditoría de Visibilidad en LLMs y Motores de Respuesta Generativa (GEO)",
+  description: "Plataforma de análisis de presencia de marca en modelos de lenguaje (LLMs). Evalúa cómo ChatGPT, Perplexity, Claude y Gemini citan tu marca frente a la competencia mediante auditorías basadas en IA.",
 };
 
 export default function RootLayout({
