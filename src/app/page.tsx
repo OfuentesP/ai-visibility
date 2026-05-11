@@ -114,6 +114,30 @@ function queryToBullets(query: string): string[] {
   ].filter(Boolean).map(p => p.charAt(0).toUpperCase() + p.slice(1))
 }
 
+function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
+  const [open, setOpen] = useState<number | null>(null)
+  return (
+    <div className="space-y-2">
+      {items.map((item, i) => (
+        <div key={i} className="border border-slate-800 rounded-lg overflow-hidden">
+          <button
+            onClick={() => setOpen(open === i ? null : i)}
+            className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-900 transition-colors"
+          >
+            <span className="text-slate-200 font-semibold text-sm pr-4">{item.q}</span>
+            <span className={`text-slate-500 text-lg transition-transform duration-200 flex-shrink-0 ${open === i ? 'rotate-45' : ''}`}>+</span>
+          </button>
+          {open === i && (
+            <div className="px-5 pb-5 pt-1 border-t border-slate-800 bg-slate-950">
+              <p className="text-slate-400 text-sm leading-relaxed">{item.a}</p>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function Dashboard() {
   const [brand, setBrand] = useState('')
   const [query, setQuery] = useState('')
@@ -3105,35 +3129,28 @@ Tel: [teléfono]`
           <section id="faq-geo" className="max-w-4xl mx-auto px-4 py-16">
             <h2 className="text-2xl font-bold text-slate-200 mb-2">Preguntas Frecuentes sobre AI Visibility y GEO</h2>
             <p className="text-slate-500 text-sm mb-10">Respuestas directas sobre Generative Engine Optimization, Share of Model y visibilidad en LLMs.</p>
-            <div className="space-y-8">
-              {[
-                {
-                  q: '¿Qué es Generative Engine Optimization (GEO)?',
-                  a: 'Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG).'
-                },
-                {
-                  q: '¿Cuál es la diferencia entre SEO y GEO?',
-                  a: 'El SEO tradicional (Search Engine Optimization) busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la "respuesta definitiva" dentro de un texto conversacional generado por Inteligencia Artificial, donde no hay listas de enlaces, sino una única recomendación directa.'
-                },
-                {
-                  q: '¿Cómo evalúa AI Visibility mi presencia en la IA?',
-                  a: 'AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales (arquetipos). Nuestra plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento de esa mención, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.'
-                },
-                {
-                  q: '¿Qué es el Share of Model (SoM)?',
-                  a: 'El Share of Model (SoM) es la métrica de nueva generación que reemplaza al "Share of Voice". Representa el porcentaje exacto de veces que un modelo de inteligencia artificial cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios.'
-                },
-                {
-                  q: '¿Por qué mi marca no aparece en ChatGPT o Perplexity?',
-                  a: 'Los LLMs construyen sus respuestas basándose en sus datos de entrenamiento y en fuentes indexadas en tiempo real. Si tu marca no aparece, se debe a una falta de densidad de entidades, ausencia en fuentes de alta autoridad (medios, foros técnicos) o a la carencia de datos estructurados legibles para máquinas en tu propio sitio web.'
-                }
-              ].map((item, i) => (
-                <div key={i} className="border-l-2 border-slate-700 pl-6">
-                  <h3 className="text-slate-200 font-semibold text-base mb-2">{item.q}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{item.a}</p>
-                </div>
-              ))}
-            </div>
+            <FaqAccordion items={[
+              {
+                q: '¿Qué es Generative Engine Optimization (GEO)?',
+                a: 'Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG).'
+              },
+              {
+                q: '¿Cuál es la diferencia entre SEO y GEO?',
+                a: 'El SEO tradicional (Search Engine Optimization) busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la "respuesta definitiva" dentro de un texto conversacional generado por Inteligencia Artificial, donde no hay listas de enlaces, sino una única recomendación directa.'
+              },
+              {
+                q: '¿Cómo evalúa AI Visibility mi presencia en la IA?',
+                a: 'AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales (arquetipos). Nuestra plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento de esa mención, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.'
+              },
+              {
+                q: '¿Qué es el Share of Model (SoM)?',
+                a: 'El Share of Model (SoM) es la métrica de nueva generación que reemplaza al "Share of Voice". Representa el porcentaje exacto de veces que un modelo de inteligencia artificial cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios.'
+              },
+              {
+                q: '¿Por qué mi marca no aparece en ChatGPT o Perplexity?',
+                a: 'Los LLMs construyen sus respuestas basándose en sus datos de entrenamiento y en fuentes indexadas en tiempo real. Si tu marca no aparece, se debe a una falta de densidad de entidades, ausencia en fuentes de alta autoridad (medios, foros técnicos) o a la carencia de datos estructurados legibles para máquinas en tu propio sitio web.'
+              }
+            ]} />
           </section>
 
           {/* FOOTER */}
