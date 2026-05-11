@@ -551,7 +551,7 @@ REGLAS:
                     "role": "user",
                     "content": f"""Datos del análisis:
 - Marca analizada: {mi_marca}
-- Presencia en la IA: {'No aparece en ninguna respuesta' if posicion_mi_marca == 0 else f'Posición #{posicion_mi_marca} — {'está siendo mencionado pero no lidera' if posicion_mi_marca <= 3 else 'apenas aparece, la demanda va a la competencia'}'}
+- Presencia en la IA: {'No aparece en ninguna respuesta' if posicion_mi_marca == 0 else f'Posición #{posicion_mi_marca} — {"está siendo mencionado pero no lidera" if posicion_mi_marca <= 3 else "apenas aparece, la demanda va a la competencia"}'}
 - Sentimiento percibido: {sentimiento}
 - Marca que capta la demanda hoy: {marca_ganadora or 'competidores no identificados'}
 - Clasificación estratégica: {clasificacion} — {estrategia}
