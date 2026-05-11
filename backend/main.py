@@ -12,7 +12,7 @@ import json
 from openai import AsyncOpenAI
 import httpx
 from pydantic import BaseModel, Field
-from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse
+from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
 from database import get_db, test_connection
 from crud import (
     crear_cliente, obtener_cliente, listar_clientes, obtener_urls_cliente,
@@ -750,6 +750,8 @@ class AuditFromUrlResponse(BaseModel):
     visibilidad_pct: float
     plan_accion: dict = {}          # acciones AEO con ICE scoring para aparecer
     keyword_trend: str = "Estable"  # 'Al alza', 'Estable' o 'Baja' via Google Trends
+    competitive_deep_dive: dict = {}   # por qué la IA prefiere al competidor ganador
+    untapped_territories: list = []    # 3 nichos de baja competencia en IA
 
 
 @app.post("/api/audit/from-url", response_model=AuditFromUrlResponse)
@@ -847,15 +849,24 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
         logger.info(f"[from-url] Trend '{context.categoria}': {keyword_trend}")
 
         # ── 5. Plan de acción AEO ────────────────────────────────────────
-        from url_analyzer import generar_plan_url
-        plan = await generar_plan_url(
-            marca=context.marca,
-            categoria=context.categoria,
-            mercado=context.mercado,
-            diferenciadores=context.diferenciadores,
-            resultados=resultados,
+        from url_analyzer import generar_plan_url, generar_inteligencia_competitiva
+        plan, intel = await asyncio.gather(
+            generar_plan_url(
+                marca=context.marca,
+                categoria=context.categoria,
+                mercado=context.mercado,
+                diferenciadores=context.diferenciadores,
+                resultados=resultados,
+            ),
+            generar_inteligencia_competitiva(
+                marca=context.marca,
+                categoria=context.categoria,
+                mercado=context.mercado,
+                resultados=resultados,
+            ),
         )
         logger.info(f"[from-url] Plan: {len(plan.get('vehiculos', []))} vehículos")
+        logger.info(f"[from-url] Intel competitiva: competidor={intel.get('competitive_deep_dive', {}).get('competidor', 'N/A')}")
 
         return AuditFromUrlResponse(
             marca=context.marca,
@@ -870,6 +881,8 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
             visibilidad_pct=visibilidad_pct,
             plan_accion=plan,
             keyword_trend=keyword_trend,
+            competitive_deep_dive=intel.get("competitive_deep_dive", {}),
+            untapped_territories=intel.get("untapped_territories", []),
         )
 
     except HTTPException:
@@ -1364,6 +1377,66 @@ Si no mencionarías ninguna marca específica, devuelve marcas_mencionadas como 
         total_medias=len(medias),
         total_altas=len(altas),
     )
+
+
+# ──────────────────────────────────────────────────────────────
+# MARKETING BRIEF — Omnicanal + FAQs estratégicas
+# ──────────────────────────────────────────────────────────────
+
+
+@app.post("/api/marketing/brief", response_model=OmnichannelBrief)
+async def generate_marketing_brief(body: MarketingBriefRequest) -> OmnichannelBrief:
+    """
+    Traduce una Oportunidad de Mercado detectada por la IA en un plan de contenidos
+    omnicanal listo para ejecutar (blog, Instagram, e-commerce) + FAQs estratégicas.
+    """
+    if not _openai_client:
+        raise HTTPException(status_code=503, detail="OpenAI API key no configurada")
+
+    prompt = f"""Eres un Director Comercial experto en SEO Semántico y Omnicanalidad.
+
+Oportunidad de mercado: "{body.market_opportunity}"
+Arquetipo de comprador: "{body.archetype}"
+Marca: "{body.brand}"
+Categoría: "{body.categoria}"
+
+Basado en esta oportunidad, genera:
+1. blog_title_suggestion: Un título de artículo que responda a una búsqueda transaccional real (ej: Cómo elegir..., La guía definitiva de...). Debe incluir palabras clave de intención.
+2. instagram_reel_hook: El gancho de los primeros 2 segundos de un Reel/Short. Máximo 2 líneas. Emocional o sorpresivo, que detenga el scroll.
+3. ecommerce_product_description_snippet: Un párrafo corto (2-3 oraciones) para descripción de producto, con palabras clave de intención de compra y el diferenciador principal.
+4. required_trust_signals: Lista de 3-4 señales de confianza concretas que la marca debe recopilar para validar esta oportunidad (ej: "Testimonios con foto de clientes reales usando el producto").
+5. strategic_faqs: Exactamente 3 preguntas que el arquetipo "{body.archetype}" le haría a ChatGPT o Google antes de comprar. Cada FAQ tiene:
+   - question: Debe comenzar con Qué, Cómo o Cuál
+   - suggested_answer_angle: 1 línea de instrucción sobre cómo la marca debe responder para persuadir a la IA y al usuario
+
+Devuelve SOLO JSON válido con exactamente estas claves:
+{{
+  "blog_title_suggestion": "...",
+  "instagram_reel_hook": "...",
+  "ecommerce_product_description_snippet": "...",
+  "required_trust_signals": ["...", "...", "..."],
+  "strategic_faqs": [
+    {{"question": "...", "suggested_answer_angle": "..."}},
+    {{"question": "...", "suggested_answer_angle": "..."}},
+    {{"question": "...", "suggested_answer_angle": "..."}}
+  ]
+}}"""
+
+    try:
+        response = await _openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            temperature=0.7,
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": "Generador de briefs de marketing omnicanal. Devuelve SOLO JSON válido."},
+                {"role": "user", "content": prompt},
+            ],
+        )
+        data = json.loads(response.choices[0].message.content)
+        return OmnichannelBrief(**data)
+    except Exception as e:
+        logger.error(f"Error generando marketing brief: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generando brief: {str(e)}")
 
 
 if __name__ == "__main__":

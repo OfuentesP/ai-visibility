@@ -356,3 +356,40 @@ class DiscoveryResponse(BaseModel):
     amenaza_principal: Optional[str] = None
     total_auditados: int = 0
     total_errores: int = 0
+
+
+class OmnichannelBrief(BaseModel):
+    """Brief de contenido omnicanal generado a partir de una oportunidad de mercado."""
+    blog_title_suggestion: str = Field(
+        description="Título de artículo que responde a búsqueda transaccional (ej: Cómo elegir...)"
+    )
+    instagram_reel_hook: str = Field(
+        description="Primer texto del Reel/Short, máximo 2 líneas, gancho emocional/curioso"
+    )
+    ecommerce_product_description_snippet: str = Field(
+        description="Snippet de descripción de producto con palabras clave de intención de compra"
+    )
+    required_trust_signals: List[str] = Field(
+        description="Señales de confianza que la marca debe recopilar (ej: 'Testimonios sobre durabilidad')"
+    )
+    strategic_faqs: List[dict] = Field(
+        default_factory=list,
+        description="3 FAQs estratégicas con question y suggested_answer_angle"
+    )
+
+
+class MarketingBriefRequest(BaseModel):
+    """Request para generar brief omnicanal."""
+    market_opportunity: str = Field(
+        description="Oportunidad de mercado detectada (concepto_objetivo o segmento_impactado)"
+    )
+    archetype: str = Field(
+        description="Arquetipo de comprador (ej: La Profesional Exigente)"
+    )
+    brand: str = Field(
+        description="Nombre de la marca"
+    )
+    categoria: str = Field(
+        default="",
+        description="Categoría del producto o servicio"
+    )

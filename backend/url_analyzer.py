@@ -341,6 +341,130 @@ Devuelve SOLO JSON:
         return {"vehiculos": [], "roi_estimado": ""}
 
 
+# ─── Inteligencia Competitiva ───────────────────────────────────────────────
+
+async def generar_inteligencia_competitiva(
+    marca: str,
+    categoria: str,
+    mercado: str,
+    resultados: list[dict],
+) -> dict:
+    """
+    Genera dos bloques de inteligencia estratégica:
+    - competitive_deep_dive: por qué la IA prefiere al competidor ganador
+    - untapped_territories: 3 nichos de baja competencia en IA
+    """
+    if not _openai:
+        return {"competitive_deep_dive": {}, "untapped_territories": []}
+
+    # Determinar competidor ganador
+    ganador_counts: dict[str, int] = {}
+    for r in resultados:
+        gw = r.get("marca_ganadora") or ""
+        if gw and gw.lower() != marca.lower():
+            ganador_counts[gw] = ganador_counts.get(gw, 0) + 1
+
+    if not ganador_counts:
+        return {"competitive_deep_dive": {}, "untapped_territories": []}
+
+    competidor = max(ganador_counts, key=lambda k: ganador_counts[k])
+
+    # Consolidar razones del ganador de los resultados
+    razones_ganador = list({
+        r
+        for res in resultados
+        if (res.get("marca_ganadora") or "").lower() == competidor.lower()
+        for r in (res.get("competitor_winning_reasons") or [])
+    })[:6]
+
+    fuentes_ganador = list({
+        s
+        for res in resultados
+        if (res.get("marca_ganadora") or "").lower() == competidor.lower()
+        for s in (res.get("cited_sources_types") or [])
+    })[:4]
+
+    prompt = f"""Eres un consultor estratégico de inteligencia competitiva para motores de IA (ChatGPT, Perplexity, Google AI Overviews).
+
+## CONTEXTO
+Marca analizada: {marca}
+Categoría: {categoria}
+Mercado: {mercado}
+Competidor que gana actualmente en IA: {competidor}
+Razones identificadas de por qué gana: {', '.join(razones_ganador) if razones_ganador else 'No especificadas'}
+Fuentes de autoridad que usa la IA para recomendarlo: {', '.join(fuentes_ganador) if fuentes_ganador else 'No especificadas'}
+
+## TU TAREA
+Genera dos secciones de inteligencia:
+
+### 1. competitive_deep_dive
+Explica por qué la IA prioriza a {competidor} sobre {marca}. Incluye:
+A) percepcion_nuestra_marca: cómo percibe HOY la IA a {marca} (1-2 oraciones directas, con ejemplos concretos como "oferta limitada a X segmento", "sin reseñas verificadas externas", etc.)
+B) mensaje_competidor: qué comunica {competidor} que {marca} NO comunica, con ejemplos específicos (ej: "reseñas en Google con 4.8★", "artículos en medios especializados", "comparativas en blogs de expertos")
+C) tabla_atributos: exactamente 3 atributos donde {competidor} supera a {marca}. Para cada uno:
+   - atributo: el atributo concreto que comunica el competidor
+   - autoridad_digital: la fuente de verdad que usa la IA para creerle (ej: "Menciones en El Mercurio Digital", "FAQ estructurado en su web", "Wikidata entity")
+   - impacto_comercial: lo que pierde {marca} por no tenerlo (ej: "Pierde la comparativa ante compradores de primera vez")
+
+### 2. untapped_territories
+3 nichos de mercado relacionados con {categoria} en {mercado} donde la competencia en IA es baja o nula.
+Para cada nicho:
+- titulo: nombre del nicho (4-6 palabras, lenguaje de comprador)
+- justificacion_negocio: por qué es una oportunidad real (1-2 oraciones)
+- tendencia: una de estas tres opciones EXACTAS: "↗ Tendencia al alza", "→ Tendencia estable", "⚡ Oportunidad emergente"
+- nivel_competencia_ia: "Baja" | "Muy baja" | "Nula"
+
+Devuelve SOLO JSON válido con este esquema exacto:
+{{
+  "competitive_deep_dive": {{
+    "competidor": "{competidor}",
+    "percepcion_nuestra_marca": "string",
+    "mensaje_competidor": "string",
+    "tabla_atributos": [
+      {{
+        "atributo": "string",
+        "autoridad_digital": "string",
+        "impacto_comercial": "string"
+      }}
+    ]
+  }},
+  "untapped_territories": [
+    {{
+      "titulo": "string",
+      "justificacion_negocio": "string",
+      "tendencia": "string",
+      "nivel_competencia_ia": "string"
+    }}
+  ]
+}}"""
+
+    try:
+        response = await _openai.chat.completions.create(
+            model="gpt-4o-mini",
+            temperature=0.5,
+            response_format={"type": "json_object"},
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        f"Eres un analista de inteligencia competitiva. Genera diagnóstico ESPECÍFICO para {marca} vs {competidor} en {categoria}. "
+                        "Devuelve SOLO JSON válido. Usa lenguaje directo y orientado a negocio, no técnico."
+                    ),
+                },
+                {"role": "user", "content": prompt},
+            ],
+        )
+        data = json.loads(response.choices[0].message.content)
+        logger.info(f"[url_analyzer] ✅ Inteligencia competitiva vs {competidor} generada")
+        return {
+            "competitive_deep_dive": data.get("competitive_deep_dive", {}),
+            "untapped_territories": data.get("untapped_territories", [])[:3],
+        }
+    except Exception as e:
+        logger.warning(f"[url_analyzer] Error generando inteligencia competitiva: {e}")
+        return {"competitive_deep_dive": {}, "untapped_territories": []}
+
+
 # ─── Función principal ──────────────────────────────────────────────────────
 
 async def analizar_url(url: str, pais_hint: str = "Chile") -> SiteContext:
