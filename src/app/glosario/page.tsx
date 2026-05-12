@@ -73,7 +73,7 @@ export default function GlosarioPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="max-w-3xl mx-auto py-16 px-4">
+      <main className="max-w-6xl mx-auto py-16 px-4">
 
         {/* Header */}
         <div className="mb-14">
@@ -87,9 +87,9 @@ export default function GlosarioPage() {
         </div>
 
         {/* Terms */}
-        <div className="divide-y divide-slate-800/60">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 divide-y-0">
           {terminos.map((item, i) => (
-            <div key={item.id} id={item.id} className="py-8 flex gap-6">
+            <div key={item.id} id={item.id} className="py-7 flex gap-6 border-b border-slate-800/60">
               {/* Index */}
               <span className="text-[11px] font-mono text-slate-700 pt-0.5 w-5 shrink-0 select-none">
                 {String(i + 1).padStart(2, '0')}
