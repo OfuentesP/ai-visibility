@@ -3145,7 +3145,7 @@ Tel: [teléfono]`
           )}
 
           {/* FAQ GEO */}
-          <section id="faq-geo" className="max-w-3xl mx-auto px-4 py-20">
+          <section id="faq-geo" className="w-full px-4 py-20">
             <div className="mb-10">
               <p className="text-[10px] font-mono text-indigo-500 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
               <h2 className="text-xl font-semibold text-slate-100 leading-snug">AI Visibility &amp; Generative Engine Optimization</h2>
