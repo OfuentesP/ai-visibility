@@ -1351,11 +1351,10 @@ Tel: [teléfono]`
               variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             >
 
-              {/* 1 · VEREDICTO EJECUTIVO URL */}
+              {/* 0 · RESUMEN EJECUTIVO — diseñado para ser leído por un gerente en 20 seg */}
               {(() => {
                 const score = urlResult.visibilidad_pct
-                const visible = urlResult.queries_con_mencion
-                const total = urlResult.total_queries
+                const invisible = urlResult.total_queries - urlResult.queries_con_mencion
                 const ganadorCounts: Record<string, number> = {}
                 urlResult.resultados.forEach(r => {
                   if (r.marca_ganadora && r.marca_ganadora.toLowerCase() !== urlResult.marca.toLowerCase()) {
@@ -1363,73 +1362,89 @@ Tel: [teléfono]`
                   }
                 })
                 const topCompetitor = Object.entries(ganadorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'la competencia'
-                const isAtacar = score === 0
-                const isMantener = visible === total
-                const theme = isAtacar
-                  ? { bg: 'bg-rose-950/20', border: 'border-rose-500/30', bar: 'bg-rose-500', icon: <AlertTriangle className="w-5 h-5 text-rose-400" /> }
-                  : isMantener
-                  ? { bg: 'bg-emerald-950/20', border: 'border-emerald-900/30', bar: 'bg-emerald-500', icon: <ShieldCheck className="w-5 h-5 text-emerald-500" /> }
-                  : { bg: 'bg-amber-950/25', border: 'border-amber-900/40', bar: 'bg-amber-500', icon: <TriangleAlert className="w-5 h-5 text-amber-500" /> }
-                let titulo = ''
-                let subtitulo = ''
-                if (visible === 0) {
-                  titulo = 'Riesgo Crítico de Visibilidad Digital'
-                  subtitulo = `La marca está fuera del set de consideración del 100% de los compradores que utilizan IA para esta categoría. El tráfico orgánico está siendo derivado a la competencia.`
-                } else if (visible === total) {
-                  titulo = `${urlResult.marca} lidera su categoría en IA`
-                  subtitulo = `Apareces para los ${total} perfiles auditados. El competidor más activo es ${topCompetitor}.`
-                } else {
-                  titulo = `${urlResult.marca} aparece para ${visible} de ${total} perfiles`
-                  subtitulo = `${total - visible} perfil${total - visible > 1 ? 'es' : ''} no te encuentran. La IA prefiere a ${topCompetitor} en esas búsquedas.`
-                }
+                const topActions = urlResult.plan_accion?.vehiculos.flatMap(v => v.acciones).sort((a, b) => b.ice_score - a.ice_score).slice(0, 3) ?? []
+                const scoreColor = score === 0 ? 'text-rose-400' : score < 60 ? 'text-amber-400' : 'text-emerald-400'
+                const accentBorder = score === 0 ? 'border-l-rose-500' : score < 60 ? 'border-l-amber-500' : 'border-l-emerald-500'
                 return (
                   <motion.div
-                    id="zone-url-veredicto"
-                    variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }}
-                    className={`${theme.bg} border ${theme.border} rounded-sm flex items-stretch overflow-hidden`}
+                    variants={{ hidden: { opacity: 0, y: -8 }, visible: { opacity: 1, y: 0 } }}
+                    className={`bg-slate-900 border border-slate-700 border-l-4 ${accentBorder} rounded-sm overflow-hidden`}
                   >
-                    <div className={`w-1.5 shrink-0 ${theme.bar}`} />
-                    <div className="flex-1 px-6 py-5">
-                      <div className="flex flex-col md:flex-row md:items-start gap-5">
-                        {/* Score */}
-                        <div className="shrink-0 flex flex-col items-center md:items-start">
-                          <div className="flex items-baseline gap-1">
-                            <span className={`text-4xl font-light tabular-nums ${score >= 100 ? 'text-emerald-400' : score > 0 ? 'text-amber-400' : 'text-rose-400'}`}>{score}</span>
-                            <span className="text-slate-500 text-base">%</span>
-                          </div>
-                          <div className="w-28 bg-slate-800/60 h-1.5 rounded-full overflow-hidden mt-2">
-                            <div className={`h-full rounded-full ${theme.bar} transition-all duration-700`} style={{ width: `${score}%` }} />
-                          </div>
-                          <p className="text-slate-500 text-sm mt-1">{visible}/{total} perfiles</p>
+                    {/* Label superior */}
+                    <div className="px-5 pt-4 pb-3 border-b border-slate-800 flex items-center justify-between">
+                      <p className="text-xs font-mono uppercase tracking-widest text-slate-400">Resumen ejecutivo · {urlResult.marca}</p>
+                      <span className={`text-sm font-semibold font-mono ${scoreColor}`}>
+                        {score}% visibilidad en IA
+                      </span>
+                    </div>
+
+                    {/* 3 hechos de negocio */}
+                    <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800">
+                      {/* Hecho 1 — el problema */}
+                      <div className="px-5 py-4 flex gap-3 items-start">
+                        <span className="text-rose-400 text-base font-bold leading-none mt-0.5 shrink-0">①</span>
+                        <div>
+                          <p className="text-sm font-semibold text-white leading-snug mb-1">
+                            {invisible === 0
+                              ? `Apareces en todas las búsquedas de IA`
+                              : invisible === urlResult.total_queries
+                              ? `La IA no te menciona en ninguna búsqueda`
+                              : `De cada ${urlResult.total_queries} búsquedas con IA, ${invisible} no te incluyen`}
+                          </p>
+                          <p className="text-sm text-slate-400 leading-relaxed">
+                            {invisible === 0
+                              ? 'Mantén y expande tu posición.'
+                              : `Esas consultas las gana ${topCompetitor}.`}
+                          </p>
                         </div>
-                        {/* Narrative */}
-                        <div className="flex-1">
-                          <div className="flex items-start gap-2.5">
-                            <div className="mt-0.5">{theme.icon}</div>
-                            <div>
-                              <h2 className="text-base font-semibold text-slate-100 leading-snug">{titulo}</h2>
-                              <p className="text-slate-300 text-sm mt-1 leading-relaxed">{subtitulo}</p>
-                              <div className="mt-3 flex flex-col gap-0.5 max-w-full">
-                                <span className="text-[11px] uppercase tracking-widest text-slate-500 font-medium">Mercado auditado</span>
-                                <span className="text-sm font-medium text-slate-300 bg-slate-800/60 border border-slate-700/50 rounded px-3 py-1 break-words">{urlResult.categoria} · {urlResult.mercado}</span>
-                              </div>
-                            </div>
-                          </div>
+                      </div>
+
+                      {/* Hecho 2 — el competidor */}
+                      <div className="px-5 py-4 flex gap-3 items-start">
+                        <span className="text-amber-400 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
+                        <div>
+                          <p className="text-sm font-semibold text-white leading-snug mb-1">
+                            La IA elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas
+                          </p>
+                          <p className="text-sm text-slate-400 leading-relaxed">
+                            Tiene más presencia en las fuentes que la IA consulta.
+                          </p>
                         </div>
-                        {/* Diferenciadores */}
-                        <div className="shrink-0 flex flex-col gap-2 max-w-xs">
-                          <div className="border border-slate-700/40 rounded-sm px-4 py-3 bg-slate-900/60">
-                            <p className="text-sm font-semibold text-slate-300 mb-1">La Brecha de Mensaje</p>
-                            <p className="text-slate-500 text-xs mb-3 leading-relaxed">Su web intenta posicionar estos conceptos, pero la IA no los valida en fuentes externas:</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {urlResult.diferenciadores.slice(0, 5).map((dif, i) => (
-                                <span key={i} className="text-sm px-2.5 py-1 bg-slate-800/70 border border-slate-700/50 rounded-full text-slate-300 max-w-[200px] truncate" title={dif}>{dif}</span>
-                              ))}
-                            </div>
-                          </div>
+                      </div>
+
+                      {/* Hecho 3 — lo que se puede hacer */}
+                      <div className="px-5 py-4 flex gap-3 items-start">
+                        <span className="text-emerald-400 text-base font-bold leading-none mt-0.5 shrink-0">③</span>
+                        <div>
+                          <p className="text-sm font-semibold text-white leading-snug mb-1">
+                            {topActions.length > 0
+                              ? `${topActions.length} acciones concretas para recuperar posición en 30–60 días`
+                              : 'Plan de recuperación disponible más abajo'}
+                          </p>
+                          <p className="text-sm text-slate-400 leading-relaxed">
+                            {topActions[0]?.tiempo_indexacion_ia
+                              ? `Primera acción visible en ${topActions[0].tiempo_indexacion_ia}`
+                              : 'Ver plan detallado más abajo'}
+                          </p>
                         </div>
                       </div>
                     </div>
+
+                    {/* Franja inferior — mercado + lo que la IA no confirma */}
+                    <div className="border-t border-slate-800 px-5 py-3 flex flex-col sm:flex-row sm:items-center gap-3">
+                      <span className="text-xs font-mono text-slate-500 bg-slate-800 border border-slate-700 rounded px-2.5 py-1 shrink-0">
+                        {urlResult.categoria} · {urlResult.mercado}
+                      </span>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs text-slate-500 shrink-0">La IA no confirma →</span>
+                        {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
+                          <span key={i} className="text-xs text-slate-400 bg-slate-800/70 border border-slate-700 rounded px-2 py-0.5">
+                            {dif}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
                   </motion.div>
                 )
               })()}
@@ -1445,13 +1460,19 @@ Tel: [teléfono]`
                 })
                 const allBrands = Object.entries(brandFreq).sort((a, b) => b[1] - a[1])
                 const maxScore = allBrands[0]?.[1] || 1
-                const chartData = allBrands.map(([marca, raw]) => ({
+                const chartDataRaw = allBrands.map(([marca, raw]) => ({
                   marca,
                   score: Math.round((raw / maxScore) * 100),
                   isUser: marca.toLowerCase() === urlResult.marca.toLowerCase(),
                   isWinner: marca.toLowerCase() === allBrands[0][0].toLowerCase(),
+                  ghost: false,
                 }))
-                const miMarcaEnLista = chartData.some(e => e.isUser)
+                const miMarcaEnLista = chartDataRaw.some(e => e.isUser)
+                // Si la marca no aparece, agregar barra fantasma al final
+                // score=1 fuerza que el track background sea visible; la barra en sí es casi transparente
+                const chartData = miMarcaEnLista
+                  ? chartDataRaw
+                  : [...chartDataRaw, { marca: 'Tu marca', score: 1, isUser: true, isWinner: false, ghost: true }]
                 const competitorWidths = chartData.filter(e => !e.isUser).map(e => e.score)
                 const promedio = competitorWidths.length > 0
                   ? Math.round(competitorWidths.reduce((a, b) => a + b, 0) / competitorWidths.length)
@@ -1476,28 +1497,9 @@ Tel: [teléfono]`
                     variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
                     className="bg-slate-950 border border-slate-800 rounded-sm p-6"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
-                      <div>
-                        <h3 className="text-sm font-semibold text-slate-100">Dominio de Mercado en Motores de IA <span className="text-slate-500 font-normal">(Share of Voice)</span></h3>
-                        <p className="text-gray-400 text-sm mt-1">Marcas que están capturando actualmente la demanda de sus clientes potenciales.</p>
-                      </div>
-                      <div className="flex flex-row sm:flex-col sm:items-end items-center gap-2 shrink-0">
-                        <span className="text-sm font-mono text-slate-500 bg-slate-800 border border-slate-700 px-2 py-1 rounded">
-                          {chartData.length} marcas
-                        </span>
-                        {urlResult.keyword_trend && (
-                          <span className={`text-sm font-semibold px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${
-                            urlResult.keyword_trend === 'Al alza'
-                              ? 'bg-emerald-950/40 text-emerald-400 border-emerald-500/20'
-                              : urlResult.keyword_trend === 'Baja'
-                              ? 'bg-rose-950/40 text-rose-400 border-rose-500/20'
-                              : 'bg-slate-800 text-slate-400 border-slate-700'
-                          }`}>
-                            {urlResult.keyword_trend === 'Al alza' ? '↑' : urlResult.keyword_trend === 'Baja' ? '↓' : '→'}
-                            {' '}Demanda en CL: <strong>{urlResult.keyword_trend}</strong>
-                          </span>
-                        )}
-                      </div>
+                    <div className="mb-5">
+                      <h3 className="text-sm font-semibold text-slate-100">¿A quién recomienda la IA cuando tu cliente busca?</h3>
+                      <p className="text-slate-400 text-sm mt-1">Estas son las marcas que aparecen cuando un comprador real le pregunta a ChatGPT, Gemini o Perplexity.</p>
                     </div>
                     <ResponsiveContainer width="100%" height={chartHeight}>
                       <BarChart layout="vertical" data={chartData} margin={{ top: 2, right: 56, bottom: 2, left: 0 }}>
@@ -1520,12 +1522,20 @@ Tel: [teléfono]`
                             const { x, y, payload, index } = props as { x: number; y: number; payload: { value: string }; index: number }
                             const entry = chartData[index]
                             const isUser = entry?.isUser
+                            const isGhost = entry?.ghost
                             const rank = index + 1
                             return (
                               <g>
-                                <text x={x - 118} y={y} dy={4} textAnchor="end" fill={rank === 1 ? '#fbbf24' : '#475569'} fontWeight={700} fontSize={9} fontFamily="ui-monospace, monospace">#{rank}</text>
-                                <text x={x - 4} y={y} dy={4} textAnchor="end" fill={isUser ? '#38bdf8' : entry?.isWinner ? '#fbbf24' : '#94a3b8'} fontWeight={isUser || entry?.isWinner ? 700 : 400} fontSize={11}>
-                                  {isUser ? '→ ' : ''}{payload?.value}
+                                {!isGhost && (
+                                  <text x={x - 118} y={y} dy={4} textAnchor="end" fill={rank === 1 ? '#fbbf24' : '#475569'} fontWeight={700} fontSize={9} fontFamily="ui-monospace, monospace">#{rank}</text>
+                                )}
+                                <text x={x - 4} y={y} dy={4} textAnchor="end"
+                                  fill={isGhost ? '#334155' : isUser ? '#38bdf8' : entry?.isWinner ? '#fbbf24' : '#94a3b8'}
+                                  fontWeight={isUser && !isGhost ? 700 : 400}
+                                  fontSize={11}
+                                  fontStyle={isGhost ? 'italic' : 'normal'}
+                                >
+                                  {isUser && !isGhost ? `→ ${payload?.value}` : payload?.value}
                                 </text>
                               </g>
                             )
@@ -1575,7 +1585,9 @@ Tel: [teléfono]`
                               <Cell
                                 key={idx}
                                 fill={
-                                  entry.isUser
+                                  entry.ghost
+                                    ? 'rgba(56,189,248,0.08)'
+                                    : entry.isUser
                                     ? 'url(#userGradientUrl)'
                                     : isDominant
                                     ? 'url(#dominantGradient)'
@@ -1593,6 +1605,13 @@ Tel: [teléfono]`
                               const { x, y, width, height, value, index } = props as { x: number; y: number; width: number; height: number; value: number; index: number }
                               const entry = chartData[index]
                               const isDominant = entry?.isWinner && entry.score >= 90
+                              if (entry?.ghost) {
+                                return (
+                                  <text x={(x ?? 0) + 8} y={(y ?? 0) + (height ?? 0) / 2} dy={4} fill="#334155" fontSize={11} fontFamily="ui-sans-serif, system-ui" fontStyle="italic">
+                                    {urlResult.marca} — no aparece en estas búsquedas
+                                  </text>
+                                )
+                              }
                               return (
                                 <text x={(x ?? 0) + (width ?? 0) + 8} y={(y ?? 0) + (height ?? 0) / 2} dy={4} fill={entry?.isUser ? '#38bdf8' : isDominant ? '#fb923c' : '#64748b'} fontWeight={entry?.isUser || isDominant ? 700 : 400} fontSize={11} fontFamily="ui-monospace, monospace">
                                   {value}%
@@ -1601,35 +1620,28 @@ Tel: [teléfono]`
                             }}
                           />
                         </Bar>
-                        <ReferenceLine x={promedio} stroke="#f59e0b" strokeDasharray="3 3" strokeOpacity={0.45} />
+                        <ReferenceLine
+                          x={promedio}
+                          stroke="#f59e0b"
+                          strokeDasharray="3 3"
+                          strokeOpacity={0.5}
+                          label={{ value: `Promedio: ${promedio}%`, position: 'insideTopRight', fill: '#b45309', fontSize: 10, fontFamily: 'ui-monospace, monospace' }}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
-                    <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 gap-x-5 mt-3 px-1">
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                        <span className="flex items-center gap-1.5 text-xs text-sky-400">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> → Tu marca
-                        </span>
-                        <span className="flex items-center gap-1.5 text-xs text-amber-400">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-amber-700 shrink-0" /> #1 Competidor
-                        </span>
-                        <span className="flex items-center gap-1.5 text-xs text-orange-400">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-orange-600 to-orange-400 shrink-0" /> Dominancia (≥90%)
-                        </span>
-                        <span className="flex items-center gap-1.5 text-xs text-amber-500/70">
-                          <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio
-                        </span>
-                      </div>
-                      {miMarcaEnLista && (() => {
-                        const userEntry = chartData.find(e => e.isUser)
-                        const userScore = userEntry ? userEntry.score : 0
-                        const delta = userScore - promedio
-                        if (delta === 0) return null
-                        return (
-                          <span className={`sm:ml-auto text-xs font-semibold px-2.5 py-1 rounded self-start sm:self-auto ${delta > 0 ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/20' : 'bg-rose-950/40 text-rose-400 border border-rose-500/20'}`}>
-                            {delta > 0 ? `+${delta}pp vs promedio` : `${delta}pp vs promedio`}
-                          </span>
-                        )
-                      })()}
+                    <div className="flex items-center gap-5 mt-4 px-1">
+                      <span className="flex items-center gap-1.5 text-xs text-sky-400">
+                        <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" />
+                        Tu marca
+                      </span>
+                      <span className="flex items-center gap-1.5 text-xs text-orange-400">
+                        <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-orange-600 to-orange-400 shrink-0" />
+                        Líder actual
+                      </span>
+                      <span className="flex items-center gap-1.5 text-xs text-amber-500/70">
+                        <span className="w-4 border-t border-dashed border-amber-500/60 shrink-0" />
+                        Promedio del mercado
+                      </span>
                     </div>
                   </motion.div>
                 )
@@ -1648,91 +1660,110 @@ Tel: [teléfono]`
                     <div>
                       <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
                       <h3 className="text-base font-semibold text-slate-100">
-                        ¿Por qué la IA prioriza a <span className="text-amber-400">{urlResult.competitive_deep_dive.competidor}</span>?
+                        Por qué <span className="text-amber-400">{urlResult.competitive_deep_dive.competidor}</span> aparece donde tú no
                       </h3>
-                      <p className="text-slate-500 text-sm mt-0.5">Análisis de la brecha de autoridad digital entre tu marca y el líder actual.</p>
                     </div>
                   </div>
 
-                  {/* Tabla de atributos — va primero, es el diagnóstico central */}
+                  {/* Contexto primero — bullets compactos, no párrafos */}
+                  <div className="grid md:grid-cols-5 gap-0 border-b border-slate-800/60">
+                    {/* Izquierda 2/5 — cómo nos ven los clientes */}
+                    <div className="md:col-span-2 px-5 py-4 border-b md:border-b-0 md:border-r border-slate-800/60 border-l-2 border-l-rose-600/50">
+                      <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">
+                        Cómo nos ven tus clientes
+                      </p>
+                      <ul className="space-y-1.5">
+                        {(urlResult.competitive_deep_dive.percepcion_nuestra_marca ?? '')
+                          .split(/\.\s+/)
+                          .map(s => s.replace(/\.$/, '').trim())
+                          .filter(s => s.length > 8)
+                          .slice(0, 3)
+                          .map((bullet, bi) => (
+                            <li key={bi} className="flex items-start gap-2">
+                              <span className="text-rose-500/70 text-xs mt-0.5 shrink-0">·</span>
+                              <span className="text-sm text-slate-300 leading-snug">{bullet}.</span>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                    {/* Derecha 3/5 — por qué prefieren al competidor */}
+                    <div className="md:col-span-3 px-5 py-4 border-l-2 border-l-amber-600/40">
+                      <p className="text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">
+                        Por qué prefieren a {urlResult.competitive_deep_dive.competidor}
+                      </p>
+                      <ul className="space-y-1.5">
+                        {(urlResult.competitive_deep_dive.mensaje_competidor ?? '')
+                          .split(/\.\s+/)
+                          .map(s => s.replace(/\.$/, '').trim())
+                          .filter(s => s.length > 8)
+                          .slice(0, 3)
+                          .map((bullet, bi) => (
+                            <li key={bi} className="flex items-start gap-2">
+                              <span className="text-amber-500/70 text-xs mt-0.5 shrink-0">·</span>
+                              <span className="text-sm text-slate-300 leading-snug">{bullet}.</span>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Tabla — el detalle específico, va después del contexto */}
                   {urlResult.competitive_deep_dive.tabla_atributos && urlResult.competitive_deep_dive.tabla_atributos.length > 0 && (
-                    <div className="px-5 pb-2 pt-5">
-                      <div className="flex items-center justify-between mb-4">
+                    <div className="px-5 pb-4 pt-4">
+                      <div className="flex items-center justify-between mb-3">
                         <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">
-                          Dónde {urlResult.competitive_deep_dive.competidor} gana terreno
+                          Dónde exactamente te gana
                         </p>
-                        <span className="text-[10px] font-mono text-rose-300 bg-rose-900/50 border border-rose-700/60 rounded px-2 py-0.5">
-                          {urlResult.competitive_deep_dive.tabla_atributos.length} brechas detectadas
-                        </span>
                       </div>
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
-                          <thead>
-                            <tr className="border-b border-slate-800">
-                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2.5 pr-6 w-[30%]">Atributo</th>
-                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2.5 pr-6 w-[35%]">
-                                Por qué les creen
-                                <span className="ml-1.5 normal-case font-normal text-slate-600">↗ fuente de autoridad</span>
-                              </th>
-                              <th className="text-left pb-2.5 w-[35%]">
-                                <span className="text-[10px] uppercase tracking-widest text-rose-400 font-semibold">Lo que perdemos</span>
-                              </th>
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-slate-800">
+                            <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
+                            <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
+                            <th className="text-left text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {urlResult.competitive_deep_dive.tabla_atributos.map((row, ri) => (
+                            <tr key={ri} className="border-b border-slate-800/40 last:border-0">
+                              <td className="py-3.5 pr-6 align-top">
+                                <span className="text-sm font-semibold text-slate-100">{row.atributo}</span>
+                              </td>
+                              <td className="py-3.5 pr-6 align-top">
+                                <span className="text-sm text-slate-400">{row.autoridad_digital}</span>
+                              </td>
+                              <td className="py-3.5 align-top">
+                                <span className="text-sm text-rose-300">{row.impacto_comercial}</span>
+                              </td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            {urlResult.competitive_deep_dive.tabla_atributos.map((row, ri) => (
-                              <tr key={ri} className="border-b border-slate-800/50 last:border-0">
-                                <td className="py-4 pr-6 align-top">
-                                  <span className="text-sm font-semibold text-slate-100">{row.atributo}</span>
-                                </td>
-                                <td className="py-4 pr-6 align-top">
-                                  <p className="text-xs text-slate-400 leading-relaxed">{row.autoridad_digital}</p>
-                                </td>
-                                <td className="py-4 align-top">
-                                  <p className="text-xs text-rose-300/90 leading-relaxed">{row.impacto_comercial}</p>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   )}
-
-                  {/* Contexto — percepción vs ventajas, layout asimétrico */}
-                  <div className="grid md:grid-cols-5 gap-0 border-t border-slate-800/60 mt-2">
-                    {/* Izquierda 2/5 — nuestra percepción, contexto secundario */}
-                    <div className="md:col-span-2 px-5 py-5 border-b md:border-b-0 md:border-r border-slate-800/60 border-l-2 border-l-rose-600/50">
-                      <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">
-                        Cómo nos ve la IA
-                      </p>
-                      <p className="text-slate-400 text-xs leading-relaxed">{urlResult.competitive_deep_dive.percepcion_nuestra_marca}</p>
-                    </div>
-                    {/* Derecha 3/5 — ventajas competidor, es el diagnóstico */}
-                    <div className="md:col-span-3 px-5 py-5 border-l-2 border-l-emerald-600/50">
-                      <p className="text-[10px] uppercase tracking-widest font-semibold text-emerald-400 mb-3">
-                        Por qué {urlResult.competitive_deep_dive.competidor} domina
-                      </p>
-                      <p className="text-slate-300 text-xs leading-relaxed">{urlResult.competitive_deep_dive.mensaje_competidor}</p>
-                    </div>
-                  </div>
                 </motion.div>
               )}
 
+              {/* Puente narrativo: de la brecha a la oportunidad */}
               {/* 4 · ESPERANZA — UntappedTerritories */}
               {urlResult.untapped_territories && urlResult.untapped_territories.length > 0 && (
                 <motion.div
                   id="zone-url-untapped-territories"
                   variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-                  className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden"
+                  className="bg-slate-950 border border-emerald-900/40 rounded-sm overflow-hidden"
                 >
                   {/* Header */}
-                  <div className="px-6 py-4 border-b border-slate-800">
-                    <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Vectores de Crecimiento</p>
-                    <h3 className="text-base font-semibold text-slate-100">Oportunidades de Baja Competencia</h3>
-                    <p className="text-slate-500 text-sm mt-0.5">
-                      Nichos de mercado validados donde los líderes actuales no tienen autoridad consolidada en IA. Ideales para captura rápida.
-                    </p>
+                  <div className="px-6 py-5 border-b border-slate-800 flex items-start gap-4">
+                    <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
+                      <h3 className="text-base font-semibold text-slate-100">
+                        Temas donde la IA no tiene un ganador claro
+                      </h3>
+                      <p className="text-slate-500 text-sm mt-1 leading-relaxed">
+                        Ningún competidor tiene contenido de autoridad en estas búsquedas. La marca que publique primero se queda con esas respuestas.
+                      </p>
+                    </div>
                   </div>
 
                   {/* Lista de territorios */}
@@ -1740,56 +1771,43 @@ Tel: [teléfono]`
                     {urlResult.untapped_territories.map((territory, ti) => (
                       <div
                         key={ti}
-                        className="flex items-start gap-4 px-5 py-4 hover:bg-slate-900/40 transition-colors cursor-pointer group"
+                        className="flex items-start gap-4 px-5 py-4"
                       >
-                        {/* Icono */}
-                        <div className="shrink-0 mt-0.5">
-                          <div className="w-8 h-8 rounded-sm bg-emerald-950/40 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                            <TrendingUp className="w-4 h-4" />
-                          </div>
-                        </div>
+                        {/* Número */}
+                        <span className="text-[11px] font-mono text-slate-700 pt-1 w-5 shrink-0 select-none">
+                          {String(ti + 1).padStart(2, '0')}
+                        </span>
 
                         {/* Contenido */}
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-3 mb-1.5">
-                            <p className="text-sm font-bold text-slate-100 group-hover:text-emerald-300 transition-colors">{territory.titulo}</p>
-                            <div className="flex items-center gap-2 shrink-0">
-                              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${
-                                territory.nivel_competencia_ia === 'Nula'
-                                  ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/25'
-                                  : territory.nivel_competencia_ia === 'Muy baja'
-                                  ? 'bg-teal-950/40 text-teal-300 border-teal-500/25'
-                                  : 'bg-sky-950/40 text-sky-300 border-sky-500/25'
-                              }`}>
-                                Competencia {territory.nivel_competencia_ia}
-                              </span>
-                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                                territory.tendencia.startsWith('↗')
-                                  ? 'bg-amber-950/30 text-amber-400 border-amber-500/20'
-                                  : territory.tendencia.startsWith('⚡')
-                                  ? 'bg-violet-950/30 text-violet-300 border-violet-500/20'
-                                  : 'bg-slate-800 text-slate-400 border-slate-700'
-                              }`}>
-                                {territory.tendencia}
-                              </span>
-                            </div>
+                          <div className="flex flex-wrap items-center gap-3 mb-2">
+                            <p className="text-sm font-semibold text-slate-100 leading-snug">{territory.titulo}</p>
+                            {(() => {
+                              const n = territory.nivel_competencia_ia
+                              const cfg =
+                                n === 'Nula'     ? { label: 'Sin competencia',  cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } :
+                                n === 'Muy baja' ? { label: 'Fácil de ganar',   cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } :
+                                                   { label: 'Moderada',         cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
+                              return (
+                                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${cfg.cls}`}>
+                                  {cfg.label}
+                                </span>
+                              )
+                            })()}
                           </div>
-                          <p className="text-slate-400 text-xs leading-relaxed">
-                            <span className="text-slate-500 font-medium">Justificación: </span>
+                          <p className="text-slate-400 text-sm leading-relaxed">
                             {territory.justificacion_negocio}
                           </p>
                         </div>
-
-                        {/* Arrow hint */}
-                        <span className="text-slate-700 group-hover:text-emerald-500 transition-colors text-sm shrink-0 mt-1">›</span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Footer CTA */}
-                  <div className="border-t border-slate-800/60 px-5 py-3 bg-emerald-950/10">
-                    <p className="text-xs text-emerald-400/70 text-center">
-                      Estos nichos son el punto de partida para la Hoja de Ruta de Recuperación ↓
+                  {/* Footer — acción clara hacia Zone 5 */}
+                  <div className="border-t border-slate-800/60 px-6 py-3 flex items-center gap-2">
+                    <TrendingUp className="w-3.5 h-3.5 text-emerald-500/60 shrink-0" />
+                    <p className="text-xs text-slate-500">
+                      El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.
                     </p>
                   </div>
                 </motion.div>
@@ -1826,13 +1844,13 @@ Tel: [teléfono]`
                   >
                     <div className="px-6 py-4 border-b border-slate-800 flex items-start justify-between">
                       <div>
-                        <h3 className="text-base font-semibold text-slate-100">Hoja de Ruta de Recuperación <span className="text-slate-500 font-normal text-sm">(Plan a 30–60 días)</span></h3>
+                        <h3 className="text-base font-semibold text-slate-100">Qué necesitamos hacer y quién lo ejecuta</h3>
                         <p className="text-slate-500 text-sm mt-0.5">
                           {perfilesConError === 0
-                            ? `${urlResult.marca} aparece en todos los perfiles de comprador`
+                            ? `${urlResult.marca} aparece en todos los perfiles — plan de consolidación y expansión`
                             : perfilesConError === urlResult.total_queries
-                            ? `${urlResult.marca} no aparece en ningún perfil de comprador`
-                            : `${urlResult.marca} pierde ${perfilesConError} de ${urlResult.total_queries} tipos de cliente`
+                            ? `Plan de recuperación completa · 30–60 días · ${allActions.length} acciones priorizadas`
+                            : `${perfilesConError} tipo${perfilesConError > 1 ? 's' : ''} de cliente sin atender · plan de recuperación en ${allActions.length} pasos`
                           }
                         </p>
                       </div>
@@ -1845,35 +1863,24 @@ Tel: [teléfono]`
                         <div className="flex items-start gap-3 px-4 py-3 bg-amber-950/20 border border-amber-800/30 rounded-sm">
                           <span className="text-amber-400 font-bold shrink-0 mt-0.5">✦</span>
                           <div>
-                            <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Acción prioritaria esta semana</p>
+                            <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Empezar aquí</p>
                             <p className="text-amber-100 text-sm font-semibold leading-snug">{topAction.tactica_tecnica}</p>
-                            <p className="text-amber-700 text-xs mt-1 truncate" title={topAction.concepto_objetivo}>{topAction.concepto_objetivo} · {topAction.tiempo_indexacion_ia}</p>
+                            <p className="text-amber-700 text-xs mt-1 truncate" title={topAction.concepto_objetivo}>{topAction.concepto_objetivo.charAt(0).toUpperCase() + topAction.concepto_objetivo.slice(1)} · {topAction.tiempo_indexacion_ia.split('(')[0].trim()}</p>
                           </div>
                         </div>
                       </div>
                     )}
 
-                    <div className="px-5 pb-5 pt-3 space-y-5">
-                      {areaOrder.map(area => {
-                        const cfg = areaConfig[area] || { icon: null, label: area, color: 'text-slate-500' }
-                        return (
-                          <div key={area}>
-                            {/* Área como divisor-etiqueta */}
-                            <div className="flex items-center gap-3 mb-2.5">
-                              <span className={`text-[11px] font-semibold uppercase tracking-wider ${cfg.color.split(' ')[0]}`}>
-                                {cfg.icon} {cfg.label}
-                              </span>
-                              <div className="flex-1 h-px bg-slate-800" />
-                            </div>
-                            <div className="space-y-1.5">
-                              {grouped[area].map((a, ai) => {
-                                const globalIdx = allActions.indexOf(a) + 1
-                                const isTop = globalIdx === 1
-                                const actionKey = `${area}-${ai}`
-                                const isExpanded = expandedActionKey === actionKey
-                                const tacticaInline: string = a.tactica_tecnica || ''
-                                const conceptoInline: string = a.concepto_objetivo || 'tu concepto aquí'
-                                const marcaInline: string = a.segmento_impactado?.match(/(?:para|de)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñA-Z]+)/)?.[1] || 'TuMarca'
+                    <div className="px-5 pb-5 pt-3 space-y-1.5">
+                      {allActions.map((a, ai) => {
+                        {
+                          const isTop = ai === 0
+                          const actionKey = `flat-${ai}`
+                          const isExpanded = expandedActionKey === actionKey
+                          const tacticaInline: string = a.tactica_tecnica || ''
+                          const conceptoInline: string = a.concepto_objetivo || 'tu concepto aquí'
+                          const marcaInline: string = a.segmento_impactado?.match(/(?:para|de)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñA-Z]+)/)?.[1] || 'TuMarca'
+                          const areaCfg = areaConfig[a.area_responsable || ''] || { icon: null, label: a.area_responsable || 'Equipo', color: 'text-slate-500 bg-slate-800/60 border-slate-700' }
                                 let snippetInline = ''
                                 if (tacticaInline.toLowerCase().includes('schema faq') || tacticaInline.toLowerCase().includes('json-ld')) {
                                   snippetInline = `<script type="application/ld+json">\n{\n  "@context": "https://schema.org",\n  "@type": "FAQPage",\n  "mainEntity": [\n    {\n      "@type": "Question",\n      "name": "¿Qué es ${conceptoInline}?",\n      "acceptedAnswer": {\n        "@type": "Answer",\n        "text": "${marcaInline} ofrece ${conceptoInline}. A diferencia de otras opciones del mercado, nos diferenciamos por [diferenciador clave]. Conoce más en [URL de la página]."\n      }\n    },\n    {\n      "@type": "Question",\n      "name": "¿Cómo funciona ${conceptoInline} en ${marcaInline}?",\n      "acceptedAnswer": {\n        "@type": "Answer",\n        "text": "Con ${marcaInline}, ${conceptoInline} es simple: [paso 1], [paso 2] y [paso 3]. Sin costo oculto ni burocracia."\n      }\n    }\n  ]\n}\n</script>`
@@ -1886,8 +1893,8 @@ Tel: [teléfono]`
                                 } else if (tacticaInline.toLowerCase().includes('knowledge graph') || tacticaInline.toLowerCase().includes('entidades')) {
                                   snippetInline = `<script type="application/ld+json">\n{\n  "@context": "https://schema.org",\n  "@type": "Organization",\n  "name": "${marcaInline}",\n  "description": "Especialistas en ${conceptoInline}",\n  "url": "https://[tudominio].cl",\n  "sameAs": [\n    "https://www.wikidata.org/wiki/[ID-wikidata]",\n    "https://www.linkedin.com/company/[slug]",\n    "https://www.instagram.com/[usuario]"\n  ],\n  "knowsAbout": [\n    "${conceptoInline}",\n    "[tema relacionado 2]",\n    "[tema relacionado 3]"\n  ],\n  "areaServed": {\n    "@type": "Country",\n    "name": "Chile"\n  }\n}\n</script>`
                                 }
-                                return (
-                                  <div key={`url-action2-${area}-${ai}`}>
+                          return (
+                                  <div key={`url-action-${ai}`}>
                                     {/* Row */}
                                     <div
                                       className={`flex items-center gap-4 px-4 py-3 cursor-pointer transition-colors ${
@@ -1901,17 +1908,29 @@ Tel: [teléfono]`
                                       }`}
                                       onClick={() => {
                                         if (isExpanded) { setExpandedActionKey(null) }
-                                        else { setExpandedActionKey(actionKey); setShowInlineCode(false); setInlineTab('marketing'); setBriefData(null) }
+                                        else { setExpandedActionKey(actionKey); setShowInlineCode(false) }
                                       }}
                                     >
-                                      <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-400 font-bold' : 'text-slate-600'}`}>{globalIdx}.</span>
+                                      <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-400 font-bold' : 'text-slate-600'}`}>{ai + 1}.</span>
                                       <div className="flex-1 min-w-0">
-                                        <p className={`text-sm leading-snug ${isTop ? 'text-slate-100 font-semibold' : 'text-slate-300 font-medium'}`}>{a.concepto_objetivo}</p>
-                                        <p className="text-slate-600 text-xs mt-0.5 truncate">{a.tactica_tecnica}</p>
+                                        <p className={`text-sm leading-snug ${isTop ? 'text-slate-100 font-semibold' : 'text-slate-300 font-medium'}`}>{a.concepto_objetivo.charAt(0).toUpperCase() + a.concepto_objetivo.slice(1)}</p>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                          <p className="text-slate-600 text-xs truncate">{a.tactica_tecnica}</p>
+                                          {a.area_responsable && (
+                                            <span className={`hidden sm:inline text-[10px] font-semibold px-1.5 py-px rounded border shrink-0 ${areaCfg.color.split(' ').slice(0, 3).join(' ')}`}>
+                                              {areaCfg.label}
+                                            </span>
+                                          )}
+                                        </div>
                                       </div>
                                       <div className="flex items-center gap-2 shrink-0">
+                                        {a.tiempo_indexacion_ia && (
+                                          <span className="hidden sm:inline text-[10px] font-mono text-slate-500 border border-slate-700/60 px-1.5 py-0.5 rounded">
+                                            {a.tiempo_indexacion_ia.split('(')[0].trim()}
+                                          </span>
+                                        )}
                                         {a.ice_score >= 7 ? (
-                                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/12 text-emerald-400 border border-emerald-500/25">↑ Alto impacto</span>
+                                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/12 text-emerald-400 border border-emerald-500/25">↑ Alto</span>
                                         ) : a.ice_score >= 5 ? (
                                           <span className="text-xs text-amber-600">→ Medio</span>
                                         ) : (
@@ -1922,229 +1941,68 @@ Tel: [teléfono]`
                                     </div>
                                     {/* Inline detail */}
                                     {isExpanded && (
-                                      <div className={`bg-slate-800/40 rounded-b-xl border-b border-r border-l-2 ${
-                                        isTop ? 'border-amber-500/40 border-b-slate-700/30 border-r-slate-700/30' : 'border-blue-500/50 border-b-slate-700/20 border-r-slate-700/20'
-                                      } p-6`}>
-                                        {/* Context header — always visible */}
-                                        {a.segmento_impactado && (
-                                          <div className="mb-5">
-                                            <p className="text-xs font-semibold tracking-wider text-slate-500 uppercase mb-1">🎯 Oportunidad de Mercado</p>
-                                            <p className="text-slate-200 text-sm font-medium leading-snug">{a.segmento_impactado}</p>
-                                          </div>
-                                        )}
+                                      <div className={`border-b border-r border-l-2 ${
+                                        isTop ? 'border-amber-500/40 border-b-slate-700/30 border-r-slate-700/30' : 'border-slate-700/30 border-b-slate-700/20 border-r-slate-700/20'
+                                      } bg-slate-900/40 rounded-b-sm`}>
 
-                                        {/* Segmented control */}
-                                        <div className="inline-flex bg-slate-900 p-1 rounded-lg mb-6">
-                                          <button
-                                            onClick={(e) => { e.stopPropagation(); setInlineTab('marketing') }}
-                                            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
-                                              inlineTab === 'marketing'
-                                                ? 'bg-slate-700 text-white shadow-sm'
-                                                : 'text-slate-400 hover:text-slate-300'
-                                            }`}
-                                          >
-                                            📝 Brief para Marketing
-                                          </button>
-                                          <button
-                                            onClick={(e) => { e.stopPropagation(); setInlineTab('ti') }}
-                                            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
-                                              inlineTab === 'ti'
-                                                ? 'bg-slate-700 text-white shadow-sm'
-                                                : 'text-slate-400 hover:text-slate-300'
-                                            }`}
-                                          >
-                                            ⚙️ Ejecución TI
-                                          </button>
+                                        {/* Layer 1: Gerente */}
+                                        <div className="px-5 py-4 space-y-3">
+                                          {a.riesgo_inaccion ? (
+                                            <div className="flex items-start gap-2.5">
+                                              <TriangleAlert className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                                              <p className="text-sm text-slate-300 leading-snug">{a.riesgo_inaccion}</p>
+                                            </div>
+                                          ) : (
+                                            <p className="text-sm text-slate-400 leading-snug">{a.concepto_objetivo}</p>
+                                          )}
+                                          {a.area_responsable && (
+                                            <p className="text-xs text-slate-600">
+                                              Responsable: <span className="text-slate-400">{a.area_responsable}</span>
+                                            </p>
+                                          )}
                                         </div>
 
-                                        {/* TAB 1: Brief para Marketing */}
-                                        {inlineTab === 'marketing' && (
-                                          <div className="space-y-4">
-                                            {briefLoading && (
-                                              <div className="space-y-3">
-                                                {[0,1,2].map(i => <div key={i} className="h-10 bg-slate-800/50 rounded animate-pulse" />)}
-                                                <p className="text-xs text-slate-600 text-center">Generando brief con IA...</p>
-                                              </div>
-                                            )}
+                                        {/* Layer 2: Implementación — toggle */}
+                                        {(a.pasos_ejecucion?.length > 0 || snippetInline) && (
+                                          <div className="border-t border-slate-800/60">
+                                            <button
+                                              onClick={(e) => { e.stopPropagation(); setShowInlineCode(v => !v) }}
+                                              className="w-full flex items-center justify-between px-5 py-2.5 text-left hover:bg-slate-800/30 transition-colors"
+                                            >
+                                              <span className="text-xs font-medium text-slate-500 hover:text-slate-300 transition-colors">Ver cómo implementarlo</span>
+                                              <span className={`text-slate-600 text-xs transition-transform duration-200 ${showInlineCode ? 'rotate-90' : ''}`}>›</span>
+                                            </button>
 
-                                            {!briefLoading && !briefData && (
-                                              <button
-                                                onClick={async (e) => {
-                                                  e.stopPropagation()
-                                                  setBriefLoading(true)
-                                                  setBriefData(null)
-                                                  try {
-                                                    const res = await fetch(`${API}/api/marketing/brief`, {
-                                                      method: 'POST',
-                                                      headers: { 'Content-Type': 'application/json' },
-                                                      body: JSON.stringify({
-                                                        market_opportunity: a.concepto_objetivo,
-                                                        archetype: urlResult.arquetipos?.[0]?.arquetipo || 'Cliente objetivo',
-                                                        brand: urlResult.marca,
-                                                        categoria: urlResult.categoria,
-                                                      }),
-                                                    })
-                                                    if (res.ok) setBriefData(await res.json())
-                                                  } catch { /* silent */ } finally { setBriefLoading(false) }
-                                                }}
-                                                className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-violet-500/30 bg-violet-500/5 text-violet-300 text-sm font-medium hover:bg-violet-500/10 transition-colors"
-                                              >
-                                                ✨ Generar Brief con IA
-                                              </button>
-                                            )}
-
-                                            {briefData && (
-                                              <>
-                                                {/* Blog title */}
-                                                <div className="p-3.5 rounded-lg border border-slate-700/40 bg-slate-800/20">
-                                                  <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
-                                                    📄 Título de Blog Sugerido
-                                                  </p>
-                                                  <p className="text-slate-100 text-sm font-medium leading-snug">{briefData.blog_title_suggestion}</p>
-                                                </div>
-
-                                                {/* Instagram */}
-                                                <div className="p-3.5 rounded-lg border border-pink-800/30 bg-pink-950/10">
-                                                  <p className="text-[10px] font-semibold uppercase tracking-wider text-pink-400 mb-1 flex items-center gap-1.5">
-                                                    📱 Idea para Reel / Short
-                                                  </p>
-                                                  <p className="text-slate-200 text-sm leading-snug">{briefData.instagram_reel_hook}</p>
-                                                </div>
-
-                                                {/* E-commerce */}
-                                                <div className="p-3.5 rounded-lg border border-slate-700/40 bg-slate-800/20">
-                                                  <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-1.5">
-                                                    🛒 Texto para E-commerce / Landing
-                                                  </p>
-                                                  <p className="text-slate-300 text-sm leading-relaxed">{briefData.ecommerce_product_description_snippet}</p>
-                                                </div>
-
-                                                {/* Trust signals */}
-                                                {briefData.required_trust_signals.length > 0 && (
-                                                  <div className="p-3.5 rounded-lg border border-amber-800/30 bg-amber-950/10">
-                                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-500 mb-2">⭐ Señales de Confianza a Recopilar</p>
-                                                    <ul className="space-y-1.5">
-                                                      {briefData.required_trust_signals.map((sig, si) => (
-                                                        <li key={si} className="flex items-start gap-2 text-sm text-slate-300">
-                                                          <span className="text-amber-500 mt-0.5 shrink-0">·</span>
-                                                          {sig}
-                                                        </li>
-                                                      ))}
-                                                    </ul>
-                                                  </div>
+                                            {showInlineCode && (
+                                              <div className="px-5 pb-5 pt-1 space-y-4 border-t border-slate-800/40">
+                                                {/* Pasos */}
+                                                {a.pasos_ejecucion?.length > 0 && (
+                                                  <ol className="space-y-2.5 pt-1">
+                                                    {a.pasos_ejecucion.map((paso, pi) => (
+                                                      <li key={pi} className="flex items-start gap-3">
+                                                        <span className="text-[11px] font-mono text-slate-600 pt-0.5 w-4 shrink-0 select-none">{pi + 1}.</span>
+                                                        <span className="text-sm text-slate-300 leading-snug">{paso}</span>
+                                                      </li>
+                                                    ))}
+                                                  </ol>
                                                 )}
 
-                                                {/* Strategic FAQs */}
-                                                {briefData.strategic_faqs.length > 0 && (
-                                                  <div>
-                                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-2">❓ FAQs Estratégicas</p>
-                                                    <div className="space-y-2">
-                                                      {briefData.strategic_faqs.map((faq, fi) => (
-                                                        <div key={fi} className="p-3 rounded border border-slate-700/30 bg-slate-800/10">
-                                                          <p className="text-slate-200 text-sm font-medium">{faq.question}</p>
-                                                          <p className="text-slate-500 text-xs mt-1 italic">{faq.suggested_answer_angle}</p>
-                                                        </div>
-                                                      ))}
+                                                {/* Código */}
+                                                {snippetInline && (
+                                                  <div className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden">
+                                                    <div className="flex items-center justify-between px-4 py-2 bg-slate-900/60 border-b border-slate-800">
+                                                      <span className="flex items-center gap-2 font-mono text-xs text-slate-500">
+                                                        <Terminal className="w-3 h-3 text-sky-500" />
+                                                        Código listo para copiar
+                                                      </span>
+                                                      <button
+                                                        onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(snippetInline) }}
+                                                        className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-sky-400 transition-colors font-mono"
+                                                      >
+                                                        <Download className="w-3 h-3" /> Copiar
+                                                      </button>
                                                     </div>
-                                                  </div>
-                                                )}
-
-                                                {/* Regenerate */}
-                                                <button
-                                                  onClick={async (e) => {
-                                                    e.stopPropagation()
-                                                    setBriefLoading(true)
-                                                    setBriefData(null)
-                                                    try {
-                                                      const res = await fetch(`${API}/api/marketing/brief`, {
-                                                        method: 'POST',
-                                                        headers: { 'Content-Type': 'application/json' },
-                                                        body: JSON.stringify({
-                                                          market_opportunity: a.concepto_objetivo,
-                                                          archetype: urlResult.arquetipos?.[0]?.arquetipo || 'Cliente objetivo',
-                                                          brand: urlResult.marca,
-                                                          categoria: urlResult.categoria,
-                                                        }),
-                                                      })
-                                                      if (res.ok) setBriefData(await res.json())
-                                                    } catch { /* silent */ } finally { setBriefLoading(false) }
-                                                  }}
-                                                  className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
-                                                >
-                                                  ↻ Regenerar brief
-                                                </button>
-                                              </>
-                                            )}
-
-                                            {/* ROI always in Marketing tab */}
-                                            <div className="flex items-start gap-3 p-4 rounded-lg bg-emerald-950/20">
-                                              <TrendingUp className="shrink-0 mt-0.5 text-emerald-500" size={14} />
-                                              <div>
-                                                <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-1">Retorno Proyectado</p>
-                                                <p className="text-gray-300 text-sm leading-relaxed">
-                                                  {a.segmento_impactado
-                                                    ? `Al implementar esto, la marca entra al top 3 de recomendaciones para ${a.segmento_impactado.split(/[,.]/).at(0)?.trim()}, capturando tráfico calificado en etapa de decisión de compra.`
-                                                    : 'Al implementar esto, la marca mejora su posición en los motores de IA, accediendo a demanda de alta intención de compra que hoy captura la competencia.'
-                                                  }
-                                                </p>
-                                              </div>
-                                            </div>
-                                            {a.riesgo_inaccion && (
-                                              <div className="flex items-start gap-3 p-4 rounded-lg bg-rose-950/20">
-                                                <TriangleAlert className="shrink-0 mt-0.5 text-rose-400" size={14} />
-                                                <div>
-                                                  <p className="text-xs uppercase tracking-widest text-rose-400 font-semibold mb-1">Si no actúas</p>
-                                                  <p className="text-gray-300 text-sm leading-relaxed">{a.riesgo_inaccion}</p>
-                                                </div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        )}
-
-                                        {/* TAB 2: Ejecución TI */}
-                                        {inlineTab === 'ti' && (
-                                          <div className="space-y-4">
-                                            <div>
-                                              <p className="text-xs font-semibold tracking-wider text-slate-500 uppercase mb-1.5">📋 Instrucción de Trabajo para TI</p>
-                                              <p className="text-slate-300 text-sm leading-relaxed">
-                                                {(() => {
-                                                  const area2: string = a.area_responsable || ''
-                                                  const tac: string = a.tactica_tecnica || ''
-                                                  const con: string = a.concepto_objetivo || ''
-                                                  if (area2 === 'TI / Desarrollo' || tac.toLowerCase().includes('schema') || tac.toLowerCase().includes('json-ld') || tac.toLowerCase().includes('código')) {
-                                                    return `El equipo de TI debe copiar el bloque de código que se encuentra más abajo e insertarlo dentro de la etiqueta <head> de la página que corresponda a "${con}", luego solicitar la re-indexación en Google Search Console.`
-                                                  } else if (area2 === 'Marketing / Contenido' || tac.toLowerCase().includes('artículo') || tac.toLowerCase().includes('contenido') || tac.toLowerCase().includes('landing') || tac.toLowerCase().includes('evergreen')) {
-                                                    return `El equipo de TI debe publicar la landing page o artículo generado por Marketing bajo la URL canónica correcta, garantizando que sea rastreable por los bots de IA (sin bloqueos en robots.txt ni requiriendo JavaScript para renderizar el contenido clave).`
-                                                  } else if (tac.toLowerCase().includes('digital pr') || tac.toLowerCase().includes('prensa') || tac.toLowerCase().includes('medios')) {
-                                                    return `El equipo de TI debe verificar que las páginas vinculadas en la nota de prensa devuelvan status 200, cargan en menos de 2s y tienen el Schema Organization correcto. Agregar rel="canonical" si corresponde.`
-                                                  } else {
-                                                    return `El equipo de TI debe revisar la implementación técnica de "${tac}" para "${con}", asegurando que el contenido sea indexable y los metadatos estructurados estén correctos.`
-                                                  }
-                                                })()}
-                                              </p>
-                                            </div>
-
-                                            {snippetInline && (
-                                              <div className="bg-slate-950 border border-slate-800 rounded-lg overflow-hidden">
-                                                <button
-                                                  onClick={(e) => { e.stopPropagation(); setShowInlineCode(v => !v) }}
-                                                  className="w-full flex items-center justify-between px-4 py-2.5 bg-slate-900/60 hover:bg-slate-900 transition-colors text-left border-b border-slate-800"
-                                                >
-                                                  <span className="flex items-center gap-2 font-mono text-sm text-slate-300">
-                                                    <Terminal className="w-3.5 h-3.5 text-sky-400" />
-                                                    Ver código listo para copiar
-                                                  </span>
-                                                  <span className={`text-slate-500 text-xs transition-transform ${showInlineCode ? 'rotate-180' : ''}`}>▼</span>
-                                                </button>
-                                                {showInlineCode && (
-                                                  <div className="relative">
-                                                    <button
-                                                      onClick={() => navigator.clipboard.writeText(snippetInline)}
-                                                      className="absolute top-2 right-2 z-10 flex items-center gap-1 text-[10px] text-slate-400 hover:text-sky-400 bg-slate-900 border border-slate-700 px-2 py-1 rounded transition-colors font-mono"
-                                                    >
-                                                      <Download className="w-3 h-3" /> Copiar
-                                                    </button>
-                                                    <pre className="p-4 bg-slate-950 text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed max-h-72 whitespace-pre"><code>{snippetInline}</code></pre>
+                                                    <pre className="p-4 text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed max-h-64 whitespace-pre"><code>{snippetInline}</code></pre>
                                                   </div>
                                                 )}
                                               </div>
@@ -2155,11 +2013,8 @@ Tel: [teléfono]`
                                     )}
                                   </div>
                                 )
-                              })}
-                            </div>
-                          </div>
-                        )
-                      })}
+                              }
+                            })}
                     </div>
                     {urlResult.plan_accion!.roi_estimado && (
                       <div className="border-t border-slate-800/60 px-5 py-4">
@@ -2183,11 +2038,11 @@ Tel: [teléfono]`
                   className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-slate-800/30 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-semibold text-slate-300">Ver Anexo Técnico: Análisis de Arquetipos y Prompts</span>
+                    <span className="text-sm font-semibold text-slate-300">Ver los prompts exactos que usamos para este análisis</span>
                     <span className="text-[10px] font-mono text-slate-500 bg-slate-800 px-2 py-0.5 rounded">{urlResult.total_queries} perfiles</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-500">{showPerfilesDetalle ? 'Ocultar' : 'Expandir anexo'}</span>
+                    <span className="text-xs text-slate-500">{showPerfilesDetalle ? 'Cerrar' : 'Ver evidencia →'}</span>
                     <span className={`text-slate-500 text-xs transition-transform ${showPerfilesDetalle ? 'rotate-180' : ''}`}>▾</span>
                   </div>
                 </button>
@@ -2657,21 +2512,6 @@ Tel: [teléfono]`
                               <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio
                             </span>
                           </div>
-                          {miMarcaEnLista && (() => {
-                            const userEntry = chartData.find(e => e.isUser)
-                            const userScore = userEntry ? userEntry.score : 0
-                            const delta = userScore - promedio
-                            if (delta === 0) return null
-                            return (
-                              <span className={`sm:ml-auto text-xs font-semibold px-2.5 py-1 rounded self-start sm:self-auto ${
-                                delta > 0
-                                  ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/20'
-                                  : 'bg-rose-950/40 text-rose-400 border border-rose-500/20'
-                              }`}>
-                                {delta > 0 ? `+${delta}pp vs promedio` : `${delta}pp vs promedio`}
-                              </span>
-                            )
-                          })()}
                         </div>
                         {/* Raw output toggle — colapsado por defecto */}
                         {result.texto_original_ia && (

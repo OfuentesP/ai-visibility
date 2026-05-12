@@ -251,7 +251,14 @@ async def generar_plan_url(
         if r.get("marca_ganadora") and r["marca_ganadora"].lower() != marca.lower()
     })
 
-    prompt = f"""Eres un consultor AEO (Answer Engine Optimization) senior especializado en hacer que marcas aparezcan en ChatGPT, Perplexity y Google AI Overviews.
+    prompt = f"""Generas planes de acción para que marcas aparezcan en ChatGPT, Perplexity y Google. Tu audiencia es el equipo de marketing y el gerente general de {marca}. Escribe en lenguaje directo, sin jargon técnico ni de consultoría.
+
+## REGLAS DE ESCRITURA — OBLIGATORIAS
+- Oraciones cortas. Máximo 15 palabras.
+- Sin jargon. Prohibido: "optimización semántica", "densidad de entidades", "crawl budget", "latencia", "validación social", "set de consideración", "stakeholders".
+- concepto_objetivo: frase simple que un gerente entienda (ej: "aparecer cuando buscan jeans tiro alto en Chile").
+- riesgo_inaccion: una oración directa con el nombre del competidor (ej: "{competidores_ganadores[0] if competidores_ganadores else 'el competidor'} seguirá llevándose a esos clientes").
+- pasos_ejecucion: instrucciones que alguien de marketing pueda ejecutar sin ser técnico.
 
 ## MARCA AUDITADA
 Marca: {marca}
@@ -283,10 +290,10 @@ REGLAS ICE (del 1 al 10):
 - ice_score = redondear((impacto + confianza + esfuerzo) / 3, 1 decimal)
 
 TIEMPOS DE INDEXACIÓN (usa EXACTAMENTE uno de estos):
-- Schema FAQ / JSON-LD / Tablas HTML → "3 - 7 días (Requiere forzar re-indexación manual en Google Search Console)"
-- Inyección Semántica en Landing → "1 - 2 semanas (Depende del Crawl Budget orgánico de GPTBot)"
-- Digital PR → "24 - 48 horas (Perplexity/SearchGPT favorecen medios vivos)"
-- Knowledge Graph → "3 - 6 semanas (Los grafos de entidades tienen latencia alta)"
+- Schema FAQ / JSON-LD / Tablas HTML → "3 - 7 días"
+- Inyección Semántica en Landing → "1 - 2 semanas"
+- Digital PR → "24 - 48 horas"
+- Knowledge Graph → "3 - 6 semanas"
 
 REGLAS:
 1. Cada acción debe atacar un perfil de comprador distinto que no encontró a {marca}.
@@ -325,10 +332,12 @@ Devuelve SOLO JSON:
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": (
-                    f"Eres un consultor AEO senior. Genera un plan ESPECÍFICO para {marca} en {categoria}. "
-                    "Devuelve SOLO JSON válido. 3 acciones, ordenadas por ice_score desc. "
-                    "Usa nombres EXACTOS de tácticas del catálogo AEO. "
-                    f"NUNCA uses 'la competencia': menciona a {', '.join(competidores_ganadores[:2]) if competidores_ganadores else 'el competidor'} por nombre."
+                    f"Generas planes de acción de marketing digital para equipos no técnicos. "
+                    f"Plan específico para {marca} en {categoria}. "
+                    "Devuelve SOLO JSON válido. 3 acciones ordenadas por ice_score desc. "
+                    "Usa nombres EXACTOS de tácticas del catálogo. "
+                    f"NUNCA uses 'la competencia': menciona a {', '.join(competidores_ganadores[:2]) if competidores_ganadores else 'el competidor'} por nombre. "
+                    "Sin jargon técnico ni de consultoría. Lenguaje directo de negocio."
                 )},
                 {"role": "user", "content": prompt},
             ],
@@ -384,34 +393,38 @@ async def generar_inteligencia_competitiva(
         for s in (res.get("cited_sources_types") or [])
     })[:4]
 
-    prompt = f"""Eres un consultor estratégico de inteligencia competitiva para motores de IA (ChatGPT, Perplexity, Google AI Overviews).
+    prompt = f"""Tu audiencia es el gerente general de {marca}, no un técnico. Escribe como si le explicaras en persona en una reunión de directorio.
+
+## REGLAS DE ESCRITURA — OBLIGATORIAS
+- Oraciones cortas. Máximo 15 palabras por oración.
+- Sin jargon. Prohibido: "validación social", "credibilidad", "autoridad digital", "densidad de entidades", "set de consideración", "stakeholders", "posicionamiento semántico".
+- Habla de clientes reales, no de abstracciones. En vez de "consumidores que buscan validación" → "compradores que leen reseñas antes de decidir".
+- Impacto en ventas o clientes concretos. En vez de "pierde relevancia" → "esos clientes compran en {competidor}, no en {marca}".
+- Sin nominalizaciones. En vez de "la inexistencia de reseñas genera pérdida de confianza" → "sin reseñas, la IA no te recomienda".
 
 ## CONTEXTO
-Marca analizada: {marca}
+Marca: {marca}
 Categoría: {categoria}
 Mercado: {mercado}
-Competidor que gana actualmente en IA: {competidor}
-Razones identificadas de por qué gana: {', '.join(razones_ganador) if razones_ganador else 'No especificadas'}
-Fuentes de autoridad que usa la IA para recomendarlo: {', '.join(fuentes_ganador) if fuentes_ganador else 'No especificadas'}
+Competidor que gana en IA: {competidor}
+Por qué gana: {', '.join(razones_ganador) if razones_ganador else 'No especificadas'}
+Dónde aparece publicado: {', '.join(fuentes_ganador) if fuentes_ganador else 'No especificadas'}
 
 ## TU TAREA
-Genera dos secciones de inteligencia:
 
 ### 1. competitive_deep_dive
-Explica por qué la IA prioriza a {competidor} sobre {marca}. Incluye:
-A) percepcion_nuestra_marca: cómo percibe HOY la IA a {marca} (1-2 oraciones directas, con ejemplos concretos como "oferta limitada a X segmento", "sin reseñas verificadas externas", etc.)
-B) mensaje_competidor: qué comunica {competidor} que {marca} NO comunica, con ejemplos específicos (ej: "reseñas en Google con 4.8★", "artículos en medios especializados", "comparativas en blogs de expertos")
-C) tabla_atributos: exactamente 3 atributos donde {competidor} supera a {marca}. Para cada uno:
-   - atributo: el atributo concreto que comunica el competidor
-   - autoridad_digital: la fuente de verdad que usa la IA para creerle (ej: "Menciones en El Mercurio Digital", "FAQ estructurado en su web", "Wikidata entity")
-   - impacto_comercial: lo que pierde {marca} por no tenerlo (ej: "Pierde la comparativa ante compradores de primera vez")
+A) percepcion_nuestra_marca: cómo ve la IA a {marca} HOY. 2 oraciones máximo. Ejemplos correctos: "La IA ve a {marca} como una opción local sin reseñas públicas. No aparece en medios ni blogs especializados."
+B) mensaje_competidor: qué tiene {competidor} que {marca} no tiene. Menciona fuentes reales (ej: "reseñas en Google con 4.8★", "artículo en El Mercurio"). 2 oraciones máximo.
+C) tabla_atributos: exactamente 3 atributos donde {competidor} gana. Para cada uno:
+   - atributo: nombre corto del atributo (3-5 palabras)
+   - autoridad_digital: la fuente real donde aparece publicado (ej: "Google Reviews", "El Mercurio Digital", "Blog de Moda CL")
+   - impacto_comercial: UNA oración directa sobre qué clientes pierde {marca} por esto. Ejemplo correcto: "Los clientes que leen reseñas antes de comprar eligen a {competidor}." Ejemplo INCORRECTO: "Pierde credibilidad ante consumidores que buscan validación social."
 
 ### 2. untapped_territories
-3 nichos de mercado relacionados con {categoria} en {mercado} donde la competencia en IA es baja o nula.
-Para cada nicho:
-- titulo: nombre del nicho (4-6 palabras, lenguaje de comprador)
-- justificacion_negocio: por qué es una oportunidad real (1-2 oraciones)
-- tendencia: una de estas tres opciones EXACTAS: "↗ Tendencia al alza", "→ Tendencia estable", "⚡ Oportunidad emergente"
+3 nichos donde ningún competidor domina en IA.
+- titulo: 4-6 palabras, como buscaría un comprador real (ej: "jeans para talla grande Chile")
+- justificacion_negocio: por qué es una oportunidad ahora. 1-2 oraciones, lenguaje de negocio directo.
+- tendencia: una de estas EXACTAS: "↗ Tendencia al alza", "→ Tendencia estable", "⚡ Oportunidad emergente"
 - nivel_competencia_ia: "Baja" | "Muy baja" | "Nula"
 
 Devuelve SOLO JSON válido con este esquema exacto:
@@ -447,8 +460,10 @@ Devuelve SOLO JSON válido con este esquema exacto:
                 {
                     "role": "system",
                     "content": (
-                        f"Eres un analista de inteligencia competitiva. Genera diagnóstico ESPECÍFICO para {marca} vs {competidor} en {categoria}. "
-                        "Devuelve SOLO JSON válido. Usa lenguaje directo y orientado a negocio, no técnico."
+                        f"Generas diagnósticos de negocio para directores y gerentes generales. "
+                        f"Contexto: {marca} vs {competidor} en {categoria}. "
+                        "Devuelve SOLO JSON válido. "
+                        "Lenguaje: oraciones cortas, sin jargon, habla de clientes y ventas concretas, nunca de 'validación social', 'credibilidad', 'autoridad digital' ni términos de consultoría."
                     ),
                 },
                 {"role": "user", "content": prompt},
