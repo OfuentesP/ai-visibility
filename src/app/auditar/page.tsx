@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import html2canvas from 'html2canvas'
+import { toPng } from 'html-to-image'
 
 import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -215,15 +215,13 @@ export default function Dashboard() {
 
   const handleExportPng = async (ref: React.RefObject<HTMLDivElement | null>, filename: string) => {
     if (!ref.current) return
-    const canvas = await html2canvas(ref.current, {
+    const dataUrl = await toPng(ref.current, {
       backgroundColor: '#0f172a',
-      scale: 2,
-      useCORS: true,
-      logging: false,
+      pixelRatio: 2,
     })
     const link = document.createElement('a')
     link.download = `${filename}-${new Date().toISOString().slice(0,10)}.png`
-    link.href = canvas.toDataURL('image/png')
+    link.href = dataUrl
     link.click()
   }
 
