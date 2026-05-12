@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar';
+
 import Link from 'next/link';
 
 export const metadata = {
@@ -53,8 +53,6 @@ export default function GlosarioPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
-
       <main className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
