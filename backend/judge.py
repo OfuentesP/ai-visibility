@@ -307,31 +307,13 @@ async def generar_plan_accion_pro(
         response = await client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{
-                "role": "system",
-                "content": """Eres un Consultor Senior de Estrategia Digital con 15 años en el mercado chileno. 
-Tu rol es redactar briefs estratégicos que las empresas EJECUTAN inmediatamente.
-Tono: Profesional, directo, sin rodeos. Habla como si fueras el CTO de una agencia premium.
-Formato: Redacta en párrafos cortos (máx 120 caracteres c/u), sin bullets, fluido y ejecutable."""
-            },
-            {
                 "role": "user",
-                "content": f"""Analiza este contexto y redacta un PLAN DE ACCIÓN ESTRATÉGICO de 3 puntos:
-
-CONTEXTO:
-- Mi marca: {marca_usuario}
-- Posición actual: {"#" + str(posicion) if posicion > 0 else "No detectada"}
-- Marca líder: {marca_ganadora or "No hay"}
-- Análisis IA: {texto_ia[:500]}
-
-TAREAS (responde como Consultor Senior):
-
-1. CONTENIDO FALTANTE: ¿Qué contenido exacto (título, tema, formato) necesitamos en nuestra web para que la IA nos prefiera? Sé específico.
-
-2. NEUTRALIZAR COMPETENCIA: ¿Qué atributos de {marca_ganadora} debemos neutralizar o superar en nuestra comunicación?
-
-3. KEYWORD CHILENA: ¿Qué concepto, palabra clave o insight del mercado chileno DEBEMOS dominar para ganar posiciones?
-
-Redacta en 3 párrafos cortos. Sin viñetas. Tono ejecutivo. Sé directo."""
+                "content": f"""Eres experto en GEO (Generative Engine Optimization). {marca_usuario} tiene bajo Share of Model (SoM).
+Genera 3 acciones tácticas breves para dominar LLMs (no SEO tradicional):
+1. Para ChatGPT: Exigir Bing Webmaster Tools y JSON-LD.
+2. Para Gemini: Crear videos en YouTube (por transcripciones) y Google Search Console.
+3. Para Perplexity: PR en Reddit, LinkedIn o crear "Perplexity Pages".
+Formato: Profesional, directo y accionable. Sin introducciones largas."""
             }]
         )
         

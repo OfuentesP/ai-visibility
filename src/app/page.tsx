@@ -116,19 +116,33 @@ function queryToBullets(query: string): string[] {
 function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(null)
   return (
-    <div className="space-y-2">
+    <div className="divide-y divide-slate-800/60">
       {items.map((item, i) => (
-        <div key={i} className="border border-slate-800 rounded-lg overflow-hidden">
+        <div key={i}>
           <button
             onClick={() => setOpen(open === i ? null : i)}
-            className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-900 transition-colors"
+            className="w-full flex items-start gap-5 py-5 text-left group"
           >
-            <span className="text-slate-200 font-semibold text-sm pr-4">{item.q}</span>
-            <span className={`text-slate-500 text-lg transition-transform duration-200 flex-shrink-0 ${open === i ? 'rotate-45' : ''}`}>+</span>
+            <span className="text-[11px] font-mono text-slate-600 pt-0.5 w-5 shrink-0 select-none">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span className={`flex-1 text-sm font-medium transition-colors leading-snug ${
+              open === i ? 'text-slate-100' : 'text-slate-300 group-hover:text-slate-100'
+            }`}>
+              {item.q}
+            </span>
+            <span className={`text-slate-600 text-xs font-mono transition-transform duration-200 shrink-0 mt-0.5 ${
+              open === i ? 'rotate-45 text-indigo-400' : ''
+            }`}>
+              +
+            </span>
           </button>
           {open === i && (
-            <div className="px-5 pb-5 pt-1 border-t border-slate-800 bg-slate-950">
-              <p className="text-slate-400 text-sm leading-relaxed">{item.a}</p>
+            <div className="flex gap-5 pb-5">
+              <span className="w-5 shrink-0" />
+              <p className="text-slate-500 text-[13px] leading-relaxed border-l-2 border-indigo-900/60 pl-4">
+                {item.a}
+              </p>
             </div>
           )}
         </div>
@@ -3131,9 +3145,12 @@ Tel: [teléfono]`
           )}
 
           {/* FAQ GEO */}
-          <section id="faq-geo" className="max-w-4xl mx-auto px-4 py-16">
-            <h2 className="text-2xl font-bold text-slate-200 mb-2">Preguntas Frecuentes sobre AI Visibility y GEO</h2>
-            <p className="text-slate-500 text-sm mb-10">Respuestas directas sobre Generative Engine Optimization, Share of Model y visibilidad en LLMs.</p>
+          <section id="faq-geo" className="max-w-3xl mx-auto px-4 py-20">
+            <div className="mb-10">
+              <p className="text-[10px] font-mono text-indigo-500 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
+              <h2 className="text-xl font-semibold text-slate-100 leading-snug">AI Visibility &amp; Generative Engine Optimization</h2>
+              <p className="text-slate-600 text-sm mt-2">Conceptos clave para entender cómo los LLMs construyen reputación de marca.</p>
+            </div>
             <FaqAccordion items={[
               {
                 q: '¿Qué es Generative Engine Optimization (GEO)?',
