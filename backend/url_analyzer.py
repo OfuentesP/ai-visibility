@@ -373,30 +373,48 @@ async def generar_inteligencia_competitiva(
     if not _openai:
         return {"competitive_deep_dive": {}, "untapped_territories": []}
 
-    # Determinar competidor ganador
+    # Determinar competidor ganador — primero desde marca_ganadora
     ganador_counts: dict[str, int] = {}
     for r in resultados:
         gw = r.get("marca_ganadora") or ""
         if gw and gw.lower() != marca.lower():
             ganador_counts[gw] = ganador_counts.get(gw, 0) + 1
 
+    # Fallback: si marca_ganadora vino null/vacío en todos los resultados,
+    # derivar el competidor desde marcas_mencionadas[0] (mismo dato del chart)
+    if not ganador_counts:
+        fallback_counts: dict[str, int] = {}
+        for r in resultados:
+            lista = r.get("marcas_mencionadas") or []
+            for m in lista:
+                if m and m.lower() != marca.lower():
+                    fallback_counts[m] = fallback_counts.get(m, 0) + 1
+                    break  # solo el primero de cada resultado
+        ganador_counts = fallback_counts
+
     if not ganador_counts:
         return {"competitive_deep_dive": {}, "untapped_territories": []}
 
     competidor = max(ganador_counts, key=lambda k: ganador_counts[k])
 
-    # Consolidar razones del ganador de los resultados
+    # Consolidar razones del ganador: buscar en marca_ganadora O en marcas_mencionadas[0]
+    def _result_mentions_competidor(res: dict) -> bool:
+        if (res.get("marca_ganadora") or "").lower() == competidor.lower():
+            return True
+        lista = res.get("marcas_mencionadas") or []
+        return bool(lista) and lista[0].lower() == competidor.lower()
+
     razones_ganador = list({
         r
         for res in resultados
-        if (res.get("marca_ganadora") or "").lower() == competidor.lower()
+        if _result_mentions_competidor(res)
         for r in (res.get("competitor_winning_reasons") or [])
     })[:6]
 
     fuentes_ganador = list({
         s
         for res in resultados
-        if (res.get("marca_ganadora") or "").lower() == competidor.lower()
+        if _result_mentions_competidor(res)
         for s in (res.get("cited_sources_types") or [])
     })[:4]
 
