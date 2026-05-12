@@ -66,6 +66,7 @@ interface AnalisisMarca {
     }>
   }
   competitor_winning_reasons?: string[]
+  cited_sources_types?: string[]
 }
 
 interface ResultadoBusqueda {
