@@ -3,7 +3,8 @@
 import { useState, useRef } from 'react'
 import { toPng } from 'html-to-image'
 
-import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download } from 'lucide-react'
+import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, AlertCircle, CheckCircle2, TrendingDown, FlaskConical } from 'lucide-react'
+import { DEMO_URL_DATA } from '@/lib/demo-data'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList } from 'recharts'
 
@@ -150,6 +151,8 @@ function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
     </div>
   )
 }
+
+const API = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 export default function Dashboard() {
   const [brand, setBrand] = useState('')
@@ -354,7 +357,7 @@ export default function Dashboard() {
     setCitaLoading(true)
     setCitaResult(null)
     try {
-      const res = await fetch('/api/audit/citability', {
+      const res = await fetch(`${API}/api/audit/citability`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -383,7 +386,7 @@ export default function Dashboard() {
     setCompareLoading(true)
     setCompareResult(null)
     try {
-      const res = await fetch('/api/audit/comparison', {
+      const res = await fetch(`${API}/api/audit/comparison`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -426,7 +429,7 @@ export default function Dashboard() {
         setLoadingPhase(`${phases[i].text} ${phases[i].progress}%`)
         await new Promise((r) => setTimeout(r, 300 + Math.random() * 700))
       }
-      const response = await fetch('/api/audit', {
+      const response = await fetch(`${API}/api/audit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: query.trim(), brand: brand.trim() }),
@@ -441,7 +444,7 @@ export default function Dashboard() {
       setDiscoveryResult(null)
       setTrendsResult(null)
       setDiscoveryLoading(true)
-      fetch('/api/discovery', {
+      fetch(`${API}/api/discovery`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ brand: brand.trim(), topico: query.trim() }),
@@ -460,7 +463,7 @@ export default function Dashboard() {
             .slice(0, 6)
           if (syntheticQueries.length > 0) {
             setTrendsLoading(true)
-            fetch('/api/trends/related', {
+            fetch(`${API}/api/trends/related`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ queries: syntheticQueries, geo: 'CL', max_per_query: 5 }),
@@ -500,7 +503,7 @@ export default function Dashboard() {
         setLoadingPhase(p)
         await new Promise((r) => setTimeout(r, 400 + Math.random() * 600))
       }
-      const res = await fetch('/api/audit/from-url', {
+      const res = await fetch(`${API}/api/audit/from-url`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, pais: 'Chile' }),
@@ -895,14 +898,6 @@ Tel: [teléfono]`
                 )}
               </div>
             </div>
-            {result && (
-              <button
-                onClick={() => handleExportPng(brandReportRef, `ai-visibility-${brand || 'informe'}`)}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-sm text-slate-400 text-sm transition flex items-center gap-2"
-              >
-                <Download size={14} /> PNG
-              </button>
-            )}
           </motion.div>
 
           {/* BUSCADOR */}
@@ -1016,6 +1011,15 @@ Tel: [teléfono]`
                   <Globe className="w-4 h-4" />
                   {urlLoading ? loadingPhase : 'Analizar URL'}
                 </button>
+                {process.env.NODE_ENV === 'development' && (
+                  <button
+                    onClick={() => { setUrlResult(DEMO_URL_DATA as unknown as Parameters<typeof setUrlResult>[0]); setError('') }}
+                    className="w-full px-6 py-2 bg-transparent border border-slate-700 hover:border-indigo-600 hover:text-indigo-400 text-slate-500 font-medium rounded-sm transition flex items-center justify-center gap-2 text-xs"
+                  >
+                    <FlaskConical className="w-3.5 h-3.5" />
+                    Modo demo — amaliajeans.cl
+                  </button>
+                )}
               </>
             ) : mode === 'compare' ? (
               <>
@@ -1405,9 +1409,9 @@ Tel: [teléfono]`
                             <div>
                               <h2 className="text-base font-semibold text-slate-100 leading-snug">{titulo}</h2>
                               <p className="text-slate-300 text-sm mt-1 leading-relaxed">{subtitulo}</p>
-                              <div className="mt-3 flex flex-col gap-0.5 self-start">
+                              <div className="mt-3 flex flex-col gap-0.5 max-w-full">
                                 <span className="text-[11px] uppercase tracking-widest text-slate-500 font-medium">Mercado auditado</span>
-                                <span className="text-sm font-medium text-slate-300 bg-slate-800/60 border border-slate-700/50 rounded-full px-3 py-0.5 self-start">{urlResult.categoria} · {urlResult.mercado}</span>
+                                <span className="text-sm font-medium text-slate-300 bg-slate-800/60 border border-slate-700/50 rounded px-3 py-1 break-words">{urlResult.categoria} · {urlResult.mercado}</span>
                               </div>
                             </div>
                           </div>
@@ -1472,12 +1476,12 @@ Tel: [teléfono]`
                     variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
                     className="bg-slate-950 border border-slate-800 rounded-sm p-6"
                   >
-                    <div className="flex items-start justify-between mb-5">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
                       <div>
                         <h3 className="text-sm font-semibold text-slate-100">Dominio de Mercado en Motores de IA <span className="text-slate-500 font-normal">(Share of Voice)</span></h3>
                         <p className="text-gray-400 text-sm mt-1">Marcas que están capturando actualmente la demanda de sus clientes potenciales.</p>
                       </div>
-                      <div className="flex flex-col items-end gap-2 shrink-0">
+                      <div className="flex flex-row sm:flex-col sm:items-end items-center gap-2 shrink-0">
                         <span className="text-sm font-mono text-slate-500 bg-slate-800 border border-slate-700 px-2 py-1 rounded">
                           {chartData.length} marcas
                         </span>
@@ -1648,53 +1652,43 @@ Tel: [teléfono]`
                     </div>
                   </div>
 
-                  {/* Dos tarjetas enfrentadas */}
-                  <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-slate-800/60">
-                    {/* Tarjeta izquierda — percepción nuestra */}
-                    <div className="px-5 py-5">
-                      <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-rose-500/60 inline-block" />
-                        Percepción de {urlResult.marca} en la IA
-                      </p>
-                      <div className="border border-rose-500/15 bg-rose-950/10 rounded-sm px-4 py-3.5">
-                        <p className="text-slate-300 text-sm leading-relaxed">{urlResult.competitive_deep_dive.percepcion_nuestra_marca}</p>
-                      </div>
-                    </div>
-                    {/* Tarjeta derecha — ventajas competidor */}
-                    <div className="px-5 py-5">
-                      <p className="text-[10px] uppercase tracking-widest font-semibold text-emerald-400 mb-3 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500/60 inline-block" />
-                        Ventajas Competitivas de {urlResult.competitive_deep_dive.competidor}
-                      </p>
-                      <div className="border border-emerald-500/15 bg-emerald-950/10 rounded-sm px-4 py-3.5">
-                        <p className="text-slate-300 text-sm leading-relaxed">{urlResult.competitive_deep_dive.mensaje_competidor}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Tabla de atributos */}
+                  {/* Tabla de atributos — va primero, es el diagnóstico central */}
                   {urlResult.competitive_deep_dive.tabla_atributos && urlResult.competitive_deep_dive.tabla_atributos.length > 0 && (
-                    <div className="border-t border-slate-800/60 px-5 pb-5 pt-4">
-                      <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">
-                        Atributos donde {urlResult.competitive_deep_dive.competidor} supera a {urlResult.marca}
-                      </p>
+                    <div className="px-5 pb-2 pt-5">
+                      <div className="flex items-center justify-between mb-4">
+                        <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">
+                          Dónde {urlResult.competitive_deep_dive.competidor} gana terreno
+                        </p>
+                        <span className="text-[10px] font-mono text-rose-500/70 bg-rose-950/30 border border-rose-900/40 rounded px-2 py-0.5">
+                          {urlResult.competitive_deep_dive.tabla_atributos.length} brechas detectadas
+                        </span>
+                      </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
+                        <table className="w-full">
                           <thead>
-                            <tr>
-                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2.5 pr-4 w-1/3">Atributo Ganador</th>
-                              <th className="text-left text-[10px] uppercase tracking-widest text-violet-400 font-semibold pb-2.5 pr-4 w-1/3">Autoridad Digital <span className="text-slate-600 normal-case">(Por qué les creen)</span></th>
-                              <th className="text-left text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2.5 w-1/3">Impacto Comercial <span className="text-slate-600 normal-case">(Lo que perdemos)</span></th>
+                            <tr className="border-b border-slate-800">
+                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2.5 pr-6 w-[30%]">Atributo</th>
+                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2.5 pr-6 w-[35%]">
+                                Por qué les creen
+                                <span className="ml-1.5 normal-case font-normal text-slate-600">↗ fuente de autoridad</span>
+                              </th>
+                              <th className="text-left pb-2.5 w-[35%]">
+                                <span className="text-[10px] uppercase tracking-widest text-rose-400 font-semibold">Lo que perdemos</span>
+                              </th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-800/40">
+                          <tbody>
                             {urlResult.competitive_deep_dive.tabla_atributos.map((row, ri) => (
-                              <tr key={ri} className={ri % 2 === 0 ? 'bg-slate-900/20' : ''}>
-                                <td className="py-3 pr-4 align-top">
-                                  <span className="font-semibold text-slate-200">{row.atributo}</span>
+                              <tr key={ri} className="border-b border-slate-800/50 last:border-0">
+                                <td className="py-4 pr-6 align-top">
+                                  <span className="text-sm font-semibold text-slate-100">{row.atributo}</span>
                                 </td>
-                                <td className="py-3 pr-4 align-top text-violet-300/80 text-xs leading-relaxed">{row.autoridad_digital}</td>
-                                <td className="py-3 align-top text-rose-300/80 text-xs leading-relaxed">{row.impacto_comercial}</td>
+                                <td className="py-4 pr-6 align-top">
+                                  <p className="text-xs text-slate-400 leading-relaxed">{row.autoridad_digital}</p>
+                                </td>
+                                <td className="py-4 align-top">
+                                  <p className="text-xs text-rose-300/90 leading-relaxed">{row.impacto_comercial}</p>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -1702,6 +1696,24 @@ Tel: [teléfono]`
                       </div>
                     </div>
                   )}
+
+                  {/* Contexto — percepción vs ventajas, layout asimétrico */}
+                  <div className="grid md:grid-cols-5 gap-0 border-t border-slate-800/60 mt-2">
+                    {/* Izquierda 2/5 — nuestra percepción, contexto secundario */}
+                    <div className="md:col-span-2 px-5 py-5 border-b md:border-b-0 md:border-r border-slate-800/60 border-l-2 border-l-rose-600/50">
+                      <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">
+                        Cómo nos ve la IA
+                      </p>
+                      <p className="text-slate-400 text-xs leading-relaxed">{urlResult.competitive_deep_dive.percepcion_nuestra_marca}</p>
+                    </div>
+                    {/* Derecha 3/5 — ventajas competidor, es el diagnóstico */}
+                    <div className="md:col-span-3 px-5 py-5 border-l-2 border-l-emerald-600/50">
+                      <p className="text-[10px] uppercase tracking-widest font-semibold text-emerald-400 mb-3">
+                        Por qué {urlResult.competitive_deep_dive.competidor} domina
+                      </p>
+                      <p className="text-slate-300 text-xs leading-relaxed">{urlResult.competitive_deep_dive.mensaje_competidor}</p>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 
@@ -1822,24 +1834,7 @@ Tel: [teléfono]`
                           }
                         </p>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleExportPng(urlReportRef, `ai-visibility-url-${urlResult?.marca || 'informe'}`)}
-                          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded border border-slate-600 text-slate-400 hover:border-slate-400 hover:text-slate-200 transition-colors"
-                        >
-                          <Download size={12} />
-                          Exportar PNG
-                        </button>
-                        <div className={`text-xs font-semibold px-2.5 py-1 rounded border ${
-                          urlResult.visibilidad_pct === 0
-                            ? 'bg-rose-950/40 text-rose-200 border-rose-500/30'
-                            : urlResult.visibilidad_pct < 100
-                            ? 'bg-yellow-900/30 text-yellow-400 border-yellow-800/40'
-                            : 'bg-emerald-900/30 text-emerald-400 border-emerald-800/40'
-                        }`}>
-                          {urlResult.visibilidad_pct === 0 ? '⚠ INTERVENIR' : urlResult.visibilidad_pct < 100 ? 'DEFENDER' : 'MANTENER'}
-                        </div>
-                      </div>
+
                     </div>
 
                     {/* Acción destacada */}
@@ -1925,44 +1920,44 @@ Tel: [teléfono]`
                                     </div>
                                     {/* Inline detail */}
                                     {isExpanded && (
-                                      <div className={`border-b border-x rounded-b-sm bg-slate-900/40 ${
-                                        isTop ? 'border-slate-700/30 border-l-2 border-amber-500/30' : 'border-slate-700/20'
-                                      }`}>
+                                      <div className={`bg-slate-800/40 rounded-b-xl border-b border-r border-l-2 ${
+                                        isTop ? 'border-amber-500/40 border-b-slate-700/30 border-r-slate-700/30' : 'border-blue-500/50 border-b-slate-700/20 border-r-slate-700/20'
+                                      } p-6`}>
                                         {/* Context header — always visible */}
                                         {a.segmento_impactado && (
-                                          <div className="px-5 pt-4 pb-0">
+                                          <div className="mb-5">
                                             <p className="text-xs font-semibold tracking-wider text-slate-500 uppercase mb-1">🎯 Oportunidad de Mercado</p>
                                             <p className="text-slate-200 text-sm font-medium leading-snug">{a.segmento_impactado}</p>
                                           </div>
                                         )}
 
-                                        {/* Tab strip */}
-                                        <div className="flex gap-0 border-b border-slate-800 mt-4 px-5">
+                                        {/* Segmented control */}
+                                        <div className="inline-flex bg-slate-900 p-1 rounded-lg mb-6">
                                           <button
                                             onClick={(e) => { e.stopPropagation(); setInlineTab('marketing') }}
-                                            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 border-b-2 transition-colors ${
+                                            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
                                               inlineTab === 'marketing'
-                                                ? 'border-violet-500 text-violet-300'
-                                                : 'border-transparent text-slate-500 hover:text-slate-300'
+                                                ? 'bg-slate-700 text-white shadow-sm'
+                                                : 'text-slate-400 hover:text-slate-300'
                                             }`}
                                           >
                                             📝 Brief para Marketing
                                           </button>
                                           <button
                                             onClick={(e) => { e.stopPropagation(); setInlineTab('ti') }}
-                                            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 border-b-2 transition-colors ${
+                                            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
                                               inlineTab === 'ti'
-                                                ? 'border-sky-500 text-sky-300'
-                                                : 'border-transparent text-slate-500 hover:text-slate-300'
+                                                ? 'bg-slate-700 text-white shadow-sm'
+                                                : 'text-slate-400 hover:text-slate-300'
                                             }`}
                                           >
-                                            ⚙️ Ejecución TI (Código)
+                                            ⚙️ Ejecución TI
                                           </button>
                                         </div>
 
                                         {/* TAB 1: Brief para Marketing */}
                                         {inlineTab === 'marketing' && (
-                                          <div className="px-5 py-4 space-y-4">
+                                          <div className="space-y-4">
                                             {briefLoading && (
                                               <div className="space-y-3">
                                                 {[0,1,2].map(i => <div key={i} className="h-10 bg-slate-800/50 rounded animate-pulse" />)}
@@ -1977,7 +1972,7 @@ Tel: [teléfono]`
                                                   setBriefLoading(true)
                                                   setBriefData(null)
                                                   try {
-                                                    const res = await fetch('/api/marketing/brief', {
+                                                    const res = await fetch(`${API}/api/marketing/brief`, {
                                                       method: 'POST',
                                                       headers: { 'Content-Type': 'application/json' },
                                                       body: JSON.stringify({
@@ -2059,7 +2054,7 @@ Tel: [teléfono]`
                                                     setBriefLoading(true)
                                                     setBriefData(null)
                                                     try {
-                                                      const res = await fetch('/api/marketing/brief', {
+                                                      const res = await fetch(`${API}/api/marketing/brief`, {
                                                         method: 'POST',
                                                         headers: { 'Content-Type': 'application/json' },
                                                         body: JSON.stringify({
@@ -2080,11 +2075,11 @@ Tel: [teléfono]`
                                             )}
 
                                             {/* ROI always in Marketing tab */}
-                                            <div className="flex items-start gap-3 p-3.5 rounded-lg bg-emerald-950/30 border border-emerald-500/25">
-                                              <TrendingUp className="shrink-0 mt-0.5 text-emerald-400" size={14} />
+                                            <div className="flex items-start gap-3 p-4 rounded-lg bg-emerald-950/20">
+                                              <TrendingUp className="shrink-0 mt-0.5 text-emerald-500" size={14} />
                                               <div>
-                                                <p className="text-xs uppercase tracking-widest text-emerald-400 font-bold mb-1">Retorno Proyectado</p>
-                                                <p className="text-slate-200 text-sm leading-relaxed">
+                                                <p className="text-xs uppercase tracking-widest text-emerald-500 font-semibold mb-1">Retorno Proyectado</p>
+                                                <p className="text-gray-300 text-sm leading-relaxed">
                                                   {a.segmento_impactado
                                                     ? `Al implementar esto, la marca entra al top 3 de recomendaciones para ${a.segmento_impactado.split(/[,.]/).at(0)?.trim()}, capturando tráfico calificado en etapa de decisión de compra.`
                                                     : 'Al implementar esto, la marca mejora su posición en los motores de IA, accediendo a demanda de alta intención de compra que hoy captura la competencia.'
@@ -2093,11 +2088,11 @@ Tel: [teléfono]`
                                               </div>
                                             </div>
                                             {a.riesgo_inaccion && (
-                                              <div className="flex items-start gap-3 p-3.5 rounded-lg bg-rose-500/10 border border-rose-500/20">
+                                              <div className="flex items-start gap-3 p-4 rounded-lg bg-rose-950/20">
                                                 <TriangleAlert className="shrink-0 mt-0.5 text-rose-400" size={14} />
                                                 <div>
-                                                  <p className="text-xs uppercase tracking-widest text-rose-400 font-bold mb-1">Si no actúas</p>
-                                                  <p className="text-slate-300 text-sm leading-relaxed">{a.riesgo_inaccion}</p>
+                                                  <p className="text-xs uppercase tracking-widest text-rose-400 font-semibold mb-1">Si no actúas</p>
+                                                  <p className="text-gray-300 text-sm leading-relaxed">{a.riesgo_inaccion}</p>
                                                 </div>
                                               </div>
                                             )}
@@ -2106,7 +2101,7 @@ Tel: [teléfono]`
 
                                         {/* TAB 2: Ejecución TI */}
                                         {inlineTab === 'ti' && (
-                                          <div className="px-5 py-4 space-y-4">
+                                          <div className="space-y-4">
                                             <div>
                                               <p className="text-xs font-semibold tracking-wider text-slate-500 uppercase mb-1.5">📋 Instrucción de Trabajo para TI</p>
                                               <p className="text-slate-300 text-sm leading-relaxed">
@@ -2128,13 +2123,13 @@ Tel: [teléfono]`
                                             </div>
 
                                             {snippetInline && (
-                                              <div className="border border-slate-700/40 rounded-lg overflow-hidden">
+                                              <div className="bg-slate-950 border border-slate-800 rounded-lg overflow-hidden">
                                                 <button
                                                   onClick={(e) => { e.stopPropagation(); setShowInlineCode(v => !v) }}
-                                                  className="w-full flex items-center justify-between px-4 py-2.5 bg-slate-800/40 hover:bg-slate-800/70 transition-colors text-left"
+                                                  className="w-full flex items-center justify-between px-4 py-2.5 bg-slate-900/60 hover:bg-slate-900 transition-colors text-left border-b border-slate-800"
                                                 >
-                                                  <span className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-                                                    <Terminal className="w-3.5 h-3.5 text-sky-500" />
+                                                  <span className="flex items-center gap-2 font-mono text-sm text-slate-300">
+                                                    <Terminal className="w-3.5 h-3.5 text-sky-400" />
                                                     Ver código listo para copiar
                                                   </span>
                                                   <span className={`text-slate-500 text-xs transition-transform ${showInlineCode ? 'rotate-180' : ''}`}>▼</span>
@@ -2143,11 +2138,11 @@ Tel: [teléfono]`
                                                   <div className="relative">
                                                     <button
                                                       onClick={() => navigator.clipboard.writeText(snippetInline)}
-                                                      className="absolute top-2 right-2 z-10 flex items-center gap-1 text-[10px] text-slate-500 hover:text-sky-400 bg-slate-900 border border-slate-700 px-2 py-1 rounded transition-colors"
+                                                      className="absolute top-2 right-2 z-10 flex items-center gap-1 text-[10px] text-slate-400 hover:text-sky-400 bg-slate-900 border border-slate-700 px-2 py-1 rounded transition-colors font-mono"
                                                     >
                                                       <Download className="w-3 h-3" /> Copiar
                                                     </button>
-                                                    <pre className="p-4 bg-slate-950 text-[11px] font-mono text-slate-400 overflow-x-auto leading-relaxed max-h-72 whitespace-pre"><code>{snippetInline}</code></pre>
+                                                    <pre className="p-4 bg-slate-950 text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed max-h-72 whitespace-pre"><code>{snippetInline}</code></pre>
                                                   </div>
                                                 )}
                                               </div>
@@ -2319,6 +2314,17 @@ Tel: [teléfono]`
                   Análisis generado por IA · {new Date().toLocaleDateString('es-CL')} · {urlResult!.total_queries} tipos de cliente · {urlResult!.mercado}
                 </p>
               </motion.div>
+
+              {/* Export PNG — below Anexo */}
+              <div className="flex justify-end pt-2">
+                <button
+                  onClick={() => handleExportPng(urlReportRef, `ai-visibility-url-${urlResult!.marca || 'informe'}`)}
+                  className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-sm border border-slate-700 text-slate-500 hover:border-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  <Download size={12} />
+                  Exportar PNG
+                </button>
+              </div>
 
             </motion.div>
 
@@ -2714,6 +2720,7 @@ Tel: [teléfono]`
                     </div>
                   )
                 })()}
+                {/* VS Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {d.posicion_mi_marca === 0 && (
                     <div className="md:col-span-2 flex items-start gap-2.5 px-3 py-2.5 rounded-sm bg-rose-950/20 border border-rose-500/30 mb-1">
@@ -2723,10 +2730,12 @@ Tel: [teléfono]`
                       </p>
                     </div>
                   )}
-                  <div className="border border-slate-700/40 bg-slate-800/20 rounded-sm p-4">
+
+                  {/* Tu marca */}
+                  <div className="border border-red-900/30 bg-red-950/20 rounded-sm p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="w-2 h-2 rounded-full bg-slate-500 shrink-0" />
-                      <p className="text-slate-400 text-xs font-semibold uppercase tracking-widest">
+                      <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                      <p className="text-red-400 text-xs font-semibold uppercase tracking-widest">
                         {d.posicion_mi_marca === 0
                           ? 'Cómo te percibe la IA'
                           : d.posicion_mi_marca === 1
@@ -2739,16 +2748,18 @@ Tel: [teléfono]`
                         ? d.percepciones_genericas
                         : ['Analizando…']
                       ).map((c, idx) => (
-                        <div key={idx} className="flex items-start gap-2 px-3 py-1.5 bg-slate-800/50 rounded-sm">
-                          <span className="text-slate-600 text-xs mt-0.5 shrink-0">✕</span>
-                          <p className="text-slate-400 text-xs">{c}</p>
+                        <div key={idx} className="flex items-start gap-2 px-3 py-1.5 bg-slate-800/40 rounded-sm">
+                          <span className="text-red-700 text-xs mt-0.5 shrink-0">✕</span>
+                          <p className="text-gray-300 text-xs">{c}</p>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="border border-emerald-800/30 bg-emerald-950/10 rounded-sm p-4">
+
+                  {/* Competidor */}
+                  <div className="border border-emerald-900/30 bg-emerald-950/20 rounded-sm p-4">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest">
                         Lo que tú no comunicas y {d.posicion_mi_marca === 1 ? 'podrían usar en tu contra' : 'el ganador sí'}
                       </p>
@@ -2760,7 +2771,7 @@ Tel: [teléfono]`
                       ).map((c, idx) => (
                         <div key={idx} className="flex items-start gap-2 px-3 py-1.5 bg-emerald-950/30 rounded-sm">
                           <span className="text-emerald-500 text-xs mt-0.5 shrink-0">+</span>
-                          <p className="text-slate-200 text-xs">{c}</p>
+                          <p className="text-gray-300 text-xs">{c}</p>
                         </div>
                       ))}
                     </div>
@@ -2769,42 +2780,46 @@ Tel: [teléfono]`
 
                 {/* Tabla de Ventajas del Competidor */}
                 {d.competitor_advantage && d.competitor_advantage.filas.length > 0 && (
-                  <div className="mt-5 pt-5 border-t border-slate-800">
-                    <div className="flex items-center justify-between mb-3">
+                  <div className="mt-6 pt-6 border-t border-slate-800">
+                    <div className="flex items-center justify-between mb-4">
                       <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
                         Por qué la IA prefiere a <span className="text-rose-400">{d.competitor_advantage.rival}</span>
                       </p>
                       <span className="text-[10px] font-mono text-slate-600 bg-slate-800/60 px-2 py-0.5 rounded">Análisis de Ventaja Competitiva</span>
                     </div>
-                    <div className="overflow-x-auto rounded-sm border border-slate-800">
-                      <table className="w-full text-xs">
-                        <thead>
-                          <tr className="border-b border-slate-800 bg-slate-800/50">
-                            <th className="text-left px-4 py-2.5 text-slate-400 font-semibold uppercase tracking-wider w-[30%]">Atributo Ganador</th>
-                            <th className="text-left px-4 py-2.5 text-slate-400 font-semibold uppercase tracking-wider w-[35%]">Fuente de Verdad IA</th>
-                            <th className="text-left px-4 py-2.5 text-slate-400 font-semibold uppercase tracking-wider w-[35%]">Gap de {d.competitor_advantage.nuestra_marca}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {d.competitor_advantage.filas.map((fila, i) => (
-                            <tr key={i} className={`border-b border-slate-800/60 ${i % 2 === 0 ? 'bg-slate-900' : 'bg-slate-950'}`}>
-                              <td className="px-4 py-3 text-slate-200 font-medium leading-snug">
-                                <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500 mr-2 shrink-0 align-middle" />
-                                {fila.atributo_ganador}
-                              </td>
-                              <td className="px-4 py-3 text-slate-400 leading-snug">{fila.fuente_de_verdad}</td>
-                              <td className="px-4 py-3 leading-snug">
-                                <span className="text-amber-400">{fila.gap_nuestra_marca}</span>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+
+                    {/* Header row */}
+                    <div className="grid grid-cols-3 gap-4 px-4 pb-2 border-b border-slate-800">
+                      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Atributo Ganador</p>
+                      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Autoridad Digital</p>
+                      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Impacto Comercial</p>
                     </div>
+
+                    {/* Data rows */}
+                    <div className="divide-y divide-slate-800/50">
+                      {d.competitor_advantage.filas.map((fila, i) => (
+                        <div key={i} className="grid grid-cols-3 gap-4 px-4 py-6 items-start">
+                          <div className="flex items-start gap-2">
+                            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                            <p className="text-slate-200 text-xs font-medium leading-snug">{fila.atributo_ganador}</p>
+                          </div>
+                          <div>
+                            <span className="inline-flex items-center gap-1 bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded-md leading-snug">
+                              {fila.fuente_de_verdad}
+                            </span>
+                          </div>
+                          <div className="flex items-start gap-1.5">
+                            <TrendingDown className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
+                            <p className="text-gray-400 text-xs leading-snug">{fila.gap_nuestra_marca}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
                     {d.competitor_advantage.conclusion && (
-                      <div className="mt-3 flex items-start gap-2 px-4 py-3 bg-amber-950/20 border border-amber-800/30 rounded-sm">
-                        <span className="text-amber-500 text-sm shrink-0 mt-0.5">→</span>
-                        <p className="text-amber-200/80 text-xs leading-relaxed">{d.competitor_advantage.conclusion}</p>
+                      <div className="mt-2 flex items-start gap-2 px-4 py-3 bg-slate-800/40 border border-slate-700/40 rounded-sm">
+                        <span className="text-slate-500 text-sm shrink-0 mt-0.5">→</span>
+                        <p className="text-gray-400 text-xs leading-relaxed">{d.competitor_advantage.conclusion}</p>
                       </div>
                     )}
                   </div>
@@ -2822,35 +2837,44 @@ Tel: [teléfono]`
                   className="bg-slate-900 border border-slate-800 rounded-sm p-6"
                 >
                   <h3 className="text-sm font-semibold text-slate-100 mb-0.5">Territorios desatendidos</h3>
-                  <p className="text-slate-500 text-xs mb-5">Temas emergentes donde tu marca no tiene presencia. Validados con Google Trends.</p>
-                  <div className="space-y-3">
+                  <p className="text-slate-500 text-xs mb-6">Temas emergentes donde tu marca no tiene presencia. Validados con Google Trends.</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {d.territorios_desatendidos.map((t, idx) => {
                       const esAlza = t.crecimiento_trends?.startsWith('+')
                       const esBaja = t.crecimiento_trends?.startsWith('-')
                       return (
-                        <div key={idx} className="flex items-start gap-4 bg-slate-800/30 border border-slate-700/40 rounded-sm px-4 py-3.5">
-                          <div className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold mt-0.5">
-                            {idx + 1}
+                        <div key={idx} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 flex flex-col gap-3">
+                          {/* Icon + title */}
+                          <div className="flex items-start gap-3">
+                            <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                            <p className="text-slate-100 text-sm font-semibold leading-snug">{t.topico_emergente}</p>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <p className="text-slate-100 text-sm font-semibold">{t.topico_emergente}</p>
-                              <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
-                                t.nivel_oportunidad === 'Alto'
-                                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                                  : 'bg-sky-500/15 text-sky-400 border border-sky-500/30'
-                              }`}>
-                                {t.nivel_oportunidad}
-                              </span>
-                              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${
-                                esAlza ? 'bg-emerald-500/10 text-emerald-400' : esBaja ? 'bg-rose-500/10 text-rose-400' : 'bg-slate-700/50 text-slate-400'
-                              }`}>
-                                📈 {t.crecimiento_trends || 'Buscando datos...'}
-                              </span>
-                            </div>
-                            <p className="text-slate-400 text-xs mt-1">{t.porque_es_oportunidad}</p>
-                            <p className="text-slate-600 text-[11px] mt-1 italic">Intención: {t.intension_usuario}</p>
+
+                          {/* Badges */}
+                          <div className="flex flex-wrap gap-2">
+                            <span className={`text-[10px] font-medium px-2.5 py-1 rounded-full border ${
+                              t.nivel_oportunidad === 'Alto'
+                                ? 'bg-emerald-950/40 border-emerald-900 text-emerald-300'
+                                : 'bg-sky-950/40 border-sky-900 text-sky-300'
+                            }`}>
+                              {t.nivel_oportunidad}
+                            </span>
+                            <span className={`text-[10px] font-medium px-2.5 py-1 rounded-full border ${
+                              esAlza
+                                ? 'bg-amber-950/40 border-amber-900 text-amber-300'
+                                : esBaja
+                                ? 'bg-rose-950/40 border-rose-900 text-rose-300'
+                                : 'bg-slate-800/60 border-slate-700 text-slate-400'
+                            }`}>
+                              {t.crecimiento_trends || 'Sin datos'}
+                            </span>
                           </div>
+
+                          {/* Justification */}
+                          <p className="text-gray-400 text-xs leading-relaxed">{t.porque_es_oportunidad}</p>
+
+                          {/* Footer intent */}
+                          <p className="text-gray-500 text-[11px] italic">Intención: {t.intension_usuario}</p>
                         </div>
                       )
                     })}
@@ -2993,21 +3017,6 @@ Tel: [teléfono]`
                       )
                     })()}
                   </div>
-                  {(() => {
-                    const p = d.posicion_mi_marca
-                    const clasif = d.prioridad_ejecutiva?.clasificacion ?? (p === 0 || p > 5 ? 'Atacar' : p <= 2 ? 'Mantener' : 'Defender')
-                    return (
-                      <div className={`text-xs font-semibold px-2.5 py-1 rounded border ${
-                        clasif === 'Mantener'
-                          ? 'bg-emerald-900/30 text-emerald-400 border-emerald-800/40'
-                          : clasif === 'Defender'
-                          ? 'bg-yellow-900/30 text-yellow-400 border-yellow-800/40'
-                          : 'bg-rose-950/40 text-rose-200 border-rose-500/30'
-                      }`}>
-                        {clasif === 'Mantener' ? 'MANTENER' : clasif === 'Defender' ? 'DEFENDER' : '⚠ INTERVENIR'}
-                      </div>
-                    )
-                  })()}
                 </div>
 
                 {/* Búsquedas simuladas */}
@@ -3181,7 +3190,13 @@ Tel: [teléfono]`
                         onClick={downloadJSON}
                         className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700 text-slate-400 text-sm transition-colors"
                       >
-                        <Download className="w-3.5 h-3.5" /> Exportar
+                        <Download className="w-3.5 h-3.5" /> Exportar JSON
+                      </button>
+                      <button
+                        onClick={() => handleExportPng(brandReportRef, `ai-visibility-${brand || 'informe'}`)}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700 text-slate-400 text-sm transition-colors"
+                      >
+                        <Download className="w-3.5 h-3.5" /> Exportar PNG
                       </button>
                       <button
                         id="btn-agendar-validacion"
