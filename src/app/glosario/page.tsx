@@ -73,10 +73,10 @@ export default function GlosarioPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="max-w-6xl mx-auto py-16 px-4">
+      <main className="max-w-6xl mx-auto py-10 md:py-16 px-4">
 
         {/* Header */}
-        <div className="mb-14">
+        <div className="mb-8 md:mb-14">
           <p className="text-[10px] font-mono text-indigo-500 uppercase tracking-widest mb-3">Referencia técnica</p>
           <h1 className="text-xl font-semibold text-slate-100 leading-snug">
             Glosario de IA &amp; GEO
@@ -87,7 +87,7 @@ export default function GlosarioPage() {
         </div>
 
         {/* Terms */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 divide-y-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 divide-y-0">
           {terminos.map((item, i) => (
             <div key={item.id} id={item.id} className="py-7 flex gap-6 border-b border-slate-800/60">
               {/* Index */}
