@@ -1604,26 +1604,28 @@ Tel: [teléfono]`
                         <ReferenceLine x={promedio} stroke="#f59e0b" strokeDasharray="3 3" strokeOpacity={0.45} />
                       </BarChart>
                     </ResponsiveContainer>
-                    <div className="flex items-center flex-wrap gap-x-5 gap-y-1.5 mt-2 px-1">
-                      <span className="flex items-center gap-1.5 text-sm text-sky-400">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> → Tu marca
-                      </span>
-                      <span className="flex items-center gap-1.5 text-sm text-amber-400">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-amber-700 shrink-0" /> #1 Competidor
-                      </span>
-                      <span className="flex items-center gap-1.5 text-sm text-orange-400">
-                        <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-orange-600 to-orange-400 shrink-0" /> Dominancia absoluta (≥90%)
-                      </span>
-                      <span className="flex items-center gap-1.5 text-sm text-amber-500/70">
-                        <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio competidores
-                      </span>
+                    <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 gap-x-5 mt-3 px-1">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                        <span className="flex items-center gap-1.5 text-xs text-sky-400">
+                          <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> → Tu marca
+                        </span>
+                        <span className="flex items-center gap-1.5 text-xs text-amber-400">
+                          <span className="w-2.5 h-2.5 rounded-sm bg-amber-700 shrink-0" /> #1 Competidor
+                        </span>
+                        <span className="flex items-center gap-1.5 text-xs text-orange-400">
+                          <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-orange-600 to-orange-400 shrink-0" /> Dominancia (≥90%)
+                        </span>
+                        <span className="flex items-center gap-1.5 text-xs text-amber-500/70">
+                          <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio
+                        </span>
+                      </div>
                       {miMarcaEnLista && (() => {
                         const userEntry = chartData.find(e => e.isUser)
                         const userScore = userEntry ? userEntry.score : 0
                         const delta = userScore - promedio
                         if (delta === 0) return null
                         return (
-                          <span className={`ml-auto text-sm font-semibold px-2.5 py-0.5 rounded-full ${delta > 0 ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/20' : 'bg-rose-950/40 text-rose-400 border border-rose-500/20'}`}>
+                          <span className={`sm:ml-auto text-xs font-semibold px-2.5 py-1 rounded self-start sm:self-auto ${delta > 0 ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/20' : 'bg-rose-950/40 text-rose-400 border border-rose-500/20'}`}>
                             {delta > 0 ? `+${delta}pp vs promedio` : `${delta}pp vs promedio`}
                           </span>
                         )
@@ -1659,7 +1661,7 @@ Tel: [teléfono]`
                         <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">
                           Dónde {urlResult.competitive_deep_dive.competidor} gana terreno
                         </p>
-                        <span className="text-[10px] font-mono text-rose-500/70 bg-rose-950/30 border border-rose-900/40 rounded px-2 py-0.5">
+                        <span className="text-[10px] font-mono text-rose-300 bg-rose-900/50 border border-rose-700/60 rounded px-2 py-0.5">
                           {urlResult.competitive_deep_dive.tabla_atributos.length} brechas detectadas
                         </span>
                       </div>
@@ -2643,23 +2645,25 @@ Tel: [teléfono]`
                           </BarChart>
                         </ResponsiveContainer>
                         {/* Legend */}
-                        <div className="flex items-center flex-wrap gap-x-5 gap-y-1.5 mt-2 px-1">
-                          <span className="flex items-center gap-1.5 text-[10px] text-sky-400/70">
-                            <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> → Tu marca
-                          </span>
-                          <span className="flex items-center gap-1.5 text-[10px] text-amber-400/70">
-                            <span className="w-2.5 h-2.5 rounded-sm bg-amber-800 shrink-0" /> #1 Más recomendada
-                          </span>
-                          <span className="flex items-center gap-1.5 text-[10px] text-amber-500/50">
-                            <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio competidores
-                          </span>
+                        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 gap-x-5 mt-3 px-1">
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <span className="flex items-center gap-1.5 text-xs text-sky-400">
+                              <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> → Tu marca
+                            </span>
+                            <span className="flex items-center gap-1.5 text-xs text-amber-400">
+                              <span className="w-2.5 h-2.5 rounded-sm bg-amber-800 shrink-0" /> #1 Más recomendada
+                            </span>
+                            <span className="flex items-center gap-1.5 text-xs text-amber-500/70">
+                              <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio
+                            </span>
+                          </div>
                           {miMarcaEnLista && (() => {
                             const userEntry = chartData.find(e => e.isUser)
                             const userScore = userEntry ? userEntry.score : 0
                             const delta = userScore - promedio
                             if (delta === 0) return null
                             return (
-                              <span className={`ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                              <span className={`sm:ml-auto text-xs font-semibold px-2.5 py-1 rounded self-start sm:self-auto ${
                                 delta > 0
                                   ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/20'
                                   : 'bg-rose-950/40 text-rose-400 border border-rose-500/20'
