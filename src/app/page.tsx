@@ -204,6 +204,7 @@ export default function Dashboard() {
   const [briefLoading, setBriefLoading] = useState(false)
   const [showScheduleModal, setShowScheduleModal] = useState(false)
   const [showRawOutput, setShowRawOutput] = useState(false)
+  const [promptCopied, setPromptCopied] = useState(false)
   const [showUrlSnippet, setShowUrlSnippet] = useState<Record<number, boolean>>({})
   const [showPerfilesDetalle, setShowPerfilesDetalle] = useState(false)
   const [showModalCode, setShowModalCode] = useState(false)
@@ -2337,6 +2338,62 @@ Tel: [teléfono]`
               animate="visible"
               variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             >
+
+              {/* ─── AI READINESS SCORE ─────────────────────────── */}
+              {(() => {
+                const rawScore = d.invisibilidad_score ?? 0
+                const displayScore = rawScore === 0 ? 10 : rawScore
+                const estado = d.estado_invisibilidad
+                const r = 54, cx = 64, cy = 64
+                const circ = 2 * Math.PI * r
+                const dash = circ * (1 - displayScore / 100)
+                const strokeColor = estado === 'visible' ? '#10b981' : estado === 'en_riesgo' ? '#f97316' : '#f43f5e'
+                const label = rawScore === 0 ? 'Riesgo Crítico' : estado === 'visible' ? 'Visible' : estado === 'en_riesgo' ? 'En Riesgo' : 'Invisible'
+                const sent = d.sentimiento
+                const sentColor = sent === 'positivo' ? 'text-emerald-400' : sent === 'negativo' ? 'text-rose-400' : 'text-yellow-400'
+                const sentBg = sent === 'positivo' ? 'bg-emerald-950/30 border-emerald-800/40' : sent === 'negativo' ? 'bg-rose-950/30 border-rose-800/40' : 'bg-yellow-950/30 border-yellow-800/40'
+                const sentLabel = sent === 'positivo' ? 'Positivo' : sent === 'negativo' ? 'Negativo / Riesgo de Alucinación' : 'Neutral'
+                return (
+                  <motion.div
+                    variants={{ hidden: { opacity: 0, y: -12 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }}
+                    className="grid md:grid-cols-2 gap-4"
+                  >
+                    {/* Score ring */}
+                    <div className="bg-slate-900 border border-slate-800 rounded-sm p-6 flex items-center gap-6">
+                      <svg width="128" height="128" viewBox="0 0 128 128" className="shrink-0">
+                        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1e293b" strokeWidth="10" />
+                        <circle
+                          cx={cx} cy={cy} r={r} fill="none"
+                          stroke={strokeColor} strokeWidth="10"
+                          strokeDasharray={circ}
+                          strokeDashoffset={dash}
+                          strokeLinecap="round"
+                          transform="rotate(-90 64 64)"
+                          style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+                        />
+                        <text x="64" y="60" textAnchor="middle" fill={strokeColor} fontSize="22" fontWeight="300" fontFamily="monospace">{displayScore}</text>
+                        <text x="64" y="76" textAnchor="middle" fill="#64748b" fontSize="10">/100</text>
+                      </svg>
+                      <div>
+                        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">AI Readiness Score</p>
+                        <p className="text-lg font-semibold" style={{ color: strokeColor }}>{label}</p>
+                        <p className="text-slate-500 text-xs mt-2 leading-relaxed">Nivel de preparación de {brand} para la era generativa</p>
+                      </div>
+                    </div>
+
+                    {/* Sentimiento */}
+                    <div className={`border rounded-sm p-6 ${sentBg}`}>
+                      <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la IA (Contexto Semántico)</p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={`text-xs font-semibold px-2.5 py-1 rounded border ${sentBg} ${sentColor}`}>{sentLabel}</span>
+                      </div>
+                      {d.recomendacion_ia && (
+                        <p className="text-slate-300 text-sm leading-relaxed line-clamp-4">{d.recomendacion_ia}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                )
+              })()}
 
               {/* ─── VEREDICTO + SCORE (fusionado) ─────────────── */}
               {(() => {
