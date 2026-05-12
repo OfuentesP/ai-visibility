@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { toPng } from 'html-to-image'
 
-import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, AlertCircle, CheckCircle2, TrendingDown, FlaskConical } from 'lucide-react'
+import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, FlaskConical } from 'lucide-react'
 import { DEMO_URL_DATA } from '@/lib/demo-data'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList } from 'recharts'
@@ -2296,6 +2296,11 @@ Tel: [teléfono]`
               })()}
 
               {/* ─── VEREDICTO + SCORE (fusionado) ─────────────── */}
+              <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                <span className="text-xs font-mono text-slate-600 shrink-0">01</span>
+                <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
+                <div className="flex-1 h-px bg-slate-800/30" />
+              </motion.div>
               {(() => {
                 const pos = d.posicion_mi_marca
                 const ganador = d.competidor_principal || d.marca_ganadora || 'la competencia'
@@ -2377,6 +2382,12 @@ Tel: [teléfono]`
 
               {/* 2 · SHARE OF VOICE — Progress Bars */}
               {d.marcas_mencionadas.length > 0 && (
+                <>
+                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                  <span className="text-xs font-mono text-slate-600 shrink-0">02</span>
+                  <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la IA cuando tu cliente busca?</span>
+                  <div className="flex-1 h-px bg-slate-800/30" />
+                </motion.div>
                 <motion.div
                   id="zone-share-of-voice"
                   variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -2410,13 +2421,22 @@ Tel: [teléfono]`
                     const promedio = competitorWidths.length > 0
                       ? Math.round(competitorWidths.reduce((a, b) => a + b, 0) / competitorWidths.length)
                       : 0
-                    const chartData = d.marcas_mencionadas.map((marca, idx) => ({
+                    const chartDataRaw = d.marcas_mencionadas.map((marca, idx) => ({
                       marca,
                       score: allWidths[idx],
                       isUser: esMiMarcaFn(marca),
                       isWinner: marca.toLowerCase().trim() === (d.marca_ganadora ?? '').toLowerCase().trim(),
+                      ghost: false,
                     })).sort((a, b) => b.score - a.score)
+                    // Barra fantasma si la marca no aparece
+                    const chartData = miMarcaEnLista
+                      ? chartDataRaw
+                      : [...chartDataRaw, { marca: brand, score: 1, isUser: true, isWinner: false, ghost: true }]
                     const chartHeight = Math.max(chartData.length * 52, 180)
+                    // Razones del ganador para tooltip enriquecido
+                    const winnerName = (d.marca_ganadora ?? '').toLowerCase()
+                    const winnerReasons: string[] = (d.competitor_winning_reasons ?? []).slice(0, 4)
+                    const winnerSources: string[] = (d.cited_sources_types ?? []).slice(0, 4)
                     return (
                       <>
                         <ResponsiveContainer width="100%" height={chartHeight}>
@@ -2430,12 +2450,12 @@ Tel: [teléfono]`
                                 <stop offset="0%" stopColor="#0ea5e9" />
                                 <stop offset="100%" stopColor="#6366f1" />
                               </linearGradient>
+                              <linearGradient id="dominantGradientBrand" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#ea580c" />
+                                <stop offset="100%" stopColor="#f97316" />
+                              </linearGradient>
                             </defs>
-                            <XAxis
-                              type="number"
-                              domain={[0, 100]}
-                              hide
-                            />
+                            <XAxis type="number" domain={[0, 100]} hide />
                             <YAxis
                               type="category"
                               dataKey="marca"
@@ -2444,32 +2464,21 @@ Tel: [teléfono]`
                                 const { x, y, payload, index } = props as { x: number; y: number; payload: { value: string }; index: number }
                                 const entry = chartData[index]
                                 const isUser = entry?.isUser
-                                const isWinner = entry?.isWinner
+                                const isGhost = entry?.ghost
                                 const rank = index + 1
                                 return (
                                   <g>
+                                    {!isGhost && (
+                                      <text x={x - 118} y={y} dy={4} textAnchor="end" fill={rank === 1 ? '#fbbf24' : '#475569'} fontWeight={700} fontSize={9} fontFamily="ui-monospace, monospace">#{rank}</text>
+                                    )}
                                     <text
-                                      x={x - 118}
-                                      y={y}
-                                      dy={4}
-                                      textAnchor="end"
-                                      fill={rank === 1 ? '#fbbf24' : '#475569'}
-                                      fontWeight={700}
-                                      fontSize={9}
-                                      fontFamily="ui-monospace, monospace"
-                                    >
-                                      #{rank}
-                                    </text>
-                                    <text
-                                      x={x - 4}
-                                      y={y}
-                                      dy={4}
-                                      textAnchor="end"
-                                      fill={isUser ? '#38bdf8' : isWinner ? '#fbbf24' : '#94a3b8'}
-                                      fontWeight={isUser || isWinner ? 700 : 400}
+                                      x={x - 4} y={y} dy={4} textAnchor="end"
+                                      fill={isGhost ? '#334155' : isUser ? '#38bdf8' : entry?.isWinner ? '#fbbf24' : '#94a3b8'}
+                                      fontWeight={isUser && !isGhost ? 700 : 400}
                                       fontSize={11}
+                                      fontStyle={isGhost ? 'italic' : 'normal'}
                                     >
-                                      {isUser ? '→ ' : ''}{payload?.value}
+                                      {isUser && !isGhost ? `→ ${payload?.value}` : payload?.value}
                                     </text>
                                   </g>
                                 )
@@ -2479,48 +2488,82 @@ Tel: [teléfono]`
                             />
                             <Tooltip
                               cursor={{ fill: 'rgba(255,255,255,0.03)' }}
-                              contentStyle={{
-                                background: 'rgba(15,23,42,0.95)',
-                                border: '1px solid rgba(100,116,139,0.3)',
-                                borderRadius: 6,
-                                fontSize: 12,
-                                color: '#f1f5f9',
-                                boxShadow: '0 20px 25px -5px rgba(0,0,0,0.5)',
-                                backdropFilter: 'blur(12px)',
+                              content={(props) => {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                const { active, payload } = props as any
+                                if (!active || !payload?.length) return null
+                                const item = payload[0].payload
+                                if (item.ghost) return null
+                                const isWinnerHover = item.marca.toLowerCase().trim() === winnerName
+                                return (
+                                  <div style={{ background: 'rgba(10,16,36,0.98)', border: '1px solid rgba(100,116,139,0.3)', borderRadius: 8, padding: '12px 16px', fontSize: 14, color: '#f1f5f9', maxWidth: 280, boxShadow: '0 20px 25px -5px rgba(0,0,0,0.6)' }}>
+                                    <div style={{ fontWeight: 700, marginBottom: 6 }}>{item.marca}</div>
+                                    <div style={{ color: '#94a3b8', fontSize: 13 }}>Presencia: <strong style={{ color: '#7dd3fc' }}>{item.score}%</strong></div>
+                                    {isWinnerHover && winnerReasons.length > 0 && (
+                                      <div style={{ marginTop: 10, borderTop: '1px solid rgba(100,116,139,0.2)', paddingTop: 8 }}>
+                                        <div style={{ color: '#fbbf24', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>¿Por qué nos ganan?</div>
+                                        {winnerReasons.map((r, ri) => (
+                                          <div key={ri} style={{ color: '#fca5a5', fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 4 }}>
+                                            <span style={{ color: '#f97316', marginTop: 2 }}>•</span>{r}
+                                          </div>
+                                        ))}
+                                        {winnerSources.length > 0 && (
+                                          <div style={{ marginTop: 8 }}>
+                                            <div style={{ color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Fuentes IA</div>
+                                            {winnerSources.map((s, si) => (
+                                              <div key={si} style={{ color: '#c4b5fd', fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 3 }}>
+                                                <span style={{ color: '#a78bfa' }}>→</span>{s}
+                                              </div>
+                                            ))}
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                )
                               }}
-                              formatter={(value) => [
-                                <span key="v" style={{ color: '#7dd3fc', fontWeight: 700 }}>{value}%</span>,
-                                <span key="l" style={{ color: '#94a3b8', fontSize: 11 }}>Relevancia</span>,
-                              ]}
-                              labelStyle={{ color: '#f8fafc', fontWeight: 700, marginBottom: 4 }}
                             />
                             <Bar dataKey="score" radius={[0, 4, 4, 0]} maxBarSize={16} background={{ fill: '#0f172a', radius: 4 }}>
-                              {chartData.map((entry, idx) => (
-                                <Cell
-                                  key={idx}
-                                  fill={
-                                    entry.isUser
-                                      ? 'url(#userGradient)'
-                                      : entry.isWinner
-                                      ? '#92400e'
-                                      : `rgba(51, 65, 85, ${Math.max(0.7 - idx * 0.08, 0.2)})`
-                                  }
-                                />
-                              ))}
+                              {chartData.map((entry, idx) => {
+                                const isDominant = entry.isWinner && entry.score >= 90
+                                return (
+                                  <Cell
+                                    key={idx}
+                                    fill={
+                                      entry.ghost
+                                        ? 'rgba(56,189,248,0.08)'
+                                        : entry.isUser
+                                        ? 'url(#userGradient)'
+                                        : isDominant
+                                        ? 'url(#dominantGradientBrand)'
+                                        : entry.isWinner
+                                        ? '#b45309'
+                                        : `rgba(51, 65, 85, ${Math.max(0.7 - idx * 0.08, 0.2)})`
+                                    }
+                                  />
+                                )
+                              })}
                               <LabelList
                                 dataKey="score"
                                 position="right"
                                 content={(props) => {
                                   const { x, y, width, height, value, index } = props as { x: number; y: number; width: number; height: number; value: number; index: number }
                                   const entry = chartData[index]
-                                  const isUser = entry?.isUser
+                                  const isDominant = entry?.isWinner && entry.score >= 90
+                                  if (entry?.ghost) {
+                                    return (
+                                      <text x={(x ?? 0) + 8} y={(y ?? 0) + (height ?? 0) / 2} dy={4} fill="#334155" fontSize={11} fontFamily="ui-sans-serif, system-ui" fontStyle="italic">
+                                        {brand} — no aparece en esta búsqueda
+                                      </text>
+                                    )
+                                  }
                                   return (
                                     <text
                                       x={(x ?? 0) + (width ?? 0) + 8}
                                       y={(y ?? 0) + (height ?? 0) / 2}
                                       dy={4}
-                                      fill={isUser ? '#38bdf8' : '#64748b'}
-                                      fontWeight={isUser ? 700 : 400}
+                                      fill={entry?.isUser ? '#38bdf8' : isDominant ? '#fb923c' : '#64748b'}
+                                      fontWeight={entry?.isUser || isDominant ? 700 : 400}
                                       fontSize={11}
                                       fontFamily="ui-monospace, monospace"
                                     >
@@ -2534,7 +2577,8 @@ Tel: [teléfono]`
                               x={promedio}
                               stroke="#f59e0b"
                               strokeDasharray="3 3"
-                              strokeOpacity={0.45}
+                              strokeOpacity={0.5}
+                              label={{ value: `Promedio: ${promedio}%`, position: 'insideTopRight', fill: '#b45309', fontSize: 10, fontFamily: 'ui-monospace, monospace' }}
                             />
                           </BarChart>
                         </ResponsiveContainer>
@@ -2542,13 +2586,13 @@ Tel: [teléfono]`
                         <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 gap-x-5 mt-3 px-1">
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                             <span className="flex items-center gap-1.5 text-xs text-sky-400">
-                              <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> → Tu marca
+                              <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" /> Tu marca
                             </span>
-                            <span className="flex items-center gap-1.5 text-xs text-amber-400">
-                              <span className="w-2.5 h-2.5 rounded-sm bg-amber-800 shrink-0" /> #1 Más recomendada
+                            <span className="flex items-center gap-1.5 text-xs text-orange-400">
+                              <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-orange-600 to-orange-400 shrink-0" /> Líder actual
                             </span>
                             <span className="flex items-center gap-1.5 text-xs text-amber-500/70">
-                              <span className="w-3 h-px border-t border-dashed border-amber-500/50 shrink-0" /> Promedio
+                              <span className="w-4 border-t border-dashed border-amber-500/60 shrink-0" /> Promedio del mercado
                             </span>
                           </div>
                         </div>
@@ -2575,202 +2619,204 @@ Tel: [teléfono]`
                     )
                   })()}
                 </motion.div>
+                </>
               )}
 
-              {/* ─── FASE 2: LA AUTOPSIA ───────────────── */}
-
               {/* 3 · MAPA DE DIFERENCIACIÓN */}
+              <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                <span className="text-xs font-mono text-slate-600 shrink-0">03</span>
+                <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
+                <div className="flex-1 h-px bg-slate-800/30" />
+              </motion.div>
               <motion.div
                 id="zone-diferenciacion"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-slate-900 border border-slate-800 rounded-sm p-6"
+                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+                className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden"
               >
                 {(() => {
                   const rival = d.competidor_principal || (d.marca_ganadora?.toLowerCase() !== brand.toLowerCase() ? d.marca_ganadora : null) || 'la competencia'
                   return (
-                    <div className="mb-5">
-                      <h3 className="text-sm font-semibold text-slate-100 mb-0.5">
-                        🔍 Por qué la IA prefiere a <span className="text-rose-400 font-bold">{rival}</span> sobre ti
-                      </h3>
-                      <p className="text-slate-500 text-xs mt-1">
-                        {d.posicion_mi_marca === 0
-                          ? 'Tu marca no aparece. Esto es lo que la IA asocia con cada uno.'
-                          : d.posicion_mi_marca === 1
-                          ? 'Lideras, pero estos son los flancos que tu competidor puede explotar.'
-                          : `Estás en posición #${d.posicion_mi_marca}. Así ve la IA a cada marca.`}
-                      </p>
-                    </div>
-                  )
-                })()}
-                {/* VS Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {d.posicion_mi_marca === 0 && (
-                    <div className="md:col-span-2 flex items-start gap-2.5 px-3 py-2.5 rounded-sm bg-rose-950/20 border border-rose-500/30 mb-1">
-                      <TriangleAlert className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
-                      <p className="text-rose-300 text-xs leading-snug">
-                        <span className="font-bold">No existes para la IA.</span> Cada búsqueda de este tipo redirige al usuario directamente a la competencia.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Tu marca */}
-                  <div className="border border-red-900/30 bg-red-950/20 rounded-sm p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
-                      <p className="text-red-400 text-xs font-semibold uppercase tracking-widest">
-                        {d.posicion_mi_marca === 0
-                          ? 'Cómo te percibe la IA'
-                          : d.posicion_mi_marca === 1
-                          ? 'Tus atributos que no diferencian'
-                          : 'Lo que la IA asocia contigo'}
-                      </p>
-                    </div>
-                    <div className="space-y-1.5">
-                      {(d.percepciones_genericas?.length > 0
-                        ? d.percepciones_genericas
-                        : ['Analizando…']
-                      ).map((c, idx) => (
-                        <div key={idx} className="flex items-start gap-2 px-3 py-1.5 bg-slate-800/40 rounded-sm">
-                          <span className="text-red-700 text-xs mt-0.5 shrink-0">✕</span>
-                          <p className="text-gray-300 text-xs">{c}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Competidor */}
-                  <div className="border border-emerald-900/30 bg-emerald-950/20 rounded-sm p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <p className="text-emerald-400 text-xs font-semibold uppercase tracking-widest">
-                        Lo que tú no comunicas y {d.posicion_mi_marca === 1 ? 'podrían usar en tu contra' : 'el ganador sí'}
-                      </p>
-                    </div>
-                    <div className="space-y-1.5">
-                      {(d.conceptos_faltantes?.length > 0
-                        ? d.conceptos_faltantes
-                        : ['Analizando…']
-                      ).map((c, idx) => (
-                        <div key={idx} className="flex items-start gap-2 px-3 py-1.5 bg-emerald-950/30 rounded-sm">
-                          <span className="text-emerald-500 text-xs mt-0.5 shrink-0">+</span>
-                          <p className="text-gray-300 text-xs">{c}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tabla de Ventajas del Competidor */}
-                {d.competitor_advantage && d.competitor_advantage.filas.length > 0 && (
-                  <div className="mt-6 pt-6 border-t border-slate-800">
-                    <div className="flex items-center justify-between mb-4">
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                        Por qué la IA prefiere a <span className="text-rose-400">{d.competitor_advantage.rival}</span>
-                      </p>
-                      <span className="text-[10px] font-mono text-slate-600 bg-slate-800/60 px-2 py-0.5 rounded">Análisis de Ventaja Competitiva</span>
+                    <>
+                    {/* Header */}
+                    <div className="px-6 py-4 border-b border-slate-800 flex items-start gap-3">
+                      <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-rose-500 to-violet-600 shrink-0" />
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
+                        <h3 className="text-base font-semibold text-slate-100">
+                          Por qué <span className="text-amber-400">{rival}</span> aparece donde tú no
+                        </h3>
+                      </div>
                     </div>
 
-                    {/* Header row */}
-                    <div className="grid grid-cols-3 gap-4 px-4 pb-2 border-b border-slate-800">
-                      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Atributo Ganador</p>
-                      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Autoridad Digital</p>
-                      <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Impacto Comercial</p>
+                    {/* 2-col: percepción propia vs razones del competidor */}
+                    <div className="grid md:grid-cols-5 gap-0 border-b border-slate-800/60">
+                      {/* Izquierda 2/5 — cómo nos ven */}
+                      <div className="md:col-span-2 px-5 py-4 border-b md:border-b-0 md:border-r border-slate-800/60 border-l-2 border-l-rose-600/50">
+                        <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">
+                          Cómo nos ven tus clientes
+                        </p>
+                        <ul className="space-y-1.5">
+                          {(d.percepciones_genericas?.length > 0 ? d.percepciones_genericas : ['Analizando…']).slice(0, 3).map((c: string, bi: number) => (
+                            <li key={bi} className="flex items-start gap-2">
+                              <span className="text-rose-500/70 text-xs mt-0.5 shrink-0">·</span>
+                              <span className="text-sm text-slate-300 leading-snug">{c}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      {/* Derecha 3/5 — por qué prefieren al competidor */}
+                      <div className="md:col-span-3 px-5 py-4 border-l-2 border-l-amber-600/40">
+                        <p className="text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">
+                          Por qué prefieren a {rival}
+                        </p>
+                        <ul className="space-y-1.5">
+                          {(d.conceptos_faltantes?.length > 0 ? d.conceptos_faltantes : ['Analizando…']).slice(0, 3).map((c: string, bi: number) => (
+                            <li key={bi} className="flex items-start gap-2">
+                              <span className="text-amber-500/70 text-xs mt-0.5 shrink-0">·</span>
+                              <span className="text-sm text-slate-300 leading-snug">{c}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
 
-                    {/* Data rows */}
-                    <div className="divide-y divide-slate-800/50">
-                      {d.competitor_advantage.filas.map((fila, i) => (
-                        <div key={i} className="grid grid-cols-3 gap-4 px-4 py-6 items-start">
-                          <div className="flex items-start gap-2">
-                            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-                            <p className="text-slate-200 text-xs font-medium leading-snug">{fila.atributo_ganador}</p>
+                    {/* Tabla de ventajas */}
+                    {d.competitor_advantage && d.competitor_advantage.filas.length > 0 && (
+                      <div className="px-5 pb-4 pt-4">
+                        <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">
+                          Dónde exactamente te gana
+                        </p>
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b border-slate-800">
+                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
+                              <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
+                              <th className="text-left text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {d.competitor_advantage.filas.map((fila: { atributo_ganador: string; fuente_de_verdad: string; gap_nuestra_marca: string }, i: number) => (
+                              <tr key={i} className="border-b border-slate-800/40 last:border-0">
+                                <td className="py-3.5 pr-6 align-top">
+                                  <span className="text-sm font-semibold text-slate-100">{fila.atributo_ganador}</span>
+                                </td>
+                                <td className="py-3.5 pr-6 align-top">
+                                  <span className="text-sm text-slate-400">{fila.fuente_de_verdad}</span>
+                                </td>
+                                <td className="py-3.5 align-top">
+                                  <span className="text-sm text-rose-300">{fila.gap_nuestra_marca}</span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {d.competitor_advantage.conclusion && (
+                          <div className="mt-3 flex items-start gap-2 px-4 py-3 bg-slate-800/40 border border-slate-700/40 rounded-sm">
+                            <span className="text-slate-500 text-sm shrink-0 mt-0.5">→</span>
+                            <p className="text-slate-400 text-xs leading-relaxed">{d.competitor_advantage.conclusion}</p>
                           </div>
-                          <div>
-                            <span className="inline-flex items-center gap-1 bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded-md leading-snug">
-                              {fila.fuente_de_verdad}
-                            </span>
-                          </div>
-                          <div className="flex items-start gap-1.5">
-                            <TrendingDown className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
-                            <p className="text-gray-400 text-xs leading-snug">{fila.gap_nuestra_marca}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {d.competitor_advantage.conclusion && (
-                      <div className="mt-2 flex items-start gap-2 px-4 py-3 bg-slate-800/40 border border-slate-700/40 rounded-sm">
-                        <span className="text-slate-500 text-sm shrink-0 mt-0.5">→</span>
-                        <p className="text-gray-400 text-xs leading-relaxed">{d.competitor_advantage.conclusion}</p>
+                        )}
                       </div>
                     )}
-                  </div>
-                )}
+                    </>
+                  )
+                })()}
               </motion.div>
 
               {/* ─── FASE 2B: LA OPORTUNIDAD ────────────── */}
 
               {/* 4 · TERRITORIOS DESATENDIDOS */}
               {d.territorios_desatendidos && d.territorios_desatendidos.length > 0 && (
+                <>
+                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                  <span className="text-xs font-mono text-slate-600 shrink-0">04</span>
+                  <span className="text-sm text-slate-400 font-medium">Temas donde la IA no tiene un ganador claro</span>
+                  <div className="flex-1 h-px bg-slate-800/30" />
+                </motion.div>
                 <motion.div
                   id="zone-territorios"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-slate-900 border border-slate-800 rounded-sm p-6"
+                  variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+                  className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden"
                 >
-                  <h3 className="text-sm font-semibold text-slate-100 mb-0.5">Territorios desatendidos</h3>
-                  <p className="text-slate-500 text-xs mb-6">Temas emergentes donde tu marca no tiene presencia. Validados con Google Trends.</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Header */}
+                  <div className="px-6 py-4 border-b border-slate-800 flex items-start gap-3">
+                    <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
+                      <h3 className="text-base font-semibold text-slate-100">
+                        Temas donde la IA no tiene un ganador claro
+                      </h3>
+                      <p className="text-slate-500 text-sm mt-1 leading-relaxed">
+                        Ningún competidor tiene contenido de autoridad en estas búsquedas. La marca que publique primero se queda con esas respuestas.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Lista de territorios */}
+                  <div className="divide-y divide-slate-800/50">
                     {d.territorios_desatendidos.map((t, idx) => {
+                      const n = t.nivel_oportunidad
                       const esAlza = t.crecimiento_trends?.startsWith('+')
                       const esBaja = t.crecimiento_trends?.startsWith('-')
+                      const opp =
+                        n === 'Alto'  ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } :
+                        n === 'Medio' ? { label: 'Fácil de ganar',  cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } :
+                                        { label: 'Moderada',        cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
                       return (
-                        <div key={idx} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 flex flex-col gap-3">
-                          {/* Icon + title */}
-                          <div className="flex items-start gap-3">
-                            <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            <p className="text-slate-100 text-sm font-semibold leading-snug">{t.topico_emergente}</p>
+                        <div key={idx} className="flex items-start gap-4 px-5 py-4">
+                          {/* Número */}
+                          <span className="text-[11px] font-mono text-slate-700 pt-1 w-5 shrink-0 select-none">
+                            {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          {/* Contenido */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                              <p className="text-sm font-semibold text-slate-100 leading-snug">{t.topico_emergente}</p>
+                              <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${opp.cls}`}>
+                                {opp.label}
+                              </span>
+                              {t.crecimiento_trends && (
+                                <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${
+                                  esAlza ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+                                  : esBaja ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+                                  : 'bg-slate-800/60 text-slate-400 border-slate-700'
+                                }`}>
+                                  {t.crecimiento_trends}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-slate-400 text-sm leading-relaxed">{t.porque_es_oportunidad}</p>
+                            {t.intension_usuario && (
+                              <p className="text-slate-600 text-xs mt-1.5 italic">Intención: {t.intension_usuario}</p>
+                            )}
                           </div>
-
-                          {/* Badges */}
-                          <div className="flex flex-wrap gap-2">
-                            <span className={`text-[10px] font-medium px-2.5 py-1 rounded-full border ${
-                              t.nivel_oportunidad === 'Alto'
-                                ? 'bg-emerald-950/40 border-emerald-900 text-emerald-300'
-                                : 'bg-sky-950/40 border-sky-900 text-sky-300'
-                            }`}>
-                              {t.nivel_oportunidad}
-                            </span>
-                            <span className={`text-[10px] font-medium px-2.5 py-1 rounded-full border ${
-                              esAlza
-                                ? 'bg-amber-950/40 border-amber-900 text-amber-300'
-                                : esBaja
-                                ? 'bg-rose-950/40 border-rose-900 text-rose-300'
-                                : 'bg-slate-800/60 border-slate-700 text-slate-400'
-                            }`}>
-                              {t.crecimiento_trends || 'Sin datos'}
-                            </span>
-                          </div>
-
-                          {/* Justification */}
-                          <p className="text-gray-400 text-xs leading-relaxed">{t.porque_es_oportunidad}</p>
-
-                          {/* Footer intent */}
-                          <p className="text-gray-500 text-[11px] italic">Intención: {t.intension_usuario}</p>
                         </div>
                       )
                     })}
                   </div>
+
+                  {/* Footer CTA */}
+                  <div className="border-t border-slate-800/60 px-6 py-3 flex items-center gap-2">
+                    <TrendingUp className="w-3.5 h-3.5 text-emerald-500/60 shrink-0" />
+                    <p className="text-xs text-slate-500">
+                      El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.
+                    </p>
+                  </div>
                 </motion.div>
+                </>
               )}
 
               {/* 5 · CÓMO BUSCAN EN GOOGLE */}
               {(trendsLoading || (trendsResult && trendsResult.length > 0)) && (
+                <>
+                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                  <span className="text-xs font-mono text-slate-600 shrink-0">05</span>
+                  <span className="text-sm text-slate-400 font-medium">Cómo buscan en Google</span>
+                  <div className="flex-1 h-px bg-slate-800/30" />
+                </motion.div>
                 <motion.div
                   id="zone-google-trends"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
                   className="bg-slate-900 border border-slate-800 rounded-sm p-6"
                 >
                   <div className="flex items-start justify-between mb-5">
@@ -2858,14 +2904,20 @@ Tel: [teléfono]`
                     </span>
                   </div>
                 </motion.div>
+                </>
               )}
 
               {/* 6 · PLAN DE ACCIÓN + BÚSQUEDAS */}
               {(discoveryLoading || discoveryResult) && (
+                <>
+                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                  <span className="text-xs font-mono text-slate-600 shrink-0">06</span>
+                  <span className="text-sm text-slate-400 font-medium">Plan de acción</span>
+                  <div className="flex-1 h-px bg-slate-800/30" />
+                </motion.div>
               <motion.div
                 id="zone-plan-recuperacion"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
+                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
                 className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden"
               >
                 <div className="px-6 py-4 border-b border-slate-800 flex items-start justify-between">
@@ -2966,96 +3018,181 @@ Tel: [teléfono]`
                   )
                 })()}
 
-                <div className="p-5">
-                  {discoveryLoading ? (
-                    <div className="space-y-3 py-2">
-                      {[0, 1, 2].map((i) => (
-                        <div key={`action-skel-${i}`} className="h-12 bg-slate-800/40 rounded-sm animate-pulse" />
-                      ))}
-                    </div>
-                  ) : d.plan_accion?.vehiculos && d.plan_accion.vehiculos.some(v => v.acciones.length > 0) ? (
-                    (() => {
-                      const allActions = d.plan_accion!.vehiculos
-                        .flatMap(v => v.acciones)
-                        .sort((a, b) => b.ice_score - a.ice_score)
-                      // Group by area
-                      const grouped: Record<string, typeof allActions> = {}
-                      allActions.forEach(a => {
-                        const area = a.area_responsable || 'Equipo'
-                        if (!grouped[area]) grouped[area] = []
-                        grouped[area].push(a)
-                      })
-                      const areaOrder = Object.keys(grouped).sort((a, b) => {
-                        const maxA = Math.max(...grouped[a].map(x => x.ice_score))
-                        const maxB = Math.max(...grouped[b].map(x => x.ice_score))
-                        return maxB - maxA
-                      })
-                      const areaConfig: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
-                        'Marketing / Contenido': {
-                          icon: <Megaphone className="w-3.5 h-3.5" />,
-                          label: 'Contenido',
-                          color: 'text-violet-400 bg-violet-500/10 border-violet-500/20'
-                        },
-                        'TI / Desarrollo': {
-                          icon: <Code2 className="w-3.5 h-3.5" />,
-                          label: 'Técnico',
-                          color: 'text-sky-400 bg-sky-500/10 border-sky-500/20'
-                        },
-                        'PR / Agencia': {
-                          icon: <Globe className="w-3.5 h-3.5" />,
-                          label: 'PR & Medios',
-                          color: 'text-teal-400 bg-teal-500/10 border-teal-500/20'
-                        },
-                      }
-                      return (
-                        <div className="space-y-4">
-                          {areaOrder.map(area => {
-                            const cfg = areaConfig[area] || { icon: null, label: area, color: 'text-slate-400 bg-slate-500/10 border-slate-500/20' }
-                            return (
-                              <div key={area}>
-                                <div className="flex items-center gap-2 mb-2">
-                                  <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full border ${cfg.color}`}>
-                                    {cfg.icon} {cfg.label}
-                                  </span>
+                {discoveryLoading ? (
+                  <div className="px-5 py-4 space-y-3">
+                    {[0, 1, 2].map((i) => (
+                      <div key={`action-skel-${i}`} className="h-12 bg-slate-800/40 rounded-sm animate-pulse" />
+                    ))}
+                  </div>
+                ) : d.plan_accion?.vehiculos && d.plan_accion.vehiculos.some(v => v.acciones.length > 0) ? (
+                  (() => {
+                    const allActions = d.plan_accion!.vehiculos
+                      .flatMap(v => v.acciones)
+                      .sort((a, b) => b.ice_score - a.ice_score)
+                    const topAction = allActions[0]
+                    const areaConfig: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
+                      'Marketing / Contenido': { icon: <Megaphone className="w-3.5 h-3.5" />, label: 'Contenido', color: 'text-violet-400 bg-violet-500/10 border-violet-500/20' },
+                      'TI / Desarrollo':       { icon: <Code2 className="w-3.5 h-3.5" />,    label: 'Técnico',   color: 'text-sky-400 bg-sky-500/10 border-sky-500/20' },
+                      'PR / Agencia':          { icon: <Globe className="w-3.5 h-3.5" />,    label: 'PR & Medios', color: 'text-teal-400 bg-teal-500/10 border-teal-500/20' },
+                    }
+                    return (
+                      <>
+                      {/* Empezar aquí */}
+                      {topAction && (
+                        <div className="px-5 pt-4 pb-2">
+                          <div className="flex items-start gap-3 px-4 py-3 bg-amber-950/20 border border-amber-800/30 rounded-sm">
+                            <span className="text-amber-400 font-bold shrink-0 mt-0.5">✦</span>
+                            <div>
+                              <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Empezar aquí</p>
+                              <p className="text-amber-100 text-sm font-semibold leading-snug">{topAction.tactica_tecnica}</p>
+                              <p className="text-amber-700 text-xs mt-1 truncate">{topAction.concepto_objetivo.charAt(0).toUpperCase() + topAction.concepto_objetivo.slice(1)}{topAction.tiempo_indexacion_ia ? ` · ${topAction.tiempo_indexacion_ia.split('(')[0].trim()}` : ''}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Lista flat */}
+                      <div className="px-5 pb-5 pt-3 space-y-1.5">
+                        {allActions.map((a, ai) => {
+                          const isTop = ai === 0
+                          const actionKey = `brand-${ai}`
+                          const isExpanded = expandedActionKey === actionKey
+                          const areaCfg = areaConfig[a.area_responsable || ''] || { icon: null, label: a.area_responsable || 'Equipo', color: 'text-slate-500 bg-slate-800/60 border-slate-700' }
+                          const tacticaInline: string = a.tactica_tecnica || ''
+                          const conceptoInline: string = a.concepto_objetivo || 'tu concepto aquí'
+                          const marcaInline: string = brand || 'TuMarca'
+                          let snippetInline = ''
+                          if (tacticaInline.toLowerCase().includes('schema faq') || tacticaInline.toLowerCase().includes('json-ld')) {
+                            snippetInline = `<script type="application/ld+json">\n{\n  "@context": "https://schema.org",\n  "@type": "FAQPage",\n  "mainEntity": [\n    {\n      "@type": "Question",\n      "name": "¿Qué es ${conceptoInline}?",\n      "acceptedAnswer": {\n        "@type": "Answer",\n        "text": "${marcaInline} ofrece ${conceptoInline}. A diferencia de otras opciones del mercado, nos diferenciamos por [diferenciador clave]."\n      }\n    }\n  ]\n}\n</script>`
+                          } else if (tacticaInline.toLowerCase().includes('tablas') || tacticaInline.toLowerCase().includes('html')) {
+                            snippetInline = `<!-- Tabla comparativa para ${conceptoInline} -->\n<table>\n  <thead>\n    <tr><th>Característica</th><th>${marcaInline}</th><th>Competidor</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>${conceptoInline}</td><td>✅ Sí</td><td>⚠️ Parcial</td></tr>\n  </tbody>\n</table>`
+                          } else if (tacticaInline.toLowerCase().includes('landing') || tacticaInline.toLowerCase().includes('semántica') || tacticaInline.toLowerCase().includes('evergreen')) {
+                            snippetInline = `<!-- Bloque semántico para landing -->\n<section>\n  <h2>${conceptoInline}: Guía completa</h2>\n  <p>${marcaInline} resuelve ${conceptoInline} mediante [diferenciador]. La mejor opción para quienes buscan [beneficio].</p>\n  <h3>¿Por qué ${marcaInline}?</h3>\n  <ul>\n    <li><strong>Ventaja 1:</strong> [dato concreto]</li>\n    <li><strong>Ventaja 2:</strong> [dato concreto]</li>\n  </ul>\n</section>`
+                          } else if (tacticaInline.toLowerCase().includes('digital pr') || tacticaInline.toLowerCase().includes('medios')) {
+                            snippetInline = `TITULAR: ${marcaInline} presenta [propuesta de valor] en ${conceptoInline}\n\nPRIMER PÁRRAFO:\n${marcaInline} anunció [acción concreta], consolidando su posición como referente en ${conceptoInline}.\n\nCITA:\n"[Nombre, Cargo]: '[cita en 1-2 oraciones]'"\n\nDATOS CLAVE:\n- [Dato 1 con número]\n- [Dato 2: resultado medible]\n- [Dato 3: diferenciador]`
+                          } else if (tacticaInline.toLowerCase().includes('knowledge graph') || tacticaInline.toLowerCase().includes('entidades')) {
+                            snippetInline = `<script type="application/ld+json">\n{\n  "@context": "https://schema.org",\n  "@type": "Organization",\n  "name": "${marcaInline}",\n  "description": "Especialistas en ${conceptoInline}",\n  "url": "https://[tudominio].cl",\n  "sameAs": [\n    "https://www.wikidata.org/wiki/[ID]",\n    "https://www.linkedin.com/company/[slug]"\n  ],\n  "knowsAbout": ["${conceptoInline}", "[tema 2]"]\n}\n</script>`
+                          }
+                          return (
+                            <div key={`brand-action-${ai}`}>
+                              {/* Fila */}
+                              <div
+                                className={`flex items-center gap-4 px-4 py-3 cursor-pointer transition-colors ${
+                                  isExpanded
+                                    ? isTop
+                                      ? 'border-l-2 border-amber-500/50 border-t border-x border-slate-700/30 bg-slate-800/30 rounded-t-sm'
+                                      : 'border-t border-x border-slate-700/20 bg-slate-800/20 rounded-t-sm'
+                                    : isTop
+                                      ? 'border-l-2 border-amber-500/50 border-y border-r border-slate-700/30 bg-slate-800/30 hover:bg-slate-800/50 rounded-sm'
+                                      : 'border border-slate-700/20 bg-slate-800/10 hover:bg-slate-800/30 rounded-sm'
+                                }`}
+                                onClick={() => {
+                                  if (isExpanded) { setExpandedActionKey(null) }
+                                  else { setExpandedActionKey(actionKey); setShowInlineCode(false) }
+                                }}
+                              >
+                                <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-400 font-bold' : 'text-slate-600'}`}>{ai + 1}.</span>
+                                <div className="flex-1 min-w-0">
+                                  <p className={`text-sm leading-snug ${isTop ? 'text-slate-100 font-semibold' : 'text-slate-300 font-medium'}`}>{a.concepto_objetivo.charAt(0).toUpperCase() + a.concepto_objetivo.slice(1)}</p>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    <p className="text-slate-600 text-xs truncate">{a.tactica_tecnica}</p>
+                                    {a.area_responsable && (
+                                      <span className={`hidden sm:inline text-[10px] font-semibold px-1.5 py-px rounded border shrink-0 ${areaCfg.color.split(' ').slice(0, 3).join(' ')}`}>
+                                        {areaCfg.label}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                                <div className="space-y-2">
-                                  {grouped[area].map((a, ai) => {
-                                    const globalIdx = allActions.indexOf(a) + 1
-                                    return (
-                                      <div
-                                        key={`action-${area}-${ai}`}
-                                        className="flex items-start gap-4 px-4 py-3 border border-slate-700/40 rounded-sm bg-slate-800/20 hover:bg-slate-800/40 cursor-pointer transition-colors"
-                                        onClick={() => { setActiveModal(a); setShowModalCode(false) }}
-                                      >
-                                        <span className={`text-sm font-mono tabular-nums mt-0.5 shrink-0 w-5 font-bold ${globalIdx === 1 ? 'text-amber-400' : globalIdx === 2 ? 'text-slate-300' : 'text-slate-500'}`}>{globalIdx}.</span>
-                                        <div className="flex-1 min-w-0">
-                                          <p className="text-slate-200 text-sm leading-relaxed">
-                                            <span className="text-white font-medium">{a.concepto_objetivo}</span>
-                                          </p>
-                                          <p className="text-slate-500 text-xs mt-0.5">{a.tactica_tecnica}</p>
-                                        </div>
-                                        <div className="flex items-center gap-2 shrink-0">
-                                          <span className={`text-xs font-semibold px-1.5 py-0.5 rounded ${
-                                            a.ice_score >= 7 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                                            : a.ice_score >= 5 ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                                            : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                                          }`}>{a.ice_score}</span>
-                                          <span className="text-slate-600 text-xs">→</span>
-                                        </div>
-                                      </div>
-                                    )
-                                  })}
+                                <div className="flex items-center gap-2 shrink-0">
+                                  {a.tiempo_indexacion_ia && (
+                                    <span className="hidden sm:inline text-[10px] font-mono text-slate-500 border border-slate-700/60 px-1.5 py-0.5 rounded">
+                                      {a.tiempo_indexacion_ia.split('(')[0].trim()}
+                                    </span>
+                                  )}
+                                  {a.ice_score >= 7 ? (
+                                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/12 text-emerald-400 border border-emerald-500/25">↑ Alto</span>
+                                  ) : a.ice_score >= 5 ? (
+                                    <span className="text-xs text-amber-600">→ Medio</span>
+                                  ) : (
+                                    <span className="text-xs text-slate-600">Complementaria</span>
+                                  )}
+                                  <span className={`text-slate-500 text-xs transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}>›</span>
                                 </div>
                               </div>
-                            )
-                          })}
-                        </div>
-                      )
-                    })()
-                  ) : (
-                    <p className="text-slate-500 text-sm py-4">Ejecuta un análisis para ver las acciones recomendadas.</p>
-                  )}
-                </div>
+
+                              {/* Panel expandido */}
+                              {isExpanded && (
+                                <div className={`border-b border-r border-l-2 ${
+                                  isTop ? 'border-amber-500/40 border-b-slate-700/30 border-r-slate-700/30' : 'border-slate-700/30 border-b-slate-700/20 border-r-slate-700/20'
+                                } bg-slate-900/40 rounded-b-sm`}>
+                                  <div className="px-5 py-4 space-y-3">
+                                    {a.riesgo_inaccion ? (
+                                      <div className="flex items-start gap-2.5">
+                                        <TriangleAlert className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                                        <p className="text-sm text-slate-300 leading-snug">{a.riesgo_inaccion}</p>
+                                      </div>
+                                    ) : (
+                                      <p className="text-sm text-slate-400 leading-snug">{a.concepto_objetivo}</p>
+                                    )}
+                                    {a.area_responsable && (
+                                      <p className="text-xs text-slate-600">Responsable: <span className="text-slate-400">{a.area_responsable}</span></p>
+                                    )}
+                                  </div>
+
+                                  {(a.pasos_ejecucion?.length > 0 || snippetInline) && (
+                                    <div className="border-t border-slate-800/60">
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); setShowInlineCode(v => !v) }}
+                                        className="w-full flex items-center justify-between px-5 py-2.5 text-left hover:bg-slate-800/30 transition-colors"
+                                      >
+                                        <span className="text-xs font-medium text-slate-500 hover:text-slate-300 transition-colors">Ver cómo implementarlo</span>
+                                        <span className={`text-slate-600 text-xs transition-transform duration-200 ${showInlineCode ? 'rotate-90' : ''}`}>›</span>
+                                      </button>
+
+                                      {showInlineCode && (
+                                        <div className="px-5 pb-5 pt-1 space-y-4 border-t border-slate-800/40">
+                                          {a.pasos_ejecucion?.length > 0 && (
+                                            <ol className="space-y-2.5 pt-1">
+                                              {a.pasos_ejecucion.map((paso: string, pi: number) => (
+                                                <li key={pi} className="flex items-start gap-3">
+                                                  <span className="text-[11px] font-mono text-slate-600 pt-0.5 w-4 shrink-0 select-none">{pi + 1}.</span>
+                                                  <span className="text-sm text-slate-300 leading-snug">{paso}</span>
+                                                </li>
+                                              ))}
+                                            </ol>
+                                          )}
+                                          {snippetInline && (
+                                            <div className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden">
+                                              <div className="flex items-center justify-between px-4 py-2 bg-slate-900/60 border-b border-slate-800">
+                                                <span className="flex items-center gap-2 font-mono text-xs text-slate-500">
+                                                  <Terminal className="w-3 h-3 text-sky-500" /> Código listo para copiar
+                                                </span>
+                                                <button
+                                                  onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(snippetInline) }}
+                                                  className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-sky-400 transition-colors font-mono"
+                                                >
+                                                  <Download className="w-3 h-3" /> Copiar
+                                                </button>
+                                              </div>
+                                              <pre className="p-4 text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed max-h-64 whitespace-pre"><code>{snippetInline}</code></pre>
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                      </>
+                    )
+                  })()
+                ) : (
+                  <p className="text-slate-500 text-sm px-5 py-4">Ejecuta un análisis para ver las acciones recomendadas.</p>
+                )}
 
                 {/* ROI + CTA */}
                 {!discoveryLoading && (
@@ -3092,9 +3229,8 @@ Tel: [teléfono]`
                 </div>
                 )}
               </motion.div>
+              </>
               )}
-
-              {/* ─── HERRAMIENTAS "HAZLO TÚ MISMO" ──────────────── */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
