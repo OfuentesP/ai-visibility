@@ -65,6 +65,7 @@ interface AnalisisMarca {
       gap_nuestra_marca: string
     }>
   }
+  competitor_winning_reasons?: string[]
 }
 
 interface ResultadoBusqueda {
