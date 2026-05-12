@@ -1345,7 +1345,7 @@ Tel: [teléfono]`
             <motion.div
               ref={urlReportRef}
               id="zone-url-resultados"
-              className="space-y-6 mb-8"
+              className="space-y-4 mb-8"
               initial="hidden"
               animate="visible"
               variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
@@ -1366,22 +1366,31 @@ Tel: [teléfono]`
                 const scoreColor = score === 0 ? 'text-rose-400' : score < 60 ? 'text-amber-400' : 'text-emerald-400'
                 const accentBorder = score === 0 ? 'border-l-rose-500' : score < 60 ? 'border-l-amber-500' : 'border-l-emerald-500'
                 return (
+                  <>
+                  <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                    <span className="text-xs font-mono text-slate-600 shrink-0">01</span>
+                    <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
+                    <div className="flex-1 h-px bg-slate-800/30" />
+                  </motion.div>
                   <motion.div
                     variants={{ hidden: { opacity: 0, y: -8 }, visible: { opacity: 1, y: 0 } }}
                     className={`bg-slate-900 border border-slate-700 border-l-4 ${accentBorder} rounded-sm overflow-hidden`}
                   >
-                    {/* Label superior */}
-                    <div className="px-5 pt-4 pb-3 border-b border-slate-800 flex items-center justify-between">
-                      <p className="text-xs font-mono uppercase tracking-widest text-slate-400">Resumen ejecutivo · {urlResult.marca}</p>
-                      <span className={`text-sm font-semibold font-mono ${scoreColor}`}>
-                        {score}% visibilidad en IA
-                      </span>
+                    {/* Header — score prominente */}
+                    <div className="px-6 pt-5 pb-4 border-b border-slate-800 flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs text-slate-500 mb-0.5">{urlResult.marca} · {urlResult.mercado}</p>
+                        <p className="text-xs font-mono text-slate-600">{urlResult.categoria}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en IA</p>
+                      </div>
                     </div>
 
                     {/* 3 hechos de negocio */}
-                    <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800">
-                      {/* Hecho 1 — el problema */}
-                      <div className="px-5 py-4 flex gap-3 items-start">
+                    <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800/60">
+                      <div className="px-5 py-5 flex gap-3 items-start">
                         <span className="text-rose-400 text-base font-bold leading-none mt-0.5 shrink-0">①</span>
                         <div>
                           <p className="text-sm font-semibold text-white leading-snug mb-1">
@@ -1399,8 +1408,7 @@ Tel: [teléfono]`
                         </div>
                       </div>
 
-                      {/* Hecho 2 — el competidor */}
-                      <div className="px-5 py-4 flex gap-3 items-start">
+                      <div className="px-5 py-5 flex gap-3 items-start">
                         <span className="text-amber-400 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
                         <div>
                           <p className="text-sm font-semibold text-white leading-snug mb-1">
@@ -1412,40 +1420,39 @@ Tel: [teléfono]`
                         </div>
                       </div>
 
-                      {/* Hecho 3 — lo que se puede hacer */}
-                      <div className="px-5 py-4 flex gap-3 items-start">
+                      <div className="px-5 py-5 flex gap-3 items-start">
                         <span className="text-emerald-400 text-base font-bold leading-none mt-0.5 shrink-0">③</span>
                         <div>
                           <p className="text-sm font-semibold text-white leading-snug mb-1">
                             {topActions.length > 0
-                              ? `${topActions.length} acciones concretas para recuperar posición en 30–60 días`
+                              ? `${topActions.length} acciones concretas para recuperar posición`
                               : 'Plan de recuperación disponible más abajo'}
                           </p>
                           <p className="text-sm text-slate-400 leading-relaxed">
                             {topActions[0]?.tiempo_indexacion_ia
-                              ? `Primera acción visible en ${topActions[0].tiempo_indexacion_ia}`
+                              ? `Primera acción visible en ${topActions[0].tiempo_indexacion_ia.split('(')[0].trim()}`
                               : 'Ver plan detallado más abajo'}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Franja inferior — mercado + lo que la IA no confirma */}
-                    <div className="border-t border-slate-800 px-5 py-3 flex flex-col sm:flex-row sm:items-center gap-3">
-                      <span className="text-xs font-mono text-slate-500 bg-slate-800 border border-slate-700 rounded px-2.5 py-1 shrink-0">
-                        {urlResult.categoria} · {urlResult.mercado}
-                      </span>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs text-slate-500 shrink-0">La IA no confirma →</span>
-                        {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
-                          <span key={i} className="text-xs text-slate-400 bg-slate-800/70 border border-slate-700 rounded px-2 py-0.5">
-                            {dif}
-                          </span>
-                        ))}
+                    {/* Franja inferior — diferenciadores no validados */}
+                    {urlResult.diferenciadores.length > 0 && (
+                      <div className="border-t border-slate-800/60 px-6 py-3">
+                        <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Diferenciadores que la IA no menciona</p>
+                        <div className="flex flex-wrap gap-2">
+                          {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
+                            <span key={i} className="text-xs text-slate-400 bg-slate-800/50 border border-slate-700/60 rounded px-2.5 py-1">
+                              {dif}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                   </motion.div>
+                  </>
                 )
               })()}
 
@@ -1492,6 +1499,12 @@ Tel: [teléfono]`
                   .filter((v, i, a) => a.indexOf(v) === i)
                   .slice(0, 4)
                 return (
+                  <>
+                  <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                    <span className="text-xs font-mono text-slate-600 shrink-0">02</span>
+                    <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la IA cuando tu cliente busca?</span>
+                    <div className="flex-1 h-px bg-slate-800/30" />
+                  </motion.div>
                   <motion.div
                     id="zone-url-share-of-voice"
                     variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -1644,11 +1657,18 @@ Tel: [teléfono]`
                       </span>
                     </div>
                   </motion.div>
+                  </>
                 )
               })()}
 
               {/* 3 · DIAGNÓSTICO — CompetitiveDeepDive */}
               {urlResult.competitive_deep_dive && urlResult.competitive_deep_dive.competidor && (
+                <>
+                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                  <span className="text-xs font-mono text-slate-600 shrink-0">03</span>
+                  <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
+                  <div className="flex-1 h-px bg-slate-800/30" />
+                </motion.div>
                 <motion.div
                   id="zone-url-competitive-deep-dive"
                   variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -1742,11 +1762,17 @@ Tel: [teléfono]`
                     </div>
                   )}
                 </motion.div>
+                </>
               )}
 
-              {/* Puente narrativo: de la brecha a la oportunidad */}
               {/* 4 · ESPERANZA — UntappedTerritories */}
               {urlResult.untapped_territories && urlResult.untapped_territories.length > 0 && (
+                <>
+                <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                  <span className="text-xs font-mono text-slate-600 shrink-0">04</span>
+                  <span className="text-sm text-slate-400 font-medium">Temas donde la IA no tiene un ganador claro</span>
+                  <div className="flex-1 h-px bg-slate-800/30" />
+                </motion.div>
                 <motion.div
                   id="zone-url-untapped-territories"
                   variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -1811,6 +1837,7 @@ Tel: [teléfono]`
                     </p>
                   </div>
                 </motion.div>
+                </>
               )}
 
               {/* 5 · SOLUCIÓN — Estrategia de Recuperación */}
@@ -1837,6 +1864,12 @@ Tel: [teléfono]`
                 const perfilesConError = urlResult.resultados.filter(r => !r.mencionada).length
                 const topAction = allActions[0]
                 return (
+                  <>
+                  <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                    <span className="text-xs font-mono text-slate-600 shrink-0">05</span>
+                    <span className="text-sm text-slate-400 font-medium">Plan de acción</span>
+                    <div className="flex-1 h-px bg-slate-800/30" />
+                  </motion.div>
                   <motion.div
                     id="zone-url-plan"
                     variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -2025,10 +2058,16 @@ Tel: [teléfono]`
                       </div>
                     )}
                   </motion.div>
+                  </>
                 )
               })()}
 
               {/* 6 · EVIDENCIA — Anexo técnico, colapsado por defecto */}
+              <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
+                <span className="text-xs font-mono text-slate-600 shrink-0">06</span>
+                <span className="text-sm text-slate-400 font-medium">Exportar informe</span>
+                <div className="flex-1 h-px bg-slate-800/30" />
+              </motion.div>
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
                 className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden"
