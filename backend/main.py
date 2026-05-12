@@ -12,6 +12,7 @@ import json
 from openai import AsyncOpenAI
 import httpx
 from pydantic import BaseModel, Field
+from config import AI_MODEL, URL_CACHE_TTL
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
 from database import get_db, test_connection
 from crud import (
@@ -24,6 +25,10 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# In-memory URL audit cache: {url -> (timestamp, result)}
+import time as _time
+_url_cache: dict = {}
 
 _openai_api_key = os.getenv("OPENAI_API_KEY")
 _openai_client = None
@@ -45,7 +50,7 @@ async def sanitizar_inputs(marca_raw: str, busqueda_raw: str) -> SanitizedInputs
     """Normaliza marca y consulta usando LLM antes de procesar."""
     try:
         response = await _openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0,
             response_format={"type": "json_object"},
             messages=[
@@ -775,6 +780,17 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
     if not url.startswith(("http://", "https://")):
         raise HTTPException(status_code=422, detail="La URL debe comenzar con http:// o https://")
 
+    # ── Cache check ───────────────────────────────────────────────────────
+    cache_key = f"{url}|{body.pais or ''}"
+    cached = _url_cache.get(cache_key)
+    if cached:
+        ts, result = cached
+        if _time.time() - ts < URL_CACHE_TTL:
+            logger.info(f"[from-url] Cache hit: {url}")
+            return result
+        else:
+            del _url_cache[cache_key]
+
     try:
         # ── 1. Scraping + comprensión + arquetipos dinámicos ─────────────
         logger.info(f"[from-url] Analizando: {url}")
@@ -868,7 +884,7 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
         logger.info(f"[from-url] Plan: {len(plan.get('vehiculos', []))} vehículos")
         logger.info(f"[from-url] Intel competitiva: competidor={intel.get('competitive_deep_dive', {}).get('competidor', 'N/A')}")
 
-        return AuditFromUrlResponse(
+        result = AuditFromUrlResponse(
             marca=context.marca,
             categoria=context.categoria,
             mercado=context.mercado,
@@ -884,6 +900,8 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
             competitive_deep_dive=intel.get("competitive_deep_dive", {}),
             untapped_territories=intel.get("untapped_territories", []),
         )
+        _url_cache[cache_key] = (_time.time(), result)
+        return result
 
     except HTTPException:
         raise
@@ -1058,7 +1076,7 @@ REGLAS:
 
     try:
         response = await _openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.3,
             response_format={"type": "json_object"},
             messages=[
@@ -1292,7 +1310,7 @@ Devuelve SOLO JSON:
 
     try:
         gen_response = await _openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.8,
             response_format={"type": "json_object"},
             messages=[
@@ -1324,7 +1342,7 @@ Si no mencionarías ninguna marca específica, devuelve marcas_mencionadas como 
 
         try:
             resp = await _openai_client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=AI_MODEL,
                 temperature=0.2,
                 response_format={"type": "json_object"},
                 messages=[
@@ -1424,7 +1442,7 @@ Devuelve SOLO JSON válido con exactamente estas claves:
 
     try:
         response = await _openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.7,
             response_format={"type": "json_object"},
             messages=[

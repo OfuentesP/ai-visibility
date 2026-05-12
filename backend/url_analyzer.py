@@ -18,6 +18,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from pydantic import BaseModel, HttpUrl
+from config import AI_MODEL
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -136,7 +137,7 @@ Devuelve SOLO JSON válido con este esquema exacto:
 }}"""
 
     response = await _openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model=AI_MODEL,
         temperature=0.3,
         response_format={"type": "json_object"},
         messages=[
@@ -198,7 +199,7 @@ Devuelve SOLO JSON válido:
 }}"""
 
     response = await _openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model=AI_MODEL,
         temperature=0.6,
         response_format={"type": "json_object"},
         messages=[
@@ -333,7 +334,7 @@ Devuelve SOLO JSON:
 
     try:
         response = await _openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.4,
             response_format={"type": "json_object"},
             messages=[
@@ -459,7 +460,7 @@ Devuelve SOLO JSON válido con este esquema exacto:
 
     try:
         response = await _openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.5,
             response_format={"type": "json_object"},
             messages=[

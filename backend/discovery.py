@@ -6,6 +6,7 @@ from typing import List
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from pytrends.request import TrendReq
+from config import AI_MODEL
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -137,7 +138,7 @@ Retorna JSON VÁLIDO con exactamente este formato:
 IMPORTANTE: Devuelve SOLO JSON válido, sin texto adicional. Usa topicos reales del mercado chileno."""
 
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.5,
             response_format={"type": "json_object"},
             messages=[
@@ -223,7 +224,7 @@ Driver: [{driver}]. Una sola pregunta, máximo 15 palabras, sin sub-preguntas.
 Retorna JSON con 'prompt' y 'razon'."""
             
             response = await client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=AI_MODEL,
                 response_format={"type": "json_object"},
                 temperature=0.7,
                 messages=[

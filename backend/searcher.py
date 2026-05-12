@@ -3,6 +3,7 @@ from openai import AsyncOpenAI
 from dotenv import load_dotenv
 import os
 import logging
+from config import AI_MODEL
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -29,7 +30,7 @@ async def consultar_openai(prompt: str) -> str:
     
     try:
         message = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             max_tokens=1024,
             temperature=0.1,
             messages=[

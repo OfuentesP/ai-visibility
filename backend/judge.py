@@ -8,6 +8,7 @@ from typing import List, Optional
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from models import AnalisisMarca, PrioridadEjecutiva, PlanAccion, VehiculoContenido, AccionICE, CATALOGO_TACTICAS_AEO, CompetitorAdvantage, CompetitorAdvantageRow
+from config import AI_MODEL
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -79,7 +80,7 @@ TEXTO BASE (donde {mi_marca} SÍ aparece — úsalo para evaluar dealbreaker):
 {texto_base[:1000]}"""
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=AI_MODEL,
         response_format={"type": "json_object"},
         messages=[
             {
@@ -166,7 +167,7 @@ async def extraer_metricas(texto_ia: str, mi_marca: str) -> AnalisisMarca:
     """Extrae métricas y recomendación de texto usando OpenAI con JSON mode."""
     
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=AI_MODEL,
         response_format={"type": "json_object"},
         messages=[
             {
@@ -306,7 +307,7 @@ async def generar_plan_accion_pro(
     try:
         competidor = marca_ganadora or "la competencia"
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             messages=[{
                 "role": "system",
                 "content": "Eres un asesor de marketing digital. Escribe en español, oraciones cortas, sin jargon técnico. Habla de clientes y resultados, no de algoritmos."
@@ -336,7 +337,7 @@ async def generar_content_brief(recomendacion: str, marca_ganadora: str, marca_u
     """Genera 3 títulos de contenido accionables para subir en ranking."""
     try:
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             response_format={"type": "json_object"},
             messages=[{
                 "role": "system",
@@ -392,7 +393,7 @@ async def extraer_conceptos_faltantes(
             marca_ganadora = "el competidor en posición #2"
 
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             response_format={"type": "json_object"},
             temperature=0.2,
             messages=[
@@ -510,7 +511,7 @@ async def generar_prioridad_ejecutiva(
 
         # Generar prioridad usando IA
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             response_format={"type": "json_object"},
             temperature=0.3,
             messages=[
@@ -639,7 +640,7 @@ Devuelve SOLO JSON válido:
 
     try:
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.2,
             response_format={"type": "json_object"},
             messages=[
@@ -941,7 +942,7 @@ PASOS HIPER-PERSONALIZADOS: Aunque el nombre de la Táctica y el Área sean fijo
 Devuelve SOLO el JSON. NADA MAS."""
 
         response = await client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=AI_MODEL,
             temperature=0.3,
             response_format={"type": "json_object"},
             messages=[
