@@ -3,7 +3,17 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Glosario de Inteligencia Artificial y GEO | AI Visibility',
-  description: 'Aprende los términos clave sobre Generative Engine Optimization, Share of Model, RAG y auditorías en modelos de lenguaje.',
+  description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model (SoM), GEO, RAG, Alucinaciones de IA y más.',
+  keywords: ['Share of Model', 'GEO', 'RAG', 'LLM', 'Alucinación IA', 'Generative Engine Optimization'],
+  alternates: {
+    canonical: 'https://ai-visibility.cl/glosario',
+    languages: { 'es': 'https://ai-visibility.cl/glosario', 'es-CL': 'https://ai-visibility.cl/glosario' },
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Glosario de IA y GEO | AI Visibility',
+    description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model, GEO, RAG y más.',
+  },
 };
 
 const terminos = [
@@ -48,8 +58,10 @@ const terminos = [
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "DefinedTermSet",
-  "name": "Glosario de Inteligencia Artificial y GEO",
-  "description": "Definiciones técnicas sobre optimización para motores generativos.",
+  "@id": "https://ai-visibility.cl/glosario#terminos",
+  "name": "Glosario de Generative Engine Optimization",
+  "description": "Conceptos fundamentales para entender la visibilidad de marcas en motores generativos.",
+  "publisher": { "@id": "https://ai-visibility.cl/#organization" },
   "hasDefinedTerm": terminos.map(t => ({
     "@type": "DefinedTerm",
     "name": t.termino,

@@ -2,38 +2,55 @@ import Link from 'next/link'
 import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 
 export const metadata = {
-  title: 'AI Visibility | Auditoría de Share of Model y GEO para LLMs',
-  description: 'Descubre cómo ChatGPT, Perplexity y Gemini perciben tu marca. Mide tu Share of Model, detecta brechas semánticas y ejecuta tácticas GEO accionables.',
+  title: 'AI Visibility | Plataforma de Optimización para Motores Generativos (GEO)',
+  description: 'Mide y optimiza el Share of Model (SoM) de tu marca en ChatGPT, Gemini y Perplexity. La plataforma líder en Generative Engine Optimization en Chile.',
+  keywords: ['Generative Engine Optimization', 'GEO', 'Share of Model', 'Auditoría IA', 'AI Readiness Score', 'ChatGPT SEO'],
+  alternates: {
+    canonical: 'https://ai-visibility.cl',
+    languages: { 'es': 'https://ai-visibility.cl', 'es-CL': 'https://ai-visibility.cl' },
+  },
+  openGraph: {
+    title: 'AI Visibility | Auditoría de Visibilidad en Inteligencia Artificial',
+    description: 'Descubre qué dicen los modelos de lenguaje sobre tu marca y obtén tu plan de recuperación GEO.',
+    url: 'https://ai-visibility.cl',
+    siteName: 'AI Visibility',
+    locale: 'es_CL',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI Visibility | GEO & Share of Model Platform',
+    description: 'Descubre qué dicen los modelos de lenguaje sobre tu marca y obtén tu plan de recuperación GEO.',
+  },
 }
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "¿Qué es Generative Engine Optimization (GEO)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG)." }
+      "@type": "Organization",
+      "@id": "https://ai-visibility.cl/#organization",
+      "name": "AI Visibility",
+      "url": "https://ai-visibility.cl",
+      "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization.",
+      "address": { "@type": "PostalAddress", "addressCountry": "CL" }
     },
     {
-      "@type": "Question",
-      "name": "¿Cuál es la diferencia entre SEO y GEO?",
-      "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la 'respuesta definitiva' dentro de un texto conversacional generado por Inteligencia Artificial, donde no hay listas de enlaces, sino una única recomendación directa." }
+      "@type": "SoftwareApplication",
+      "@id": "https://ai-visibility.cl/#software",
+      "name": "AI Visibility Auditor",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     },
     {
-      "@type": "Question",
-      "name": "¿Cómo evalúa AI Visibility mi presencia en la IA?",
-      "acceptedAnswer": { "@type": "Answer", "text": "AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales (arquetipos). Nuestra plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento de esa mención, tu porcentaje de visibilidad y qué competidor está dominando las respuestas." }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Qué es el Share of Model (SoM)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al 'Share of Voice'. Representa el porcentaje exacto de veces que un modelo de inteligencia artificial cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios." }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Los LLMs construyen sus respuestas basándose en sus datos de entrenamiento y en fuentes indexadas en tiempo real. Si tu marca no aparece, se debe a una falta de densidad de entidades, ausencia en fuentes de alta autoridad (medios, foros técnicos) o a la carencia de datos estructurados legibles para máquinas en tu propio sitio web." }
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿Qué es Generative Engine Optimization (GEO)?", "acceptedAnswer": { "@type": "Answer", "text": "Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG)." } },
+        { "@type": "Question", "name": "¿Cuál es la diferencia entre SEO y GEO?", "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por IA." } },
+        { "@type": "Question", "name": "¿Qué es el Share of Model (SoM)?", "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al Share of Voice. Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca frente a tus competidores." } },
+        { "@type": "Question", "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?", "acceptedAnswer": { "@type": "Answer", "text": "Si tu marca no aparece en LLMs se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad o carencia de datos estructurados legibles para máquinas en tu sitio web." } }
+      ]
     }
   ]
 }
