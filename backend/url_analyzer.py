@@ -251,6 +251,12 @@ async def generar_plan_url(
         if r.get("marca_ganadora") and r["marca_ganadora"].lower() != marca.lower()
     })
 
+    # Métricas de cobertura para anclar el ROI
+    total_arquetipos = len(resultados)
+    con_mencion = sum(1 for r in resultados if r.get("mencionada"))
+    visibilidad_actual = round(con_mencion / total_arquetipos * 100) if total_arquetipos else 0
+    arquetipos_perdidos = [r.get("arquetipo", "?") for r in perfiles_sin_aparicion]
+
     prompt = f"""Generas planes de acción para que marcas aparezcan en ChatGPT, Perplexity y Google. Tu audiencia es el equipo de marketing y el gerente general de {marca}. Escribe en lenguaje directo, sin jargon técnico ni de consultoría.
 
 ## REGLAS DE ESCRITURA — OBLIGATORIAS
@@ -322,7 +328,7 @@ Devuelve SOLO JSON:
       ]
     }}
   ],
-  "roi_estimado": "estimación cualitativa y contextual del impacto esperado para {marca} en {mercado}"
+  "roi_estimado": "Hoy {con_mencion} de {total_arquetipos} perfiles encuentran a {marca} ({visibilidad_actual}% de visibilidad). Estima cuántos perfiles la encontrarán tras ejecutar estas acciones y en qué plazo realista. Menciona a {', '.join(arquetipos_perdidos) if arquetipos_perdidos else 'los perfiles sin cobertura'} como los que más impacto recibirán."
 }}"""
 
     try:

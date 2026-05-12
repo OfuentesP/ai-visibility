@@ -302,23 +302,30 @@ async def generar_plan_accion_pro(
     posicion: int,
     recomendacion: str
 ) -> str:
-    """Genera un plan de acción estratégico PRO con tono de Consultor Senior."""
+    """Genera 3 acciones concretas para que la marca aparezca en respuestas de IA."""
     try:
+        competidor = marca_ganadora or "la competencia"
         response = await client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{
+                "role": "system",
+                "content": "Eres un asesor de marketing digital. Escribe en español, oraciones cortas, sin jargon técnico. Habla de clientes y resultados, no de algoritmos."
+            }, {
                 "role": "user",
-                "content": f"""Eres experto en GEO (Generative Engine Optimization). {marca_usuario} tiene bajo Share of Model (SoM).
-Genera 3 acciones tácticas breves para dominar LLMs (no SEO tradicional):
-1. Para ChatGPT: Exigir Bing Webmaster Tools y JSON-LD.
-2. Para Gemini: Crear videos en YouTube (por transcripciones) y Google Search Console.
-3. Para Perplexity: PR en Reddit, LinkedIn o crear "Perplexity Pages".
-Formato: Profesional, directo y accionable. Sin introducciones largas."""
+                "content": f"""{marca_usuario} no aparece cuando sus clientes buscan en ChatGPT o Perplexity. {competidor} sí aparece.
+
+Genera exactamente 3 acciones concretas y distintas para que {marca_usuario} empiece a aparecer. Cada acción debe:
+- Tener un título corto (5 palabras máximo)
+- Explicar qué hacer en 2 oraciones
+- Decir quién lo ejecuta (marketing, TI o agencia)
+- Estimar cuánto tarda en verse el resultado
+
+Sin introducciones. Directo al punto."""
             }]
         )
-        
+
         plan = response.choices[0].message.content
-        logger.info(f"Generated PRO action plan for {marca_usuario}")
+        logger.info(f"Generated action plan for {marca_usuario}")
         return plan
     except Exception as e:
         logger.error(f"Error generating action plan: {e}")
@@ -943,11 +950,11 @@ Devuelve SOLO el JSON. NADA MAS."""
                     "MAXIMO 4 acciones en total, ordenadas de mayor a menor ice_score. "
                     "ICE SCORES REALISTAS Y ÚNICOS: Cada acción DEBE tener valores DISTINTOS de impacto, confianza y esfuerzo. "
                     "PROHIBIDO que dos acciones compartan el mismo ice_score. Varía los números genuinamente: "
-                    "- Schema FAQ: impacto 7-9, confianza 6-8, esfuerzo 6-9 (técnico pero rápido) "
-                    "- Digital PR: impacto 8-10, confianza 4-6, esfuerzo 3-5 (alto impacto, difícil coordinar) "
-                    "- Landing semántica: impacto 6-8, confianza 7-9, esfuerzo 5-7 (contenido especializado) "
-                    "- Knowledge Graph: impacto 7-9, confianza 5-7, esfuerzo 4-6 (técnico, latencia alta) "
-                    "- Tablas HTML: impacto 6-8, confianza 7-9, esfuerzo 7-9 (rápido de implementar) "
+                    "- Schema FAQ / JSON-LD: impacto 7-9, confianza 6-8, esfuerzo 6-9 "
+                    "- Digital PR en Medios Autorizados: impacto 8-10, confianza 4-6, esfuerzo 3-5 "
+                    "- Inyección Semántica Landing: impacto 6-8, confianza 7-9, esfuerzo 5-7 "
+                    "- Knowledge Graph: impacto 7-9, confianza 5-7, esfuerzo 4-6 "
+                    "- Tablas de Datos HTML: impacto 6-8, confianza 7-9, esfuerzo 7-9 "
                     "Usa el RANGO COMPLETO. No ancles en los mismos números. "
                     "REGLA DE ORO PARA concepto_objetivo: Extrae la palabra exacta. "
                     "❌ MAL: Inyeccion de Schema FAQ -> conceptos faltantes detectados. "
