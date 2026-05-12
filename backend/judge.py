@@ -18,15 +18,15 @@ load_dotenv()
 # Matriz de tiempos de indexación determinista — fuente: comportamiento real de crawlers IA
 _TIEMPO_MATRIZ = [
     (["digital pr", "medios autorizados", "nota de prensa", "prensa"],
-     "24 - 48 horas (Perplexity/SearchGPT favorecen medios vivos)"),
+     "24 - 48 horas"),
     (["schema faq", "faq", "json-ld", "tablas html", "tabla html", "tabla comparativa"],
-     "3 - 7 días (Requiere forzar re-indexación manual en Google Search Console)"),
+     "3 - 7 días"),
     (["landing", "inyección semántica", "inyeccion semantica", "página de destino"],
-     "1 - 2 semanas (Depende del Crawl Budget orgánico de GPTBot)"),
+     "1 - 2 semanas"),
     (["knowledge graph", "grafo", "entidades", "wikidata", "schema organization"],
-     "3 - 6 semanas (Los grafos de entidades tienen latencia alta)"),
+     "3 - 6 semanas"),
 ]
-_TIEMPO_DEFAULT = "3 - 7 días (Requiere forzar re-indexación manual en Google Search Console)"
+_TIEMPO_DEFAULT = "3 - 7 días"
 
 
 def _tiempo_por_tactica(tactica: str) -> str:

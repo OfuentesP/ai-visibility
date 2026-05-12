@@ -189,44 +189,37 @@ async def generar_escenarios_ia(topico: str, tendencias: List[str], personas: Li
             
             prompt_sistema = f"""Eres un simulador de usuarios reales chilenos para investigación de mercado.
 
-ARQUETIPO DE COMPRA: {arquetipo}
+ARQUETIPO: {arquetipo}
 DRIVER DE DECISIÓN: {driver}
-DEALBREAKER (lo que lo hace abandonar): {persona.get('dealbreaker', '')}
 
-Tu tarea: Genera la pregunta EXACTA que este arquetipo escribiría en ChatGPT.
+Tu tarea: Genera la búsqueda EXACTA que este usuario escribiría en ChatGPT o Google.
 
-REGLAS ESTRICTAS:
-1. La pregunta DEBE reflejar el driver de decisión del arquetipo:
-   - Racional/Económico → pregunta sobre precios, comisiones, comparativas de costo
-   - Premium/Seguro → pregunta sobre reputación, coberturas, respaldo, experiencia
-   - Impaciente/Digital → pregunta sobre apps, procesos online, velocidad, UX
-2. La pregunta DEBE incluir una sub-pregunta que testee el dealbreaker:
-   - Si dealbreaker es "costos ocultos", incluir algo como "¿tiene comisiones escondidas?"
-   - Si dealbreaker es "lentitud", incluir algo como "¿cuánto demora el proceso?"
-   - Si dealbreaker es "mala atención", incluir algo como "¿qué pasa si tengo un reclamo?"
-3. Usar jerga chilena natural (NO formal, NO genérico)
-4. Incluir contexto local chileno real (ciudades, instituciones, situaciones cotidianas)
-5. La pregunta debe ser específica y accionable, NO vaga
+REGLAS:
+1. Una sola pregunta simple. Sin sub-preguntas encadenadas.
+2. El driver guía el ángulo: precio → "más barato / mejor precio", calidad → "mejor / más confiable", velocidad → "más rápido / sin trámites".
+3. Jerga chilena natural. Como habla la gente, no como escribe un periodista.
+4. Máximo 15 palabras. Las búsquedas reales son cortas.
+5. NO incluir el nombre de ninguna marca específica en la pregunta.
 
-EJEMPLO para "Mejor Cuenta Corriente Chile":
-- Racional: "¿Cuál banco cobra menos mantención de cuenta corriente en Chile? ¿Hay comisiones ocultas que no digan al principio?"
-- Premium: "¿Qué banco tiene la mejor banca preferencial en Chile? ¿Y si tengo un problema, me resuelven rápido?"  
-- Digital: "¿Qué banco tiene la mejor app para manejar la cuenta corriente? ¿Se puede hacer todo sin ir a sucursal?"
+EJEMPLOS para "Mejor Cuenta Corriente Chile":
+- Driver precio:   "cuál banco cobra menos mantención cuenta corriente chile"
+- Driver calidad:  "mejor banco para cuenta corriente en chile"
+- Driver digital:  "banco con mejor app cuenta corriente chile sin ir a sucursal"
 
 Retorna JSON válido:
 {{
-    "prompt": "la pregunta exacta en jerga chilena",
-    "razon": "por qué este arquetipo hace esta pregunta específica"
+    "prompt": "la búsqueda exacta en jerga chilena",
+    "razon": "por qué este arquetipo busca esto"
 }}"""
             
-            prompt_usuario = f"""Perfil completo del arquetipo:
+            prompt_usuario = f"""Perfil del arquetipo:
 {perfil_base}
 
-Tópico de búsqueda: {topico}
-Tendencias relacionadas en Chile: {tendencias_str}
+Tópico: {topico}
+Tendencias en Chile: {tendencias_str}
 
-Genera la pregunta exacta que ESTE ARQUETIPO ({arquetipo}) escribiría en ChatGPT para {topico}.
-Recuerda: su driver es [{driver}]. La pregunta DEBE girar en torno a eso.
+Genera la búsqueda corta y natural que {arquetipo} escribiría en ChatGPT para encontrar {topico}.
+Driver: [{driver}]. Una sola pregunta, máximo 15 palabras, sin sub-preguntas.
 Retorna JSON con 'prompt' y 'razon'."""
             
             response = await client.chat.completions.create(
