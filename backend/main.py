@@ -300,40 +300,19 @@ async def audit_pipeline(
             return ResultadoBusqueda(**data)
 
         from searcher import consultar_openai
-        from judge import extraer_metricas, generar_content_brief, generar_plan_accion_pro, generar_prioridad_ejecutiva, extraer_conceptos_faltantes, calcular_estado_invisibilidad, generar_plan_accion
+        from judge import extraer_metricas, generar_prioridad_ejecutiva, extraer_conceptos_faltantes, calcular_estado_invisibilidad, generar_plan_accion
         from discovery import obtener_tendencias_chile, detectar_territorios_desatendidos
-        
+
         # Paso 2: Searcher
         logger.info(f"[Paso 2] Buscando: {query}")
         texto_busqueda = await consultar_openai(query)
-        
+
         # Paso 3: Judge
         logger.info(f"[Paso 3] Extrayendo métricas para: {brand}")
         resultado = await extraer_metricas(texto_busqueda, brand)
-        
-        # Paso 4: Content Brief Generator (PRO)
-        logger.info(f"[Paso 4] Generando brief de contenido para: {brand}")
-        if resultado.recomendacion_ia and resultado.marca_ganadora:
-            content_ideas = await generar_content_brief(
-                resultado.recomendacion_ia,
-                resultado.marca_ganadora,
-                brand
-            )
-            resultado.content_ideas = content_ideas
-        
-        # Paso 5: Plan de Acción PRO (Consultor Senior)
-        logger.info(f"[Paso 5] Generando plan estratégico PRO para: {brand}")
-        plan_pro = await generar_plan_accion_pro(
-            texto_busqueda,
-            brand,
-            resultado.marca_ganadora,
-            resultado.posicion_mi_marca,
-            resultado.recomendacion_ia
-        )
-        resultado.plan_accion_pro = plan_pro
-        
-        # Paso 6: Prioridad Ejecutiva (Growth Strategist)
-        logger.info(f"[Paso 6] Generando prioridad ejecutiva para: {brand}")
+
+        # Paso 4: Prioridad Ejecutiva (Growth Strategist)
+        logger.info(f"[Paso 4] Generando prioridad ejecutiva para: {brand}")
         prioridad = await generar_prioridad_ejecutiva(
             resultado.posicion_mi_marca,
             resultado.sentimiento,
@@ -343,9 +322,9 @@ async def audit_pipeline(
             resultado.recomendacion_ia
         )
         resultado.prioridad_ejecutiva = prioridad
-        
-        # Paso 7: Diagnóstico de Vacíos de Contenido (Content Gap Analysis)
-        logger.info(f"[Paso 7] Analizando content gap para: {brand}")
+
+        # Paso 5: Diagnóstico de Vacíos de Contenido (Content Gap Analysis)
+        logger.info(f"[Paso 5] Analizando content gap para: {brand}")
         gap_data = await extraer_conceptos_faltantes(
             texto_busqueda,
             resultado.marca_ganadora,
@@ -353,9 +332,9 @@ async def audit_pipeline(
         )
         resultado.percepciones_genericas = gap_data.get("percepciones_genericas", [])
         resultado.conceptos_faltantes = gap_data.get("diferenciadores_ganador", [])
-        
-        # Paso 8: Termómetro de Invisibilidad
-        logger.info(f"[Paso 8] Calculando estado de invisibilidad para: {brand}")
+
+        # Paso 6: Termómetro de Invisibilidad
+        logger.info(f"[Paso 6] Calculando estado de invisibilidad para: {brand}")
         estado, score = calcular_estado_invisibilidad(
             resultado.posicion_mi_marca,
             resultado.sentimiento,
@@ -364,9 +343,9 @@ async def audit_pipeline(
         )
         resultado.estado_invisibilidad = estado
         resultado.invisibilidad_score = score
-        
-        # Paso 9: Plan de Acción (Quick Wins + Estratégico)
-        logger.info(f"[Paso 9] Generando plan de rescate para: {brand}")
+
+        # Paso 7: Plan de Acción (Quick Wins + Estratégico)
+        logger.info(f"[Paso 7] Generando plan de rescate para: {brand}")
         plan_accion = await generar_plan_accion(
             estado,
             resultado.posicion_mi_marca,
@@ -377,38 +356,30 @@ async def audit_pipeline(
             busqueda_usuario=query
         )
         resultado.plan_accion = plan_accion
-        
-        # Paso 10: Detectar Territorios Desatendidos (Gap Analysis)
-        logger.info(f"[Paso 10] Detectando territorios desatendidos para: {brand}")
+
+        # Paso 8: Detectar Territorios Desatendidos (Gap Analysis)
+        logger.info(f"[Paso 8] Detectando territorios desatendidos para: {brand}")
         try:
-            # Obtener tendencias de Google Trends
             tendencias = await obtener_tendencias_chile(query)
-            
-            # Comunicación actual de la marca (información de contexto)
             comunicacion_actual = resultado.recomendacion_ia or f"Marca {brand} en mercado de {query}"
-            
-            # Detectar territorios desatendidos
             territorios = await detectar_territorios_desatendidos(
                 query,
                 tendencias,
                 brand,
                 comunicacion_actual
             )
-            
-            # Enriquecer con Google Trends real
             from trends import enriquecer_territorios
             territorios = enriquecer_territorios(territorios)
-            
             resultado.territorios_desatendidos = territorios
             logger.info(f"✅ Detectados {len(territorios)} territorios desatendidos")
         except Exception as e:
             logger.warning(f"⚠️  No se pudieron detectar territorios desatendidos: {e}")
             resultado.territorios_desatendidos = []
 
-        # Paso 11: Tabla de Ventajas del Competidor
+        # Paso 9: Tabla de Ventajas del Competidor
         rival = resultado.competidor_principal or resultado.marca_ganadora
         if rival and rival.lower() != brand.lower():
-            logger.info(f"[Paso 11] Analizando ventajas de '{rival}' vs '{brand}'")
+            logger.info(f"[Paso 10] Analizando ventajas de '{rival}' vs '{brand}'")
             try:
                 from judge import analyze_competitor_advantage
                 resultado.competitor_advantage = await analyze_competitor_advantage(
@@ -861,44 +832,20 @@ async def batch_audit_masivo(topico: str, mi_marca: str) -> dict:
     try:
         from discovery import obtener_tendencias_chile, generar_escenarios_ia
         from searcher import consultar_openai
-        from judge import extraer_metricas, generar_content_brief, generar_plan_accion_pro
-        
+        from judge import extraer_metricas
+
         logger.info(f"[Batch Audit] Iniciando: {topico} | Cliente: {mi_marca}")
-        
+
         # PASO 1: Obtener tendencias y generar escenarios
         tendencias = await obtener_tendencias_chile(topico)
         escenarios = await generar_escenarios_ia(topico, tendencias)
         logger.info(f"[Batch Audit] Generados {len(escenarios)} escenarios")
-        
+
         # PASO 2: Función auxiliar para auditar un único escenario
         async def auditar_escenario(escenario):
-            """Ejecuta auditoría completa para un escenario específico."""
             try:
-                # Paso 2: Buscar con el prompt del escenario
                 texto_busqueda = await consultar_openai(escenario["prompt_ia"])
-                
-                # Paso 3: Extraer métricas
                 resultado = await extraer_metricas(texto_busqueda, mi_marca)
-                
-                # Paso 4: Generar content brief si es necesario
-                if resultado.recomendacion_ia and resultado.marca_ganadora:
-                    content_ideas = await generar_content_brief(
-                        resultado.recomendacion_ia,
-                        resultado.marca_ganadora,
-                        mi_marca
-                    )
-                    resultado.content_ideas = content_ideas
-                
-                # Paso 5: Generar plan PRO
-                plan_pro = await generar_plan_accion_pro(
-                    texto_busqueda,
-                    mi_marca,
-                    resultado.marca_ganadora,
-                    resultado.posicion_mi_marca,
-                    resultado.recomendacion_ia
-                )
-                resultado.plan_accion_pro = plan_pro
-                
                 return {
                     "persona": escenario["persona"],
                     "prompt": escenario["prompt_ia"],
