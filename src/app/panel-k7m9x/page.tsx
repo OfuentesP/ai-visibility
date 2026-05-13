@@ -19,6 +19,10 @@ function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
   useEffect(() => { inputRef.current?.focus() }, [])
 
   const check = () => {
+    if (!ADMIN_PASSWORD) {
+      setError(true)
+      return
+    }
     if (value === ADMIN_PASSWORD) {
       sessionStorage.setItem('admin_ok', '1')
       onUnlock()
@@ -46,7 +50,11 @@ function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
           <button onClick={check} className="w-full py-2 bg-slate-700 hover:bg-slate-600 text-slate-50 text-sm font-medium rounded-sm transition">
             Entrar
           </button>
-          {error && <p className="text-rose-400 text-xs text-center mt-3 font-mono">Contraseña incorrecta</p>}
+          {error && (
+            <p className="text-rose-400 text-xs text-center mt-3 font-mono">
+              {!ADMIN_PASSWORD ? 'NEXT_PUBLIC_ADMIN_PASSWORD no está configurado en el build' : 'Contraseña incorrecta'}
+            </p>
+          )}
         </div>
       </div>
     </div>

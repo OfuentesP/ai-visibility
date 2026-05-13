@@ -38,42 +38,154 @@ function Pill({ text }: { text: string }) {
 function BrandView({ r, marca }: { r: any; marca: string | null }) {
   const d = r?.resultados?.[0]
   if (!d) return <p className="text-slate-600 text-sm">Sin datos de análisis.</p>
+
+  const rawScore = d.invisibilidad_score ?? 0
+  const displayScore = rawScore === 0 ? 10 : rawScore
+  const estado = d.estado_invisibilidad
+  const strokeColor = estado === 'visible' ? '#10b981' : estado === 'en_riesgo' ? '#f97316' : '#f43f5e'
+  const label = rawScore === 0 ? 'Riesgo Crítico' : estado === 'visible' ? 'Visible' : estado === 'en_riesgo' ? 'En Riesgo' : 'Invisible'
+  const r54 = 54, cx = 64, cy = 64
+  const circ = 2 * Math.PI * r54
+  const dash = circ * (1 - displayScore / 100)
+
+  const sent = d.sentimiento
+  const sentColor = sent === 'positivo' ? 'text-emerald-400' : sent === 'negativo' ? 'text-rose-400' : 'text-yellow-400'
+  const sentBg = sent === 'positivo' ? 'bg-emerald-950/30 border-emerald-800/40' : sent === 'negativo' ? 'bg-rose-950/30 border-rose-800/40' : 'bg-yellow-950/30 border-yellow-800/40'
+  const sentLabel = sent === 'positivo' ? 'Positivo' : sent === 'negativo' ? 'Negativo / Riesgo de Alucinación' : 'Neutral'
+
+  const pos = d.posicion_mi_marca
+  const ganador = d.competidor_principal || d.marca_ganadora || 'la competencia'
+  const clasificacion = d.prioridad_ejecutiva?.clasificacion ?? (pos === 0 || pos > 5 ? 'Atacar' : pos <= 2 ? 'Mantener' : 'Defender')
+  const isAtacar = clasificacion === 'Atacar'
+  const accentBorder = isAtacar ? 'border-l-rose-500' : clasificacion === 'Defender' ? 'border-l-amber-500' : 'border-l-emerald-500'
+
+  const marcasRivales = (d.marcas_mencionadas ?? []).filter((m: string) => m.toLowerCase() !== (marca ?? '').toLowerCase()).slice(0, 2)
+  const rivales = marcasRivales.length >= 2 ? `${marcasRivales[0]} y ${marcasRivales[1]}` : marcasRivales[0] || ganador
+
+  let titulo = '', subtitulo = ''
+  if (pos === 0 || rawScore < 10) {
+    titulo = 'Riesgo Crítico de Invisibilidad Digital'
+    subtitulo = `Sus clientes potenciales están siendo derivados activamente a ${rivales} porque la IA no encuentra fuentes de confianza que validen su propuesta de valor.`
+  } else if (pos > 5 || rawScore < 30) {
+    titulo = `${marca ?? 'Tu marca'} está perdiendo demanda activa`
+    subtitulo = `${rivales} captura la intención de compra de sus clientes antes de que lleguen a usted.`
+  } else if (pos === 1) {
+    titulo = `${marca ?? 'Tu marca'} lidera — proteja esa posición`
+    subtitulo = `La IA lo recomienda primero, pero ${ganador} está invirtiendo para desplazarle.`
+  } else {
+    titulo = `${marca ?? 'Tu marca'} aparece, pero ${ganador} se lleva la decisión`
+    subtitulo = `Está en posición #${pos}. Los compradores que llegan a la IA ven primero a ${ganador}.`
+  }
+
+  // share of voice
+  const brandFreq: Record<string, number> = {}
+  ;(d.marcas_mencionadas ?? []).forEach((m: string, i: number) => {
+    brandFreq[m] = Math.max(10 - i * 2, 1)
+  })
+  const sov = Object.entries(brandFreq).sort((a, b) => b[1] - a[1])
+  const maxFreq = sov[0]?.[1] || 1
+
+  const topActions: { tactica_tecnica: string; tiempo_indexacion_ia: string; ice_score: number; area_responsable?: string }[] =
+    (d.plan_accion?.vehiculos ?? []).flatMap((v: { acciones: unknown[] }) => v.acciones)
+      .sort((a: { ice_score: number }, b: { ice_score: number }) => b.ice_score - a.ice_score)
+      .slice(0, 3)
+
   return (
     <div className="space-y-6">
-      {d.prioridad_ejecutiva && (
+
+      {/* Score ring + sentimiento */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-sm p-6 flex items-center gap-6">
+          <svg width="128" height="128" viewBox="0 0 128 128" className="shrink-0">
+            <circle cx={cx} cy={cy} r={r54} fill="none" stroke="#1e293b" strokeWidth="10" />
+            <circle cx={cx} cy={cy} r={r54} fill="none" stroke={strokeColor} strokeWidth="10"
+              strokeDasharray={circ} strokeDashoffset={dash} strokeLinecap="round"
+              transform="rotate(-90 64 64)" />
+            <text x="64" y="60" textAnchor="middle" fill={strokeColor} fontSize="22" fontWeight="300" fontFamily="monospace">{displayScore}</text>
+            <text x="64" y="76" textAnchor="middle" fill="#64748b" fontSize="10">/100</text>
+          </svg>
+          <div>
+            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">AI Readiness Score</p>
+            <p className="text-lg font-semibold" style={{ color: strokeColor }}>{label}</p>
+            <p className="text-slate-500 text-xs mt-2 leading-relaxed">Posición #{pos} en el radar de la IA</p>
+          </div>
+        </div>
+
+        <div className={`border rounded-sm p-6 ${sentBg}`}>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la IA</p>
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded border ${sentBg} ${sentColor} mb-3 inline-block`}>{sentLabel}</span>
+          {d.recomendacion_ia && (
+            <p className="text-slate-300 text-sm leading-relaxed mt-2 line-clamp-4">{d.recomendacion_ia}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Resumen ejecutivo */}
+      <div className={`bg-slate-900 border border-slate-700 border-l-4 ${accentBorder} rounded-sm p-5`}>
+        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Resumen ejecutivo</p>
+        <p className="text-white font-bold text-base leading-snug mb-2">{titulo}</p>
+        <p className="text-slate-400 text-sm leading-relaxed mb-3">{subtitulo}</p>
+        {d.prioridad_ejecutiva && (
+          <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t border-slate-800 text-xs">
+            <div><span className="text-slate-500">Foco: </span><span className="text-slate-200">{d.prioridad_ejecutiva.foco_principal}</span></div>
+            <div><span className="text-slate-500">Impacto: </span><span className="text-slate-200">{d.prioridad_ejecutiva.impacto_esperado}</span></div>
+          </div>
+        )}
+      </div>
+
+      {/* Share of Voice */}
+      {sov.length > 0 && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Veredicto ejecutivo</p>
-          <div className="bg-slate-900 border border-slate-800 rounded-sm p-4 space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-slate-500">Clasificación</span><span className="text-slate-200 font-medium">{d.prioridad_ejecutiva.clasificacion}</span></div>
-            <div className="flex justify-between gap-4"><span className="text-slate-500 shrink-0">Foco</span><span className="text-slate-200 text-right">{d.prioridad_ejecutiva.foco_principal}</span></div>
-            <div className="flex justify-between"><span className="text-slate-500">Impacto</span><span className="text-slate-200">{d.prioridad_ejecutiva.impacto_esperado}</span></div>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">¿A quién recomienda la IA?</p>
+          <div className="bg-slate-900 border border-slate-800 rounded-sm p-4 space-y-3">
+            {sov.map(([m, freq], i) => {
+              const pct = Math.round((freq / maxFreq) * 100)
+              const isUser = m.toLowerCase() === (marca ?? '').toLowerCase()
+              return (
+                <div key={m} className="flex items-center gap-3">
+                  <span className="text-[10px] font-mono text-slate-600 w-4 shrink-0">#{i + 1}</span>
+                  <span className={`text-xs w-28 shrink-0 truncate ${isUser ? 'text-sky-400 font-semibold' : 'text-slate-400'}`}>
+                    {isUser ? `→ ${m}` : m}
+                  </span>
+                  <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${isUser ? 'bg-sky-500' : i === 0 ? 'bg-orange-500' : 'bg-slate-600'}`}
+                      style={{ width: `${pct}%` }} />
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-600 w-8 text-right">{pct}%</span>
+                </div>
+              )
+            })}
           </div>
         </section>
       )}
-      <section className="grid grid-cols-2 gap-4">
-        <Score value={d.invisibilidad_score ?? 0} label="AI Readiness Score" />
-        <Score value={d.posicion_mi_marca ?? 0} max={10} label={`Posición de ${marca ?? 'tu marca'}`} />
-      </section>
-      {d.marcas_mencionadas?.length > 0 && (
-        <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Marcas en el radar de la IA</p>
-          <div className="flex flex-wrap gap-1.5">{d.marcas_mencionadas.map((m: string) => <Pill key={m} text={m} />)}</div>
-        </section>
-      )}
+
+      {/* Brecha semántica */}
       {d.conceptos_faltantes?.length > 0 && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Brecha semántica</p>
-          <div className="flex flex-wrap gap-1.5">{d.conceptos_faltantes.map((c: string) => <span key={c} className="inline-block px-2 py-0.5 bg-rose-900/30 text-rose-300 text-[10px] rounded-sm">{c}</span>)}</div>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Conceptos que la IA no asocia a tu marca</p>
+          <div className="flex flex-wrap gap-1.5">
+            {d.conceptos_faltantes.map((c: string) => (
+              <span key={c} className="inline-block px-2 py-0.5 bg-rose-900/30 text-rose-300 text-[10px] rounded-sm">{c}</span>
+            ))}
+          </div>
         </section>
       )}
-      {d.plan_accion?.vehiculos?.[0]?.acciones?.length > 0 && (
+
+      {/* Plan de acción */}
+      {topActions.length > 0 && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Top acciones recomendadas</p>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Plan de acción — top acciones</p>
           <div className="space-y-2">
-            {d.plan_accion.vehiculos.flatMap((v: { acciones: unknown[] }) => v.acciones).slice(0, 3).map((a: { tactica_tecnica: string; ice_score: number; tiempo_indexacion_ia: string }, i: number) => (
-              <div key={i} className="bg-slate-900 border border-slate-800 rounded-sm p-3">
-                <p className="text-slate-200 text-xs font-medium">{a.tactica_tecnica}</p>
-                <p className="text-slate-600 text-[10px] font-mono mt-1">ICE {a.ice_score} · {a.tiempo_indexacion_ia}</p>
+            {topActions.map((a, i) => (
+              <div key={i} className={`bg-slate-900 border rounded-sm p-4 ${i === 0 ? 'border-amber-800/60' : 'border-slate-800'}`}>
+                {i === 0 && <p className="text-[10px] font-mono text-amber-500 uppercase tracking-widest mb-1">↑ Empezar aquí</p>}
+                <p className="text-slate-200 text-sm font-medium leading-snug mb-1">{a.tactica_tecnica}</p>
+                <div className="flex flex-wrap gap-2 text-[10px] text-slate-500 font-mono">
+                  <span>ICE {a.ice_score}</span>
+                  <span>·</span>
+                  <span>{a.tiempo_indexacion_ia}</span>
+                  {a.area_responsable && <><span>·</span><span>{a.area_responsable}</span></>}
+                </div>
               </div>
             ))}
           </div>
