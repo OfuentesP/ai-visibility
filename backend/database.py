@@ -92,7 +92,7 @@ def test_connection():
 
 
 # Models using SQLAlchemy ORM
-from sqlalchemy import Column, String, Integer, DateTime, Float, ForeignKey, Boolean, Text, ARRAY, JSON
+from sqlalchemy import Column, String, DateTime, Float, Text, JSON
 from datetime import datetime
 
 
@@ -133,71 +133,6 @@ class Lead(Base):
     resultado = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-
-class Client(Base):
-    __tablename__ = "clients"
-    
-    id = Column(String, primary_key=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, nullable=False)
-    website = Column(String, nullable=True)
-    api_key = Column(String, unique=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-class AuditURL(Base):
-    __tablename__ = "audit_urls"
-    
-    id = Column(String, primary_key=True)
-    url = Column(String, nullable=False)
-    title = Column(String, nullable=False)
-    description = Column(String, nullable=True)
-    client_id = Column(String, ForeignKey("clients.id"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-class ContentAudit(Base):
-    __tablename__ = "content_audits"
-    
-    id = Column(String, primary_key=True)
-    url_id = Column(String, ForeignKey("audit_urls.id"), nullable=False)
-    ai_engine = Column(String, nullable=False)  # chatgpt, perplexity, etc
-    cited_status = Column(String, nullable=False)  # cited, not-cited, partial
-    snippet = Column(Text, nullable=True)
-    position = Column(Integer, nullable=True)
-    last_checked = Column(DateTime, default=datetime.utcnow)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-class Recommendation(Base):
-    __tablename__ = "recommendations"
-    
-    id = Column(String, primary_key=True)
-    url_id = Column(String, ForeignKey("audit_urls.id"), nullable=False)
-    engine = Column(String, nullable=False)
-    type = Column(String, nullable=False)  # keyword, content, structure, semantic
-    priority = Column(String, nullable=False)  # high, medium, low
-    description = Column(Text, nullable=False)
-    action_items = Column(ARRAY(String), nullable=False)
-    estimated_impact = Column(Integer, nullable=False)  # 0-100
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-class Subscription(Base):
-    __tablename__ = "subscriptions"
-    
-    id = Column(String, primary_key=True)
-    client_id = Column(String, ForeignKey("clients.id"), nullable=False)
-    plan = Column(String, nullable=False)  # starter, pro, enterprise
-    status = Column(String, nullable=False)  # active, cancelled, expired
-    start_date = Column(DateTime, nullable=False)
-    end_date = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 if __name__ == "__main__":
