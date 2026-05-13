@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
@@ -66,11 +66,9 @@ interface Lead {
   created_at: string | null
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ResultadoData = Record<string, any>
-
 interface LeadDetalle extends Lead {
-  resultado: ResultadoData | null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  resultado: Record<string, any> | null
 }
 
 interface Metrics {
@@ -221,271 +219,6 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
                 )
               })}
             </div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ── Detail modal ──────────────────────────────────────────────────────────────
-
-function DetalleModal({ lead, onClose }: { lead: LeadDetalle; onClose: () => void }) {
-  const r = lead.resultado
-  const modo = lead.modo
-
-  const brandData = (modo === 'brand' && r?.resultados?.[0]) ? r.resultados[0] : null
-  const urlData = modo === 'url' ? r : null
-  const compareData = modo === 'compare' ? r : null
-  const citaData = modo === 'cita' ? r : null
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/90 backdrop-blur-sm p-4 pt-10 overflow-y-auto"
-      onClick={onClose}
-    >
-      <div
-        className="bg-slate-900 border border-slate-700 rounded-sm w-full max-w-3xl shadow-2xl mb-10"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-start justify-between gap-4 px-6 py-4 border-b border-slate-800">
-          <div>
-            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Detalle del informe</p>
-            <h2 className="text-base font-bold text-white">{lead.nombre}</h2>
-            <p className="text-xs text-slate-500 mt-0.5">{lead.email} · {formatDate(lead.created_at)}</p>
-          </div>
-          <div className="flex items-center gap-3 shrink-0">
-            {lead.modo && (
-              <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-semibold border ${MODO_COLOR[lead.modo] ?? ''}`}>
-                {MODO_LABEL[lead.modo] ?? lead.modo}
-              </span>
-            )}
-            <button onClick={onClose} className="text-slate-500 hover:text-slate-300 text-lg leading-none">✕</button>
-          </div>
-        </div>
-
-        <div className="px-6 py-5 space-y-6">
-          <div className="flex flex-wrap gap-4 text-sm">
-            {lead.marca && (
-              <div>
-                <p className="text-[10px] text-slate-600 uppercase tracking-widest mb-1">Marca / URL</p>
-                <p className="text-slate-200 font-medium">{lead.marca}</p>
-              </div>
-            )}
-            {lead.query && (
-              <div>
-                <p className="text-[10px] text-slate-600 uppercase tracking-widest mb-1">Consulta</p>
-                <p className="text-slate-200">{lead.query}</p>
-              </div>
-            )}
-          </div>
-
-          {!r && (
-            <p className="text-slate-600 text-sm text-center py-8">Sin datos de resultado guardados para esta consulta.</p>
-          )}
-
-          {brandData && (
-            <>
-              {brandData.prioridad_ejecutiva && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Veredicto ejecutivo</p>
-                  <div className="bg-slate-950/60 border border-slate-800 rounded-sm p-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Clasificación</span>
-                      <Pill text={brandData.prioridad_ejecutiva.clasificacion ?? '—'} color={brandData.prioridad_ejecutiva.clasificacion === 'Visible' ? 'emerald' : brandData.prioridad_ejecutiva.clasificacion === 'En Riesgo' ? 'orange' : 'rose'} />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Foco principal</span>
-                      <span className="text-slate-200 text-xs text-right max-w-[60%]">{brandData.prioridad_ejecutiva.foco_principal}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Impacto esperado</span>
-                      <span className="text-slate-200 text-xs">{brandData.prioridad_ejecutiva.impacto_esperado}</span>
-                    </div>
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="text-slate-400 text-xs shrink-0">ROI Score</span>
-                      <div className="flex-1 max-w-[200px]">
-                        <Score value={brandData.prioridad_ejecutiva.roi_score ?? 0} />
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              )}
-              <section>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Share of Voice</p>
-                <div className="bg-slate-950/60 border border-slate-800 rounded-sm p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Posición</span>
-                    <span className="text-slate-200 text-xs font-mono">#{brandData.posicion_mi_marca ?? '—'}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Estado</span>
-                    <Pill text={brandData.estado_invisibilidad ?? '—'} color={brandData.estado_invisibilidad === 'visible' ? 'emerald' : brandData.estado_invisibilidad === 'en_riesgo' ? 'orange' : 'rose'} />
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-slate-400 text-xs shrink-0">Score</span>
-                    <div className="flex-1 max-w-[200px]">
-                      <Score value={brandData.invisibilidad_score ?? 0} />
-                    </div>
-                  </div>
-                  {brandData.marca_ganadora && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Marca ganadora</span>
-                      <span className="text-rose-300 text-xs font-medium">{brandData.marca_ganadora}</span>
-                    </div>
-                  )}
-                  {brandData.marcas_mencionadas?.length > 0 && (
-                    <div>
-                      <span className="text-slate-400 text-xs block mb-1.5">Marcas mencionadas</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {brandData.marcas_mencionadas.map((m: string) => <Pill key={m} text={m} />)}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </section>
-              {brandData.conceptos_faltantes?.length > 0 && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Brecha semántica</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {brandData.conceptos_faltantes.map((c: string) => <Pill key={c} text={c} color="rose" />)}
-                  </div>
-                </section>
-              )}
-              {brandData.plan_accion?.vehiculos?.length > 0 && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Top acciones del plan</p>
-                  <div className="space-y-2">
-                    {brandData.plan_accion.vehiculos.flatMap((v: ResultadoData) => v.acciones ?? []).slice(0, 3).map((a: ResultadoData, i: number) => (
-                      <div key={i} className="bg-slate-950/60 border border-slate-800 rounded-sm p-3">
-                        <p className="text-slate-200 text-xs font-medium mb-1">{a.tactica_tecnica}</p>
-                        <div className="flex flex-wrap gap-2 text-[10px] text-slate-500 font-mono">
-                          <span>ICE {a.ice_score}</span>
-                          <span>·</span>
-                          <span>{a.tiempo_indexacion_ia}</span>
-                          {a.area_responsable && <><span>·</span><span>{a.area_responsable}</span></>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-            </>
-          )}
-
-          {urlData && (
-            <>
-              <section>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Visibilidad en IA</p>
-                <div className="bg-slate-950/60 border border-slate-800 rounded-sm p-4 space-y-2">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-slate-400 text-xs shrink-0">Visibilidad</span>
-                    <div className="flex-1 max-w-[200px]">
-                      <Score value={Math.round(urlData.visibilidad_pct ?? 0)} />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Consultas con mención</span>
-                    <span className="text-slate-200 text-xs font-mono">{urlData.queries_con_mencion ?? 0} / {urlData.total_queries ?? 0}</span>
-                  </div>
-                  {urlData.categoria && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Categoría detectada</span>
-                      <span className="text-slate-200 text-xs">{urlData.categoria}</span>
-                    </div>
-                  )}
-                  {urlData.mercado && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 text-xs">Mercado</span>
-                      <span className="text-slate-200 text-xs">{urlData.mercado}</span>
-                    </div>
-                  )}
-                </div>
-              </section>
-              {urlData.diferenciadores?.length > 0 && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Diferenciadores detectados</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {urlData.diferenciadores.map((d: string) => <Pill key={d} text={d} color="indigo" />)}
-                  </div>
-                </section>
-              )}
-              {urlData.resultados?.length > 0 && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Resultados por perfil</p>
-                  <div className="space-y-2">
-                    {urlData.resultados.slice(0, 5).map((res: ResultadoData, i: number) => (
-                      <div key={i} className="bg-slate-950/60 border border-slate-800 rounded-sm p-3 flex items-center justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="text-slate-300 text-xs font-medium truncate">{res.arquetipo}</p>
-                          <p className="text-slate-600 text-[10px] truncate">{res.query}</p>
-                        </div>
-                        <Pill text={res.mencionada ? 'Mencionada' : 'No mencionada'} color={res.mencionada ? 'emerald' : 'rose'} />
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-            </>
-          )}
-
-          {compareData && (
-            <>
-              <section>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Comparación de marcas</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { label: compareData.marca_a, score: compareData.score_marca_a },
-                    { label: compareData.marca_b, score: compareData.score_marca_b },
-                  ].map(({ label, score }) => (
-                    <div key={label} className="bg-slate-950/60 border border-slate-800 rounded-sm p-3">
-                      <p className="text-slate-300 text-xs font-medium mb-2">{label}</p>
-                      <Score value={score ?? 0} />
-                    </div>
-                  ))}
-                </div>
-              </section>
-              {compareData.veredicto_ia && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Veredicto IA</p>
-                  <p className="text-slate-300 text-sm leading-relaxed">{compareData.veredicto_ia}</p>
-                </section>
-              )}
-              {compareData.marca_recomendada && (
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-500 text-xs">Recomendada:</span>
-                  <Pill text={compareData.marca_recomendada} color="emerald" />
-                </div>
-              )}
-            </>
-          )}
-
-          {citaData && (
-            <>
-              <section>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Citabilidad</p>
-                <div className="bg-slate-950/60 border border-slate-800 rounded-sm p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Alta citabilidad</span>
-                    <Pill text={String(citaData.total_altas ?? 0)} color="emerald" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Media citabilidad</span>
-                    <Pill text={String(citaData.total_medias ?? 0)} color="orange" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400 text-xs">Baja citabilidad</span>
-                    <Pill text={String(citaData.total_bajas ?? 0)} color="rose" />
-                  </div>
-                </div>
-              </section>
-              {citaData.resumen && (
-                <section>
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Resumen</p>
-                  <p className="text-slate-300 text-sm leading-relaxed">{citaData.resumen}</p>
-                </section>
-              )}
-            </>
           )}
         </div>
       </div>
@@ -673,7 +406,6 @@ export default function AdminPanel() {
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
   const [filterModo, setFilterModo] = useState<string>('all')
-  const [detalle, setDetalle] = useState<LeadDetalle | null>(null)
   const [detalleLoading, setDetalleLoading] = useState<string | null>(null)
   const [historialEmail, setHistorialEmail] = useState<string | null>(null)
 
@@ -692,15 +424,28 @@ export default function AdminPanel() {
       .finally(() => setLoading(false))
   }, [unlocked])
 
-  const openDetalle = (lead: Lead) => {
+  const openDetalle = useCallback(async (lead: Lead) => {
     if (!lead.tiene_resultado) return
     setDetalleLoading(lead.id)
-    fetch(`${API}/api/leads/${lead.id}`)
-      .then((r) => { if (!r.ok) throw new Error(`Error ${r.status}`); return r.json() })
-      .then((data: LeadDetalle) => setDetalle(data))
-      .catch((e) => setError(e.message))
-      .finally(() => setDetalleLoading(null))
-  }
+    try {
+      const r1 = await fetch(`${API}/api/leads/${lead.id}`)
+      if (!r1.ok) throw new Error(`Error ${r1.status}`)
+      const data: LeadDetalle = await r1.json()
+
+      const r2 = await fetch(`${API}/api/share`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ modo: data.modo, marca: data.marca, query: data.query, resultado: data.resultado }),
+      })
+      if (!r2.ok) throw new Error('No se pudo crear el link')
+      const { code } = await r2.json()
+      window.open(`/r/?c=${code}`, '_blank')
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Error abriendo informe')
+    } finally {
+      setDetalleLoading(null)
+    }
+  }, [])
 
   if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />
 
@@ -727,7 +472,6 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-slate-950 px-4 py-10">
-      {detalle && <DetalleModal lead={detalle} onClose={() => setDetalle(null)} />}
       {historialEmail && <HistorialModal email={historialEmail} onClose={() => setHistorialEmail(null)} />}
 
       <div className="max-w-7xl mx-auto">
