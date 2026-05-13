@@ -126,7 +126,7 @@ class Lead(Base):
 
     id = Column(String, primary_key=True)
     nombre = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String, nullable=False, index=True)
     marca = Column(String, nullable=True)
     query = Column(Text, nullable=True)
     modo = Column(String, nullable=True)  # brand, url, compare, cita
