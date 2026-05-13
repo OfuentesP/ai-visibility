@@ -11,6 +11,7 @@ import logging
 from collections import Counter
 import asyncio
 import json
+import uuid
 
 from openai import AsyncOpenAI
 import httpx
@@ -1326,7 +1327,7 @@ async def guardar_lead(body: LeadRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=422, detail="nombre y email son requeridos")
     try:
         lead = Lead(
-            id=str(__import__("uuid").uuid4()),
+            id=str(uuid.uuid4()),
             nombre=body.nombre.strip(),
             email=body.email.strip().lower(),
             marca=body.marca.strip() if body.marca else None,
