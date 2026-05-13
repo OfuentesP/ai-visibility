@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { toPng } from 'html-to-image'
 
-import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, FlaskConical } from 'lucide-react'
+import { Search, Terminal, TriangleAlert, Code2, Megaphone, Globe, AlertTriangle, TrendingUp, ShieldCheck, Download, FlaskConical, Share2 } from 'lucide-react'
 import { DEMO_URL_DATA } from '@/lib/demo-data'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, ReferenceLine, Cell, ResponsiveContainer, Tooltip, LabelList } from 'recharts'
@@ -1504,16 +1504,6 @@ Tel: [teléfono]`
                 )
               })()}
 
-              {/* ─── SHARE BUTTON (URL) ──────────────────────────── */}
-              <div className="flex justify-end">
-                <button
-                  onClick={() => handleShare('url', urlInput, undefined, urlResult)}
-                  disabled={shareLoading}
-                  className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono disabled:opacity-40"
-                >
-                  {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : '↗ Compartir informe'}
-                </button>
-              </div>
 
               {/* 0 · RESUMEN EJECUTIVO — diseñado para ser leído por un gerente en 20 seg */}
               {(() => {
@@ -2375,13 +2365,21 @@ Tel: [teléfono]`
                 </p>
               </motion.div>
 
-              {/* Export PNG — below Anexo */}
-              <div className="flex justify-end pt-2">
+              {/* ─── ACTION BAR ──────────────────────────────────── */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={() => handleShare('url', urlInput, undefined, urlResult)}
+                  disabled={shareLoading}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition-colors"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : 'Compartir informe'}
+                </button>
                 <button
                   onClick={() => handleExportPng(urlReportRef, `ai-visibility-url-${urlResult!.marca || 'informe'}`)}
-                  className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-sm border border-slate-700 text-slate-500 hover:border-slate-500 hover:text-slate-300 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-slate-700 bg-slate-800/50 hover:bg-slate-700 text-slate-300 text-sm transition-colors"
                 >
-                  <Download size={12} />
+                  <Download className="w-3.5 h-3.5" />
                   Exportar PNG
                 </button>
               </div>
@@ -2432,16 +2430,6 @@ Tel: [teléfono]`
                 )
               })()}
 
-              {/* ─── SHARE BUTTON ────────────────────────────────── */}
-              <div className="flex justify-end">
-                <button
-                  onClick={() => handleShare('brand', brand, query, result)}
-                  disabled={shareLoading}
-                  className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono disabled:opacity-40"
-                >
-                  {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : '↗ Compartir informe'}
-                </button>
-              </div>
 
               {/* ─── AI READINESS SCORE ─────────────────────────── */}
               {(() => {
@@ -3418,16 +3406,17 @@ Tel: [teléfono]`
                       </button>
                       <button
                         onClick={() => handleExportPng(brandReportRef, `ai-visibility-${brand || 'informe'}`)}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700 text-slate-400 text-sm transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700 text-slate-300 text-sm transition-colors"
                       >
                         <Download className="w-3.5 h-3.5" /> Exportar PNG
                       </button>
                       <button
-                        id="btn-agendar-validacion"
-                        onClick={() => setShowScheduleModal(true)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
+                        onClick={() => handleShare('brand', brand, query, result)}
+                        disabled={shareLoading}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition-colors"
                       >
-                        <TrendingUp className="w-3.5 h-3.5" /> Agendar validación
+                        <Share2 className="w-3.5 h-3.5" />
+                        {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : 'Compartir informe'}
                       </button>
                   </div>
                 </div>
