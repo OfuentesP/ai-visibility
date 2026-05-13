@@ -1457,6 +1457,32 @@ Devuelve SOLO JSON válido con exactamente estas claves:
         raise HTTPException(status_code=500, detail=f"Error generando brief: {str(e)}")
 
 
+@app.get("/api/leads/{lead_id}")
+async def obtener_lead(lead_id: str, db: Session = Depends(get_db)):
+    if db is None:
+        raise HTTPException(status_code=503, detail="DB no disponible")
+    try:
+        from database import Lead as LeadModel
+        row = db.query(LeadModel).filter(LeadModel.id == lead_id).first()
+        if not row:
+            raise HTTPException(status_code=404, detail="Lead no encontrado")
+        return {
+            "id": row.id,
+            "nombre": row.nombre,
+            "email": row.email,
+            "marca": row.marca,
+            "query": row.query,
+            "modo": row.modo,
+            "resultado": row.resultado,
+            "created_at": row.created_at.isoformat() if row.created_at else None,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error obteniendo lead {lead_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/api/leads")
 async def listar_leads(db: Session = Depends(get_db)):
     if db is None:
