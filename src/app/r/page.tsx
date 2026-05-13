@@ -229,34 +229,163 @@ function CitaView({ r }: { r: any }) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function UrlView({ r }: { r: any }) {
+  const score = Math.round(r.visibilidad_pct ?? 0)
+  const invisible = (r.total_queries ?? 0) - (r.queries_con_mencion ?? 0)
+  const scoreColor = score === 0 ? 'text-rose-400' : score < 60 ? 'text-amber-400' : 'text-emerald-400'
+  const accentBorder = score === 0 ? 'border-l-rose-500' : score < 60 ? 'border-l-amber-500' : 'border-l-emerald-500'
+
+  // calcular top competitor
+  const ganadorCounts: Record<string, number> = {}
+  ;(r.resultados ?? []).forEach((res: { marca_ganadora?: string }) => {
+    if (res.marca_ganadora && res.marca_ganadora.toLowerCase() !== (r.marca ?? '').toLowerCase()) {
+      ganadorCounts[res.marca_ganadora] = (ganadorCounts[res.marca_ganadora] || 0) + 1
+    }
+  })
+  const topCompetitor = Object.entries(ganadorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'la competencia'
+
+  // share of voice — marcas mencionadas con frecuencia
+  const brandFreq: Record<string, number> = {}
+  ;(r.resultados ?? []).forEach((res: { marcas_mencionadas?: string[] }) => {
+    (res.marcas_mencionadas ?? []).forEach((m: string, i: number) => {
+      brandFreq[m] = (brandFreq[m] || 0) + Math.max(10 - i * 2, 1)
+    })
+  })
+  const shareOfVoice = Object.entries(brandFreq).sort((a, b) => b[1] - a[1]).slice(0, 6)
+  const maxFreq = shareOfVoice[0]?.[1] || 1
+
+  // top 3 actions from plan
+  const topActions: { tactica_tecnica: string; tiempo_indexacion_ia: string; ice_score: number; area_responsable?: string }[] =
+    (r.plan_accion?.vehiculos ?? []).flatMap((v: { acciones: unknown[] }) => v.acciones)
+      .sort((a: { ice_score: number }, b: { ice_score: number }) => b.ice_score - a.ice_score)
+      .slice(0, 3)
+
   return (
     <div className="space-y-6">
-      <section className="grid grid-cols-2 gap-4">
-        <Score value={Math.round(r.visibilidad_pct ?? 0)} label="Visibilidad IA (%)" />
-        <div className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-          <p className="text-xs text-slate-500 mb-1">Consultas con mención</p>
-          <p className="text-3xl font-bold text-slate-200">{r.queries_con_mencion ?? 0}<span className="text-slate-600 text-lg"> / {r.total_queries ?? 0}</span></p>
+
+      {/* Resumen ejecutivo */}
+      <div className={`bg-slate-900 border border-slate-700 border-l-4 ${accentBorder} rounded-sm overflow-hidden`}>
+        <div className="px-5 pt-5 pb-4 border-b border-slate-800 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs text-slate-500 mb-0.5">{r.marca} · {r.mercado}</p>
+            <p className="text-xs font-mono text-slate-600">{r.categoria}</p>
+          </div>
+          <div className="text-right shrink-0">
+            <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en IA</p>
+          </div>
         </div>
-      </section>
-      {r.diferenciadores?.length > 0 && (
+
+        <div className="divide-y divide-slate-800/60">
+          <div className="px-5 py-4 flex gap-3 items-start">
+            <span className="text-rose-400 text-base font-bold leading-none mt-0.5 shrink-0">①</span>
+            <div>
+              <p className="text-sm font-semibold text-white leading-snug mb-1">
+                {invisible === 0
+                  ? 'Apareces en todas las búsquedas de IA'
+                  : invisible === r.total_queries
+                  ? 'La IA no te menciona en ninguna búsqueda'
+                  : `De ${r.total_queries} búsquedas con IA, ${invisible} no te incluyen`}
+              </p>
+              <p className="text-sm text-slate-400">{invisible === 0 ? 'Mantén y expande tu posición.' : `Esas consultas las gana ${topCompetitor}.`}</p>
+            </div>
+          </div>
+          <div className="px-5 py-4 flex gap-3 items-start">
+            <span className="text-amber-400 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
+            <div>
+              <p className="text-sm font-semibold text-white leading-snug mb-1">La IA elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas</p>
+              <p className="text-sm text-slate-400">Tiene más presencia en las fuentes que la IA consulta.</p>
+            </div>
+          </div>
+          <div className="px-5 py-4 flex gap-3 items-start">
+            <span className="text-emerald-400 text-base font-bold leading-none mt-0.5 shrink-0">③</span>
+            <div>
+              <p className="text-sm font-semibold text-white leading-snug mb-1">
+                {topActions.length > 0 ? `${topActions.length} acciones concretas para recuperar posición` : 'Plan de recuperación disponible más abajo'}
+              </p>
+              <p className="text-sm text-slate-400">
+                {topActions[0]?.tiempo_indexacion_ia ? `Primera acción visible en ${topActions[0].tiempo_indexacion_ia.split('(')[0].trim()}` : 'Ver plan detallado más abajo'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {r.diferenciadores?.length > 0 && (
+          <div className="border-t border-slate-800/60 px-5 py-3">
+            <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Diferenciadores que la IA no menciona</p>
+            <div className="flex flex-wrap gap-2">
+              {r.diferenciadores.slice(0, 4).map((d: string) => (
+                <span key={d} className="text-xs text-slate-400 bg-slate-800/50 border border-slate-700/60 rounded px-2.5 py-1">{d}</span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Share of voice */}
+      {shareOfVoice.length > 0 && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Diferenciadores detectados</p>
-          <div className="flex flex-wrap gap-1.5">{r.diferenciadores.map((d: string) => <span key={d} className="inline-block px-2 py-0.5 bg-indigo-900/30 text-indigo-300 text-[10px] rounded-sm">{d}</span>)}</div>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">¿A quién recomienda la IA?</p>
+          <div className="bg-slate-900 border border-slate-800 rounded-sm p-4 space-y-3">
+            {shareOfVoice.map(([marca, freq]) => {
+              const pct = Math.round((freq / maxFreq) * 100)
+              const isUser = marca.toLowerCase() === (r.marca ?? '').toLowerCase()
+              return (
+                <div key={marca} className="flex items-center gap-3">
+                  <span className={`text-xs w-32 shrink-0 truncate ${isUser ? 'text-sky-400 font-semibold' : 'text-slate-400'}`}>
+                    {isUser ? `→ ${marca}` : marca}
+                  </span>
+                  <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${isUser ? 'bg-sky-500' : 'bg-slate-600'}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-600 w-8 text-right">{pct}%</span>
+                </div>
+              )
+            })}
+          </div>
         </section>
       )}
+
+      {/* Resultados por perfil */}
       {r.resultados?.length > 0 && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Resultados por perfil</p>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Resultados por perfil de búsqueda</p>
           <div className="space-y-2">
-            {r.resultados.slice(0, 5).map((res: { arquetipo: string; query: string; mencionada: boolean }, i: number) => (
-              <div key={i} className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-sm p-3 gap-3">
-                <div className="min-w-0">
+            {r.resultados.map((res: { arquetipo: string; query: string; mencionada: boolean; marca_ganadora?: string }, i: number) => (
+              <div key={i} className="bg-slate-900 border border-slate-800 rounded-sm p-3 flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
                   <p className="text-slate-300 text-xs font-medium truncate">{res.arquetipo}</p>
                   <p className="text-slate-600 text-[10px] truncate">{res.query}</p>
+                  {!res.mencionada && res.marca_ganadora && (
+                    <p className="text-[10px] text-amber-600 mt-0.5">Gana: {res.marca_ganadora}</p>
+                  )}
                 </div>
                 <span className={`text-[10px] font-mono shrink-0 ${res.mencionada ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {res.mencionada ? 'Mencionada' : 'No mencionada'}
                 </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Plan de acción */}
+      {topActions.length > 0 && (
+        <section>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Plan de acción — top acciones</p>
+          <div className="space-y-2">
+            {topActions.map((a, i) => (
+              <div key={i} className={`bg-slate-900 border rounded-sm p-4 ${i === 0 ? 'border-amber-800/60' : 'border-slate-800'}`}>
+                {i === 0 && <p className="text-[10px] font-mono text-amber-500 uppercase tracking-widest mb-1">↑ Empezar aquí</p>}
+                <p className="text-slate-200 text-sm font-medium leading-snug mb-1">{a.tactica_tecnica}</p>
+                <div className="flex flex-wrap gap-2 text-[10px] text-slate-500 font-mono">
+                  <span>ICE {a.ice_score}</span>
+                  <span>·</span>
+                  <span>{a.tiempo_indexacion_ia}</span>
+                  {a.area_responsable && <><span>·</span><span>{a.area_responsable}</span></>}
+                </div>
               </div>
             ))}
           </div>
