@@ -96,6 +96,18 @@ from sqlalchemy import Column, String, Integer, DateTime, Float, ForeignKey, Boo
 from datetime import datetime
 
 
+class AuditCache(Base):
+    __tablename__ = "audit_cache"
+
+    cache_key = Column(String, primary_key=True)
+    modo = Column(String, nullable=False)          # brand | url
+    marca = Column(String, nullable=True)
+    query = Column(Text, nullable=True)
+    resultado = Column(JSON, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    expires_at = Column(DateTime, nullable=False)
+
+
 class Lead(Base):
     __tablename__ = "leads"
 

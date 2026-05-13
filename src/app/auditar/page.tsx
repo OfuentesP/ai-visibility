@@ -74,6 +74,8 @@ interface ResultadoBusqueda {
   texto_original_ia: string
   resultados: AnalisisMarca[]
   timestamp?: string
+  from_cache?: boolean
+  cached_at?: string | null
 }
 
 interface OportunidadAuditada {
@@ -296,6 +298,8 @@ export default function Dashboard() {
       }>
       roi_estimado: string
     }
+    from_cache?: boolean
+    cached_at?: string | null
   } | null>(null)
 
   const downloadJSON = () => {
@@ -1398,6 +1402,15 @@ Tel: [teléfono]`
               variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             >
 
+              {/* ─── CACHE BADGE ────────────────────────────────── */}
+              {urlResult.from_cache && urlResult.cached_at && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-amber-950/30 border border-amber-800/40 rounded-sm text-xs text-amber-400/80 font-mono">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                  Resultado desde caché · generado el {new Date(urlResult.cached_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  <span className="text-amber-600 ml-auto">válido 14 días</span>
+                </div>
+              )}
+
               {/* 0 · RESUMEN EJECUTIVO — diseñado para ser leído por un gerente en 20 seg */}
               {(() => {
                 const score = urlResult.visibilidad_pct
@@ -2285,6 +2298,15 @@ Tel: [teléfono]`
               animate="visible"
               variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             >
+
+              {/* ─── CACHE BADGE ────────────────────────────────── */}
+              {result.from_cache && result.cached_at && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-amber-950/30 border border-amber-800/40 rounded-sm text-xs text-amber-400/80 font-mono">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                  Resultado desde caché · generado el {new Date(result.cached_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  <span className="text-amber-600 ml-auto">válido 14 días</span>
+                </div>
+              )}
 
               {/* ─── AI READINESS SCORE ─────────────────────────── */}
               {(() => {

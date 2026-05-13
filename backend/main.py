@@ -12,9 +12,9 @@ import json
 from openai import AsyncOpenAI
 import httpx
 from pydantic import BaseModel, Field
-from config import AI_MODEL, URL_CACHE_TTL
+from config import AI_MODEL, URL_CACHE_TTL, AUDIT_CACHE_TTL_DAYS
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
-from database import get_db, test_connection, Lead
+from database import get_db, test_connection, Lead, AuditCache
 from crud import (
     crear_cliente, obtener_cliente, listar_clientes, obtener_urls_cliente,
     agregar_url_auditar, guardar_auditoria, obtener_auditorias_url,
@@ -28,7 +28,66 @@ logger = logging.getLogger(__name__)
 
 # In-memory URL audit cache: {url -> (timestamp, result)}
 import time as _time
+import hashlib
+from datetime import datetime, timedelta
 _url_cache: dict = {}
+
+
+def _cache_key(modo: str, marca: str, query: str = "") -> str:
+    raw = f"{modo}|{marca.lower().strip()}|{query.lower().strip()}"
+    return hashlib.sha256(raw.encode()).hexdigest()
+
+
+def _get_cache(db, key: str):
+    """Devuelve el resultado cacheado si existe y no expiró, si no None."""
+    if db is None:
+        return None
+    try:
+        from sqlalchemy import text
+        now = datetime.utcnow()
+        row = db.query(AuditCache).filter(
+            AuditCache.cache_key == key,
+            AuditCache.expires_at > now
+        ).first()
+        if row:
+            logger.info(f"[cache] HIT {key[:12]}… expira {row.expires_at.date()}")
+            return row
+        return None
+    except Exception as e:
+        logger.warning(f"[cache] get error: {e}")
+        return None
+
+
+def _set_cache(db, key: str, modo: str, marca: str, query: str, resultado: dict):
+    """Upsert del resultado en audit_cache."""
+    if db is None:
+        return
+    try:
+        now = datetime.utcnow()
+        expires = now + timedelta(days=AUDIT_CACHE_TTL_DAYS)
+        row = db.query(AuditCache).filter(AuditCache.cache_key == key).first()
+        if row:
+            row.resultado = resultado
+            row.created_at = now
+            row.expires_at = expires
+            row.marca = marca
+            row.query = query
+        else:
+            row = AuditCache(
+                cache_key=key,
+                modo=modo,
+                marca=marca,
+                query=query,
+                resultado=resultado,
+                created_at=now,
+                expires_at=expires,
+            )
+            db.add(row)
+        db.commit()
+        logger.info(f"[cache] SET {key[:12]}… válido hasta {expires.date()}")
+    except Exception as e:
+        db.rollback()
+        logger.warning(f"[cache] set error: {e}")
 
 _openai_api_key = os.getenv("OPENAI_API_KEY")
 _openai_client = None
@@ -389,6 +448,15 @@ async def audit_pipeline(
         query = sanitized.busqueda_corregida
         logger.info(f"[Sanitized] brand='{brand}' query='{query}'")
 
+        # ── Supabase cache check ──────────────────────────────────────────
+        ck = _cache_key("brand", brand, query)
+        cached_row = _get_cache(db, ck)
+        if cached_row:
+            data = cached_row.resultado
+            data["from_cache"] = True
+            data["cached_at"] = cached_row.created_at.isoformat()
+            return ResultadoBusqueda(**data)
+
         from searcher import consultar_openai
         from judge import extraer_metricas, generar_content_brief, generar_plan_accion_pro, generar_prioridad_ejecutiva, extraer_conceptos_faltantes, calcular_estado_invisibilidad, generar_plan_accion
         from discovery import obtener_tendencias_chile, detectar_territorios_desatendidos
@@ -508,12 +576,14 @@ async def audit_pipeline(
                 logger.warning(f"⚠️  competitor_advantage falló: {e}")
 
         # Retornar ResultadoBusqueda completo
-        return ResultadoBusqueda(
+        res = ResultadoBusqueda(
             prompt_original=query,
             texto_original_ia=texto_busqueda,
             resultados=[resultado]
         )
-        
+        _set_cache(db, ck, "brand", brand, query, res.model_dump(mode="json"))
+        return res
+
     except Exception as e:
         logger.error(f"Error en pipeline: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -753,14 +823,16 @@ class AuditFromUrlResponse(BaseModel):
     queries_con_mencion: int
     total_queries: int
     visibilidad_pct: float
-    plan_accion: dict = {}          # acciones AEO con ICE scoring para aparecer
-    keyword_trend: str = "Estable"  # 'Al alza', 'Estable' o 'Baja' via Google Trends
-    competitive_deep_dive: dict = {}   # por qué la IA prefiere al competidor ganador
-    untapped_territories: list = []    # 3 nichos de baja competencia en IA
+    plan_accion: dict = {}
+    keyword_trend: str = "Estable"
+    competitive_deep_dive: dict = {}
+    untapped_territories: list = []
+    from_cache: bool = False
+    cached_at: Optional[str] = None
 
 
 @app.post("/api/audit/from-url", response_model=AuditFromUrlResponse)
-async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
+async def audit_from_url(body: AuditFromUrlRequest, db: Session = Depends(get_db)) -> AuditFromUrlResponse:
     """
     Pipeline completo desde URL:
     1. Scraping de la página
@@ -780,16 +852,25 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
     if not url.startswith(("http://", "https://")):
         raise HTTPException(status_code=422, detail="La URL debe comenzar con http:// o https://")
 
-    # ── Cache check ───────────────────────────────────────────────────────
-    cache_key = f"{url}|{body.pais or ''}"
-    cached = _url_cache.get(cache_key)
+    # ── Supabase cache check ──────────────────────────────────────────────
+    url_ck = _cache_key("url", url)
+    cached_row = _get_cache(db, url_ck)
+    if cached_row:
+        data = cached_row.resultado
+        data["from_cache"] = True
+        data["cached_at"] = cached_row.created_at.isoformat()
+        return AuditFromUrlResponse(**data)
+
+    # ── In-memory fallback cache ──────────────────────────────────────────
+    mem_key = f"{url}|{body.pais or ''}"
+    cached = _url_cache.get(mem_key)
     if cached:
         ts, result = cached
         if _time.time() - ts < URL_CACHE_TTL:
-            logger.info(f"[from-url] Cache hit: {url}")
+            logger.info(f"[from-url] Mem-cache hit: {url}")
             return result
         else:
-            del _url_cache[cache_key]
+            del _url_cache[mem_key]
 
     try:
         # ── 1. Scraping + comprensión + arquetipos dinámicos ─────────────
@@ -900,7 +981,8 @@ async def audit_from_url(body: AuditFromUrlRequest) -> AuditFromUrlResponse:
             competitive_deep_dive=intel.get("competitive_deep_dive", {}),
             untapped_territories=intel.get("untapped_territories", []),
         )
-        _url_cache[cache_key] = (_time.time(), result)
+        _url_cache[mem_key] = (_time.time(), result)
+        _set_cache(db, url_ck, "url", url, "", result.model_dump(mode="json"))
         return result
 
     except HTTPException:
