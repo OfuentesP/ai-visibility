@@ -129,14 +129,6 @@ class VehiculoContenido(BaseModel):
     )
 
 
-class AccionMejora(BaseModel):
-    """Una acción específica de mejora para visibilidad."""
-    accion: str = Field(description="Descripción clara de la acción a tomar")
-    esfuerzo: str = Field(description="Bajo, Medio o Alto")
-    tiempo: str = Field(description="Estimación de tiempo (ej: 48h, 2 semanas, 1 mes)")
-    costo_estimado: str = Field(description="Rango de costo en UF (ej: 5-10 UF)")
-
-
 class PlanAccion(BaseModel):
     """Menú de implementación con vehículos de contenido por velocidad de ejecución."""
     vehiculos: List[VehiculoContenido] = Field(
