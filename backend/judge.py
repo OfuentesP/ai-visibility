@@ -81,6 +81,7 @@ TEXTO BASE (donde {mi_marca} SÍ aparece — úsalo para evaluar dealbreaker):
 
     response = await client.chat.completions.create(
         model=AI_MODEL,
+        max_tokens=500,
         response_format={"type": "json_object"},
         messages=[
             {
@@ -168,6 +169,7 @@ async def extraer_metricas(texto_ia: str, mi_marca: str) -> AnalisisMarca:
     
     response = await client.chat.completions.create(
         model=AI_MODEL,
+        max_tokens=500,
         response_format={"type": "json_object"},
         messages=[
             {
@@ -319,6 +321,7 @@ async def extraer_conceptos_faltantes(
 
         response = await client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=400,
             response_format={"type": "json_object"},
             temperature=0.2,
             messages=[
@@ -437,6 +440,7 @@ async def generar_prioridad_ejecutiva(
         # Generar prioridad usando IA
         response = await client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=350,
             response_format={"type": "json_object"},
             temperature=0.3,
             messages=[
@@ -566,6 +570,7 @@ Devuelve SOLO JSON válido:
     try:
         response = await client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=800,
             temperature=0.2,
             response_format={"type": "json_object"},
             messages=[

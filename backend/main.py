@@ -138,6 +138,7 @@ async def sanitizar_inputs(marca_raw: str, busqueda_raw: str) -> SanitizedInputs
     try:
         response = await _openai_client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=100,
             temperature=0,
             response_format={"type": "json_object"},
             messages=[
@@ -880,6 +881,7 @@ REGLAS:
     try:
         response = await _openai_client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=700,
             temperature=0.3,
             response_format={"type": "json_object"},
             messages=[
@@ -1115,6 +1117,7 @@ Devuelve SOLO JSON:
     try:
         gen_response = await _openai_client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=400,
             temperature=0.8,
             response_format={"type": "json_object"},
             messages=[
@@ -1147,6 +1150,7 @@ Si no mencionarías ninguna marca específica, devuelve marcas_mencionadas como 
         try:
             resp = await _openai_client.chat.completions.create(
                 model=AI_MODEL,
+                max_tokens=300,
                 temperature=0.2,
                 response_format={"type": "json_object"},
                 messages=[
@@ -1247,6 +1251,7 @@ Devuelve SOLO JSON válido con exactamente estas claves:
     try:
         response = await _openai_client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=800,
             temperature=0.7,
             response_format={"type": "json_object"},
             messages=[
