@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /panel-k7m9x
 Sitemap: https://ai-visibility.cl/sitemap.xml
 
 # Bots específicos de IA
