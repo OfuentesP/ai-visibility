@@ -223,6 +223,16 @@ export default function Dashboard() {
   const [shareLoading, setShareLoading] = useState(false)
   const [shareCopied, setShareCopied] = useState(false)
   const [showFreemiumModal, setShowFreemiumModal] = useState(false)
+  const [quota, setQuota] = useState<{ used: number; limit: number } | null>(null)
+
+  const fetchQuota = async (email: string) => {
+    const e = email.trim()
+    if (!e || !e.includes('@')) return
+    try {
+      const r = await fetch(`${API}/api/user/quota?email=${encodeURIComponent(e)}`)
+      if (r.ok) setQuota(await r.json())
+    } catch { /* silent */ }
+  }
 
   // ── PNG Export ───────────────────────────────────────────────────────────
   const urlReportRef = useRef<HTMLDivElement>(null)
@@ -1008,8 +1018,19 @@ Tel: [teléfono]`
                   value={userEmail}
                   maxLength={200}
                   onChange={(e) => setUserEmail(e.target.value)}
+                  onBlur={(e) => fetchQuota(e.target.value)}
                   className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
                 />
+                {quota && (
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    {Array.from({ length: quota.limit }).map((_, i) => (
+                      <span key={i} className={`w-2 h-2 rounded-full ${i < quota.used ? 'bg-orange-500' : 'bg-slate-700'}`} />
+                    ))}
+                    <span className="text-[10px] font-mono text-slate-500 ml-0.5">
+                      {quota.used} de {quota.limit} auditorías usadas
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             {/* Tabs */}

@@ -1,6 +1,9 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from dotenv import load_dotenv
 import os
 from typing import List, Optional
@@ -25,6 +28,8 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+limiter = Limiter(key_func=get_remote_address)
 
 # In-memory URL audit cache: {url -> (timestamp, result)}
 import time as _time
@@ -179,6 +184,9 @@ origins = [
     "https://ai-visibility.cl",
     "https://www.ai-visibility.cl",
 ]
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -455,10 +463,13 @@ class DiscoveryRequest(BaseModel):
 
 
 @app.post("/api/audit", response_model=ResultadoBusqueda)
+@limiter.limit("10/minute")
 async def audit_pipeline(
+    request: Request,
     body: AuditRequest | None = None,
     query: str | None = None,
     brand: str | None = None,
+    db: Session = Depends(get_db),
 ) -> ResultadoBusqueda:
     """
     Pipeline completo: Paso 2 (Buscar) + Paso 3 (Juzgar) + Paso 4 (Brief) + Paso 5 (Plan PRO) + Paso 6 (Prioridad Ejecutiva)
@@ -872,7 +883,8 @@ class AuditFromUrlResponse(BaseModel):
 
 
 @app.post("/api/audit/from-url", response_model=AuditFromUrlResponse)
-async def audit_from_url(body: AuditFromUrlRequest, db: Session = Depends(get_db)) -> AuditFromUrlResponse:
+@limiter.limit("10/minute")
+async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Session = Depends(get_db)) -> AuditFromUrlResponse:
     """
     Pipeline completo desde URL:
     1. Scraping de la página
@@ -1169,7 +1181,8 @@ class ComparisonResponse(BaseModel):
 
 
 @app.post("/api/audit/comparison", response_model=ComparisonResponse)
-async def audit_comparison(body: ComparisonRequest) -> ComparisonResponse:
+@limiter.limit("10/minute")
+async def audit_comparison(request: Request, body: ComparisonRequest) -> ComparisonResponse:
     """
     Compara dos marcas en una categoría desde la perspectiva de la IA.
     Devuelve ventajas, debilidades y veredicto estructurado.
@@ -1415,7 +1428,8 @@ class CitabilityResponse(BaseModel):
 
 
 @app.post("/api/audit/citability", response_model=CitabilityResponse)
-async def audit_citability(body: CitabilityRequest) -> CitabilityResponse:
+@limiter.limit("10/minute")
+async def audit_citability(request: Request, body: CitabilityRequest) -> CitabilityResponse:
     """
     Gap Analysis de Territorios: encuentra queries donde la IA no tiene respuesta
     favorita clara y la marca podría posicionarse fácilmente.
@@ -1811,6 +1825,22 @@ async def historial_usuario(email: str, db: Session = Depends(get_db)):
     except Exception as e:
         logger.error(f"Error en historial: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/user/quota")
+async def user_quota(email: str, db: Session = Depends(get_db)):
+    """Retorna cuántas auditorías gratuitas ha usado el email."""
+    limit = 2
+    if db is None or not email:
+        return {"used": 0, "limit": limit, "remaining": limit}
+    try:
+        used = db.query(Lead).filter(
+            Lead.email == email.lower().strip(),
+            Lead.resultado.isnot(None)
+        ).count()
+        return {"used": used, "limit": limit, "remaining": max(0, limit - used)}
+    except Exception:
+        return {"used": 0, "limit": limit, "remaining": limit}
 
 
 if __name__ == "__main__":
