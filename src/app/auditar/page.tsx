@@ -157,6 +157,8 @@ function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
 const API = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 export default function Dashboard() {
+  const [userName, setUserName] = useState('')
+  const [userEmail, setUserEmail] = useState('')
   const [brand, setBrand] = useState('')
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(false)
@@ -350,7 +352,17 @@ export default function Dashboard() {
     URL.revokeObjectURL(url)
   }
 
+  const saveLead = (marca?: string, query?: string, modo?: string, resultado?: unknown) => {
+    if (!userName.trim() || !userEmail.trim()) return
+    fetch(`${API}/api/leads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: userName.trim(), email: userEmail.trim(), marca, query, modo, resultado }),
+    }).catch(() => {})
+  }
+
   const handleCitability = async () => {
+    if (!userName.trim() || !userEmail.trim()) { setError('Ingresa tu nombre y correo para continuar'); return }
     if (!citaMarca.trim() || !citaCategoria.trim()) {
       setError('Completa marca y categoría')
       return
@@ -372,6 +384,7 @@ export default function Dashboard() {
       if (!res.ok) throw new Error(`Error ${res.status}`)
       const data = await res.json()
       setCitaResult(data)
+      saveLead(citaMarca.trim(), citaCategoria.trim(), 'cita', data)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error de conexión')
     } finally {
@@ -380,6 +393,7 @@ export default function Dashboard() {
   }
 
   const handleCompare = async () => {
+    if (!userName.trim() || !userEmail.trim()) { setError('Ingresa tu nombre y correo para continuar'); return }
     if (!compareA.trim() || !compareB.trim() || !compareCategoria.trim()) {
       setError('Completa los tres campos')
       return
@@ -401,6 +415,7 @@ export default function Dashboard() {
       if (!res.ok) throw new Error(`Error ${res.status}`)
       const data = await res.json()
       setCompareResult(data)
+      saveLead(compareA.trim(), compareCategoria.trim(), 'compare', data)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error de conexión')
     } finally {
@@ -409,6 +424,7 @@ export default function Dashboard() {
   }
 
   const handleAudit = async () => {
+    if (!userName.trim() || !userEmail.trim()) { setError('Ingresa tu nombre y correo para continuar'); return }
     if (!brand.trim() || !query.trim()) {
       setError('Completa ambos campos')
       return
@@ -442,6 +458,7 @@ export default function Dashboard() {
       }
       const data: ResultadoBusqueda = await response.json()
       setResult(data)
+      saveLead(brand.trim(), query.trim(), 'brand', data)
       // Fire /api/discovery in background — non-blocking
       setDiscoveryResult(null)
       setTrendsResult(null)
@@ -487,10 +504,12 @@ export default function Dashboard() {
   }
 
   const handleAuditFromUrl = async () => {
+    if (!userName.trim() || !userEmail.trim()) { setError('Ingresa tu nombre y correo para continuar'); return }
     const url = urlInput.trim()
     if (!url) { setError('Ingresa una URL'); return }
     if (!url.startsWith('http://') && !url.startsWith('https://')) { setError('La URL debe comenzar con http:// o https://'); return }
     setError('')
+    saveLead(url, undefined, 'url')
     setUrlResult(null)
     setUrlLoading(true)
     setLoadingPhase('Analizando página...')
@@ -513,6 +532,7 @@ export default function Dashboard() {
       if (!res.ok) { const t = await res.text(); throw new Error(`Error ${res.status}: ${t}`) }
       const data = await res.json()
       setUrlResult(data)
+      saveLead(url, undefined, 'url', data)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error de conexión')
     } finally {
@@ -910,6 +930,31 @@ Tel: [teléfono]`
             transition={{ delay: 0.1 }}
             className="bg-slate-900 border border-slate-800 rounded-sm p-6 mb-8"
           >
+            {/* Datos de contacto */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 pb-5 border-b border-slate-800">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Tu nombre</label>
+                <input
+                  type="text"
+                  placeholder="María González"
+                  value={userName}
+                  maxLength={100}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Correo de contacto</label>
+                <input
+                  type="email"
+                  placeholder="maria@empresa.cl"
+                  value={userEmail}
+                  maxLength={200}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                  className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+                />
+              </div>
+            </div>
             {/* Tabs */}
             <div className="flex gap-1 mb-5 bg-slate-950 border border-slate-800 rounded-sm p-1 w-fit">
               <button
@@ -1114,7 +1159,7 @@ Tel: [teléfono]`
               </motion.div>
             )}
             {error && (
-              <div id="zone-error" className="mt-4 p-3 bg-red-950/30 border border-red-900/50 rounded-sm text-red-700/80 text-sm">{error}</div>
+              <div id="zone-error" className="mt-4 p-3 bg-red-950/40 border border-red-800/50 rounded-sm text-red-200 text-sm font-medium">{error}</div>
             )}
           </motion.div>
 

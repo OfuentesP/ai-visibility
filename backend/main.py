@@ -14,7 +14,7 @@ import httpx
 from pydantic import BaseModel, Field
 from config import AI_MODEL, URL_CACHE_TTL
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
-from database import get_db, test_connection
+from database import get_db, test_connection, Lead
 from crud import (
     crear_cliente, obtener_cliente, listar_clientes, obtener_urls_cliente,
     agregar_url_auditar, guardar_auditoria, obtener_auditorias_url,
@@ -1455,6 +1455,66 @@ Devuelve SOLO JSON válido con exactamente estas claves:
     except Exception as e:
         logger.error(f"Error generando marketing brief: {e}")
         raise HTTPException(status_code=500, detail=f"Error generando brief: {str(e)}")
+
+
+@app.get("/api/leads")
+async def listar_leads(db: Session = Depends(get_db)):
+    if db is None:
+        return []
+    try:
+        from database import Lead as LeadModel
+        rows = db.query(LeadModel).order_by(LeadModel.created_at.desc()).all()
+        return [
+            {
+                "id": r.id,
+                "nombre": r.nombre,
+                "email": r.email,
+                "marca": r.marca,
+                "query": r.query,
+                "modo": r.modo,
+                "tiene_resultado": r.resultado is not None,
+                "created_at": r.created_at.isoformat() if r.created_at else None,
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        logger.error(f"Error listando leads: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class LeadRequest(BaseModel):
+    nombre: str
+    email: str
+    marca: Optional[str] = None
+    query: Optional[str] = None
+    modo: Optional[str] = None
+    resultado: Optional[dict] = None
+
+
+@app.post("/api/leads", status_code=201)
+async def guardar_lead(body: LeadRequest, db: Session = Depends(get_db)):
+    if not body.nombre.strip() or not body.email.strip():
+        raise HTTPException(status_code=422, detail="nombre y email son requeridos")
+    try:
+        lead = Lead(
+            id=str(__import__("uuid").uuid4()),
+            nombre=body.nombre.strip(),
+            email=body.email.strip().lower(),
+            marca=body.marca.strip() if body.marca else None,
+            query=body.query.strip() if body.query else None,
+            modo=body.modo,
+            resultado=body.resultado,
+        )
+        if db is not None:
+            db.add(lead)
+            db.commit()
+            logger.info(f"Lead guardado: {body.email} [{body.modo}]")
+        return {"ok": True}
+    except Exception as e:
+        if db is not None:
+            db.rollback()
+        logger.error(f"Error guardando lead: {e}")
+        return {"ok": False}
 
 
 if __name__ == "__main__":

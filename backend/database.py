@@ -92,8 +92,22 @@ def test_connection():
 
 
 # Models using SQLAlchemy ORM
-from sqlalchemy import Column, String, Integer, DateTime, Float, ForeignKey, Boolean, Text, ARRAY
+from sqlalchemy import Column, String, Integer, DateTime, Float, ForeignKey, Boolean, Text, ARRAY, JSON
 from datetime import datetime
+
+
+class Lead(Base):
+    __tablename__ = "leads"
+
+    id = Column(String, primary_key=True)
+    nombre = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    marca = Column(String, nullable=True)
+    query = Column(Text, nullable=True)
+    modo = Column(String, nullable=True)  # brand, url, compare, cita
+    resultado = Column(JSON, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 
 class Client(Base):
     __tablename__ = "clients"
