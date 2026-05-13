@@ -100,12 +100,25 @@ class AuditCache(Base):
     __tablename__ = "audit_cache"
 
     cache_key = Column(String, primary_key=True)
-    modo = Column(String, nullable=False)          # brand | url
+    modo = Column(String, nullable=False)
+    marca = Column(String, nullable=True)
+    query = Column(Text, nullable=True)
+    resultado = Column(JSON, nullable=False)
+    prev_score = Column(Float, nullable=True)       # score anterior antes del último refresh
+    prev_created_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    expires_at = Column(DateTime, nullable=False)
+
+
+class SharedReport(Base):
+    __tablename__ = "shared_reports"
+
+    code = Column(String, primary_key=True)
+    modo = Column(String, nullable=False)
     marca = Column(String, nullable=True)
     query = Column(Text, nullable=True)
     resultado = Column(JSON, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
-    expires_at = Column(DateTime, nullable=False)
 
 
 class Lead(Base):

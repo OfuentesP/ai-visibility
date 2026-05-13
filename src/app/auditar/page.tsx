@@ -76,6 +76,8 @@ interface ResultadoBusqueda {
   timestamp?: string
   from_cache?: boolean
   cached_at?: string | null
+  prev_score?: number | null
+  prev_cached_at?: string | null
 }
 
 interface OportunidadAuditada {
@@ -217,6 +219,10 @@ export default function Dashboard() {
   const [showUrlSnippet, setShowUrlSnippet] = useState<Record<number, boolean>>({})
   const [showPerfilesDetalle, setShowPerfilesDetalle] = useState(false)
   const [showModalCode, setShowModalCode] = useState(false)
+  const [shareCode, setShareCode] = useState<string | null>(null)
+  const [shareLoading, setShareLoading] = useState(false)
+  const [shareCopied, setShareCopied] = useState(false)
+  const [showFreemiumModal, setShowFreemiumModal] = useState(false)
 
   // ── PNG Export ───────────────────────────────────────────────────────────
   const urlReportRef = useRef<HTMLDivElement>(null)
@@ -300,6 +306,8 @@ export default function Dashboard() {
     }
     from_cache?: boolean
     cached_at?: string | null
+    prev_score?: number | null
+    prev_cached_at?: string | null
   } | null>(null)
 
   const downloadJSON = () => {
@@ -354,6 +362,27 @@ export default function Dashboard() {
     a.download = `auditoria-${brand.toLowerCase().replace(/\s+/g, '-')}-${fecha}.json`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  const handleShare = async (modo: string, marca: string | undefined, query: string | undefined, resultado: unknown) => {
+    setShareLoading(true)
+    try {
+      const res = await fetch(`${API}/api/share`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ modo, marca, query, resultado }),
+      })
+      const data = await res.json()
+      setShareCode(data.code)
+      const url = `${window.location.origin}/r/?c=${data.code}`
+      await navigator.clipboard.writeText(url)
+      setShareCopied(true)
+      setTimeout(() => setShareCopied(false), 3000)
+    } catch {
+      // silencioso
+    } finally {
+      setShareLoading(false)
+    }
   }
 
   const saveLead = (marca?: string, query?: string, modo?: string, resultado?: unknown) => {
@@ -454,8 +483,9 @@ export default function Dashboard() {
       const response = await fetch(`${API}/api/audit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: query.trim(), brand: brand.trim() }),
+        body: JSON.stringify({ query: query.trim(), brand: brand.trim(), email: userEmail.trim() || undefined }),
       })
+      if (response.status === 429) { setShowFreemiumModal(true); return }
       if (!response.ok) {
         const text = await response.text()
         throw new Error(`Error ${response.status}: ${text}`)
@@ -531,8 +561,9 @@ export default function Dashboard() {
       const res = await fetch(`${API}/api/audit/from-url`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, pais: 'Chile' }),
+        body: JSON.stringify({ url, pais: 'Chile', email: userEmail.trim() || undefined }),
       })
+      if (res.status === 429) { setShowFreemiumModal(true); return }
       if (!res.ok) { const t = await res.text(); throw new Error(`Error ${res.status}: ${t}`) }
       const data = await res.json()
       setUrlResult(data)
@@ -610,6 +641,28 @@ export default function Dashboard() {
                 Agendar revisión
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Freemium modal */}
+      {showFreemiumModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4" onClick={() => setShowFreemiumModal(false)}>
+          <div className="bg-slate-900 border border-indigo-700/50 rounded-sm max-w-sm w-full p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Plan gratuito</p>
+            <h3 className="text-lg font-bold text-white mb-2">Alcanzaste el límite de auditorías gratuitas</h3>
+            <p className="text-slate-400 text-sm leading-relaxed mb-5">
+              Has usado tus 2 auditorías gratuitas. Para continuar analizando marcas y URLs sin límite, escríbenos y te habilitamos acceso completo.
+            </p>
+            <a
+              href="mailto:contacto@ai-visibility.cl?subject=Acceso%20completo%20AI%20Visibility"
+              className="block w-full text-center py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-sm transition mb-2"
+            >
+              Solicitar acceso completo →
+            </a>
+            <button onClick={() => setShowFreemiumModal(false)} className="w-full text-slate-600 text-xs hover:text-slate-400 transition py-1">
+              Cerrar
+            </button>
           </div>
         </div>
       )}
@@ -1410,6 +1463,37 @@ Tel: [teléfono]`
                   <span className="text-amber-600 ml-auto">válido 14 días</span>
                 </div>
               )}
+
+              {/* ─── DELTA SCORE (URL) ───────────────────────────── */}
+              {urlResult.prev_score != null && urlResult.prev_cached_at && (() => {
+                const curr = Math.round(urlResult.visibilidad_pct)
+                const prev = Math.round(urlResult.prev_score!)
+                const delta = curr - prev
+                const days = Math.round((Date.now() - new Date(urlResult.prev_cached_at!).getTime()) / 86400000)
+                const up = delta > 0
+                return (
+                  <div className={`flex items-center gap-3 px-4 py-3 rounded-sm border text-sm ${up ? 'bg-emerald-950/30 border-emerald-800/40' : 'bg-rose-950/30 border-rose-800/40'}`}>
+                    <span className={`text-2xl font-bold ${up ? 'text-emerald-400' : 'text-rose-400'}`}>{up ? '↑' : '↓'}</span>
+                    <div>
+                      <p className={`font-semibold ${up ? 'text-emerald-300' : 'text-rose-300'}`}>
+                        {up ? `Subiste ${delta}%` : `Bajaste ${Math.abs(delta)}%`} de visibilidad en {days} días
+                      </p>
+                      <p className="text-slate-500 text-xs font-mono">Visibilidad anterior: {prev}% → actual: {curr}%</p>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* ─── SHARE BUTTON (URL) ──────────────────────────── */}
+              <div className="flex justify-end">
+                <button
+                  onClick={() => handleShare('url', urlInput, undefined, urlResult)}
+                  disabled={shareLoading}
+                  className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono disabled:opacity-40"
+                >
+                  {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : '↗ Compartir informe'}
+                </button>
+              </div>
 
               {/* 0 · RESUMEN EJECUTIVO — diseñado para ser leído por un gerente en 20 seg */}
               {(() => {
@@ -2307,6 +2391,37 @@ Tel: [teléfono]`
                   <span className="text-amber-600 ml-auto">válido 14 días</span>
                 </div>
               )}
+
+              {/* ─── DELTA SCORE ─────────────────────────────────── */}
+              {result.prev_score != null && result.prev_cached_at && d && (() => {
+                const curr = d.invisibilidad_score
+                const prev = result.prev_score!
+                const delta = Math.round(curr - prev)
+                const days = Math.round((Date.now() - new Date(result.prev_cached_at!).getTime()) / 86400000)
+                const up = delta > 0
+                return (
+                  <div className={`flex items-center gap-3 px-4 py-3 rounded-sm border text-sm ${up ? 'bg-emerald-950/30 border-emerald-800/40' : 'bg-rose-950/30 border-rose-800/40'}`}>
+                    <span className={`text-2xl font-bold ${up ? 'text-emerald-400' : 'text-rose-400'}`}>{up ? '↑' : '↓'}</span>
+                    <div>
+                      <p className={`font-semibold ${up ? 'text-emerald-300' : 'text-rose-300'}`}>
+                        {up ? `Subiste ${delta} puntos` : `Bajaste ${Math.abs(delta)} puntos`} en {days} días
+                      </p>
+                      <p className="text-slate-500 text-xs font-mono">Score anterior: {Math.round(prev)} → Score actual: {curr}</p>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* ─── SHARE BUTTON ────────────────────────────────── */}
+              <div className="flex justify-end">
+                <button
+                  onClick={() => handleShare('brand', brand, query, result)}
+                  disabled={shareLoading}
+                  className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono disabled:opacity-40"
+                >
+                  {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : '↗ Compartir informe'}
+                </button>
+              </div>
 
               {/* ─── AI READINESS SCORE ─────────────────────────── */}
               {(() => {

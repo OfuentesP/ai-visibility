@@ -317,8 +317,10 @@ class ResultadoBusqueda(BaseModel):
         default_factory=list,
         description="Lista de análisis de marcas"
     )
-    from_cache: bool = Field(False, description="True si el resultado viene del caché de Supabase")
-    cached_at: Optional[str] = Field(None, description="ISO timestamp de cuando se generó el resultado cacheado")
+    from_cache: bool = Field(False)
+    cached_at: Optional[str] = Field(None)
+    prev_score: Optional[float] = Field(None, description="Score de la auditoría anterior (antes del último refresh de caché)")
+    prev_cached_at: Optional[str] = Field(None, description="Fecha de la auditoría anterior")
     timestamp: datetime = Field(
         default_factory=datetime.utcnow,
         description="Timestamp de creación"

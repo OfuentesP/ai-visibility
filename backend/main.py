@@ -14,7 +14,7 @@ import httpx
 from pydantic import BaseModel, Field
 from config import AI_MODEL, URL_CACHE_TTL, AUDIT_CACHE_TTL_DAYS
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
-from database import get_db, test_connection, Lead, AuditCache
+from database import get_db, test_connection, Lead, AuditCache, SharedReport
 from crud import (
     crear_cliente, obtener_cliente, listar_clientes, obtener_urls_cliente,
     agregar_url_auditar, guardar_auditoria, obtener_auditorias_url,
@@ -58,15 +58,31 @@ def _get_cache(db, key: str):
         return None
 
 
-def _set_cache(db, key: str, modo: str, marca: str, query: str, resultado: dict):
-    """Upsert del resultado en audit_cache."""
+def _extract_score(resultado: dict, modo: str) -> float | None:
+    try:
+        if modo == "brand":
+            return resultado.get("resultados", [{}])[0].get("invisibilidad_score")
+        if modo == "url":
+            return resultado.get("visibilidad_pct")
+    except Exception:
+        pass
+    return None
+
+
+def _set_cache(db, key: str, modo: str, marca: str, query: str, resultado: dict) -> tuple[float | None, str | None]:
+    """Upsert del resultado en audit_cache. Retorna (prev_score, prev_created_at_iso)."""
     if db is None:
-        return
+        return None, None
     try:
         now = datetime.utcnow()
         expires = now + timedelta(days=AUDIT_CACHE_TTL_DAYS)
         row = db.query(AuditCache).filter(AuditCache.cache_key == key).first()
+        prev_score, prev_created_at_iso = None, None
         if row:
+            prev_score = _extract_score(row.resultado, modo)
+            prev_created_at_iso = row.created_at.isoformat() if row.created_at else None
+            row.prev_score = prev_score
+            row.prev_created_at = row.created_at
             row.resultado = resultado
             row.created_at = now
             row.expires_at = expires
@@ -74,20 +90,31 @@ def _set_cache(db, key: str, modo: str, marca: str, query: str, resultado: dict)
             row.query = query
         else:
             row = AuditCache(
-                cache_key=key,
-                modo=modo,
-                marca=marca,
-                query=query,
-                resultado=resultado,
-                created_at=now,
-                expires_at=expires,
+                cache_key=key, modo=modo, marca=marca, query=query,
+                resultado=resultado, created_at=now, expires_at=expires,
             )
             db.add(row)
         db.commit()
         logger.info(f"[cache] SET {key[:12]}… válido hasta {expires.date()}")
+        return prev_score, prev_created_at_iso
     except Exception as e:
         db.rollback()
         logger.warning(f"[cache] set error: {e}")
+        return None, None
+
+
+def _check_freemium(db, email: str) -> bool:
+    """Retorna True si el email alcanzó el límite gratuito (2 auditorías con resultado)."""
+    if db is None or not email:
+        return False
+    try:
+        count = db.query(Lead).filter(
+            Lead.email == email.lower().strip(),
+            Lead.resultado.isnot(None)
+        ).count()
+        return count >= 2
+    except Exception:
+        return False
 
 _openai_api_key = os.getenv("OPENAI_API_KEY")
 _openai_client = None
@@ -149,6 +176,8 @@ origins = [
     "http://localhost:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
+    "https://ai-visibility.cl",
+    "https://www.ai-visibility.cl",
 ]
 
 app.add_middleware(
@@ -417,6 +446,7 @@ async def obtener_esquema():
 class AuditRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=200)
     brand: str = Field(..., min_length=1, max_length=120)
+    email: Optional[str] = None
 
 
 class DiscoveryRequest(BaseModel):
@@ -441,7 +471,12 @@ async def audit_pipeline(
         raise HTTPException(status_code=422, detail="query and brand are required")
     query = q[:200].strip()
     brand = b[:120].strip()
+    email = (body.email if body else None)
     try:
+        # ── Freemium check ────────────────────────────────────────────────
+        if email and _check_freemium(db, email):
+            raise HTTPException(status_code=429, detail="FREEMIUM_LIMIT")
+
         # Sanitizar inputs antes de procesar
         sanitized = await sanitizar_inputs(brand, query)
         brand = sanitized.marca_normalizada
@@ -581,7 +616,9 @@ async def audit_pipeline(
             texto_original_ia=texto_busqueda,
             resultados=[resultado]
         )
-        _set_cache(db, ck, "brand", brand, query, res.model_dump(mode="json"))
+        prev_score, prev_cached_at = _set_cache(db, ck, "brand", brand, query, res.model_dump(mode="json"))
+        res.prev_score = prev_score
+        res.prev_cached_at = prev_cached_at
         return res
 
     except Exception as e:
@@ -810,6 +847,7 @@ async def discovery_masivo(
 class AuditFromUrlRequest(BaseModel):
     url: str = Field(..., description="URL del sitio web del cliente a auditar")
     pais: str = Field(default="Chile", description="País de referencia para las queries")
+    email: Optional[str] = None
 
 
 class AuditFromUrlResponse(BaseModel):
@@ -829,6 +867,8 @@ class AuditFromUrlResponse(BaseModel):
     untapped_territories: list = []
     from_cache: bool = False
     cached_at: Optional[str] = None
+    prev_score: Optional[float] = None
+    prev_cached_at: Optional[str] = None
 
 
 @app.post("/api/audit/from-url", response_model=AuditFromUrlResponse)
@@ -851,6 +891,10 @@ async def audit_from_url(body: AuditFromUrlRequest, db: Session = Depends(get_db
     url = body.url.strip()
     if not url.startswith(("http://", "https://")):
         raise HTTPException(status_code=422, detail="La URL debe comenzar con http:// o https://")
+
+    # ── Freemium check ────────────────────────────────────────────────────
+    if body.email and _check_freemium(db, body.email):
+        raise HTTPException(status_code=429, detail="FREEMIUM_LIMIT")
 
     # ── Supabase cache check ──────────────────────────────────────────────
     url_ck = _cache_key("url", url)
@@ -982,7 +1026,9 @@ async def audit_from_url(body: AuditFromUrlRequest, db: Session = Depends(get_db
             untapped_territories=intel.get("untapped_territories", []),
         )
         _url_cache[mem_key] = (_time.time(), result)
-        _set_cache(db, url_ck, "url", url, "", result.model_dump(mode="json"))
+        prev_score, prev_cached_at = _set_cache(db, url_ck, "url", url, "", result.model_dump(mode="json"))
+        result.prev_score = prev_score
+        result.prev_cached_at = prev_cached_at
         return result
 
     except HTTPException:
@@ -1623,6 +1669,148 @@ async def guardar_lead(body: LeadRequest, db: Session = Depends(get_db)):
             db.rollback()
         logger.error(f"Error guardando lead: {e}")
         return {"ok": False}
+
+
+# ── Shared Reports ────────────────────────────────────────────────────────────
+
+class ShareRequest(BaseModel):
+    modo: str
+    marca: Optional[str] = None
+    query: Optional[str] = None
+    resultado: dict
+
+
+@app.post("/api/share", status_code=201)
+async def crear_share(body: ShareRequest, db: Session = Depends(get_db)):
+    if db is None:
+        raise HTTPException(status_code=503, detail="DB no disponible")
+    import secrets
+    code = secrets.token_urlsafe(8)
+    try:
+        row = SharedReport(
+            code=code,
+            modo=body.modo,
+            marca=body.marca,
+            query=body.query,
+            resultado=body.resultado,
+        )
+        db.add(row)
+        db.commit()
+        return {"code": code}
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error creando share: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/r/{code}")
+async def obtener_share(code: str, db: Session = Depends(get_db)):
+    if db is None:
+        raise HTTPException(status_code=503, detail="DB no disponible")
+    row = db.query(SharedReport).filter(SharedReport.code == code).first()
+    if not row:
+        raise HTTPException(status_code=404, detail="Informe no encontrado")
+    return {
+        "code": row.code,
+        "modo": row.modo,
+        "marca": row.marca,
+        "query": row.query,
+        "resultado": row.resultado,
+        "created_at": row.created_at.isoformat() if row.created_at else None,
+    }
+
+
+# ── Admin metrics ─────────────────────────────────────────────────────────────
+
+@app.get("/api/admin/metrics")
+async def admin_metrics(db: Session = Depends(get_db)):
+    if db is None:
+        raise HTTPException(status_code=503, detail="DB no disponible")
+    try:
+        from sqlalchemy import func, cast, Date
+        total = db.query(Lead).count()
+        con_resultado = db.query(Lead).filter(Lead.resultado.isnot(None)).count()
+        emails_unicos = db.query(func.count(func.distinct(Lead.email))).scalar()
+        por_modo = {
+            m: db.query(Lead).filter(Lead.modo == m).count()
+            for m in ["brand", "url", "compare", "cita"]
+        }
+        # leads por día últimos 30 días
+        from datetime import timedelta as td
+        hoy = datetime.utcnow().date()
+        hace_30 = hoy - td(days=29)
+        rows = (
+            db.query(cast(Lead.created_at, Date).label("fecha"), func.count().label("count"))
+            .filter(Lead.created_at >= hace_30)
+            .group_by(cast(Lead.created_at, Date))
+            .order_by(cast(Lead.created_at, Date))
+            .all()
+        )
+        por_dia = [{"fecha": str(r.fecha), "count": r.count} for r in rows]
+        cache_total = db.query(AuditCache).count()
+        cache_activo = db.query(AuditCache).filter(AuditCache.expires_at > datetime.utcnow()).count()
+        # emails bloqueados por freemium
+        bloqueados = (
+            db.query(Lead.email)
+            .filter(Lead.resultado.isnot(None))
+            .group_by(Lead.email)
+            .having(func.count() >= 2)
+            .count()
+        )
+        return {
+            "total_leads": total,
+            "emails_unicos": emails_unicos,
+            "con_resultado": con_resultado,
+            "sin_resultado": total - con_resultado,
+            "por_modo": por_modo,
+            "por_dia": por_dia,
+            "cache_total": cache_total,
+            "cache_activo": cache_activo,
+            "freemium_bloqueados": bloqueados,
+        }
+    except Exception as e:
+        logger.error(f"Error en metrics: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── Historial por email ───────────────────────────────────────────────────────
+
+@app.get("/api/user/history")
+async def historial_usuario(email: str, db: Session = Depends(get_db)):
+    if db is None:
+        return []
+    try:
+        rows = (
+            db.query(Lead)
+            .filter(Lead.email == email.lower().strip(), Lead.resultado.isnot(None))
+            .order_by(Lead.created_at.desc())
+            .all()
+        )
+        def get_score(r):
+            try:
+                res = r.resultado
+                if r.modo == "brand":
+                    return res.get("resultados", [{}])[0].get("invisibilidad_score")
+                if r.modo == "url":
+                    return res.get("visibilidad_pct")
+            except Exception:
+                pass
+            return None
+
+        return [
+            {
+                "id": r.id,
+                "marca": r.marca,
+                "query": r.query,
+                "modo": r.modo,
+                "score": get_score(r),
+                "created_at": r.created_at.isoformat() if r.created_at else None,
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        logger.error(f"Error en historial: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
