@@ -553,7 +553,6 @@ export default function Dashboard() {
     if (!url) { setError('Ingresa una URL'); return }
     if (!url.startsWith('http://') && !url.startsWith('https://')) { setError('La URL debe comenzar con http:// o https://'); return }
     setError('')
-    saveLead(url, undefined, 'url')
     setUrlResult(null)
     setUrlLoading(true)
     setLoadingPhase('Analizando página...')
