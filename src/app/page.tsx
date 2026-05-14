@@ -171,33 +171,65 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FEATURES ──────────────────────────────────────────────── */}
+      {/* ── FOMO ──────────────────────────────────────────────────── */}
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Qué incluye el informe</p>
-            <h2 className="text-2xl font-bold text-white">Todo lo que necesitas para dominar los LLMs</h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((f) => (
-              <div
-                key={f.title}
-                className="bg-slate-900 border border-slate-800 rounded-sm p-6 hover:border-indigo-500/30 transition-colors"
-              >
-                <span className="text-indigo-400 text-xl block mb-3 font-mono">{f.icon}</span>
-                <h3 className="text-sm font-semibold text-slate-100 mb-2">{f.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{f.desc}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <p className="text-[11px] font-mono text-rose-400 uppercase tracking-widest mb-4">El punto ciego de tu estrategia</p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
+                Miles de chilenos usan ChatGPT para decidir qué comprar.{' '}
+                <span className="text-slate-400 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
+              </h2>
+              <p className="text-slate-400 text-base leading-relaxed mb-8">
+                El SEO optimiza para una lista de 10 links. La IA genera <strong className="text-slate-200">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
+              </p>
+              <div className="space-y-5 mb-9">
+                {[
+                  { n: '1', title: 'Lo que preguntan cuando no miras', desc: '"¿Cuál es el mejor software de RRHH en Chile?" o "Compara [Tu Marca] con [Competencia]".' },
+                  { n: '2', title: 'El costo de la invisibilidad', desc: 'Si la IA no tiene datos estructurados de tu web para validar tu autoridad, le entrega la venta al competidor que sí los tenga.' },
+                ].map((item) => (
+                  <div key={item.n} className="flex gap-4">
+                    <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-slate-400 text-xs font-bold font-mono">{item.n}</span>
+                    </div>
+                    <div>
+                      <p className="text-slate-200 text-sm font-semibold mb-1">{item.title}</p>
+                      <p className="text-slate-500 text-sm">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          <div className="mt-10 text-center">
-            <Link
-              href="/auditar"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-medium transition-colors"
-            >
-              Ver informe completo →
-            </Link>
+              <Link href="/auditar" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
+                Descubrir si mi marca aparece →
+              </Link>
+            </div>
+            <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
+              <div className="flex items-start gap-3 mb-5">
+                <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 text-xs">👤</div>
+                <div className="bg-slate-800 rounded-sm px-4 py-3 text-slate-300 text-sm leading-relaxed">
+                  ¿Cuál es el mejor proveedor de impresoras 3D y toners para empresas en Santiago?
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 text-xs font-bold text-white">IA</div>
+                <div className="bg-slate-950 border border-slate-800 rounded-sm px-4 py-4 w-full text-sm">
+                  <p className="text-slate-400 mb-3 leading-relaxed">Basado en reseñas y autoridad técnica, las mejores opciones en Santiago son:</p>
+                  <ul className="space-y-2 mb-4">
+                    <li className="flex items-center gap-2 text-emerald-400 font-medium bg-emerald-400/10 px-3 py-2 rounded-sm border border-emerald-400/20 text-xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />Toner Chile — Recomendado
+                    </li>
+                    <li className="flex items-center gap-2 text-slate-400 px-3 py-2 text-xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />3D Studio Santiago
+                    </li>
+                  </ul>
+                  <div className="p-3 bg-rose-950/40 border border-rose-900/40 rounded-sm flex items-start gap-2">
+                    <span className="text-rose-500 flex-shrink-0 text-xs mt-0.5">⚠</span>
+                    <p className="text-rose-300/90 text-xs leading-relaxed"><strong>Tu marca no fue mencionada.</strong> El tráfico de esta consulta fue derivado 100% a la competencia.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -208,68 +240,24 @@ export default function LandingPage() {
           <div className="text-center mb-14">
             <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Nuestra metodología</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">No es magia. Es ingeniería inversa.</h2>
-            <p className="text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
-              De la pregunta del usuario a la inserción de tu código técnico, en 4 pasos auditables.
-            </p>
+            <p className="text-slate-400 text-base max-w-xl mx-auto leading-relaxed">De la pregunta del usuario a la inserción de tu código técnico, en 4 pasos auditables.</p>
           </div>
-
           <div className="relative">
-            {/* Línea conectora desktop */}
             <div className="hidden md:block absolute left-11 top-0 bottom-0 w-px bg-slate-800/60" />
-
             <div className="space-y-8">
               {[
-                {
-                  n: '01', icon: <Search size={18} className="text-slate-400" />,
-                  title: 'Mapeo del ecosistema',
-                  desc: 'Ingresas tu dominio o nombre de marca y nuestro motor perfila el entorno competitivo y las intenciones de búsqueda de tu industria. Sin configuraciones complejas.',
-                  highlight: false,
-                },
-                {
-                  n: '02', icon: <Users size={18} className="text-indigo-400" />,
-                  title: 'Auditoría con usuarios sintéticos',
-                  desc: 'Desplegamos múltiples agentes sintéticos que simulan perfiles de compradores reales — exploración, comparación, decisión — para auditar cómo ChatGPT responde a cada contexto.',
-                  highlight: true,
-                },
-                {
-                  n: '03', icon: <PieChart size={18} className="text-slate-400" />,
-                  title: 'Diagnóstico de posicionamiento',
-                  desc: 'Procesamos las respuestas crudas de los LLMs y te revelamos tu Share of Model real: sentimiento de marca, con quién te comparan y qué competidor se está llevando tu tráfico.',
-                  highlight: false,
-                },
-                {
-                  n: '04', icon: <Terminal size={18} className="text-emerald-400" />,
-                  title: 'Hoja de ruta de recuperación GEO',
-                  desc: 'Pasamos del diagnóstico a la ejecución. Un plan priorizado por ICE que incluye código JSON-LD estructurado listo para que tu equipo de TI lo copie y pegue.',
-                  highlight: false,
-                },
+                { n: '01', icon: <Search size={18} className="text-slate-400" />, title: 'Mapeo del ecosistema', desc: 'Ingresas tu dominio o nombre de marca y nuestro motor perfila el entorno competitivo y las intenciones de búsqueda de tu industria. Sin configuraciones complejas.', highlight: false },
+                { n: '02', icon: <Users size={18} className="text-indigo-400" />, title: 'Auditoría con usuarios sintéticos', desc: 'Desplegamos múltiples agentes sintéticos que simulan perfiles de compradores reales — exploración, comparación, decisión — para auditar cómo ChatGPT responde a cada contexto.', highlight: true },
+                { n: '03', icon: <PieChart size={18} className="text-slate-400" />, title: 'Diagnóstico de posicionamiento', desc: 'Procesamos las respuestas crudas de los LLMs y te revelamos tu Share of Model real: sentimiento de marca, con quién te comparan y qué competidor se está llevando tu tráfico.', highlight: false },
+                { n: '04', icon: <Terminal size={18} className="text-emerald-400" />, title: 'Hoja de ruta de recuperación GEO', desc: 'Pasamos del diagnóstico a la ejecución. Un plan priorizado por ICE que incluye código JSON-LD estructurado listo para que tu equipo de TI lo copie y pegue.', highlight: false },
               ].map((step) => (
                 <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
-                  {/* Número e ícono */}
-                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${
-                    step.highlight
-                      ? 'bg-indigo-950/40 border-indigo-500/30'
-                      : 'bg-slate-900 border-slate-800'
-                  }`}>
+                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-950/40 border-indigo-500/30' : 'bg-slate-900 border-slate-800'}`}>
                     {step.icon}
-                    <span className={`mt-1.5 font-mono text-[10px] font-bold tracking-widest ${
-                      step.highlight ? 'text-indigo-400' : 'text-slate-600'
-                    }`}>
-                      {step.n}
-                    </span>
+                    <span className={`mt-1.5 font-mono text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-400' : 'text-slate-600'}`}>{step.n}</span>
                   </div>
-
-                  {/* Contenido */}
-                  <div className={`flex-1 p-6 rounded-sm border ${
-                    step.highlight
-                      ? 'bg-indigo-950/20 border-indigo-900/40'
-                      : 'bg-slate-900/40 border-slate-800 hover:bg-slate-900/60 transition-colors'
-                  }`}>
-                    {step.highlight && (
-                      <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">
-                        Tecnología exclusiva
-                      </span>
-                    )}
+                  <div className={`flex-1 p-6 rounded-sm border ${step.highlight ? 'bg-indigo-950/20 border-indigo-900/40' : 'bg-slate-900/40 border-slate-800 hover:bg-slate-900/60 transition-colors'}`}>
+                    {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">Tecnología exclusiva</span>}
                     <h3 className="text-base font-semibold text-white mb-2">{step.title}</h3>
                     <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
                   </div>
@@ -280,94 +268,82 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FOMO ──────────────────────────────────────────────────── */}
+      {/* ── FEATURES ──────────────────────────────────────────────── */}
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-            {/* Copy */}
-            <div>
-              <p className="text-[11px] font-mono text-rose-400 uppercase tracking-widest mb-4">
-                El punto ciego de tu estrategia
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
-                Miles de chilenos usan ChatGPT para decidir qué comprar.{' '}
-                <span className="text-slate-400 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
-              </h2>
-              <p className="text-slate-400 text-base leading-relaxed mb-8">
-                El SEO optimiza para una lista de 10 links. La IA genera <strong className="text-slate-200">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
-              </p>
-
-              <div className="space-y-5 mb-9">
-                <div className="flex gap-4">
-                  <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-slate-400 text-xs font-bold font-mono">1</span>
-                  </div>
-                  <div>
-                    <p className="text-slate-200 text-sm font-semibold mb-1">Lo que preguntan cuando no miras</p>
-                    <p className="text-slate-500 text-sm">"¿Cuál es el mejor software de RRHH en Chile?" o "Compara [Tu Marca] con [Competencia]".</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-slate-400 text-xs font-bold font-mono">2</span>
-                  </div>
-                  <div>
-                    <p className="text-slate-200 text-sm font-semibold mb-1">El costo de la invisibilidad</p>
-                    <p className="text-slate-500 text-sm">Si la IA no tiene datos estructurados de tu web para validar tu autoridad, le entrega la venta al competidor que sí los tenga.</p>
-                  </div>
-                </div>
+          <div className="text-center mb-14">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Qué incluye el informe</p>
+            <h2 className="text-2xl font-bold text-white">Todo lo que necesitas para dominar los LLMs</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((f) => (
+              <div key={f.title} className="bg-slate-900 border border-slate-800 rounded-sm p-6 hover:border-indigo-500/30 transition-colors">
+                <span className="text-indigo-400 text-xl block mb-3 font-mono">{f.icon}</span>
+                <h3 className="text-sm font-semibold text-slate-100 mb-2">{f.title}</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">{f.desc}</p>
               </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link href="/auditar" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-medium transition-colors">
+              Ver informe completo →
+            </Link>
+          </div>
+        </div>
+      </section>
 
-              <Link
-                href="/auditar"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors"
-              >
-                Descubrir si mi marca aparece →
-              </Link>
-            </div>
-
-            {/* Fake AI demo */}
-            <div className="bg-slate-900 border border-slate-800 rounded-sm p-5 shadow-xl">
-              {/* User prompt */}
-              <div className="flex items-start gap-3 mb-5">
-                <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 text-xs">
-                  👤
+      {/* ── DIAGNÓSTICO ───────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Ejemplo de diagnóstico real</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Lo que tu informe revela — con precisión quirúrgica</h2>
+            <p className="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed">
+              No decimos "mejora tu presencia digital". Te decimos exactamente qué fuente de datos le falta a la IA para recomendarte.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5 mb-6">
+            {[
+              {
+                badge: 'Foros y comunidades',
+                badgeColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+                title: 'Sin menciones en Reddit Chile ni Reclamos.cl',
+                desc: 'Perplexity valida la confianza de una marca usando foros y reviews de usuarios reales. Sin menciones en estas fuentes, la IA no tiene evidencia social para recomendarte.',
+                icon: '⚠',
+                iconColor: 'text-amber-400',
+              },
+              {
+                badge: 'Datos estructurados',
+                badgeColor: 'text-rose-400 bg-rose-400/10 border-rose-400/20',
+                title: 'Sin Schema JSON-LD en tu homepage',
+                desc: 'ChatGPT extrae datos estructurados de tu sitio para describir tu negocio. Sin JSON-LD, la IA infiere quién eres desde fuentes de terceros — y puede equivocarse.',
+                icon: '✗',
+                iconColor: 'text-rose-400',
+              },
+              {
+                badge: 'Autoridad en medios',
+                badgeColor: 'text-rose-400 bg-rose-400/10 border-rose-400/20',
+                title: '0 menciones en medios indexados (90 días)',
+                desc: 'Tu competencia aparece citada en La Tercera, Emol y Pulso. La IA usa esas citas como señal de autoridad. Quien no aparece en medios que la IA indexa, no existe para ella.',
+                icon: '✗',
+                iconColor: 'text-rose-400',
+              },
+            ].map((card) => (
+              <div key={card.title} className="bg-slate-900 border border-slate-800 rounded-sm p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border ${card.badgeColor}`}>{card.badge}</span>
+                  <span className={`text-lg font-bold ${card.iconColor}`}>{card.icon}</span>
                 </div>
-                <div className="bg-slate-800 rounded-sm px-4 py-3 text-slate-300 text-sm leading-relaxed">
-                  ¿Cuál es el mejor proveedor de impresoras 3D y toners para empresas en Santiago?
-                </div>
+                <h3 className="text-sm font-semibold text-white mb-2">{card.title}</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">{card.desc}</p>
               </div>
-
-              {/* AI response */}
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 text-xs font-bold text-white">
-                  IA
-                </div>
-                <div className="bg-slate-950 border border-slate-800 rounded-sm px-4 py-4 w-full text-sm">
-                  <p className="text-slate-400 mb-3 leading-relaxed">
-                    Basado en reseñas y autoridad técnica, las mejores opciones en Santiago son:
-                  </p>
-                  <ul className="space-y-2 mb-4">
-                    <li className="flex items-center gap-2 text-emerald-400 font-medium bg-emerald-400/10 px-3 py-2 rounded-sm border border-emerald-400/20 text-xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"></span>
-                      Toner Chile — Recomendado
-                    </li>
-                    <li className="flex items-center gap-2 text-slate-400 px-3 py-2 text-xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span>
-                      3D Studio Santiago
-                    </li>
-                  </ul>
-                  <div className="p-3 bg-rose-950/40 border border-rose-900/40 rounded-sm flex items-start gap-2">
-                    <span className="text-rose-500 flex-shrink-0 text-xs mt-0.5">⚠</span>
-                    <p className="text-rose-300/90 text-xs leading-relaxed">
-                      <strong>Tu marca no fue mencionada.</strong> El tráfico de esta consulta fue derivado 100% a la competencia.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            ))}
+          </div>
+          {/* Metadata bar */}
+          <div className="border border-slate-800 rounded-sm bg-slate-900/50 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 justify-center">
+            {['14 fuentes analizadas', '3 arquetipos de comprador simulados', 'Tiempo de análisis: 47s', 'Motor: ChatGPT GPT-4o'].map((m) => (
+              <span key={m} className="text-slate-600 text-[11px] font-mono">{m}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -467,6 +443,66 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── PRICING ───────────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Precio</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Gratis durante el Beta</h2>
+            <p className="text-slate-400 text-base max-w-xl mx-auto">Sin tarjeta de crédito. Sin configuración. Tu primer diagnóstico GEO en menos de 60 segundos.</p>
+          </div>
+          <div className="max-w-2xl mx-auto grid sm:grid-cols-2 gap-5">
+            {/* Beta free */}
+            <div className="bg-slate-900 border-2 border-indigo-500/50 rounded-sm p-7 relative">
+              <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
+              <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">Beta gratuito</p>
+              <p className="text-4xl font-extrabold text-white mb-1">$0</p>
+              <p className="text-slate-500 text-xs mb-6">2 auditorías completas por email</p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Share of Model vs competidores',
+                  'Plan de acción con tácticas ICE',
+                  'Código JSON-LD listo para copiar',
+                  'Análisis de sentimiento de marca',
+                  'Informe compartible en 1 clic',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-slate-300 text-sm">
+                    <Check size={14} className="text-indigo-400 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/auditar" className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
+                Auditar mi marca gratis →
+              </Link>
+            </div>
+            {/* Pro coming soon */}
+            <div className="bg-slate-900/50 border border-slate-800 rounded-sm p-7 opacity-70">
+              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Pro</p>
+              <p className="text-4xl font-extrabold text-slate-400 mb-1">Pronto</p>
+              <p className="text-slate-600 text-xs mb-6">Auditorías ilimitadas + monitoreo continuo</p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Todo lo del plan Beta',
+                  'Auditorías ilimitadas',
+                  'Alertas semanales de posición',
+                  'Comparación multi-competidor',
+                  'API access',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-slate-500 text-sm">
+                    <Minus size={14} className="text-slate-700 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="block w-full text-center px-5 py-3 rounded-sm bg-slate-800 text-slate-600 font-semibold text-sm cursor-not-allowed">
+                Próximamente
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ───────────────────────────────────────────────────── */}
       <section id="faq-geo" className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
@@ -484,6 +520,26 @@ export default function LandingPage() {
               <FaqAccordionServer items={faqEstrategia} />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── CTA CIERRE ────────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 py-16 sm:py-24 px-4 text-center">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">Última llamada</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
+            Tu competencia ya está optimizando para la IA.
+          </h2>
+          <p className="text-slate-400 text-base leading-relaxed mb-10">
+            Cada día que la IA recomienda a otro, es un cliente que no llegó a ti. Audita tu marca en 60 segundos — gratis durante el Beta.
+          </p>
+          <Link
+            href="/auditar"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base transition-colors"
+          >
+            Auditar mi marca ahora →
+          </Link>
+          <p className="text-slate-700 text-xs font-mono mt-5">Sin tarjeta de crédito · 2 auditorías gratis · Resultado en &lt;60s</p>
         </div>
       </section>
 
