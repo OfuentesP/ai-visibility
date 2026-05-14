@@ -51,14 +51,15 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Conceptos */}
+          {/* Guías y conceptos */}
           <div>
-            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Conceptos</p>
+            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Guías</p>
             <ul className="space-y-2">
+              <li><Link href="/guias/cyberday-2026-chatgpt/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">CyberDay 2026 y ChatGPT</Link></li>
               <li><Link href="/glosario/alucinacion-ia/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Alucinación de IA</Link></li>
               <li><Link href="/glosario/auditoria-arquetipos/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditoría por Arquetipos</Link></li>
               <li><Link href="/#faq-geo" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Preguntas Frecuentes</Link></li>
-              <li><Link href="/auditar/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditoría gratuita</Link></li>
+              <li><Link href="/auditar/" className="text-slate-500 text-xs hover:text-indigo-400 transition-colors">Auditoría gratuita →</Link></li>
             </ul>
           </div>
 

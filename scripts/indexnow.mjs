@@ -23,6 +23,9 @@ const urls = [
   'https://ai-visibility.cl/auditar/banca/',
   'https://ai-visibility.cl/auditar/pyme/',
   'https://ai-visibility.cl/auditar/inmobiliaria/',
+  'https://ai-visibility.cl/auditar/ecommerce/',
+  'https://ai-visibility.cl/auditar/cyberday/',
+  'https://ai-visibility.cl/guias/cyberday-2026-chatgpt/',
 ]
 
 const body = {

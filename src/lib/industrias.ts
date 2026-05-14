@@ -255,6 +255,88 @@ export const industrias: Industria[] = [
       },
     ],
   },
+  {
+    id: 'ecommerce',
+    nombre: 'E-commerce & Tiendas Online',
+    tagline: 'GEO para E-commerce en Chile',
+    descripcion:
+      'Tu tienda online compite en dos frentes: Google y ChatGPT. El segundo ya decide si tu marca es confiable antes de que el cliente vea tu precio. Sin visibilidad en IA, el tráfico llega — pero la confianza no.',
+    queries: [
+      '"¿Qué tienda online de [categoría] es confiable en Chile?"',
+      '"Comprar [producto] online en Chile con despacho a regiones"',
+      '"¿[Tu Tienda] tiene buenas reseñas o es mejor ir a Falabella?"',
+      '"Tienda de [categoría] con garantía real en Chile — recomendaciones"',
+    ],
+    dolores: [
+      {
+        titulo: 'La primera pregunta no es el precio — es si eres de fiar',
+        desc: 'Antes de ver tu landing de oferta, el comprador le preguntó a ChatGPT si tu tienda es confiable. Si la IA no tiene datos estructurados de reseñas, políticas de devolución y autoridad de marca, la respuesta es genérica — o menciona a otro.',
+      },
+      {
+        titulo: 'Tiendanube y Shopify no te posicionan en IA por defecto',
+        desc: 'Ambas plataformas generan sitios técnicamente correctos para Google, pero sin JSON-LD de tipo Store, Product y AggregateRating, los LLMs no pueden leer quién eres ni validar tu catálogo. Eso lo tienes que agregar tú.',
+      },
+      {
+        titulo: 'El tráfico de búsqueda migra hacia el generativo',
+        desc: 'Las queries de compra informacionales ("¿cuál es mejor?", "¿es confiable?") se responden hoy en ChatGPT, no en Google. Ese tráfico no aparece en tu GA4 — pero sí decide si el cliente llega o no a tu tienda.',
+      },
+    ],
+    faq: [
+      {
+        q: '¿El GEO funciona para tiendas con catálogos de miles de productos?',
+        a: 'Sí, pero la prioridad no es el producto — es la marca. Los LLMs recomiendan tiendas, no SKUs. JSON-LD de tipo Organization con especialización de categoría, más reseñas consolidadas en fuentes de autoridad, posicionan tu tienda como la respuesta para toda su categoría.',
+      },
+      {
+        q: '¿Qué diferencia hay entre el GEO para retail físico y para e-commerce puro?',
+        a: 'En e-commerce puro, el 100% del ciclo de compra ocurre en pantalla, lo que hace que la validación de confianza en IA sea más crítica. No hay vendedor que rescate la duda. El JSON-LD y las reseñas en plataformas indexadas son tu único equipo de ventas antes del primer clic.',
+      },
+      {
+        q: '¿Sirve para marcas que venden en Mercado Libre o Amazon además de su propia tienda?',
+        a: 'Sí, y ahí hay una ventaja táctica: Mercado Libre y Amazon ya están indexados con alta autoridad en los LLMs. Si tu marca tiene un perfil de vendedor bien calificado en esas plataformas, la IA puede citarlas como señal de confianza aunque tu sitio propio tenga poco histórico.',
+      },
+    ],
+  },
+  {
+    id: 'cyberday',
+    nombre: 'CyberDay 2026',
+    tagline: 'GEO para el CyberDay 2026 en Chile',
+    descripcion:
+      'El CyberDay 2026 es el 1 al 3 de junio. La decisión de compra empieza en ChatGPT días antes — no en tu landing de descuentos. Si la IA no recomienda tu tienda cuando preguntan, el esfuerzo de preparación llega tarde.',
+    queries: [
+      '"¿Es confiable comprar en [Tu Tienda] para el CyberDay 2026?"',
+      '"Mejores tiendas de [categoría] para el CyberDay Chile — recomendaciones reales"',
+      '"¿Vale la pena el CyberDay en [Tu Tienda] o mejor esperar el Black Friday?"',
+      '"¿Qué tiendas tienen descuentos reales en el CyberDay y cuáles inflan precios?"',
+    ],
+    dolores: [
+      {
+        titulo: 'Tu descuento del 40% no importa si ChatGPT recomienda a otro',
+        desc: 'Los compradores que investigan antes del CyberDay le preguntan a la IA qué tiendas son confiables y cuáles tienen historial de inflar precios. Si tu marca no aparece en esa respuesta — o aparece con dudas — el precio deja de ser el factor.',
+      },
+      {
+        titulo: 'Falabella, Paris y Ripley dominan las respuestas de IA sin hacer nada',
+        desc: 'Tienen miles de artículos, reseñas y menciones en medios que los LLMs indexan como fuentes de autoridad. Una tienda mediana o un emprendimiento digital necesita una estrategia GEO activa para aparecer junto a ellas — especialmente en las consultas de validación previas al CyberDay.',
+      },
+      {
+        titulo: 'El peak de búsquedas de validación es la semana antes, no el 1 de junio',
+        desc: 'Las queries "¿es confiable [tienda]?" y "mejores tiendas CyberDay" se disparan entre el 25 y el 31 de mayo. Si empiezas a trabajar el GEO el día del evento, ya perdiste esa ventana.',
+      },
+    ],
+    faq: [
+      {
+        q: '¿En cuántos días puedo mejorar mi visibilidad en ChatGPT antes del CyberDay?',
+        a: 'Con JSON-LD implementado hoy, los sistemas RAG de Perplexity y ChatGPT con búsqueda web pueden indexarte en 48 a 72 horas. Para el CyberDay 2026 (1 de junio), implementar esta semana te da margen suficiente para aparecer en las consultas de validación de la semana previa al evento.',
+      },
+      {
+        q: '¿Cómo audito específicamente si aparezco en búsquedas de CyberDay?',
+        a: 'En la auditoría de AI Visibility ingresas tu nombre de tienda y una búsqueda como "tiendas de [categoría] confiables para el CyberDay Chile". El informe muestra si ChatGPT te menciona, con qué sentimiento y qué competidor está capturando esas consultas en tu lugar.',
+      },
+      {
+        q: '¿Sirve el GEO para una tienda que participa por primera vez en el CyberDay?',
+        a: 'Es donde más impacto tiene. Las tiendas nuevas no tienen historial de precios que la IA pueda consultar, pero sí pueden construir una señal de confianza rápida: reseñas en Google, JSON-LD de tipo Store y una o dos menciones en blogs o medios de nicho. Eso puede ser suficiente para aparecer en las respuestas junto a marcas con más años.',
+      },
+    ],
+  },
 ]
 
 export function getIndustria(id: string): Industria | undefined {
