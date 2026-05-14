@@ -285,8 +285,8 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Link href="/auditar" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-medium transition-colors">
-              Ver informe completo →
+            <Link href="/auditar" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-colors">
+              Obtener mi informe GEO →
             </Link>
           </div>
         </div>
@@ -342,7 +342,7 @@ export default function LandingPage() {
           {/* Metadata bar */}
           <div className="border border-slate-800 rounded-sm bg-slate-900/50 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 justify-center">
             {['14 fuentes analizadas', '3 arquetipos de comprador simulados', 'Tiempo de análisis: 47s', 'Motor: ChatGPT GPT-4o'].map((m) => (
-              <span key={m} className="text-slate-600 text-[11px] font-mono">{m}</span>
+              <span key={m} className="text-slate-500 text-[11px] font-mono">{m}</span>
             ))}
           </div>
         </div>
@@ -365,7 +365,7 @@ export default function LandingPage() {
 
           <div className="border border-slate-800 rounded-sm overflow-hidden">
             {/* Column headers */}
-            <div className="grid grid-cols-3 border-b border-slate-800 bg-slate-900">
+            <div className="grid grid-cols-2 md:grid-cols-3 border-b border-slate-800 bg-slate-900">
               <div className="p-5 hidden md:block" />
               <div className="p-5 border-b-2 border-indigo-500 bg-indigo-500/5">
                 <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1">Plataforma GEO</span>
@@ -410,8 +410,8 @@ export default function LandingPage() {
                 xType: 'x',
               },
             ].map((row) => (
-              <div key={row.name} className="grid grid-cols-3 border-b border-slate-800/60 last:border-0 hover:bg-slate-800/20 transition-colors">
-                <div className="p-4 md:p-5 flex items-center border-r border-slate-800/60">
+              <div key={row.name} className="grid grid-cols-2 md:grid-cols-3 border-b border-slate-800/60 last:border-0 hover:bg-slate-800/20 transition-colors">
+                <div className="p-4 md:p-5 hidden md:flex items-center border-r border-slate-800/60">
                   <span className="text-slate-300 text-sm font-medium">{row.name}</span>
                 </div>
                 <div className="p-4 md:p-5 bg-indigo-500/5 flex items-center gap-3 border-r border-slate-800/60">
@@ -451,7 +451,7 @@ export default function LandingPage() {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Gratis durante el Beta</h2>
             <p className="text-slate-400 text-base max-w-xl mx-auto">Sin tarjeta de crédito. Sin configuración. Tu primer diagnóstico GEO en menos de 60 segundos.</p>
           </div>
-          <div className="max-w-2xl mx-auto grid sm:grid-cols-2 gap-5">
+          <div className="max-w-2xl mx-auto grid sm:grid-cols-2 gap-5 pt-4">
             {/* Beta free */}
             <div className="bg-slate-900 border-2 border-indigo-500/50 rounded-sm p-7 relative">
               <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
