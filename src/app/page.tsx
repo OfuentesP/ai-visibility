@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Check, X, Minus } from 'lucide-react'
 import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 
 export const metadata = {
@@ -47,9 +48,13 @@ const jsonLd = {
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "¿Qué es Generative Engine Optimization (GEO)?", "acceptedAnswer": { "@type": "Answer", "text": "Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG)." } },
-        { "@type": "Question", "name": "¿Cuál es la diferencia entre SEO y GEO?", "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por IA." } },
-        { "@type": "Question", "name": "¿Qué es el Share of Model (SoM)?", "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al Share of Voice. Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca frente a tus competidores." } },
-        { "@type": "Question", "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?", "acceptedAnswer": { "@type": "Answer", "text": "Si tu marca no aparece en LLMs se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad o carencia de datos estructurados legibles para máquinas en tu sitio web." } }
+        { "@type": "Question", "name": "¿Cuál es la diferencia entre SEO y GEO?", "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por IA, donde no hay listas de enlaces, sino una única recomendación directa." } },
+        { "@type": "Question", "name": "¿Qué es el Share of Model (SoM)?", "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al Share of Voice. Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca frente a tus competidores directos cuando se le pregunta sobre tu industria." } },
+        { "@type": "Question", "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?", "acceptedAnswer": { "@type": "Answer", "text": "Si tu marca no aparece en LLMs se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad o carencia de datos estructurados legibles para máquinas en tu sitio web." } },
+        { "@type": "Question", "name": "¿Cómo evalúa AI Visibility mi presencia en la IA?", "acceptedAnswer": { "@type": "Answer", "text": "AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. Extrae métricas clave: si tu marca es mencionada, análisis de sentimiento, porcentaje de visibilidad y qué competidor domina las respuestas." } },
+        { "@type": "Question", "name": "¿Pueden garantizar que apareceré siempre como la marca #1?", "acceptedAnswer": { "@type": "Answer", "text": "No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado." } },
+        { "@type": "Question", "name": "¿Cuánto tiempo tarda en hacer efecto la optimización GEO?", "acceptedAnswer": { "@type": "Answer", "text": "La inyección de JSON-LD es legible por la IA en 48 horas. Para que los modelos ajusten sus respuestas RAG, suele tomar entre 3 y 6 semanas ver un aumento sostenido." } },
+        { "@type": "Question", "name": "¿Por qué la auditoría Beta se centra en ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "Porque concentra más del 80% de las consultas generativas B2B y B2C en Chile. Priorizamos dominar el motor principal. Además, optimizar para OpenAI mejora automáticamente tu legibilidad para Gemini, que está en nuestra hoja de ruta." } }
       ]
     }
   ]
@@ -78,26 +83,41 @@ const features = [
   },
 ]
 
-const faqItems = [
+const faqConceptos = [
   {
     q: '¿Qué es Generative Engine Optimization (GEO)?',
     a: 'Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG).',
   },
   {
     q: '¿Cuál es la diferencia entre SEO y GEO?',
-    a: "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la \"respuesta definitiva\" dentro de un texto conversacional generado por Inteligencia Artificial, donde no hay listas de enlaces, sino una única recomendación directa.",
-  },
-  {
-    q: '¿Cómo evalúa AI Visibility mi presencia en la IA?',
-    a: 'AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales (arquetipos). Nuestra plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento de esa mención, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.',
+    a: 'El SEO tradicional busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la "respuesta definitiva" dentro de un texto conversacional generado por IA, donde no hay listas de enlaces, sino una única recomendación directa.',
   },
   {
     q: '¿Qué es el Share of Model (SoM)?',
-    a: "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al \"Share of Voice\". Representa el porcentaje exacto de veces que un modelo de inteligencia artificial cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios.",
+    a: 'El Share of Model (SoM) es la métrica de nueva generación que reemplaza al "Share of Voice". Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios.',
   },
   {
     q: '¿Por qué mi marca no aparece en ChatGPT o Perplexity?',
-    a: 'Los LLMs construyen sus respuestas basándose en sus datos de entrenamiento y en fuentes indexadas en tiempo real. Si tu marca no aparece, se debe a una falta de densidad de entidades, ausencia en fuentes de alta autoridad (medios, foros técnicos) o a la carencia de datos estructurados legibles para máquinas en tu propio sitio web.',
+    a: 'Los LLMs construyen sus respuestas basándose en sus datos de entrenamiento y en fuentes indexadas en tiempo real. Si tu marca no aparece, se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad (medios, foros técnicos) o carencia de datos estructurados legibles para máquinas en tu propio sitio web.',
+  },
+]
+
+const faqEstrategia = [
+  {
+    q: '¿Cómo evalúa AI Visibility mi presencia en la IA?',
+    a: 'AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. La plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.',
+  },
+  {
+    q: '¿Pueden garantizar que apareceré siempre como la marca #1?',
+    a: 'No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado: desde JSON-LD hasta PR en medios que la IA indexa como fuentes de autoridad.',
+  },
+  {
+    q: '¿Cuánto tiempo tarda en hacer efecto la optimización GEO?',
+    a: 'La inyección de JSON-LD es legible por la IA en 48 horas. Para que los modelos ajusten sus respuestas de recuperación (RAG), suele tomar entre 3 y 6 semanas ver un aumento sostenido. El Digital PR en medios autorizados puede impactar Perplexity en 24–48 horas.',
+  },
+  {
+    q: '¿Por qué la auditoría Beta se centra en ChatGPT?',
+    a: 'Porque concentra más del 80% de las consultas generativas B2B y B2C en Chile. Priorizamos dominar el motor principal antes de diluir esfuerzos. Además, optimizar tu JSON-LD para OpenAI mejora automáticamente tu legibilidad para Gemini, que está en nuestra hoja de ruta.',
   },
 ]
 
@@ -182,15 +202,210 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── FOMO ──────────────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+            {/* Copy */}
+            <div>
+              <p className="text-[11px] font-mono text-rose-400 uppercase tracking-widest mb-4">
+                El punto ciego de tu estrategia
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
+                Miles de chilenos usan ChatGPT para decidir qué comprar.{' '}
+                <span className="text-slate-400 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
+              </h2>
+              <p className="text-slate-400 text-base leading-relaxed mb-8">
+                El SEO optimiza para una lista de 10 links. La IA genera <strong className="text-slate-200">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
+              </p>
+
+              <div className="space-y-5 mb-9">
+                <div className="flex gap-4">
+                  <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-slate-400 text-xs font-bold font-mono">1</span>
+                  </div>
+                  <div>
+                    <p className="text-slate-200 text-sm font-semibold mb-1">Lo que preguntan cuando no miras</p>
+                    <p className="text-slate-500 text-sm">"¿Cuál es el mejor software de RRHH en Chile?" o "Compara [Tu Marca] con [Competencia]".</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-slate-400 text-xs font-bold font-mono">2</span>
+                  </div>
+                  <div>
+                    <p className="text-slate-200 text-sm font-semibold mb-1">El costo de la invisibilidad</p>
+                    <p className="text-slate-500 text-sm">Si la IA no tiene datos estructurados de tu web para validar tu autoridad, le entrega la venta al competidor que sí los tenga.</p>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/auditar"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors"
+              >
+                Descubrir si mi marca aparece →
+              </Link>
+            </div>
+
+            {/* Fake AI demo */}
+            <div className="bg-slate-900 border border-slate-800 rounded-sm p-5 shadow-xl">
+              {/* User prompt */}
+              <div className="flex items-start gap-3 mb-5">
+                <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 text-xs">
+                  👤
+                </div>
+                <div className="bg-slate-800 rounded-sm px-4 py-3 text-slate-300 text-sm leading-relaxed">
+                  ¿Cuál es el mejor proveedor de impresoras 3D y toners para empresas en Santiago?
+                </div>
+              </div>
+
+              {/* AI response */}
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 text-xs font-bold text-white">
+                  IA
+                </div>
+                <div className="bg-slate-950 border border-slate-800 rounded-sm px-4 py-4 w-full text-sm">
+                  <p className="text-slate-400 mb-3 leading-relaxed">
+                    Basado en reseñas y autoridad técnica, las mejores opciones en Santiago son:
+                  </p>
+                  <ul className="space-y-2 mb-4">
+                    <li className="flex items-center gap-2 text-emerald-400 font-medium bg-emerald-400/10 px-3 py-2 rounded-sm border border-emerald-400/20 text-xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"></span>
+                      Toner Chile — Recomendado
+                    </li>
+                    <li className="flex items-center gap-2 text-slate-400 px-3 py-2 text-xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span>
+                      3D Studio Santiago
+                    </li>
+                  </ul>
+                  <div className="p-3 bg-rose-950/40 border border-rose-900/40 rounded-sm flex items-start gap-2">
+                    <span className="text-rose-500 flex-shrink-0 text-xs mt-0.5">⚠</span>
+                    <p className="text-rose-300/90 text-xs leading-relaxed">
+                      <strong>Tu marca no fue mencionada.</strong> El tráfico de esta consulta fue derivado 100% a la competencia.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── GEO vs SEO ────────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">GEO vs SEO</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">
+              ¿Por qué el SEO tradicional ya no es suficiente?
+            </h2>
+            <p className="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed">
+              Pagar una agencia SEO no garantiza que ChatGPT sepa quién eres. El juego cambió de{' '}
+              <span className="text-slate-200 font-semibold">"buscar listas"</span> a{' '}
+              <span className="text-slate-200 font-semibold">"recibir respuestas"</span>.
+            </p>
+          </div>
+
+          <div className="border border-slate-800 rounded-sm overflow-hidden">
+            {/* Column headers */}
+            <div className="grid grid-cols-3 border-b border-slate-800 bg-slate-900">
+              <div className="p-5 hidden md:block" />
+              <div className="p-5 border-b-2 border-indigo-500 bg-indigo-500/5">
+                <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1">Plataforma GEO</span>
+                <p className="text-white font-bold text-sm">AI Visibility</p>
+              </div>
+              <div className="p-5 opacity-60">
+                <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest block mb-1">Marketing tradicional</span>
+                <p className="text-slate-300 font-bold text-sm">Agencia SEO</p>
+              </div>
+            </div>
+
+            {/* Rows */}
+            {[
+              {
+                name: 'Métricas de éxito',
+                ai: 'Share of Model (SoM) y citas en IA',
+                seo: 'Posición en los 10 links de Google',
+                xType: 'minus',
+              },
+              {
+                name: 'Motores auditados',
+                ai: 'ChatGPT · Gemini próximamente',
+                seo: 'Solo Google Search',
+                xType: 'minus',
+              },
+              {
+                name: 'Análisis de sentimiento',
+                ai: 'Sí — positivo, neutral, alucinación',
+                seo: 'No (solo volumen y clics)',
+                xType: 'x',
+              },
+              {
+                name: 'Estrategia técnica',
+                ai: 'JSON-LD, RAG y densidad de entidad',
+                seo: 'Keywords, backlinks y meta tags',
+                xType: 'minus',
+              },
+              {
+                name: 'El objetivo final',
+                ai: 'Ser la recomendación única de la IA',
+                seo: 'Pelear por clics en una lista',
+                xType: 'x',
+              },
+            ].map((row) => (
+              <div key={row.name} className="grid grid-cols-3 border-b border-slate-800/60 last:border-0 hover:bg-slate-800/20 transition-colors">
+                <div className="p-4 md:p-5 flex items-center border-r border-slate-800/60">
+                  <span className="text-slate-300 text-sm font-medium">{row.name}</span>
+                </div>
+                <div className="p-4 md:p-5 bg-indigo-500/5 flex items-center gap-3 border-r border-slate-800/60">
+                  <div className="w-5 h-5 rounded-sm bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                    <Check size={12} className="text-indigo-400" />
+                  </div>
+                  <span className="text-white text-sm font-medium">{row.ai}</span>
+                </div>
+                <div className="p-4 md:p-5 flex items-center gap-3 opacity-60">
+                  <div className="w-5 h-5 rounded-sm bg-slate-800 flex items-center justify-center flex-shrink-0">
+                    {row.xType === 'x'
+                      ? <X size={12} className="text-slate-500" />
+                      : <Minus size={12} className="text-slate-500" />
+                    }
+                  </div>
+                  <span className="text-slate-400 text-sm">{row.seo}</span>
+                </div>
+              </div>
+            ))}
+
+            {/* Footer CTA */}
+            <div className="bg-slate-900 px-5 py-4 text-center border-t border-slate-800">
+              <p className="text-slate-500 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
+              <Link href="/auditar" className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors">
+                Auditar mi marca en ChatGPT →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ───────────────────────────────────────────────────── */}
       <section id="faq-geo" className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="mb-10">
-            <p className="text-[10px] font-mono text-indigo-500 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
-            <h2 className="text-xl font-semibold text-slate-100 leading-snug">AI Visibility &amp; Generative Engine Optimization</h2>
-            <p className="text-slate-600 text-sm mt-2">Conceptos clave para entender cómo los LLMs construyen reputación de marca.</p>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
+            <h2 className="text-2xl font-bold text-white">Todo lo que necesitas saber sobre GEO</h2>
           </div>
-          <FaqAccordionServer items={faqItems} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            <div>
+              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">Conceptos clave</p>
+              <FaqAccordionServer items={faqConceptos} />
+            </div>
+            <div>
+              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">Estrategia y resultados</p>
+              <FaqAccordionServer items={faqEstrategia} />
+            </div>
+          </div>
         </div>
       </section>
 
