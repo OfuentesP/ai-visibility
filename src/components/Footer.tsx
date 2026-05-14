@@ -7,10 +7,10 @@ export default function Footer() {
     <footer className="border-t border-slate-800/60 bg-slate-950 mt-auto">
       <div className="max-w-6xl mx-auto px-4 py-10">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
 
           {/* Brand */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
               <span className="w-5 h-5 rounded-sm bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
                 AI
@@ -23,23 +23,42 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links */}
+          {/* Herramienta */}
           <div>
             <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Herramienta</p>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditoría por Marca</Link></li>
-              <li><Link href="/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditoría por URL</Link></li>
-              <li><Link href="/glosario" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Glosario de IA</Link></li>
+              <li><Link href="/auditar/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditar mi marca</Link></li>
+              <li><Link href="/auditar/saas/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO para SaaS</Link></li>
+              <li><Link href="/auditar/retail/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO para Retail</Link></li>
+              <li><Link href="/auditar/salud/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO para Salud</Link></li>
+              <li><Link href="/auditar/banca/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO para Banca</Link></li>
+              <li><Link href="/auditar/pyme/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO para Pymes</Link></li>
+              <li><Link href="/auditar/inmobiliaria/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO para Inmobiliaria</Link></li>
+            </ul>
+          </div>
+
+          {/* Glosario */}
+          <div>
+            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Glosario GEO</p>
+            <ul className="space-y-2">
+              <li><Link href="/glosario/geo/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Generative Engine Optimization</Link></li>
+              <li><Link href="/glosario/share-of-model/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Share of Model (SoM)</Link></li>
+              <li><Link href="/glosario/aeo/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Answer Engine Optimization</Link></li>
+              <li><Link href="/glosario/seo/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">SEO vs GEO</Link></li>
+              <li><Link href="/glosario/rag/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">RAG</Link></li>
+              <li><Link href="/glosario/llm/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">LLM</Link></li>
+              <li><Link href="/glosario/" className="text-slate-500 text-xs hover:text-indigo-400 transition-colors">Ver todos →</Link></li>
             </ul>
           </div>
 
           {/* Conceptos */}
           <div>
-            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Conceptos clave</p>
+            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Conceptos</p>
             <ul className="space-y-2">
-              <li><Link href="/glosario#geo" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">GEO — Generative Engine Optimization</Link></li>
-              <li><Link href="/glosario#share-of-model" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Share of Model (SoM)</Link></li>
-              <li><Link href="/glosario#rag" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">RAG — Retrieval-Augmented Generation</Link></li>
+              <li><Link href="/glosario/alucinacion-ia/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Alucinación de IA</Link></li>
+              <li><Link href="/glosario/auditoria-arquetipos/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditoría por Arquetipos</Link></li>
+              <li><Link href="/#faq-geo" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Preguntas Frecuentes</Link></li>
+              <li><Link href="/auditar/" className="text-slate-500 text-xs hover:text-slate-300 transition-colors">Auditoría gratuita</Link></li>
             </ul>
           </div>
 
@@ -51,7 +70,7 @@ export default function Footer() {
             © {year} AI Visibility · Datos procesados con GPT-4o · Chile
           </p>
           <p className="text-slate-800 text-[10px] font-mono">
-            v0.1 · GEO · SoM · RAG · LLM · AEO
+            GEO · AEO · SoM · RAG · LLM
           </p>
         </div>
 
