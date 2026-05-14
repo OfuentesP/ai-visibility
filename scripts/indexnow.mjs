@@ -17,6 +17,9 @@ const urls = [
   'https://ai-visibility.cl/glosario/llm/',
   'https://ai-visibility.cl/glosario/aeo/',
   'https://ai-visibility.cl/glosario/seo/',
+  'https://ai-visibility.cl/auditar/saas/',
+  'https://ai-visibility.cl/auditar/retail/',
+  'https://ai-visibility.cl/auditar/salud/',
 ]
 
 const body = {
