@@ -873,6 +873,7 @@ Devuelve SOLO el JSON. NADA MAS."""
 
         response = await client.chat.completions.create(
             model=AI_MODEL,
+            max_tokens=2500,
             temperature=0.3,
             response_format={"type": "json_object"},
             messages=[

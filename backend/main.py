@@ -133,8 +133,22 @@ class SanitizedInputs(BaseModel):
     busqueda_corregida: str
 
 
+def _input_looks_clean(s: str) -> bool:
+    return s == s.strip() and "  " not in s
+
+
 async def sanitizar_inputs(marca_raw: str, busqueda_raw: str) -> SanitizedInputs:
-    """Normaliza marca y consulta usando LLM antes de procesar."""
+    """Normaliza marca y consulta usando LLM. Omite el LLM si ambos inputs ya parecen limpios."""
+    if (
+        _input_looks_clean(marca_raw)
+        and marca_raw[:1].isupper()
+        and _input_looks_clean(busqueda_raw)
+    ):
+        logger.debug(f"sanitizar_inputs: skip LLM (inputs limpios)")
+        return SanitizedInputs(
+            marca_normalizada=marca_raw.strip(),
+            busqueda_corregida=busqueda_raw.strip(),
+        )
     try:
         response = await _openai_client.chat.completions.create(
             model=AI_MODEL,
