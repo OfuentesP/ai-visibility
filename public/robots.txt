@@ -3,12 +3,37 @@ Allow: /
 Disallow: /panel-k7m9x
 Sitemap: https://ai-visibility.cl/sitemap.xml
 
-# Bots específicos de IA
+# OpenAI — ChatGPT RAG e indexación
 User-agent: GPTBot
-Allow: /
 User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
 Allow: /
-User-agent: PerplexityBot
-Allow: /
+Disallow: /panel-k7m9x
+
+# Anthropic — Claude RAG
 User-agent: ClaudeBot
+User-agent: anthropic-ai
 Allow: /
+Disallow: /panel-k7m9x
+
+# Perplexity
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Allow: /
+Disallow: /panel-k7m9x
+
+# Google — Gemini y AI Overviews
+User-agent: Google-Extended
+User-agent: Googlebot
+Allow: /
+Disallow: /panel-k7m9x
+
+# Bing — Copilot
+User-agent: Bingbot
+Allow: /
+Disallow: /panel-k7m9x
+
+# Apple — Siri y AI features
+User-agent: Applebot
+Allow: /
+Disallow: /panel-k7m9x
