@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Check, X, Minus } from 'lucide-react'
+import { Check, X, Minus, Search, Users, PieChart, Terminal } from 'lucide-react'
 import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 
 export const metadata = {
@@ -198,6 +198,84 @@ export default function LandingPage() {
             >
               Ver informe completo →
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── METHODOLOGY ───────────────────────────────────────────── */}
+      <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Nuestra metodología</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">No es magia. Es ingeniería inversa.</h2>
+            <p className="text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
+              De la pregunta del usuario a la inserción de tu código técnico, en 4 pasos auditables.
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Línea conectora desktop */}
+            <div className="hidden md:block absolute left-11 top-0 bottom-0 w-px bg-slate-800/60" />
+
+            <div className="space-y-8">
+              {[
+                {
+                  n: '01', icon: <Search size={18} className="text-slate-400" />,
+                  title: 'Mapeo del ecosistema',
+                  desc: 'Ingresas tu dominio o nombre de marca y nuestro motor perfila el entorno competitivo y las intenciones de búsqueda de tu industria. Sin configuraciones complejas.',
+                  highlight: false,
+                },
+                {
+                  n: '02', icon: <Users size={18} className="text-indigo-400" />,
+                  title: 'Auditoría con usuarios sintéticos',
+                  desc: 'Desplegamos múltiples agentes sintéticos que simulan perfiles de compradores reales — exploración, comparación, decisión — para auditar cómo ChatGPT responde a cada contexto.',
+                  highlight: true,
+                },
+                {
+                  n: '03', icon: <PieChart size={18} className="text-slate-400" />,
+                  title: 'Diagnóstico de posicionamiento',
+                  desc: 'Procesamos las respuestas crudas de los LLMs y te revelamos tu Share of Model real: sentimiento de marca, con quién te comparan y qué competidor se está llevando tu tráfico.',
+                  highlight: false,
+                },
+                {
+                  n: '04', icon: <Terminal size={18} className="text-emerald-400" />,
+                  title: 'Hoja de ruta de recuperación GEO',
+                  desc: 'Pasamos del diagnóstico a la ejecución. Un plan priorizado por ICE que incluye código JSON-LD estructurado listo para que tu equipo de TI lo copie y pegue.',
+                  highlight: false,
+                },
+              ].map((step) => (
+                <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
+                  {/* Número e ícono */}
+                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${
+                    step.highlight
+                      ? 'bg-indigo-950/40 border-indigo-500/30'
+                      : 'bg-slate-900 border-slate-800'
+                  }`}>
+                    {step.icon}
+                    <span className={`mt-1.5 font-mono text-[10px] font-bold tracking-widest ${
+                      step.highlight ? 'text-indigo-400' : 'text-slate-600'
+                    }`}>
+                      {step.n}
+                    </span>
+                  </div>
+
+                  {/* Contenido */}
+                  <div className={`flex-1 p-6 rounded-sm border ${
+                    step.highlight
+                      ? 'bg-indigo-950/20 border-indigo-900/40'
+                      : 'bg-slate-900/40 border-slate-800 hover:bg-slate-900/60 transition-colors'
+                  }`}>
+                    {step.highlight && (
+                      <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">
+                        Tecnología exclusiva
+                      </span>
+                    )}
+                    <h3 className="text-base font-semibold text-white mb-2">{step.title}</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
