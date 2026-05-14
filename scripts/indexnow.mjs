@@ -15,6 +15,8 @@ const urls = [
   'https://ai-visibility.cl/glosario/rag/',
   'https://ai-visibility.cl/glosario/auditoria-arquetipos/',
   'https://ai-visibility.cl/glosario/llm/',
+  'https://ai-visibility.cl/glosario/aeo/',
+  'https://ai-visibility.cl/glosario/seo/',
 ]
 
 const body = {

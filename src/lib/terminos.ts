@@ -19,7 +19,7 @@ export const terminos: Termino[] = [
       'Un SoM del 0% significa que la IA nunca te recomienda, independiente de cuánto inviertas en SEO o publicidad digital. Un SoM alto significa que la IA se convierte en tu mejor vendedor, activo las 24 horas. La mayoría de marcas en Chile no conoce su SoM — ese desconocimiento es la brecha competitiva que el mercado aún no vio.',
       'Para medir el SoM de tu marca necesitas auditar activamente los principales LLMs con prompts representativos de las consultas reales de tus compradores, cruzar los resultados con los de tus competidores directos, y repetir el proceso de forma periódica para detectar tendencias.',
     ],
-    relacionados: ['geo', 'llm', 'auditoria-arquetipos'],
+    relacionados: ['geo', 'seo', 'llm', 'auditoria-arquetipos'],
   },
   {
     id: 'geo',
@@ -32,7 +32,7 @@ export const terminos: Termino[] = [
       'El GEO no reemplaza al SEO — lo complementa. Un sitio bien posicionado en Google sigue siendo importante porque muchos LLMs con acceso web lo usan como señal de autoridad. La diferencia es que el SEO optimiza para una lista de 10 links; el GEO optimiza para ser la única respuesta recomendada en un texto conversacional.',
       'El horizonte temporal del GEO es diferente al del SEO. La inyección correcta de JSON-LD puede ser legible por sistemas RAG en 48 horas. Para que los modelos con conocimiento estático actualicen sus respuestas, el ciclo es de semanas a meses — razón por la que empezar hoy genera ventaja sobre quien empiece el próximo trimestre.',
     ],
-    relacionados: ['share-of-model', 'rag', 'llm'],
+    relacionados: ['share-of-model', 'aeo', 'seo', 'rag', 'llm'],
   },
   {
     id: 'alucinacion-ia',
@@ -85,6 +85,32 @@ export const terminos: Termino[] = [
       'Para una estrategia GEO, la prioridad es dominar primero los LLMs con mayor cuota de mercado en tu industria (típicamente ChatGPT en B2B latinoamericano) y luego extender la cobertura a Perplexity y Gemini. La buena noticia es que las mejoras técnicas que aumentan tu legibilidad para un LLM (JSON-LD, densidad de entidad) mejoran tu visibilidad en todos — son complementarios, no excluyentes.',
     ],
     relacionados: ['geo', 'rag', 'alucinacion-ia'],
+  },
+  {
+    id: 'aeo',
+    tag: 'Estrategia',
+    termino: 'AEO (Answer Engine Optimization)',
+    definicion:
+      'Conjunto de técnicas orientadas a optimizar el contenido para que aparezca como respuesta directa en motores de respuesta (featured snippets de Google, resultados de voz, paneles de conocimiento). Es el precursor conceptual del GEO, surgido antes de la irrupción masiva de los LLMs generativos.',
+    ampliacion: [
+      'AEO surge como respuesta a la evolución de Google hacia un "motor de respuestas" que muestra la información directamente en la SERP, sin requerir que el usuario haga clic en ningún enlace. Las técnicas clásicas incluyen Schema FAQ, HowTo y Q&A, estructura de contenido en formato pregunta-respuesta y optimización para búsqueda por voz (Google Assistant, Siri, Alexa).',
+      'La diferencia entre AEO y GEO es sutil pero determinante: AEO optimiza para aparecer en las respuestas estructuradas de Google — featured snippets, voice search, People Also Ask — que siguen siendo generadas por un motor de búsqueda tradicional con resultados enriquecidos. GEO va un paso más allá: optimiza para que un LLM generativo como ChatGPT te incluya en una respuesta sintetizada completamente nueva, sin citar links y sin jerarquía de resultados.',
+      'En la práctica, AEO y GEO comparten muchas tácticas técnicas: datos estructurados JSON-LD, claridad semántica, contenido en formato Q&A. Una estrategia de AEO bien ejecutada crea una base sólida para GEO. Sin embargo, AEO no garantiza visibilidad en LLMs puros — es posible dominar los featured snippets de Google y tener un Share of Model del 0% en ChatGPT. Por eso GEO requiere una capa adicional de estrategia específica para la arquitectura de los modelos generativos.',
+    ],
+    relacionados: ['geo', 'llm', 'rag'],
+  },
+  {
+    id: 'seo',
+    tag: 'Estrategia',
+    termino: 'SEO (Search Engine Optimization)',
+    definicion:
+      'Conjunto de técnicas para posicionar páginas web en los primeros resultados orgánicos de motores de búsqueda como Google o Bing. Optimiza principalmente para algoritmos de crawl, relevancia de palabras clave y autoridad de dominio medida en backlinks.',
+    ampliacion: [
+      'El SEO tradicional opera sobre un modelo de resultados en lista: el objetivo es aparecer entre los 10 primeros links que Google muestra para una consulta determinada. Las palancas clásicas son el on-page SEO (títulos, metadescripciones, densidad de keywords, velocidad de carga), el off-page SEO (backlinks de dominios de autoridad) y el SEO técnico (indexabilidad, Core Web Vitals, estructura de URLs).',
+      'El problema del SEO en la era generativa es estructural, no de ejecución: está diseñado para un paradigma donde el usuario ve una lista y hace clic. Cuando el usuario le pregunta directamente a ChatGPT "¿cuál es el mejor software de RRHH en Chile?", no existe lista de 10 links — existe una sola respuesta sintetizada. En ese escenario, el SEO no tiene jurisdicción; el GEO sí.',
+      'SEO y GEO no son estrategias excluyentes. Un sitio bien posicionado en Google tiene mayor probabilidad de ser rastreado e indexado por los sistemas RAG que alimentan a ChatGPT con búsqueda web. Sin embargo, un SoM alto requiere capas adicionales que el SEO no cubre: densidad de entidad en fuentes de autoridad, JSON-LD estructurado para que los LLMs lean tu identidad de marca, y presencia en los medios que la IA cita como fuentes confiables.',
+    ],
+    relacionados: ['geo', 'aeo', 'share-of-model'],
   },
 ]
 
