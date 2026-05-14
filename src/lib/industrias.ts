@@ -132,6 +132,129 @@ export const industrias: Industria[] = [
       },
     ],
   },
+  {
+    id: 'banca',
+    nombre: 'Banca & Servicios Financieros',
+    tagline: 'GEO para Banca en Chile',
+    descripcion:
+      'Los clientes preguntan a ChatGPT qué banco les conviene antes de abrir una cuenta, pedir un crédito o contratar un seguro. Si tu institución no aparece en esa respuesta, la captación ya fue.',
+    queries: [
+      '"¿Cuál es el mejor banco para pymes en Chile en 2025?"',
+      '"¿Qué banco da crédito hipotecario más fácil en Chile?"',
+      '"Compara Banco Estado vs BCI para cuenta corriente empresarial"',
+      '"¿Cuál fintech chilena tiene mejores tasas de crédito de consumo?"',
+    ],
+    dolores: [
+      {
+        titulo: 'La comparación de productos financieros ya es tarea de la IA',
+        desc: 'Tasas, comisiones, requisitos — el cliente le pregunta a ChatGPT antes de ir a la sucursal o entrar al comparador. Si no apareces en esa síntesis, no entras al proceso de evaluación.',
+      },
+      {
+        titulo: 'Los grandes bancos dominan por volumen de contenido',
+        desc: 'BCI, Santander y Scotiabank tienen miles de artículos, comunicados y reseñas indexadas. Las instituciones medianas y fintechs pierden visibilidad generativa aunque tengan mejores productos — porque la IA no los conoce suficientemente.',
+      },
+      {
+        titulo: 'La confianza regulatoria debe quedar explícita para la IA',
+        desc: 'ChatGPT no sabe que tu institución está regulada por la CMF a menos que lo declares en datos estructurados. Sin esa señal, la IA puede omitirte o no validar tu credibilidad frente a alternativas más conocidas.',
+      },
+    ],
+    faq: [
+      {
+        q: '¿El GEO sirve para fintechs que no son bancos tradicionales?',
+        a: 'Es donde más ventaja ofrece. Las fintechs tienen productos más ágiles pero menos brand awareness que los bancos tradicionales. Una estrategia GEO bien ejecutada puede posicionar a una fintech chilena como la respuesta preferida para consultas de nicho como "crédito rápido sin aval para independientes en Chile".',
+      },
+      {
+        q: '¿Cómo manejo la sensibilidad regulatoria en el contenido GEO?',
+        a: 'El GEO no modifica tus productos ni tus comunicaciones reguladas — trabaja sobre información pública: tasas referenciales, descripción de productos, credenciales CMF y reseñas de clientes. La clave es estructurarla para que los LLMs la puedan leer e interpretar correctamente.',
+      },
+      {
+        q: '¿Qué tan rápido puede una institución financiera ver resultados?',
+        a: 'Los sistemas RAG de Perplexity y ChatGPT con búsqueda web pueden incorporar cambios de contenido estructurado en 48–72 horas. Para mejorar la presencia en el modelo base de GPT-4o, el trabajo de Digital PR en medios financieros chilenos (Pulso, Diario Financiero, El Mercurio Economía) es la palanca más efectiva.',
+      },
+    ],
+  },
+  {
+    id: 'pyme',
+    nombre: 'Pymes & Emprendimientos',
+    tagline: 'GEO para Pymes en Chile',
+    descripcion:
+      'Las pymes chilenas compiten contra grandes marcas en las respuestas de ChatGPT sin saberlo. Quien estructure primero su información para la IA, gana el canal generativo completo.',
+    queries: [
+      '"¿Qué proveedor de [servicio] recomiendan para pymes en Santiago?"',
+      '"Empresa confiable de [categoría] para pequeñas empresas en Chile"',
+      '"¿Cuál es el mejor software contable para pymes chilenas con integración al SII?"',
+      '"Proveedores de [insumo] para emprendimientos en Región Metropolitana"',
+    ],
+    dolores: [
+      {
+        titulo: 'Las grandes empresas acaparan las respuestas de IA',
+        desc: 'Cuando ChatGPT responde sobre proveedores de tu industria, menciona primero a las empresas con más presencia en medios y con datos estructurados en su web. Las pymes, aunque sean mejores, son invisibles si no tienen esa infraestructura.',
+      },
+      {
+        titulo: 'El boca a boca ya no llega a la IA',
+        desc: 'Una pyme puede tener excelente reputación en su red de contactos, pero si esa reputación no está en fuentes que los LLMs indexan (reseñas de Google, foros, medios), la IA no puede recomendarla — y el canal generativo le pertenece a quien sí lo tenga documentado.',
+      },
+      {
+        titulo: 'El costo de entrada al GEO es proporcional',
+        desc: 'A diferencia de campañas de publicidad masiva, el GEO escala con esfuerzo, no con presupuesto. Un JSON-LD bien configurado y dos artículos en medios de nicho pueden poner a una pyme en las respuestas de ChatGPT para consultas específicas de su industria.',
+      },
+    ],
+    faq: [
+      {
+        q: '¿Necesito un equipo técnico para implementar GEO en mi pyme?',
+        a: 'No. La auditoría te entrega el código JSON-LD listo para copiar y pegar en tu sitio web. Si tienes WordPress, Wix o cualquier CMS, tu equipo puede implementarlo en menos de 30 minutos. AI Visibility genera el código estructurado específico para tu modelo de negocio.',
+      },
+      {
+        q: '¿Puede una pyme competir con Falabella o Sodimac en las respuestas de IA?',
+        a: 'En queries genéricas, no. Pero tampoco necesitas hacerlo. El GEO para pymes funciona por especialización: una ferretería de Ñuñoa puede dominar las respuestas de ChatGPT para "ferretería con despacho en Ñuñoa con atención personalizada" aunque nunca gane la query genérica "ferretería en Chile".',
+      },
+      {
+        q: '¿Con cuántas auditorías necesito para ver si mi pyme tiene visibilidad?',
+        a: 'Con una auditoría de la búsqueda más representativa de tu negocio ya obtienes un diagnóstico completo: tu Share of Model, quién te está quitando clientes en ChatGPT y un plan de acción priorizado. El plan Beta incluye 2 auditorías completas sin costo.',
+      },
+    ],
+  },
+  {
+    id: 'inmobiliaria',
+    nombre: 'Inmobiliaria & Propiedades',
+    tagline: 'GEO para Inmobiliarias en Chile',
+    descripcion:
+      'Comprar o arrendar es la decisión económica más grande de una familia chilena — y cada vez más, empieza con una pregunta a ChatGPT. Si tu inmobiliaria o corredor no aparece en esa respuesta, el cliente llegará a tu competencia.',
+    queries: [
+      '"¿Cuál es la mejor inmobiliaria para comprar departamento en Santiago en 2025?"',
+      '"Corredor de propiedades confiable en [comuna] — recomendaciones"',
+      '"¿Conviene comprar en [comuna] o es mejor arrendar con la tasa actual?"',
+      '"Inmobiliarias con proyectos de departamentos con subsidio en Chile"',
+    ],
+    dolores: [
+      {
+        titulo: 'La búsqueda de propiedades empieza meses antes del contacto',
+        desc: 'Los compradores investigan comunas, inmobiliarias y corredores durante meses antes de contactar a alguien. ChatGPT es su primer consejero. Si tu empresa no aparece en esa fase exploratoria, nunca entrarás al proceso de decisión.',
+      },
+      {
+        titulo: 'La IA opina sobre comunas y valores — con o sin tu marca',
+        desc: 'ChatGPT responde preguntas sobre dónde vivir, qué comunas están en alza y qué inmobiliarias son confiables. Si no tienes datos estructurados que la IA pueda usar para validarte, esa conversación la gana quien sí los tenga.',
+      },
+      {
+        titulo: 'Las reseñas negativas pesan más en el canal generativo',
+        desc: 'Un LLM que encuentra reseñas negativas en portales y foros sobre tu inmobiliaria las incorpora a su respuesta. Auditar tu Share of Model incluye detectar si estás siendo recomendado con advertencias — algo que ningún Google Analytics te muestra.',
+      },
+    ],
+    faq: [
+      {
+        q: '¿El GEO sirve para corredores independientes además de inmobiliarias?',
+        a: 'Especialmente. Un corredor independiente con nombre propio puede posicionarse en ChatGPT para consultas específicas de su zona (ej. "corredor de propiedades en Vitacura con experiencia en departamentos de lujo") con una inversión mínima en JSON-LD y un par de reseñas en plataformas de autoridad.',
+      },
+      {
+        q: '¿Cómo afecta la tasa de interés y el contexto macro a las respuestas de IA?',
+        a: 'Los LLMs con acceso web actualizan su contexto económico con noticias recientes. Si tu inmobiliaria tiene contenido publicado sobre el impacto de la tasa en el mercado chileno, la IA te puede citar como fuente de autoridad en esas consultas — que tienen altísimo volumen en períodos de incertidumbre.',
+      },
+      {
+        q: '¿Para proyectos en preventa también aplica el GEO?',
+        a: 'Sí, y es una ventaja competitiva enorme. Un proyecto en preventa con JSON-LD de tipo RealEstateListing con ubicación, metrajes, precio referencial y fecha de entrega puede aparecer en las respuestas de ChatGPT antes de que el proyecto tenga su primer aviso en portal.',
+      },
+    ],
+  },
 ]
 
 export function getIndustria(id: string): Industria | undefined {

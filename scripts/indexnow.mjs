@@ -20,6 +20,9 @@ const urls = [
   'https://ai-visibility.cl/auditar/saas/',
   'https://ai-visibility.cl/auditar/retail/',
   'https://ai-visibility.cl/auditar/salud/',
+  'https://ai-visibility.cl/auditar/banca/',
+  'https://ai-visibility.cl/auditar/pyme/',
+  'https://ai-visibility.cl/auditar/inmobiliaria/',
 ]
 
 const body = {
