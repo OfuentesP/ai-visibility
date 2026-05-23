@@ -1,16 +1,16 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { toPng } from 'html-to-image'
 import { motion } from 'framer-motion'
-import { Terminal, AlertTriangle, TrendingUp, Download, Share2 } from 'lucide-react'
+import { Terminal, AlertTriangle, TrendingUp } from 'lucide-react'
+import { ExportBar } from '@/features/audit-shared/components/ExportBar'
+import { shareReport } from '@/features/audit-shared/api'
 import {
   ShareOfVoiceChart,
   buildChartDataFromUrl,
 } from '@/features/audit-shared/components/ShareOfVoiceChart'
 import { ActionPlanSection } from '@/features/audit-shared/components/ActionPlanSection'
 import { CacheBadge } from '@/features/audit-shared/components/CacheBadge'
-import { shareReport } from '@/features/audit-shared/api'
 import type { UrlAuditResult } from '@/features/audit-shared/types'
 
 function queryToBullets(query: string): string[] {
@@ -28,35 +28,14 @@ function queryToBullets(query: string): string[] {
 interface Props {
   urlResult: UrlAuditResult
   urlInput: string
+  userEmail: string
+  userName: string
 }
 
-export function UrlResults({ urlResult, urlInput }: Props) {
+export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) {
   const reportRef = useRef<HTMLDivElement>(null)
   const [showPerfilesDetalle, setShowPerfilesDetalle] = useState(false)
   const [showUrlSnippet, setShowUrlSnippet] = useState<Record<number, boolean>>({})
-  const [shareLoading, setShareLoading] = useState(false)
-  const [shareCopied, setShareCopied] = useState(false)
-
-  const handleExportPng = async () => {
-    if (!reportRef.current) return
-    const dataUrl = await toPng(reportRef.current, { backgroundColor: '#0f172a', pixelRatio: 2 })
-    const link = document.createElement('a')
-    link.download = `ai-visibility-url-${urlResult.marca || 'informe'}-${new Date().toISOString().slice(0, 10)}.png`
-    link.href = dataUrl
-    link.click()
-  }
-
-  const handleShare = async () => {
-    setShareLoading(true)
-    try {
-      const code = await shareReport({ modo: 'url', marca: urlInput, resultado: urlResult })
-      const url = `${window.location.origin}/r/?c=${code}`
-      await navigator.clipboard.writeText(url)
-      setShareCopied(true)
-      setTimeout(() => setShareCopied(false), 3000)
-    } catch { /* silent */ } finally { setShareLoading(false) }
-  }
-
   const score = urlResult.visibilidad_pct
   const invisible = urlResult.total_queries - urlResult.queries_con_mencion
   const ganadorCounts: Record<string, number> = {}
@@ -418,21 +397,26 @@ export function UrlResults({ urlResult, urlInput }: Props) {
         )}
       </motion.div>
 
-      {/* Footer + Action bar */}
-      <motion.div variants={fade} className="border-t border-slate-800 pt-4">
+      {/* Footer metadata */}
+      <motion.div variants={fade} className="pt-2">
         <p className="text-slate-500 text-[10px] font-mono">
           Análisis generado por IA · {new Date().toLocaleDateString('es-CL')} · {urlResult.total_queries} tipos de cliente · {urlResult.mercado}
         </p>
       </motion.div>
-      <div className="flex items-center justify-end gap-3 pt-2">
-        <button onClick={handleShare} disabled={shareLoading} className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition-colors">
-          <Share2 className="w-3.5 h-3.5" />
-          {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : 'Compartir informe'}
-        </button>
-        <button onClick={handleExportPng} className="inline-flex items-center gap-2 px-4 py-2 rounded-sm border border-slate-700 bg-slate-800/50 hover:bg-slate-700 text-slate-300 text-sm transition-colors">
-          <Download className="w-3.5 h-3.5" /> Exportar PNG
-        </button>
-      </div>
+
+      {/* Export */}
+      <ExportBar
+        userEmail={userEmail}
+        userName={userName}
+        marca={urlInput}
+        score={urlResult.visibilidad_pct}
+        modo="url"
+        getShareUrl={async () => {
+          const code = await shareReport({ modo: 'url', marca: urlInput, resultado: urlResult })
+          return `${window.location.origin}/r/?c=${code}`
+        }}
+      />
+
     </motion.div>
   )
 }

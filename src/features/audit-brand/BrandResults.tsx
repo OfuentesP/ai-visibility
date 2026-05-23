@@ -3,7 +3,8 @@
 import { useRef, useState } from 'react'
 import { toPng } from 'html-to-image'
 import { motion } from 'framer-motion'
-import { AlertTriangle, TriangleAlert, ShieldCheck, Terminal, TrendingUp, Globe, Search, Code2, Download, Share2 } from 'lucide-react'
+import { AlertTriangle, TriangleAlert, ShieldCheck, Terminal, TrendingUp, Globe, Search, Code2 } from 'lucide-react'
+import { ExportBar } from '@/features/audit-shared/components/ExportBar'
 import {
   ShareOfVoiceChart,
   buildChartDataFromBrand,
@@ -17,6 +18,8 @@ interface Props {
   result: ResultadoBusqueda
   brand: string
   query: string
+  userEmail: string
+  userName: string
   discoveryResult: DiscoveryResponse | null
   discoveryLoading: boolean
   trendsResult: Array<{ query: string; value: number; fuente: string }> | null
@@ -35,35 +38,12 @@ function getScoreBarColor(estado: string) {
   return 'bg-rose-900'
 }
 
-export function BrandResults({ result, brand, query, discoveryResult, discoveryLoading, trendsResult, trendsLoading, onDownloadJson }: Props) {
+export function BrandResults({ result, brand, query, userEmail, userName, discoveryResult, discoveryLoading, trendsResult, trendsLoading, onDownloadJson }: Props) {
   const reportRef = useRef<HTMLDivElement>(null)
   const [showRawOutput, setShowRawOutput] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
-  const [shareLoading, setShareLoading] = useState(false)
-  const [shareCopied, setShareCopied] = useState(false)
-
   const d = result.resultados[0]
   if (!d) return null
-
-  const handleExportPng = async () => {
-    if (!reportRef.current) return
-    const dataUrl = await toPng(reportRef.current, { backgroundColor: '#0f172a', pixelRatio: 2 })
-    const link = document.createElement('a')
-    link.download = `ai-visibility-${brand || 'informe'}-${new Date().toISOString().slice(0, 10)}.png`
-    link.href = dataUrl
-    link.click()
-  }
-
-  const handleShare = async () => {
-    setShareLoading(true)
-    try {
-      const code = await shareReport({ modo: 'brand', marca: brand, query, resultado: result })
-      const url = `${window.location.origin}/r/?c=${code}`
-      await navigator.clipboard.writeText(url)
-      setShareCopied(true)
-      setTimeout(() => setShareCopied(false), 3000)
-    } catch { /* silent */ } finally { setShareLoading(false) }
-  }
 
   // Chart data
   const chartData = buildChartDataFromBrand(d.marcas_mencionadas, d.marca_ganadora, brand)
@@ -504,25 +484,11 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
             ) : (
               <p className="text-slate-500 text-sm px-5 py-4">Ejecuta un análisis para ver las acciones recomendadas.</p>
             )}
-            {!discoveryLoading && (
-              <div className="border-t border-slate-800/50 px-6 py-5">
-                {d.plan_accion?.roi_estimado && (
-                  <div className="flex items-start gap-3 mb-5 px-4 py-3 bg-emerald-950/20 border border-emerald-900/20 rounded-sm">
-                    <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <p className="text-slate-300 text-sm leading-relaxed">{d.plan_accion.roi_estimado}</p>
-                  </div>
-                )}
-                <div className="flex items-center justify-end gap-3">
-                  <button id="btn-export-json" onClick={onDownloadJson} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700 text-slate-400 text-sm transition-colors">
-                    <Download className="w-3.5 h-3.5" /> Exportar JSON
-                  </button>
-                  <button onClick={handleExportPng} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700 text-slate-300 text-sm transition-colors">
-                    <Download className="w-3.5 h-3.5" /> Exportar PNG
-                  </button>
-                  <button onClick={handleShare} disabled={shareLoading} className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-medium transition-colors">
-                    <Share2 className="w-3.5 h-3.5" />
-                    {shareCopied ? '✓ Link copiado' : shareLoading ? 'Generando...' : 'Compartir informe'}
-                  </button>
+            {!discoveryLoading && d.plan_accion?.roi_estimado && (
+              <div className="px-6 pb-5">
+                <div className="flex items-start gap-3 px-4 py-3 bg-emerald-950/20 border border-emerald-900/20 rounded-sm">
+                  <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <p className="text-slate-300 text-sm leading-relaxed">{d.plan_accion.roi_estimado}</p>
                 </div>
               </div>
             )}
@@ -571,6 +537,21 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
           {`Actúa como un experto en GEO. Toma las características de mi marca y redáctalas en 5 preguntas frecuentes usando formato BLUF (Bottom Line Up Front) y sujeto-verbo-predicado para indexar en LLMs.`}
         </pre>
       </motion.div>
+
+      {/* Export */}
+      <ExportBar
+        userEmail={userEmail}
+        userName={userName}
+        marca={brand}
+        query={query}
+        score={d.invisibilidad_score ?? 0}
+        modo="brand"
+        getShareUrl={async () => {
+          const code = await shareReport({ modo: 'brand', marca: brand, query, resultado: result })
+          return `${window.location.origin}/r/?c=${code}`
+        }}
+      />
+
     </motion.div>
   )
 }

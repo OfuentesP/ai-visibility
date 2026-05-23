@@ -363,7 +363,14 @@ export default function AuditarPage() {
           )}
 
           {/* ── URL results ─────────────────────────────────────────────────── */}
-          {mode === 'url' && url.urlResult && <UrlResults urlResult={url.urlResult} urlInput={url.urlInput} />}
+          {mode === 'url' && url.urlResult && (
+            <UrlResults
+              urlResult={url.urlResult}
+              urlInput={url.urlInput}
+              userEmail={userEmail}
+              userName={userName}
+            />
+          )}
 
           {/* ── Brand results ────────────────────────────────────────────────── */}
           {mode === 'brand' && brand.result && (
@@ -371,6 +378,8 @@ export default function AuditarPage() {
               result={brand.result}
               brand={brand.brand}
               query={brand.query}
+              userEmail={userEmail}
+              userName={userName}
               discoveryResult={brand.discoveryResult}
               discoveryLoading={brand.discoveryLoading}
               trendsResult={brand.trendsResult}
