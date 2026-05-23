@@ -15,7 +15,7 @@ export default function Footer() {
               <span className="w-5 h-5 rounded-sm bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
                 AI
               </span>
-              <span className="text-slate-200 text-sm font-semibold">AI Visibility</span>
+              <span className="text-slate-200 text-sm font-semibold">Ai Visibility</span>
             </div>
             <p className="text-slate-600 text-xs leading-relaxed max-w-xs">
               Plataforma de auditoría para Generative Engine Optimization (GEO).
@@ -68,11 +68,35 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-slate-800/40 pt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <p className="text-slate-700 text-[11px] font-mono">
-            © {year} AI Visibility · Datos procesados con GPT-4o · Chile
+            © {year} Ai Visibility · Datos procesados con GPT-4o · Chile
           </p>
-          <p className="text-slate-800 text-[10px] font-mono">
-            GEO · AEO · SoM · RAG · LLM
-          </p>
+          <div className="flex items-center gap-5">
+            <a
+              href="#"
+              aria-label="Instagram"
+              className="text-slate-500 hover:text-pink-400 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+            <a
+              href="#"
+              aria-label="LinkedIn"
+              className="text-slate-500 hover:text-sky-400 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+            <p className="text-slate-800 text-[10px] font-mono">
+              GEO · AEO · SoM · RAG · LLM
+            </p>
+          </div>
         </div>
 
       </div>
