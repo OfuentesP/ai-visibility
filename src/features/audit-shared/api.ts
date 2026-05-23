@@ -36,7 +36,15 @@ export async function auditByUrl(params: {
     body: JSON.stringify({ url: params.url, pais: params.pais ?? 'Chile', email: params.email }),
   })
   if (res.status === 429) throw new FreemiumError()
-  if (!res.ok) { const t = await res.text(); throw new Error(`Error ${res.status}: ${t}`) }
+  if (!res.ok) {
+    try {
+      const body = await res.json()
+      throw new Error(body.detail ?? `Error ${res.status}`)
+    } catch (e) {
+      if (e instanceof Error && e.message !== `Error ${res.status}`) throw e
+      throw new Error(`Error ${res.status}`)
+    }
+  }
   return res.json()
 }
 

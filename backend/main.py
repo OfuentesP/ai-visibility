@@ -828,6 +828,26 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
 
     except HTTPException:
         raise
+    except httpx.HTTPStatusError as e:
+        status = e.response.status_code
+        if status == 403:
+            msg = f"El sitio bloqueó el acceso ({status}). Algunos sitios impiden el análisis automático."
+        elif status == 404:
+            msg = f"La URL no existe ({status}). Verifica que la dirección sea correcta."
+        elif status in (401, 407):
+            msg = f"El sitio requiere autenticación ({status}). Solo se pueden auditar páginas públicas."
+        elif status >= 500:
+            msg = f"El sitio está con problemas técnicos ({status}). Inténtalo más tarde."
+        else:
+            msg = f"El sitio respondió con error {status}. Verifica que la URL sea correcta y pública."
+        logger.warning(f"[from-url] HTTP {status} al acceder a {url}")
+        raise HTTPException(status_code=422, detail=msg)
+    except httpx.ConnectError:
+        logger.warning(f"[from-url] No se pudo conectar a {url}")
+        raise HTTPException(status_code=422, detail="No se pudo conectar al sitio. Verifica que la URL sea correcta y el sitio esté en línea.")
+    except httpx.TimeoutException:
+        logger.warning(f"[from-url] Timeout al acceder a {url}")
+        raise HTTPException(status_code=422, detail="El sitio tardó demasiado en responder. Inténtalo más tarde.")
     except Exception as e:
         logger.error(f"❌ Error en /api/audit/from-url: {e}")
         raise HTTPException(status_code=500, detail=str(e))
