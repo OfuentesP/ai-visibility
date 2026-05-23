@@ -67,7 +67,7 @@ export const guias: Guia[] = [
           'No hay tiempo para estrategias de largo plazo. Esto es lo que mueve la aguja en semanas, no meses.',
         ],
         lista: [
-          'Audita tu Share of Model hoy: Antes de optimizar, sabe dónde estás. Usa AI Visibility para ver si ChatGPT te menciona cuando preguntan por tu categoría en CyberDay. El diagnóstico tarda menos de 60 segundos.',
+          'Audita tu Share of Model hoy: Antes de optimizar, sabe dónde estás. Usa Ai Visibility para ver si ChatGPT te menciona cuando preguntan por tu categoría en CyberDay. El diagnóstico tarda menos de 60 segundos.',
           'Agrega JSON-LD de tipo Organization + Store: Declara quién eres, qué vendes, en qué comunas despachas y cuántos años llevas. Es código que tu equipo puede copiar y pegar en el header de tu sitio esta tarde.',
           'Consigue 5 reseñas nuevas en Google esta semana: Escríbele a tus últimos 20 clientes satisfechos. Una tasa de respuesta del 25% ya te da el volumen necesario para que la IA tenga señales de confianza actualizadas.',
           'Publica un artículo o nota en un medio de nicho: No necesita ser La Tercera. Un blog de tecnología, una nota en Emprende.cl o una publicación en LinkedIn de un periodista chileno con buen alcance son suficientes para que Perplexity te empiece a citar como fuente.',
@@ -98,7 +98,7 @@ export const guias: Guia[] = [
       },
       {
         q: '¿Cómo sé si ChatGPT me está recomendando o diciéndole a mis clientes que vayan a otro lado?',
-        a: 'Auditando activamente. Entra a AI Visibility, ingresa tu nombre de tienda y una búsqueda representativa de tu cliente en CyberDay. El informe muestra en tiempo real si ChatGPT te menciona, con qué sentimiento y qué competidor está capturando ese tráfico en tu lugar. Es gratuito y tarda menos de 60 segundos.',
+        a: 'Auditando activamente. Entra a Ai Visibility, ingresa tu nombre de tienda y una búsqueda representativa de tu cliente en CyberDay. El informe muestra en tiempo real si ChatGPT te menciona, con qué sentimiento y qué competidor está capturando ese tráfico en tu lugar. Es gratuito y tarda menos de 60 segundos.',
       },
     ],
     ctaTexto: 'Auditar mi tienda antes del CyberDay →',

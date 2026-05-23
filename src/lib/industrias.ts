@@ -202,7 +202,7 @@ export const industrias: Industria[] = [
     faq: [
       {
         q: '¿Necesito un equipo técnico para implementar GEO en mi pyme?',
-        a: 'No. La auditoría te entrega el código JSON-LD listo para copiar y pegar en tu sitio web. Si tienes WordPress, Wix o cualquier CMS, tu equipo puede implementarlo en menos de 30 minutos. AI Visibility genera el código estructurado específico para tu modelo de negocio.',
+        a: 'No. La auditoría te entrega el código JSON-LD listo para copiar y pegar en tu sitio web. Si tienes WordPress, Wix o cualquier CMS, tu equipo puede implementarlo en menos de 30 minutos. Ai Visibility genera el código estructurado específico para tu modelo de negocio.',
       },
       {
         q: '¿Puede una pyme competir con Falabella o Sodimac en las respuestas de IA?',
@@ -329,7 +329,7 @@ export const industrias: Industria[] = [
       },
       {
         q: '¿Cómo audito específicamente si aparezco en búsquedas de CyberDay?',
-        a: 'En la auditoría de AI Visibility ingresas tu nombre de tienda y una búsqueda como "tiendas de [categoría] confiables para el CyberDay Chile". El informe muestra si ChatGPT te menciona, con qué sentimiento y qué competidor está capturando esas consultas en tu lugar.',
+        a: 'En la auditoría de Ai Visibility ingresas tu nombre de tienda y una búsqueda como "tiendas de [categoría] confiables para el CyberDay Chile". El informe muestra si ChatGPT te menciona, con qué sentimiento y qué competidor está capturando esas consultas en tu lugar.',
       },
       {
         q: '¿Sirve el GEO para una tienda que participa por primera vez en el CyberDay?',

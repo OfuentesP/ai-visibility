@@ -80,7 +80,7 @@ export default function AuditarPage() {
             <a href="mailto:contacto@ai-visibility.cl?subject=Acceso%20completo%20AI%20Visibility" className="block w-full text-center py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-sm transition mb-2">
               Solicitar acceso completo →
             </a>
-            <button onClick={() => setShowFreemiumModal(false)} className="w-full text-slate-600 text-xs hover:text-slate-400 transition py-1">Cerrar</button>
+            <button onClick={() => setShowFreemiumModal(false)} className="w-full text-slate-400 text-xs hover:text-slate-300 transition py-1">Cerrar</button>
           </div>
         </div>
       )}
@@ -110,7 +110,7 @@ export default function AuditarPage() {
                 <h1 className="text-2xl font-bold text-white tracking-tight">Ai Visibility<span className="text-sky-400">.</span></h1>
                 <p className="text-slate-500 text-xs font-light tracking-wide">Auditoría de posicionamiento en motores de búsqueda con IA</p>
                 {brand.result && (
-                  <p className="text-[10px] font-mono text-slate-700 mt-1.5">
+                  <p className="text-[10px] font-mono text-slate-500 mt-1.5">
                     {new Date().toLocaleDateString('es-CL')} · {new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 )}
@@ -222,7 +222,7 @@ export default function AuditarPage() {
           </motion.div>
 
           {/* ── Citability results ──────────────────────────────────────────── */}
-          {cita.citaResult && (
+          {mode === 'cita' && cita.citaResult && (
             <motion.div id="zone-cita-resultados" className="space-y-5 mb-8" initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}>
               <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-slate-900 border border-slate-800 rounded-sm px-6 py-5">
                 <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
@@ -290,13 +290,13 @@ export default function AuditarPage() {
                 )
               })}
               <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="border-t border-slate-800 pt-3">
-                <p className="text-slate-700 text-[10px] font-mono">Gap analysis generado por GPT-4o-mini · {cita.citaResult.territorios.length} territorios auditados · {new Date().toLocaleString('es-CL')}</p>
+                <p className="text-slate-500 text-[10px] font-mono">Gap analysis generado por GPT-4o-mini · {cita.citaResult.territorios.length} territorios auditados · {new Date().toLocaleString('es-CL')}</p>
               </motion.div>
             </motion.div>
           )}
 
           {/* ── Compare results ─────────────────────────────────────────────── */}
-          {cmp.compareResult && (
+          {mode === 'compare' && cmp.compareResult && (
             <motion.div id="zone-compare-resultados" className="space-y-6 mb-8" initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}>
               <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
                 <div className="flex items-stretch">
@@ -357,16 +357,16 @@ export default function AuditarPage() {
                 ))}
               </motion.div>
               <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="border-t border-slate-800 pt-3">
-                <p className="text-slate-700 text-[10px] font-mono">Análisis generado por GPT-4o-mini · {cmp.compareResult.categoria} · {new Date().toLocaleString('es-CL')}</p>
+                <p className="text-slate-500 text-[10px] font-mono">Análisis generado por GPT-4o-mini · {cmp.compareResult.categoria} · {new Date().toLocaleString('es-CL')}</p>
               </motion.div>
             </motion.div>
           )}
 
           {/* ── URL results ─────────────────────────────────────────────────── */}
-          {url.urlResult && <UrlResults urlResult={url.urlResult} urlInput={url.urlInput} />}
+          {mode === 'url' && url.urlResult && <UrlResults urlResult={url.urlResult} urlInput={url.urlInput} />}
 
           {/* ── Brand results ────────────────────────────────────────────────── */}
-          {brand.result && (
+          {mode === 'brand' && brand.result && (
             <BrandResults
               result={brand.result}
               brand={brand.brand}
@@ -380,22 +380,22 @@ export default function AuditarPage() {
           )}
 
           {/* ── Brand footer ─────────────────────────────────────────────────── */}
-          {brand.result && (
+          {mode === 'brand' && brand.result && (
             <motion.div id="zone-footer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="border-t border-slate-800 bg-slate-950 p-8 mt-10">
               <div className="max-w-5xl mx-auto">
-                <p className="text-slate-600 text-xs uppercase tracking-widest font-semibold mb-4">Metodología y Fuentes</p>
+                <p className="text-slate-400 text-xs uppercase tracking-widest font-semibold mb-4">Metodología y Fuentes</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div>
                     <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">Motor de Inteligencia</p>
-                    <p className="text-slate-700 text-xs font-mono leading-relaxed">• OpenAI GPT-4o-mini<br />• Análisis Multimodelo<br />• Contexto Regional Chile</p>
+                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• OpenAI GPT-4o-mini<br />• Análisis Multimodelo<br />• Contexto Regional Chile</p>
                   </div>
                   <div>
                     <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">Fuentes de Verdad</p>
-                    <p className="text-slate-700 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones IA</p>
+                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones IA</p>
                   </div>
                   <div>
-                    <p className="text-slate-600 text-[10px] font-semibold uppercase tracking-wide mb-2">Metodología</p>
-                    <p className="text-slate-700 text-xs font-mono leading-relaxed">• Synthetic Users Simulation<br />• Score 0–100 Normalizado<br />• PAS: Problema → Solución</p>
+                    <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wide mb-2">Metodología</p>
+                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• Synthetic Users Simulation<br />• Score 0–100 Normalizado<br />• PAS: Problema → Solución</p>
                   </div>
                 </div>
                 <p className="text-slate-800 text-[10px] font-mono mt-6">Datos actualizados: {new Date().toLocaleString('es-CL')}</p>

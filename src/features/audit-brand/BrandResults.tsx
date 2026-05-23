@@ -174,7 +174,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
 
       {/* 01 · Resumen Ejecutivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-600 shrink-0">01</span>
+        <span className="text-xs font-mono text-slate-500 shrink-0">01</span>
         <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>
@@ -211,7 +211,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
       {d.marcas_mencionadas.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">02</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
             <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la IA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -233,7 +233,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
             />
             {result.texto_original_ia && (
               <div className="mt-3">
-                <button onClick={() => setShowRawOutput(!showRawOutput)} className="flex items-center gap-1.5 text-[10px] text-slate-600 hover:text-slate-400 transition-colors">
+                <button onClick={() => setShowRawOutput(!showRawOutput)} className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-slate-300 transition-colors">
                   <Terminal className="w-3 h-3" />
                   {showRawOutput ? 'Ocultar respuesta original' : 'Ver respuesta original de la IA'}
                 </button>
@@ -250,7 +250,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
 
       {/* 03 · Diagnóstico Competitivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-600 shrink-0">03</span>
+        <span className="text-xs font-mono text-slate-500 shrink-0">03</span>
         <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>
@@ -321,7 +321,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
       {d.territorios_desatendidos && d.territorios_desatendidos.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">04</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
             <span className="text-sm text-slate-400 font-medium">Temas donde la IA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -342,7 +342,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
                 const opp = n === 'Alto' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } : n === 'Medio' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
                 return (
                   <div key={idx} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-[11px] font-mono text-slate-700 pt-1 w-5 shrink-0 select-none">{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(idx + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-2">
                         <p className="text-sm font-semibold text-slate-100 leading-snug">{t.topico_emergente}</p>
@@ -354,7 +354,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
                         )}
                       </div>
                       <p className="text-slate-400 text-sm leading-relaxed">{t.porque_es_oportunidad}</p>
-                      {t.intension_usuario && <p className="text-slate-600 text-xs mt-1.5 italic">Intención: {t.intension_usuario}</p>}
+                      {t.intension_usuario && <p className="text-slate-400 text-xs mt-1.5 italic">Intención: {t.intension_usuario}</p>}
                     </div>
                   </div>
                 )
@@ -372,7 +372,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
       {(trendsLoading || (trendsResult && trendsResult.length > 0)) && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">05</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">05</span>
             <span className="text-sm text-slate-400 font-medium">Cómo buscan en Google</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -398,7 +398,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
                     const isTop = idx === 0
                     return (
                       <div key={idx} className="flex items-center gap-3 group">
-                        <span className={`shrink-0 text-[10px] font-mono w-4 text-right ${isTop ? 'text-amber-400 font-bold' : 'text-slate-600'}`}>{idx + 1}</span>
+                        <span className={`shrink-0 text-[10px] font-mono w-4 text-right ${isTop ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>{idx + 1}</span>
                         <div className="flex-1 min-w-0 relative">
                           <div className={`absolute inset-y-0 left-0 rounded-sm transition-all duration-500 ${isTop ? 'bg-amber-500/15' : 'bg-slate-700/25'}`} style={{ width: `${barWidth}%` }} />
                           <div className="relative flex items-center justify-between gap-2 px-2.5 py-1.5">
@@ -406,7 +406,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
                             <span className={`text-[10px] font-mono tabular-nums ${isTop ? 'text-amber-400' : 'text-slate-500'}`}>{item.value}</span>
                           </div>
                         </div>
-                        <span className="shrink-0 text-[9px] text-slate-700 max-w-[100px] truncate hidden md:block group-hover:text-slate-500 transition-colors" title={item.fuente}>← {item.fuente.split('?')[0].slice(0, 35)}{item.fuente.length > 35 ? '…' : ''}</span>
+                        <span className="shrink-0 text-[9px] text-slate-500 max-w-[100px] truncate hidden md:block group-hover:text-slate-400 transition-colors" title={item.fuente}>← {item.fuente.split('?')[0].slice(0, 35)}{item.fuente.length > 35 ? '…' : ''}</span>
                       </div>
                     )
                   })}
@@ -414,11 +414,11 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
               )
             })()}
             {!trendsLoading && trendsResult && trendsResult.length === 0 && (
-              <p className="text-slate-600 text-xs py-2">Google Trends no devolvió datos para estas queries.</p>
+              <p className="text-slate-400 text-xs py-2">Google Trends no devolvió datos para estas queries.</p>
             )}
             <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-800/60">
-              <span className="flex items-center gap-1.5 text-[10px] text-slate-600"><span className="w-2 h-2 rounded-sm bg-amber-500/40 shrink-0" /> #1 Mayor interés</span>
-              <span className="text-[10px] text-slate-600">Escala 0–100 relativa al pico del período (7 días)</span>
+              <span className="flex items-center gap-1.5 text-[10px] text-slate-400"><span className="w-2 h-2 rounded-sm bg-amber-500/40 shrink-0" /> #1 Mayor interés</span>
+              <span className="text-[10px] text-slate-400">Escala 0–100 relativa al pico del período (7 días)</span>
             </div>
           </motion.div>
         </>
@@ -428,7 +428,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
       {(discoveryLoading || discoveryResult) && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">06</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">06</span>
             <span className="text-sm text-slate-400 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -475,7 +475,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
                       <div key={idx} className={`rounded-sm border px-4 py-3 ${op.isWin ? 'bg-emerald-950/10 border-emerald-900/20' : op.ganador ? 'bg-slate-950/40 border-rose-900/15' : 'bg-amber-950/10 border-amber-800/20'}`}>
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1 min-w-0">
-                            <p className="text-slate-500 text-xs mb-1">{iconos[idx] || '👤'} {nombre}{op.necesidad_principal && <span className="text-slate-600"> · {op.necesidad_principal.split(',')[0]}</span>}</p>
+                            <p className="text-slate-500 text-xs mb-1">{iconos[idx] || '👤'} {nombre}{op.necesidad_principal && <span className="text-slate-400"> · {op.necesidad_principal.split(',')[0]}</span>}</p>
                             <p className="text-slate-200 text-sm leading-relaxed">{preguntaCorta}</p>
                           </div>
                           <div className="shrink-0 text-right mt-0.5">
@@ -484,7 +484,7 @@ export function BrandResults({ result, brand, query, discoveryResult, discoveryL
                             ) : (
                               <div className="flex flex-col items-end">
                                 <span className="text-amber-400 text-xs font-semibold">Territorio libre</span>
-                                <span className="text-slate-600 text-[10px]">Ninguna marca satisface</span>
+                                <span className="text-slate-400 text-[10px]">Ninguna marca satisface</span>
                               </div>
                             )}
                           </div>

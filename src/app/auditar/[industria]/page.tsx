@@ -12,9 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ industria
   const ind = getIndustria(slug)
   if (!ind) return {}
   return {
-    title: `${ind.tagline} — Auditoría de Visibilidad en ChatGPT | AI Visibility`,
+    title: `${ind.tagline} — Auditoría de Visibilidad en ChatGPT | Ai Visibility`,
     description: ind.descripcion,
-    keywords: [ind.tagline, 'GEO Chile', 'Share of Model', 'ChatGPT ' + ind.nombre, 'AI Visibility'],
+    keywords: [ind.tagline, 'GEO Chile', 'Share of Model', 'ChatGPT ' + ind.nombre, 'Ai Visibility'],
     alternates: {
       canonical: `https://ai-visibility.cl/auditar/${ind.id}/`,
       languages: {
@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: { params: Promise<{ industria
       },
     },
     openGraph: {
-      title: `${ind.tagline} | AI Visibility`,
+      title: `${ind.tagline} | Ai Visibility`,
       description: ind.descripcion,
       url: `https://ai-visibility.cl/auditar/${ind.id}/`,
-      siteName: 'AI Visibility',
+      siteName: 'Ai Visibility',
       locale: 'es_CL',
       type: 'website',
     },
@@ -80,7 +80,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
         >
           Auditar mi marca gratis →
         </Link>
-        <p className="text-slate-700 text-xs font-mono mt-4">Sin tarjeta de crédito · Resultado en &lt;60s</p>
+        <p className="text-slate-500 text-xs font-mono mt-4">Sin tarjeta de crédito · Resultado en &lt;60s</p>
       </section>
 
       {/* QUERIES que hace tu cliente */}
@@ -100,7 +100,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
               </div>
             ))}
           </div>
-          <p className="text-slate-600 text-xs font-mono text-center mt-6">
+          <p className="text-slate-400 text-xs font-mono text-center mt-6">
             ¿Apareces en las respuestas? Audítalo gratis.
           </p>
         </div>
@@ -159,12 +159,12 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
       {/* FOOTER NAV */}
       <section className="border-t border-slate-800/60 py-8 px-4">
         <div className="max-w-3xl mx-auto flex flex-wrap justify-between items-center gap-4">
-          <Link href="/" className="text-xs font-mono text-slate-600 hover:text-slate-300 transition-colors">
+          <Link href="/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
             ← Volver al inicio
           </Link>
           <div className="flex gap-6">
             {industrias.filter((i) => i.id !== ind.id).map((i) => (
-              <Link key={i.id} href={`/auditar/${i.id}/`} className="text-xs font-mono text-slate-600 hover:text-indigo-400 transition-colors capitalize">
+              <Link key={i.id} href={`/auditar/${i.id}/`} className="text-xs font-mono text-slate-400 hover:text-indigo-400 transition-colors capitalize">
                 {i.nombre}
               </Link>
             ))}

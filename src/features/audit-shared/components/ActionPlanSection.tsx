@@ -66,7 +66,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
         }`}
         onClick={() => { setExpanded(v => !v); if (expanded) setShowCode(false) }}
       >
-        <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-400 font-bold' : 'text-slate-600'}`}>
+        <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>
           {index + 1}.
         </span>
         <div className="flex-1 min-w-0">
@@ -74,7 +74,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
             {concepto.charAt(0).toUpperCase() + concepto.slice(1)}
           </p>
           <div className="flex items-center gap-2 mt-0.5">
-            <p className="text-slate-600 text-xs truncate">{action.tactica_tecnica}</p>
+            <p className="text-slate-400 text-xs truncate">{action.tactica_tecnica}</p>
             {action.area_responsable && (
               <span className={`hidden sm:inline text-[10px] font-semibold px-1.5 py-px rounded border shrink-0 ${areaCfg.color.split(' ').slice(0, 3).join(' ')}`}>
                 {areaCfg.label}
@@ -93,7 +93,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
           ) : action.ice_score >= 5 ? (
             <span className="text-xs text-amber-600">→ Medio</span>
           ) : (
-            <span className="text-xs text-slate-600">Complementaria</span>
+            <span className="text-xs text-slate-500">Complementaria</span>
           )}
           <span className={`text-slate-500 text-xs transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}>›</span>
         </div>
@@ -113,8 +113,8 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
               <p className="text-sm text-slate-400 leading-snug">{concepto}</p>
             )}
             {action.area_responsable && (
-              <p className="text-xs text-slate-600">
-                Responsable: <span className="text-slate-400">{action.area_responsable}</span>
+              <p className="text-xs text-slate-400">
+                Responsable: <span className="text-slate-300">{action.area_responsable}</span>
               </p>
             )}
           </div>
@@ -126,7 +126,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
                 className="w-full flex items-center justify-between px-5 py-2.5 text-left hover:bg-slate-800/30 transition-colors"
               >
                 <span className="text-xs font-medium text-slate-500 hover:text-slate-300 transition-colors">Ver cómo implementarlo</span>
-                <span className={`text-slate-600 text-xs transition-transform duration-200 ${showCode ? 'rotate-90' : ''}`}>›</span>
+                <span className={`text-slate-400 text-xs transition-transform duration-200 ${showCode ? 'rotate-90' : ''}`}>›</span>
               </button>
 
               {showCode && (
@@ -135,7 +135,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
                     <ol className="space-y-2.5 pt-1">
                       {action.pasos_ejecucion.map((paso, pi) => (
                         <li key={pi} className="flex items-start gap-3">
-                          <span className="text-[11px] font-mono text-slate-600 pt-0.5 w-4 shrink-0 select-none">{pi + 1}.</span>
+                          <span className="text-[11px] font-mono text-slate-500 pt-0.5 w-4 shrink-0 select-none">{pi + 1}.</span>
                           <span className="text-sm text-slate-300 leading-snug">{paso}</span>
                         </li>
                       ))}
@@ -185,7 +185,7 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
   return (
     <>
       <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-600 shrink-0">{sectionIndex}</span>
+        <span className="text-xs font-mono text-slate-500 shrink-0">{sectionIndex}</span>
         <span className="text-sm text-slate-400 font-medium">Plan de acción</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>

@@ -20,9 +20,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const t = getTermino(slug)
   if (!t) return {}
   return {
-    title: `${t.termino} — Definición y Guía GEO | AI Visibility`,
+    title: `${t.termino} — Definición y Guía GEO | Ai Visibility`,
     description: t.definicion,
-    keywords: [t.termino, 'GEO', 'Generative Engine Optimization', 'LLM marketing', 'AI Visibility'],
+    keywords: [t.termino, 'GEO', 'Generative Engine Optimization', 'LLM marketing', 'Ai Visibility'],
     alternates: {
       canonical: `https://ai-visibility.cl/glosario/${t.id}/`,
       languages: {
@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
     },
     openGraph: {
-      title: `${t.termino} | Glosario GEO — AI Visibility`,
+      title: `${t.termino} | Glosario GEO — Ai Visibility`,
       description: t.definicion,
       url: `https://ai-visibility.cl/glosario/${t.id}/`,
-      siteName: 'AI Visibility',
+      siteName: 'Ai Visibility',
       locale: 'es_CL',
       type: 'article',
     },
@@ -71,8 +71,8 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
       <main className="max-w-2xl mx-auto py-12 md:py-20 px-4">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-600 mb-10">
-          <Link href="/" className="hover:text-slate-400 transition-colors">AI Visibility</Link>
+        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-10">
+          <Link href="/" className="hover:text-slate-400 transition-colors">Ai Visibility</Link>
           <span>/</span>
           <Link href="/glosario/" className="hover:text-slate-400 transition-colors">Glosario</Link>
           <span>/</span>
@@ -104,7 +104,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
         {/* Related terms */}
         {relacionados.length > 0 && (
           <div className="border-t border-slate-800 pt-8 mb-12">
-            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-4">Términos relacionados</p>
+            <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Términos relacionados</p>
             <div className="flex flex-wrap gap-3">
               {relacionados.map((r) => r && (
                 <Link
@@ -135,7 +135,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
 
         {/* Back */}
         <div className="mt-10 pt-6 border-t border-slate-800">
-          <Link href="/glosario/" className="text-xs font-mono text-slate-600 hover:text-slate-300 transition-colors">
+          <Link href="/glosario/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
             ← Todos los términos
           </Link>
         </div>

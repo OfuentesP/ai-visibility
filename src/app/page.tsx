@@ -3,7 +3,7 @@ import { Check, X, Minus, Search, Users, PieChart, Terminal } from 'lucide-react
 import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 
 export const metadata = {
-  title: 'AI Visibility | Plataforma de Optimización para Motores Generativos (GEO)',
+  title: 'Ai Visibility | Plataforma de Optimización para Motores Generativos (GEO)',
   description: 'Mide y optimiza el Share of Model (SoM) de tu marca en ChatGPT, Gemini y Perplexity. La plataforma líder en Generative Engine Optimization en Chile.',
   keywords: ['Generative Engine Optimization', 'GEO', 'Share of Model', 'Auditoría IA', 'AI Readiness Score', 'ChatGPT SEO'],
   alternates: {
@@ -11,16 +11,16 @@ export const metadata = {
     languages: { 'es': 'https://ai-visibility.cl', 'es-CL': 'https://ai-visibility.cl' },
   },
   openGraph: {
-    title: 'AI Visibility | Auditoría de Visibilidad en Inteligencia Artificial',
+    title: 'Ai Visibility | Auditoría de Visibilidad en Inteligencia Artificial',
     description: 'Descubre qué dicen los modelos de lenguaje sobre tu marca y obtén tu plan de recuperación GEO.',
     url: 'https://ai-visibility.cl',
-    siteName: 'AI Visibility',
+    siteName: 'Ai Visibility',
     locale: 'es_CL',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Visibility | GEO & Share of Model Platform',
+    title: 'Ai Visibility | GEO & Share of Model Platform',
     description: 'Descubre qué dicen los modelos de lenguaje sobre tu marca y obtén tu plan de recuperación GEO.',
   },
 }
@@ -31,7 +31,7 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": "https://ai-visibility.cl/#organization",
-      "name": "AI Visibility",
+      "name": "Ai Visibility",
       "url": "https://ai-visibility.cl",
       "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization.",
       "address": { "@type": "PostalAddress", "addressCountry": "CL" }
@@ -39,7 +39,7 @@ const jsonLd = {
     {
       "@type": "SoftwareApplication",
       "@id": "https://ai-visibility.cl/#software",
-      "name": "AI Visibility Auditor",
+      "name": "Ai Visibility Auditor",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web browser",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -51,7 +51,7 @@ const jsonLd = {
         { "@type": "Question", "name": "¿Cuál es la diferencia entre SEO y GEO?", "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por IA, donde no hay listas de enlaces, sino una única recomendación directa." } },
         { "@type": "Question", "name": "¿Qué es el Share of Model (SoM)?", "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al Share of Voice. Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca frente a tus competidores directos cuando se le pregunta sobre tu industria." } },
         { "@type": "Question", "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?", "acceptedAnswer": { "@type": "Answer", "text": "Si tu marca no aparece en LLMs se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad o carencia de datos estructurados legibles para máquinas en tu sitio web." } },
-        { "@type": "Question", "name": "¿Cómo evalúa AI Visibility mi presencia en la IA?", "acceptedAnswer": { "@type": "Answer", "text": "AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. Extrae métricas clave: si tu marca es mencionada, análisis de sentimiento, porcentaje de visibilidad y qué competidor domina las respuestas." } },
+        { "@type": "Question", "name": "¿Cómo evalúa Ai Visibility mi presencia en la IA?", "acceptedAnswer": { "@type": "Answer", "text": "Ai Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. Extrae métricas clave: si tu marca es mencionada, análisis de sentimiento, porcentaje de visibilidad y qué competidor domina las respuestas." } },
         { "@type": "Question", "name": "¿Pueden garantizar que apareceré siempre como la marca #1?", "acceptedAnswer": { "@type": "Answer", "text": "No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado." } },
         { "@type": "Question", "name": "¿Cuánto tiempo tarda en hacer efecto la optimización GEO?", "acceptedAnswer": { "@type": "Answer", "text": "La inyección de JSON-LD es legible por la IA en 48 horas. Para que los modelos ajusten sus respuestas RAG, suele tomar entre 3 y 6 semanas ver un aumento sostenido." } },
         { "@type": "Question", "name": "¿Por qué la auditoría Beta se centra en ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "Porque concentra más del 80% de las consultas generativas B2B y B2C en Chile. Priorizamos dominar el motor principal. Además, optimizar para OpenAI mejora automáticamente tu legibilidad para Gemini, que está en nuestra hoja de ruta." } }
@@ -104,8 +104,8 @@ const faqConceptos = [
 
 const faqEstrategia = [
   {
-    q: '¿Cómo evalúa AI Visibility mi presencia en la IA?',
-    a: 'AI Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. La plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.',
+    q: '¿Cómo evalúa Ai Visibility mi presencia en la IA?',
+    a: 'Ai Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. La plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.',
   },
   {
     q: '¿Pueden garantizar que apareceré siempre como la marca #1?',
@@ -160,7 +160,7 @@ export default function LandingPage() {
         </div>
 
         {/* Social proof strip */}
-        <div className="mt-14 flex flex-wrap items-center justify-center gap-6 text-slate-600 text-xs font-mono">
+        <div className="mt-14 flex flex-wrap items-center justify-center gap-6 text-slate-400 text-xs font-mono">
           <span>ChatGPT · GPT-4o</span>
           <span className="text-slate-800">·</span>
           <span>Perplexity AI</span>
@@ -254,7 +254,7 @@ export default function LandingPage() {
                 <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
                   <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-950/40 border-indigo-500/30' : 'bg-slate-900 border-slate-800'}`}>
                     {step.icon}
-                    <span className={`mt-1.5 font-mono text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-400' : 'text-slate-600'}`}>{step.n}</span>
+                    <span className={`mt-1.5 font-mono text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-400' : 'text-slate-500'}`}>{step.n}</span>
                   </div>
                   <div className={`flex-1 p-6 rounded-sm border ${step.highlight ? 'bg-indigo-950/20 border-indigo-900/40' : 'bg-slate-900/40 border-slate-800 hover:bg-slate-900/60 transition-colors'}`}>
                     {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">Tecnología exclusiva</span>}
@@ -369,7 +369,7 @@ export default function LandingPage() {
               <div className="p-5 hidden md:block" />
               <div className="p-5 border-b-2 border-indigo-500 bg-indigo-500/5">
                 <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1">Plataforma GEO</span>
-                <p className="text-white font-bold text-sm">AI Visibility</p>
+                <p className="text-white font-bold text-sm">Ai Visibility</p>
               </div>
               <div className="p-5 opacity-60">
                 <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest block mb-1">Marketing tradicional</span>
@@ -480,7 +480,7 @@ export default function LandingPage() {
             <div className="bg-slate-900/50 border border-slate-800 rounded-sm p-7 opacity-70">
               <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Pro</p>
               <p className="text-4xl font-extrabold text-slate-400 mb-1">Pronto</p>
-              <p className="text-slate-600 text-xs mb-6">Auditorías ilimitadas + monitoreo continuo</p>
+              <p className="text-slate-400 text-xs mb-6">Auditorías ilimitadas + monitoreo continuo</p>
               <ul className="space-y-3 mb-8">
                 {[
                   'Todo lo del plan Beta',
@@ -495,7 +495,7 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <div className="block w-full text-center px-5 py-3 rounded-sm bg-slate-800 text-slate-600 font-semibold text-sm cursor-not-allowed">
+              <div className="block w-full text-center px-5 py-3 rounded-sm bg-slate-800 text-slate-400 font-semibold text-sm cursor-not-allowed">
                 Próximamente
               </div>
             </div>
@@ -539,7 +539,7 @@ export default function LandingPage() {
           >
             Auditar mi marca ahora →
           </Link>
-          <p className="text-slate-700 text-xs font-mono mt-5">Sin tarjeta de crédito · 2 auditorías gratis · Resultado en &lt;60s</p>
+          <p className="text-slate-500 text-xs font-mono mt-5">Sin tarjeta de crédito · 2 auditorías gratis · Resultado en &lt;60s</p>
         </div>
       </section>
 

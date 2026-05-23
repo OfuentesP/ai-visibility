@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { terminos } from '@/lib/terminos'
 
 export const metadata = {
-  title: 'Glosario de Inteligencia Artificial y GEO | AI Visibility',
+  title: 'Glosario de Inteligencia Artificial y GEO | Ai Visibility',
   description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model (SoM), GEO, RAG, Alucinaciones de IA y más.',
   keywords: ['Share of Model', 'GEO', 'RAG', 'LLM', 'Alucinación IA', 'Generative Engine Optimization'],
   alternates: {
@@ -11,7 +11,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Glosario de IA y GEO | AI Visibility',
+    title: 'Glosario de IA y GEO | Ai Visibility',
     description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model, GEO, RAG y más.',
   },
 }
@@ -54,7 +54,7 @@ export default function GlosarioPage() {
           <h1 className="text-xl font-semibold text-slate-100 leading-snug">
             Glosario de IA &amp; GEO
           </h1>
-          <p className="text-slate-600 text-sm mt-2">
+          <p className="text-slate-400 text-sm mt-2">
             Conceptos fundamentales para entender la visibilidad de marca en motores generativos.
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function GlosarioPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 divide-y-0">
           {terminos.map((item, i) => (
             <div key={item.id} id={item.id} className="py-7 flex gap-6 border-b border-slate-800/60">
-              <span className="text-[11px] font-mono text-slate-700 pt-0.5 w-5 shrink-0 select-none">
+              <span className="text-[11px] font-mono text-slate-500 pt-0.5 w-5 shrink-0 select-none">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div className="flex-1 min-w-0">
@@ -92,7 +92,7 @@ export default function GlosarioPage() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-slate-800">
-          <Link href="/" className="text-xs font-mono text-slate-600 hover:text-slate-300 transition-colors">
+          <Link href="/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
             ← Volver a la auditoría
           </Link>
         </div>

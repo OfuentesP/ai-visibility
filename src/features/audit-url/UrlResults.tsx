@@ -114,7 +114,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
 
       {/* 01 · Resumen Ejecutivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-600 shrink-0">01</span>
+        <span className="text-xs font-mono text-slate-500 shrink-0">01</span>
         <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>
@@ -124,7 +124,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
         <div className="px-6 pt-5 pb-4 border-b border-slate-800 flex items-center justify-between gap-4">
           <div>
             <p className="text-xs text-slate-500 mb-0.5">{urlResult.marca} · {urlResult.mercado}</p>
-            <p className="text-xs font-mono text-slate-600">{urlResult.categoria}</p>
+            <p className="text-xs font-mono text-slate-400">{urlResult.categoria}</p>
           </div>
           <div className="text-right shrink-0">
             <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
@@ -162,7 +162,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
         </div>
         {urlResult.diferenciadores.length > 0 && (
           <div className="border-t border-slate-800/60 px-6 py-3">
-            <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Diferenciadores que la IA no menciona</p>
+            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la IA no menciona</p>
             <div className="flex flex-wrap gap-2">
               {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
                 <span key={i} className="text-xs text-slate-400 bg-slate-800/50 border border-slate-700/60 rounded px-2.5 py-1">{dif}</span>
@@ -176,7 +176,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
       {hasMentions && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">02</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
             <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la IA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -201,7 +201,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
       {urlResult.competitive_deep_dive?.competidor && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">03</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">03</span>
             <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -268,7 +268,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
       {urlResult.untapped_territories && urlResult.untapped_territories.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-600 shrink-0">04</span>
+            <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
             <span className="text-sm text-slate-400 font-medium">Temas donde la IA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -287,7 +287,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
                 const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-[11px] font-mono text-slate-700 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
+                    <span className="text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-3 mb-2">
                         <p className="text-sm font-semibold text-slate-100 leading-snug">{territory.titulo}</p>
@@ -320,7 +320,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
 
       {/* 06 · Evidencia */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-600 shrink-0">06</span>
+        <span className="text-xs font-mono text-slate-500 shrink-0">06</span>
         <span className="text-sm text-slate-400 font-medium">Exportar informe</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>
@@ -360,11 +360,11 @@ export function UrlResults({ urlResult, urlInput }: Props) {
                 </div>
                 <div className="px-5 pb-4 space-y-3">
                   <div className="bg-slate-900 border border-slate-800 rounded-sm px-3 py-2.5">
-                    <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Intención de Búsqueda Simulada</p>
+                    <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Intención de Búsqueda Simulada</p>
                     <ul className="space-y-1">
                       {queryToBullets(r.query).map((bullet, bi) => (
                         <li key={bi} className="flex items-start gap-1.5 text-xs text-slate-400">
-                          <span className="text-slate-600 shrink-0 mt-0.5">•</span><span>{bullet}</span>
+                          <span className="text-slate-400 shrink-0 mt-0.5">•</span><span>{bullet}</span>
                         </li>
                       ))}
                     </ul>
@@ -376,7 +376,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
                     const hidden = r.marcas_mencionadas.length - visible.length
                     return (
                       <div>
-                        <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-1.5">La IA recomienda a</p>
+                        <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1.5">La IA recomienda a</p>
                         <div className="flex flex-wrap gap-1.5 items-center">
                           {visible.map((m, j) => {
                             const isWinner = j === 0
@@ -387,7 +387,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
                               </span>
                             )
                           })}
-                          {hidden > 0 && <span className="text-[10px] text-slate-600">+{hidden} más</span>}
+                          {hidden > 0 && <span className="text-[10px] text-slate-400">+{hidden} más</span>}
                         </div>
                       </div>
                     )
@@ -400,7 +400,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
                   )}
                   {r.snippet && (
                     <div>
-                      <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-[10px] text-slate-600 hover:text-slate-400 transition-colors">
+                      <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-slate-300 transition-colors">
                         <Terminal className="w-3 h-3" />
                         {showUrlSnippet[i] ? 'Ocultar respuesta original' : 'Ver respuesta original de la IA'}
                       </button>
@@ -420,7 +420,7 @@ export function UrlResults({ urlResult, urlInput }: Props) {
 
       {/* Footer + Action bar */}
       <motion.div variants={fade} className="border-t border-slate-800 pt-4">
-        <p className="text-slate-700 text-[10px] font-mono">
+        <p className="text-slate-500 text-[10px] font-mono">
           Análisis generado por IA · {new Date().toLocaleDateString('es-CL')} · {urlResult.total_queries} tipos de cliente · {urlResult.mercado}
         </p>
       </motion.div>

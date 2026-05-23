@@ -12,9 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const g = getGuia(slug)
   if (!g) return {}
   return {
-    title: `${g.titulo} | AI Visibility`,
+    title: `${g.titulo} | Ai Visibility`,
     description: g.descripcion,
-    keywords: [g.categoria, 'GEO Chile', 'AEO', 'ChatGPT marketing', 'AI Visibility'],
+    keywords: [g.categoria, 'GEO Chile', 'AEO', 'ChatGPT marketing', 'Ai Visibility'],
     alternates: {
       canonical: `https://ai-visibility.cl/guias/${g.slug}/`,
       languages: {
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: g.titulo,
       description: g.descripcion,
       url: `https://ai-visibility.cl/guias/${g.slug}/`,
-      siteName: 'AI Visibility',
+      siteName: 'Ai Visibility',
       locale: 'es_CL',
       type: 'article',
       publishedTime: g.fecha,
@@ -53,7 +53,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
         author: {
           '@type': 'Organization',
           '@id': 'https://ai-visibility.cl/#organization',
-          name: 'AI Visibility',
+          name: 'Ai Visibility',
         },
         publisher: { '@id': 'https://ai-visibility.cl/#organization' },
         url: `https://ai-visibility.cl/guias/${g.slug}/`,
@@ -80,8 +80,8 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-20">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-600 mb-10">
-          <Link href="/" className="hover:text-slate-400 transition-colors">AI Visibility</Link>
+        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-10">
+          <Link href="/" className="hover:text-slate-400 transition-colors">Ai Visibility</Link>
           <span>/</span>
           <span className="text-slate-500">Guías</span>
           <span>/</span>
@@ -100,8 +100,8 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
           <p className="text-slate-300 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
             {g.intro}
           </p>
-          <div className="flex items-center gap-4 mt-6 text-[11px] font-mono text-slate-700">
-            <span>AI Visibility</span>
+          <div className="flex items-center gap-4 mt-6 text-[11px] font-mono text-slate-500">
+            <span>Ai Visibility</span>
             <span>·</span>
             <time dateTime={g.fecha}>{new Date(g.fecha).toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
           </div>
@@ -132,7 +132,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
                 </ul>
               )}
               {sec.nota && (
-                <p className="mt-5 text-[12px] text-slate-600 font-mono leading-relaxed border-l-2 border-slate-800 pl-4">
+                <p className="mt-5 text-[12px] text-slate-400 font-mono leading-relaxed border-l-2 border-slate-800 pl-4">
                   {sec.nota}
                 </p>
               )}
@@ -164,7 +164,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
 
         {/* Footer nav */}
         <div className="mt-12 pt-6 border-t border-slate-800 flex justify-between items-center">
-          <Link href="/" className="text-xs font-mono text-slate-600 hover:text-slate-300 transition-colors">
+          <Link href="/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
             ← Volver al inicio
           </Link>
           <Link href={g.ctaUrl} className="text-xs font-mono text-indigo-500 hover:text-indigo-300 transition-colors">

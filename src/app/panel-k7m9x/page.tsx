@@ -191,16 +191,16 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
         </div>
 
         <div className="px-6 py-5">
-          {loading && <p className="text-slate-600 text-sm text-center py-8 font-mono">Cargando...</p>}
+          {loading && <p className="text-slate-400 text-sm text-center py-8 font-mono">Cargando...</p>}
           {error && <p className="text-rose-400 text-sm text-center py-8">{error}</p>}
           {!loading && !error && entries.length === 0 && (
-            <p className="text-slate-600 text-sm text-center py-8">Sin auditorías registradas para este email.</p>
+            <p className="text-slate-400 text-sm text-center py-8">Sin auditorías registradas para este email.</p>
           )}
           {entries.length > 0 && (
             <div className="space-y-2">
               {entries.map((e) => {
                 const scoreVal = e.score != null ? Math.round(e.score) : null
-                const scoreColor = scoreVal == null ? 'text-slate-600' : scoreVal >= 60 ? 'text-emerald-400' : scoreVal >= 30 ? 'text-orange-400' : 'text-rose-400'
+                const scoreColor = scoreVal == null ? 'text-slate-400' : scoreVal >= 60 ? 'text-emerald-400' : scoreVal >= 30 ? 'text-orange-400' : 'text-rose-400'
                 return (
                   <div key={e.id} className="bg-slate-950/60 border border-slate-800 rounded-sm p-4 flex items-center gap-4">
                     <div className="flex-1 min-w-0">
@@ -213,14 +213,14 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
                         <span className="text-slate-300 text-xs font-medium truncate">{e.marca ?? e.query ?? '—'}</span>
                       </div>
                       {e.query && e.marca && (
-                        <p className="text-slate-600 text-[10px] truncate">{e.query}</p>
+                        <p className="text-slate-400 text-[10px] truncate">{e.query}</p>
                       )}
-                      <p className="text-slate-700 text-[10px] font-mono mt-1">{formatDateShort(e.created_at)}</p>
+                      <p className="text-slate-500 text-[10px] font-mono mt-1">{formatDateShort(e.created_at)}</p>
                     </div>
                     {scoreVal != null && (
                       <div className="text-right shrink-0">
                         <p className={`text-2xl font-bold font-mono ${scoreColor}`}>{scoreVal}</p>
-                        <p className="text-slate-700 text-[10px]">score</p>
+                        <p className="text-slate-500 text-[10px]">score</p>
                       </div>
                     )}
                   </div>
@@ -249,7 +249,7 @@ function MetricsTab() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="py-20 text-center text-slate-600 text-sm font-mono">Cargando métricas...</div>
+  if (loading) return <div className="py-20 text-center text-slate-400 text-sm font-mono">Cargando métricas...</div>
   if (error) return <div className="py-20 text-center text-rose-400 text-sm">{error}</div>
   if (!metrics) return null
 
@@ -285,7 +285,7 @@ function MetricsTab() {
       <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
         <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Leads por día — últimos 30 días</p>
         {metrics.por_dia.length === 0 ? (
-          <p className="text-slate-700 text-sm text-center py-8">Sin datos en este período</p>
+          <p className="text-slate-500 text-sm text-center py-8">Sin datos en este período</p>
         ) : (
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={metrics.por_dia} barCategoryGap="30%">
@@ -320,7 +320,7 @@ function MetricsTab() {
         <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
           <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Distribución por tipo</p>
           {modoChartData.every(d => d.value === 0) ? (
-            <p className="text-slate-700 text-sm text-center py-8">Sin datos</p>
+            <p className="text-slate-500 text-sm text-center py-8">Sin datos</p>
           ) : (
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
@@ -365,7 +365,7 @@ function MetricsTab() {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">Expirado</span>
-              <span className="text-slate-600 font-mono">{metrics.cache_total - metrics.cache_activo}</span>
+              <span className="text-slate-400 font-mono">{metrics.cache_total - metrics.cache_activo}</span>
             </div>
           </div>
           {metrics.cache_total > 0 && (
@@ -488,7 +488,7 @@ export default function AdminPanel() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-1">Panel de control</p>
-            <h1 className="text-2xl font-bold text-white">AI Visibility</h1>
+            <h1 className="text-2xl font-bold text-white">Ai Visibility</h1>
           </div>
           <button
             onClick={() => {
@@ -569,11 +569,11 @@ export default function AdminPanel() {
             {/* Tabla */}
             <div className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
               {loading ? (
-                <div className="py-20 text-center text-slate-600 text-sm font-mono">Cargando...</div>
+                <div className="py-20 text-center text-slate-400 text-sm font-mono">Cargando...</div>
               ) : error ? (
                 <div className="py-20 text-center text-rose-400 text-sm">{error}</div>
               ) : filtered.length === 0 ? (
-                <div className="py-20 text-center text-slate-600 text-sm">Sin registros</div>
+                <div className="py-20 text-center text-slate-400 text-sm">Sin registros</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
@@ -610,7 +610,7 @@ export default function AdminPanel() {
                             <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-semibold border ${MODO_COLOR[lead.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
                               {MODO_LABEL[lead.modo] ?? lead.modo}
                             </span>
-                          ) : <span className="text-slate-700">—</span>}
+                          ) : <span className="text-slate-500">—</span>}
                         </td>
                         <td className="px-4 py-3 text-slate-300 max-w-[180px]">
                           {lead.modo === 'url' ? (
@@ -637,7 +637,7 @@ export default function AdminPanel() {
                               {detalleLoading === lead.id ? 'cargando...' : 'ver informe'}
                             </button>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-[10px] text-slate-700 font-mono">
+                            <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 font-mono">
                               <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
                               sin datos
                             </span>
@@ -651,7 +651,7 @@ export default function AdminPanel() {
             </div>
 
             {!loading && !error && (
-              <p className="text-xs text-slate-700 font-mono mt-3 text-right">
+              <p className="text-xs text-slate-500 font-mono mt-3 text-right">
                 {filtered.length} de {leads.length} registros
               </p>
             )}

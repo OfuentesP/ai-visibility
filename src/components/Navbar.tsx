@@ -21,7 +21,7 @@ export default function Navbar() {
             AI
           </span>
           <span className="text-slate-200 text-sm font-semibold tracking-tight group-hover:text-white transition-colors">
-            AI Visibility
+            Ai Visibility
           </span>
         </Link>
 

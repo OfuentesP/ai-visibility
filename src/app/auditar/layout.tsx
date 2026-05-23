@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Audita tu Marca en ChatGPT y Gemini | AI Visibility',
+  title: 'Audita tu Marca en ChatGPT y Gemini | Ai Visibility',
   description: 'Genera tu AI Readiness Score gratis. Analiza tu visibilidad, descubre tu brecha semántica y obtén tácticas de recuperación para dominar los LLMs.',
   robots: { index: true, follow: true },
   alternates: {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Audita tu Marca en ChatGPT y Gemini | AI Visibility',
+    title: 'Audita tu Marca en ChatGPT y Gemini | Ai Visibility',
     description: 'Genera tu AI Readiness Score gratis. Analiza tu visibilidad, descubre tu brecha semántica y obtén tácticas de recuperación para dominar los LLMs.',
   },
 }
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Generador de Reportes GEO - AI Visibility",
+  "name": "Generador de Reportes GEO - Ai Visibility",
   "url": "https://ai-visibility.cl/auditar",
   "description": "Herramienta online para analizar el Share of Model de marcas en modelos fundacionales de inteligencia artificial.",
   "applicationCategory": "DeveloperApplication",

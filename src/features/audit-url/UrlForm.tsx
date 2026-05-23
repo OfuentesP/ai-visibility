@@ -27,7 +27,7 @@ export function UrlForm({ urlInput, urlLoading, loadingPhase, onUrlChange, onSub
           onKeyDown={e => e.key === 'Enter' && onSubmit()}
           className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
         />
-        <p className="text-slate-600 text-xs mt-1.5">
+        <p className="text-slate-400 text-xs mt-1.5">
           Analizamos tu página, generamos 3 perfiles de clientes reales y auditamos si la IA te menciona cuando ellos buscan.
         </p>
       </div>
