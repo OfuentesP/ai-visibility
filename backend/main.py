@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -206,6 +207,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    origin = request.headers.get("origin", "")
+    headers = {"Access-Control-Allow-Origin": origin} if origin in origins else {}
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Error interno del servidor"},
+        headers=headers,
+    )
 
 
 @app.get("/health")
@@ -1547,3 +1558,116 @@ async def user_quota(email: str, db: Session = Depends(get_db)):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+# ── Email ─────────────────────────────────────────────────────────────────────
+
+class SendReportRequest(BaseModel):
+    email: str
+    nombre: Optional[str] = ""
+    marca: str
+    query: Optional[str] = ""
+    score: float
+    shareUrl: str
+    modo: str  # "brand" | "url"
+
+@app.post("/api/send-report")
+async def send_report(payload: SendReportRequest):
+    import resend
+    resend.api_key = os.getenv("RESEND_API_KEY", "")
+    if not resend.api_key:
+        raise HTTPException(status_code=500, detail="RESEND_API_KEY no configurado")
+
+    score = round(payload.score)
+    score_color = "#10b981" if score >= 60 else "#f97316" if score >= 30 else "#f43f5e"
+    score_label = "Visible" if score >= 60 else "En Riesgo" if score >= 30 else "Invisible"
+    saludo = f"Hola {payload.nombre.split()[0]}," if payload.nombre else "Hola,"
+    contexto = (
+        f"Analizamos la URL <strong>{payload.marca}</strong> frente a los principales motores de IA."
+        if payload.modo == "url"
+        else f'Analizamos cómo posiciona la IA a <strong>{payload.marca}</strong> para la búsqueda <em>"{payload.query}"</em>.'
+    )
+    if score < 30:
+        score_desc = "Tu marca está prácticamente invisible para los motores de IA. Tus clientes potenciales están siendo derivados a la competencia."
+    elif score < 60:
+        score_desc = "Tu marca aparece en algunas búsquedas pero la competencia captura la mayoría de la intención de compra."
+    else:
+        score_desc = "Tu marca lidera la visibilidad en IA. Mantén la ventaja con contenido de autoridad constante."
+
+    asunto = (
+        f"Tu auditoría de visibilidad IA: {payload.marca}"
+        if payload.modo == "url"
+        else f'Tu auditoría de visibilidad IA: {payload.marca} — "{payload.query}"'
+    )
+
+    html = f"""<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#020617;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#020617;padding:40px 0;">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+  <tr><td style="padding:0 0 28px 0;">
+    <table cellpadding="0" cellspacing="0"><tr>
+      <td style="width:28px;height:28px;background:linear-gradient(135deg,#38bdf8,#818cf8);border-radius:6px;text-align:center;vertical-align:middle;">
+        <span style="color:#fff;font-size:11px;font-weight:700;">AI</span>
+      </td>
+      <td style="padding-left:10px;color:#e2e8f0;font-size:15px;font-weight:600;">Ai Visibility</td>
+    </tr></table>
+  </td></tr>
+  <tr><td style="background:#0f172a;border:1px solid #1e293b;border-radius:4px;overflow:hidden;">
+    <table width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="height:4px;background:{score_color};"></td>
+    </tr></table>
+    <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 32px 0 32px;"><tr><td>
+      <p style="margin:0 0 16px 0;color:#94a3b8;font-size:13px;">{saludo}</p>
+      <p style="margin:0 0 24px 0;color:#cbd5e1;font-size:15px;line-height:1.6;">{contexto}</p>
+    </td></tr></table>
+    <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 28px 32px;"><tr>
+      <td style="background:#020617;border:1px solid #1e293b;border-radius:4px;padding:20px 24px;">
+        <table cellpadding="0" cellspacing="0"><tr>
+          <td style="padding-right:20px;border-right:1px solid #1e293b;">
+            <p style="margin:0;color:#475569;font-size:10px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;">AI Readiness Score</p>
+            <p style="margin:4px 0 0 0;font-size:36px;font-weight:300;color:{score_color};font-family:monospace;">{score}</p>
+            <p style="margin:2px 0 0 0;color:#475569;font-size:11px;font-family:monospace;">/100 · {score_label}</p>
+          </td>
+          <td style="padding-left:20px;">
+            <p style="margin:0;color:#64748b;font-size:12px;line-height:1.5;">{score_desc}</p>
+          </td>
+        </tr></table>
+      </td>
+    </tr></table>
+    <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 32px 32px;"><tr>
+      <td align="center" style="background:#1e293b;border-radius:4px;padding:20px;">
+        <p style="margin:0 0 16px 0;color:#94a3b8;font-size:13px;">Ver el informe completo con diagnóstico competitivo y plan de acción</p>
+        <a href="{payload.shareUrl}" style="display:inline-block;background:#4f46e5;color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">
+          Ver mi informe completo →
+        </a>
+      </td>
+    </tr></table>
+  </td></tr>
+  <tr><td style="padding:24px 0 0 0;">
+    <p style="margin:0;color:#334155;font-size:11px;font-family:monospace;line-height:1.7;">
+      Ai Visibility · Av. Apoquindo 4501, Of. 12, Las Condes, Santiago<br/>
+      Este correo fue solicitado desde la plataforma. Si no lo pediste, ignóralo.<br/>
+      <a href="mailto:contacto@ai-visibility.cl" style="color:#475569;text-decoration:none;">contacto@ai-visibility.cl</a>
+    </p>
+  </td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>"""
+
+    try:
+        resend.Emails.send({
+            "from": "Ai Visibility <production@ai-visibility.cl>",
+            "to": payload.email,
+            "reply_to": "contacto@ai-visibility.cl",
+            "subject": asunto,
+            "html": html,
+        })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    return {"ok": True}
