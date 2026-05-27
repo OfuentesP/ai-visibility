@@ -11,9 +11,10 @@ interface Props {
   score: number
   modo: 'brand' | 'url'
   getShareUrl: () => Promise<string>
+  resultado?: unknown
 }
 
-export function ExportBar({ userEmail, userName, marca, query, score, modo, getShareUrl }: Props) {
+export function ExportBar({ userEmail, userName, marca, query, score, modo, getShareUrl, resultado }: Props) {
   const [state, setState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -25,7 +26,7 @@ export function ExportBar({ userEmail, userName, marca, query, score, modo, getS
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? ''}/api/send-report`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: userEmail, nombre: userName, marca, query, score, shareUrl, modo }),
+        body: JSON.stringify({ email: userEmail, nombre: userName, marca, query, score, shareUrl, modo, resultado }),
       })
       if (!res.ok) throw new Error((await res.json()).error ?? 'Error al enviar')
       setState('sent')

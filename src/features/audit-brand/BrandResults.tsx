@@ -546,6 +546,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
         query={query}
         score={d.invisibilidad_score ?? 0}
         modo="brand"
+        resultado={result}
         getShareUrl={async () => {
           const code = await shareReport({ modo: 'brand', marca: brand, query, resultado: result })
           return `${window.location.origin}/r/?c=${code}`

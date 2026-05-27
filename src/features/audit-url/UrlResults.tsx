@@ -411,6 +411,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         marca={urlInput}
         score={urlResult.visibilidad_pct}
         modo="url"
+        resultado={urlResult}
         getShareUrl={async () => {
           const code = await shareReport({ modo: 'url', marca: urlInput, resultado: urlResult })
           return `${window.location.origin}/r/?c=${code}`

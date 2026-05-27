@@ -1581,6 +1581,265 @@ class SendReportRequest(BaseModel):
     score: float
     shareUrl: str
     modo: str  # "brand" | "url"
+    resultado: Optional[dict] = None
+
+
+def _esc(s) -> str:
+    """Escape HTML para evitar XSS en el correo."""
+    if s is None:
+        return ""
+    return (
+        str(s)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def _section_header(num: str, title: str) -> str:
+    return (
+        f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 12px 32px;"><tr>'
+        f'<td style="border-bottom:1px solid #1e293b;padding-bottom:8px;">'
+        f'<span style="color:#475569;font-size:10px;font-family:monospace;letter-spacing:1px;">{num}</span>'
+        f'<span style="color:#94a3b8;font-size:12px;font-weight:600;margin-left:10px;">{_esc(title)}</span>'
+        f'</td></tr></table>'
+    )
+
+
+def _executive_summary_brand(d: dict, marca: str) -> str:
+    pos = d.get("posicion_mi_marca", 0)
+    score_v = d.get("invisibilidad_score", 0)
+    rivales = [m for m in d.get("marcas_mencionadas", []) if m.lower() != marca.lower()][:2]
+    rival_txt = f"{rivales[0]} y {rivales[1]}" if len(rivales) >= 2 else (rivales[0] if rivales else d.get("competidor_principal") or "la competencia")
+    ganador = d.get("competidor_principal") or d.get("marca_ganadora") or "la competencia"
+
+    if pos == 0 or score_v < 10:
+        titulo = "Riesgo crítico de invisibilidad"
+        sub = f"Tus clientes están siendo derivados a {_esc(rival_txt)} porque la IA no encuentra fuentes que validen tu propuesta."
+        accent = "#f43f5e"
+    elif pos > 5 or score_v < 30:
+        titulo = f"{_esc(marca)} está perdiendo demanda activa"
+        sub = f"{_esc(rival_txt)} captura la intención de compra antes de que tus clientes lleguen a ti."
+        accent = "#f97316"
+    elif pos == 1:
+        titulo = f"{_esc(marca)} lidera — protege esa posición"
+        sub = f"La IA te recomienda primero, pero {_esc(ganador)} está invirtiendo para desplazarte."
+        accent = "#10b981"
+    else:
+        titulo = f"{_esc(marca)} aparece, pero {_esc(ganador)} se lleva la decisión"
+        sub = f"Estás en posición #{pos}. Los compradores ven primero a {_esc(ganador)}."
+        accent = "#f97316"
+
+    foco = (d.get("prioridad_ejecutiva") or {}).get("foco_principal", "")
+    impacto = (d.get("prioridad_ejecutiva") or {}).get("impacto_esperado", "")
+    next_step = f'<p style="margin:10px 0 0 0;color:#cbd5e1;font-size:13px;line-height:1.55;"><strong style="color:#e2e8f0;">Siguiente paso:</strong> {_esc(foco)}{("· " + _esc(impacto)) if impacto else ""}</p>' if foco else ""
+
+    return (
+        f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 24px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-left:3px solid {accent};border-radius:4px;padding:18px 20px;">'
+        f'<p style="margin:0;color:#f1f5f9;font-size:14px;font-weight:600;line-height:1.4;">{titulo}</p>'
+        f'<p style="margin:6px 0 0 0;color:#94a3b8;font-size:13px;line-height:1.55;">{sub}</p>'
+        f'{next_step}'
+        f'</td></tr></table>'
+    )
+
+
+def _executive_summary_url(r: dict, marca: str) -> str:
+    total = r.get("total_queries", 0) or 0
+    con_mencion = r.get("queries_con_mencion", 0) or 0
+    invisible = total - con_mencion
+    resultados = r.get("resultados", []) or []
+    ganador_counts: dict = {}
+    for x in resultados:
+        g = x.get("marca_ganadora")
+        if g and g.lower() != marca.lower():
+            ganador_counts[g] = ganador_counts.get(g, 0) + 1
+    top_comp = max(ganador_counts.items(), key=lambda kv: kv[1])[0] if ganador_counts else "la competencia"
+
+    if invisible == 0:
+        titulo = "Apareces en todas las búsquedas con IA"
+        sub = "Mantén y expande tu posición."
+        accent = "#10b981"
+    elif invisible == total:
+        titulo = "La IA no te menciona en ninguna búsqueda"
+        sub = f"Todas esas consultas las gana {_esc(top_comp)}."
+        accent = "#f43f5e"
+    else:
+        titulo = f"De cada {total} búsquedas con IA, {invisible} no te incluyen"
+        sub = f"Esas consultas las gana {_esc(top_comp)}."
+        accent = "#f97316"
+
+    return (
+        f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 24px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-left:3px solid {accent};border-radius:4px;padding:18px 20px;">'
+        f'<p style="margin:0;color:#f1f5f9;font-size:14px;font-weight:600;line-height:1.4;">{titulo}</p>'
+        f'<p style="margin:6px 0 0 0;color:#94a3b8;font-size:13px;line-height:1.55;">{sub}</p>'
+        f'</td></tr></table>'
+    )
+
+
+def _share_of_voice(marcas: list, marca_user: str) -> str:
+    if not marcas:
+        return ""
+    top = marcas[:5]
+    rows = ""
+    n = len(top)
+    for i, m in enumerate(top):
+        is_user = m.lower() == marca_user.lower()
+        is_winner = i == 0 and not is_user
+        # peso decreciente para barra
+        weight = max(20, 100 - (i * 18))
+        color = "#38bdf8" if is_user else ("#f59e0b" if is_winner else "#475569")
+        label_color = "#7dd3fc" if is_user else ("#fbbf24" if is_winner else "#cbd5e1")
+        badge = ' <span style="color:#475569;font-size:10px;">(tú)</span>' if is_user else (' 👑' if is_winner else "")
+        rows += (
+            f'<tr><td style="padding:6px 0;">'
+            f'<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+            f'<td style="width:160px;color:{label_color};font-size:13px;font-weight:{"600" if is_user or is_winner else "400"};padding-right:12px;">#{i+1} {_esc(m)}{badge}</td>'
+            f'<td><div style="background:#1e293b;height:8px;border-radius:2px;overflow:hidden;"><div style="background:{color};width:{weight}%;height:8px;"></div></div></td>'
+            f'</tr></table>'
+            f'</td></tr>'
+        )
+    return (
+        _section_header("02", "¿A quién recomienda la IA?")
+        + f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 24px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-radius:4px;padding:18px 20px;">'
+        f'<table width="100%" cellpadding="0" cellspacing="0">{rows}</table>'
+        f'</td></tr></table>'
+    )
+
+
+def _competitive_diagnosis(percepciones: list, conceptos: list, rival: str, filas: list) -> str:
+    if not percepciones and not conceptos and not filas:
+        return ""
+    perc_html = "".join(
+        f'<li style="margin:0 0 6px 0;color:#cbd5e1;font-size:12px;line-height:1.5;">{_esc(p)}</li>'
+        for p in (percepciones or [])[:3]
+    ) or '<li style="color:#64748b;font-size:12px;">Sin datos</li>'
+    conc_html = "".join(
+        f'<li style="margin:0 0 6px 0;color:#cbd5e1;font-size:12px;line-height:1.5;">{_esc(c)}</li>'
+        for c in (conceptos or [])[:3]
+    ) or '<li style="color:#64748b;font-size:12px;">Sin datos</li>'
+
+    tabla_html = ""
+    if filas:
+        rows = "".join(
+            f'<tr>'
+            f'<td style="padding:10px 8px;border-bottom:1px solid #1e293b;color:#e2e8f0;font-size:12px;font-weight:600;vertical-align:top;width:30%;">{_esc(f.get("atributo_ganador") or f.get("atributo"))}</td>'
+            f'<td style="padding:10px 8px;border-bottom:1px solid #1e293b;color:#94a3b8;font-size:12px;vertical-align:top;width:30%;">{_esc(f.get("fuente_de_verdad") or f.get("autoridad_digital"))}</td>'
+            f'<td style="padding:10px 8px;border-bottom:1px solid #1e293b;color:#fca5a5;font-size:12px;vertical-align:top;">{_esc(f.get("gap_nuestra_marca") or f.get("impacto_comercial"))}</td>'
+            f'</tr>'
+            for f in (filas or [])[:4]
+        )
+        tabla_html = (
+            f'<table width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;border-top:1px solid #1e293b;padding-top:14px;">'
+            f'<tr>'
+            f'<th style="text-align:left;color:#475569;font-size:9px;font-family:monospace;letter-spacing:1px;padding:6px 8px;">QUÉ TIENE</th>'
+            f'<th style="text-align:left;color:#475569;font-size:9px;font-family:monospace;letter-spacing:1px;padding:6px 8px;">DÓNDE</th>'
+            f'<th style="text-align:left;color:#f87171;font-size:9px;font-family:monospace;letter-spacing:1px;padding:6px 8px;">CLIENTES QUE PIERDES</th>'
+            f'</tr>'
+            f'{rows}'
+            f'</table>'
+        )
+
+    return (
+        _section_header("03", "Diagnóstico competitivo")
+        + f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 24px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-radius:4px;padding:18px 20px;">'
+        f'<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+        f'<td style="vertical-align:top;width:50%;padding-right:12px;border-right:1px solid #1e293b;">'
+        f'<p style="margin:0 0 10px 0;color:#f87171;font-size:10px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;">Cómo te ven tus clientes</p>'
+        f'<ul style="margin:0;padding:0 0 0 16px;">{perc_html}</ul>'
+        f'</td>'
+        f'<td style="vertical-align:top;width:50%;padding-left:12px;">'
+        f'<p style="margin:0 0 10px 0;color:#fbbf24;font-size:10px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;">Por qué prefieren a {_esc(rival)}</p>'
+        f'<ul style="margin:0;padding:0 0 0 16px;">{conc_html}</ul>'
+        f'</td>'
+        f'</tr></table>'
+        f'{tabla_html}'
+        f'</td></tr></table>'
+    )
+
+
+def _action_plan(plan: dict) -> str:
+    if not plan:
+        return ""
+    vehiculos = plan.get("vehiculos", []) or []
+    acciones: list = []
+    for v in vehiculos:
+        for a in v.get("acciones", []) or []:
+            acciones.append(a)
+    if not acciones:
+        return ""
+    top = sorted(acciones, key=lambda a: a.get("ice_score", 0), reverse=True)[:3]
+    items = ""
+    for i, a in enumerate(top):
+        tactica = a.get("tactica_tecnica") or a.get("concepto_objetivo") or "Acción"
+        tiempo = a.get("tiempo_indexacion_ia") or ""
+        ice = a.get("ice_score", 0)
+        impacto = a.get("impacto", 0)
+        items += (
+            f'<tr><td style="padding:12px 0;border-bottom:1px solid #1e293b;">'
+            f'<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+            f'<td style="width:30px;color:#6366f1;font-size:18px;font-weight:300;font-family:monospace;vertical-align:top;padding-top:2px;">{i+1:02d}</td>'
+            f'<td>'
+            f'<p style="margin:0;color:#e2e8f0;font-size:13px;font-weight:600;line-height:1.4;">{_esc(tactica)}</p>'
+            f'<p style="margin:4px 0 0 0;color:#64748b;font-size:11px;font-family:monospace;">'
+            f'<span style="color:#a5b4fc;">ICE {ice:.0f}</span>'
+            f'{(" · Impacto " + str(impacto)) if impacto else ""}'
+            f'{(" · " + _esc(tiempo.split("(")[0].strip())) if tiempo else ""}'
+            f'</p>'
+            f'</td>'
+            f'</tr></table>'
+            f'</td></tr>'
+        )
+    roi = plan.get("roi_estimado", "")
+    roi_html = (
+        f'<p style="margin:14px 0 0 0;padding:10px 12px;background:#022c22;border:1px solid #064e3b;border-radius:3px;color:#6ee7b7;font-size:12px;line-height:1.5;">💡 {_esc(roi)}</p>'
+        if roi else ""
+    )
+    return (
+        _section_header("04", "Plan de acción (top 3)")
+        + f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 24px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-radius:4px;padding:6px 20px 18px 20px;">'
+        f'<table width="100%" cellpadding="0" cellspacing="0">{items}</table>'
+        f'{roi_html}'
+        f'</td></tr></table>'
+    )
+
+
+def _territories(territorios: list, mode: str) -> str:
+    if not territorios:
+        return ""
+    items = ""
+    for i, t in enumerate(territorios[:3]):
+        if mode == "brand":
+            titulo = t.get("topico_emergente", "")
+            just = t.get("porque_es_oportunidad", "")
+            nivel = t.get("nivel_oportunidad", "")
+            label = "Sin competencia" if nivel == "Alto" else ("Fácil de ganar" if nivel == "Medio" else "Moderada")
+        else:
+            titulo = t.get("titulo", "")
+            just = t.get("justificacion_negocio", "")
+            nivel = t.get("nivel_competencia_ia", "")
+            label = "Sin competencia" if nivel == "Nula" else ("Fácil de ganar" if nivel == "Muy baja" else "Moderada")
+        items += (
+            f'<tr><td style="padding:10px 0;border-bottom:1px solid #1e293b;">'
+            f'<p style="margin:0;color:#e2e8f0;font-size:13px;font-weight:600;line-height:1.4;">{_esc(titulo)} '
+            f'<span style="background:#022c22;color:#6ee7b7;border:1px solid #064e3b;border-radius:8px;padding:2px 8px;font-size:10px;font-weight:600;margin-left:4px;">{label}</span>'
+            f'</p>'
+            f'<p style="margin:4px 0 0 0;color:#94a3b8;font-size:12px;line-height:1.5;">{_esc(just)}</p>'
+            f'</td></tr>'
+        )
+    return (
+        _section_header("05", "Temas sin dueño")
+        + f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 24px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-radius:4px;padding:6px 20px 14px 20px;">'
+        f'<table width="100%" cellpadding="0" cellspacing="0">{items}</table>'
+        f'</td></tr></table>'
+    )
+
 
 @app.post("/api/send-report")
 async def send_report(payload: SendReportRequest):
@@ -1592,11 +1851,11 @@ async def send_report(payload: SendReportRequest):
     score = round(payload.score)
     score_color = "#10b981" if score >= 60 else "#f97316" if score >= 30 else "#f43f5e"
     score_label = "Visible" if score >= 60 else "En Riesgo" if score >= 30 else "Invisible"
-    saludo = f"Hola {payload.nombre.split()[0]}," if payload.nombre else "Hola,"
+    saludo = f"Hola {_esc(payload.nombre.split()[0])}," if payload.nombre else "Hola,"
     contexto = (
-        f"Analizamos la URL <strong>{payload.marca}</strong> frente a los principales motores de IA."
+        f"Analizamos la URL <strong>{_esc(payload.marca)}</strong> frente a los principales motores de IA."
         if payload.modo == "url"
-        else f'Analizamos cómo posiciona la IA a <strong>{payload.marca}</strong> para la búsqueda <em>"{payload.query}"</em>.'
+        else f'Analizamos cómo posiciona la IA a <strong>{_esc(payload.marca)}</strong> para la búsqueda <em>"{_esc(payload.query or "")}"</em>.'
     )
     if score < 30:
         score_desc = "Tu marca está prácticamente invisible para los motores de IA. Tus clientes potenciales están siendo derivados a la competencia."
@@ -1611,13 +1870,53 @@ async def send_report(payload: SendReportRequest):
         else f'Tu auditoría de visibilidad IA: {payload.marca} — "{payload.query}"'
     )
 
+    # ── Build rich sections from resultado ────────────────────────────────────
+    r = payload.resultado or {}
+    sections_html = ""
+    if payload.modo == "brand":
+        d = (r.get("resultados") or [{}])[0] if isinstance(r.get("resultados"), list) else {}
+        if d:
+            sections_html += _section_header("01", "Resumen ejecutivo")
+            sections_html += _executive_summary_brand(d, payload.marca)
+            sections_html += _share_of_voice(d.get("marcas_mencionadas") or [], payload.marca)
+            rival = d.get("competidor_principal") or d.get("marca_ganadora") or "la competencia"
+            ca = d.get("competitor_advantage") or {}
+            sections_html += _competitive_diagnosis(
+                d.get("percepciones_genericas") or [],
+                d.get("conceptos_faltantes") or [],
+                rival,
+                ca.get("filas") or [],
+            )
+            sections_html += _action_plan(d.get("plan_accion") or {})
+            sections_html += _territories(d.get("territorios_desatendidos") or [], "brand")
+    elif payload.modo == "url":
+        if r:
+            sections_html += _section_header("01", "Resumen ejecutivo")
+            sections_html += _executive_summary_url(r, payload.marca)
+            # build share-of-voice por conteo de marcas_ganadoras
+            counts: dict = {}
+            for x in r.get("resultados") or []:
+                for m in x.get("marcas_mencionadas") or []:
+                    counts[m] = counts.get(m, 0) + 1
+            sov_marcas = [m for m, _ in sorted(counts.items(), key=lambda kv: kv[1], reverse=True)]
+            sections_html += _share_of_voice(sov_marcas, payload.marca)
+            cdd = r.get("competitive_deep_dive") or {}
+            if cdd:
+                perc = [s.strip() + "." for s in (cdd.get("percepcion_nuestra_marca") or "").split(". ") if len(s.strip()) > 8][:3]
+                mens = [s.strip() + "." for s in (cdd.get("mensaje_competidor") or "").split(". ") if len(s.strip()) > 8][:3]
+                sections_html += _competitive_diagnosis(
+                    perc, mens, cdd.get("competidor") or "la competencia", cdd.get("tabla_atributos") or []
+                )
+            sections_html += _action_plan(r.get("plan_accion") or {})
+            sections_html += _territories(r.get("untapped_territories") or [], "url")
+
     html = f"""<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#020617;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#020617;padding:40px 0;">
 <tr><td align="center">
-<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+<table width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;">
   <tr><td style="padding:0 0 28px 0;">
     <table cellpadding="0" cellspacing="0"><tr>
       <td style="width:28px;height:28px;background:linear-gradient(135deg,#38bdf8,#818cf8);border-radius:6px;text-align:center;vertical-align:middle;">
@@ -1636,22 +1935,24 @@ async def send_report(payload: SendReportRequest):
     </td></tr></table>
     <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 28px 32px;"><tr>
       <td style="background:#020617;border:1px solid #1e293b;border-radius:4px;padding:20px 24px;">
-        <table cellpadding="0" cellspacing="0"><tr>
-          <td style="padding-right:20px;border-right:1px solid #1e293b;">
+        <table cellpadding="0" cellspacing="0" width="100%"><tr>
+          <td style="padding-right:20px;border-right:1px solid #1e293b;width:40%;">
             <p style="margin:0;color:#475569;font-size:10px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;">AI Readiness Score</p>
             <p style="margin:4px 0 0 0;font-size:36px;font-weight:300;color:{score_color};font-family:monospace;">{score}</p>
             <p style="margin:2px 0 0 0;color:#475569;font-size:11px;font-family:monospace;">/100 · {score_label}</p>
           </td>
-          <td style="padding-left:20px;">
+          <td style="padding-left:20px;vertical-align:top;">
             <p style="margin:0;color:#64748b;font-size:12px;line-height:1.5;">{score_desc}</p>
           </td>
         </tr></table>
       </td>
     </tr></table>
+    {sections_html}
     <table width="100%" cellpadding="0" cellspacing="0" style="padding:0 32px 32px 32px;"><tr>
-      <td align="center" style="background:#1e293b;border-radius:4px;padding:20px;">
-        <p style="margin:0 0 16px 0;color:#94a3b8;font-size:13px;">Ver el informe completo con diagnóstico competitivo y plan de acción</p>
-        <a href="{payload.shareUrl}" style="display:inline-block;background:#4f46e5;color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">
+      <td align="center" style="background:#1e293b;border-radius:4px;padding:24px 20px;">
+        <p style="margin:0 0 6px 0;color:#e2e8f0;font-size:14px;font-weight:600;">Ver el informe interactivo completo</p>
+        <p style="margin:0 0 18px 0;color:#94a3b8;font-size:12px;">Con gráficos, plan detallado y evidencia por perfil de cliente.</p>
+        <a href="{_esc(payload.shareUrl)}" style="display:inline-block;background:#4f46e5;color:#fff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:4px;">
           Ver mi informe completo →
         </a>
       </td>
