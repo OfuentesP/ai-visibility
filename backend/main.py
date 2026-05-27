@@ -105,9 +105,18 @@ def _set_cache(db, key: str, modo: str, marca: str, query: str, resultado: dict)
         return None, None
 
 
+DEMO_EMAILS = {
+    e.strip().lower()
+    for e in os.getenv("DEMO_EMAILS", "").split(",")
+    if e.strip()
+}
+
+
 def _check_freemium(db, email: str) -> bool:
     """Retorna True si el email alcanzó el límite gratuito (2 auditorías con resultado)."""
     if db is None or not email:
+        return False
+    if email.lower().strip() in DEMO_EMAILS:
         return False
     try:
         count = db.query(Lead).filter(
@@ -1543,6 +1552,8 @@ async def historial_usuario(email: str, db: Session = Depends(get_db)):
 async def user_quota(email: str, db: Session = Depends(get_db)):
     """Retorna cuántas auditorías gratuitas ha usado el email."""
     limit = 2
+    if email and email.lower().strip() in DEMO_EMAILS:
+        return {"used": 0, "limit": -1, "remaining": -1}
     if db is None or not email:
         return {"used": 0, "limit": limit, "remaining": limit}
     try:

@@ -22,7 +22,7 @@ export function ExportBar({ userEmail, userName, marca, query, score, modo, getS
     setState('loading')
     try {
       const shareUrl = await getShareUrl()
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/send-report`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? ''}/api/send-report`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail, nombre: userName, marca, query, score, shareUrl, modo }),

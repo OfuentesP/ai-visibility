@@ -141,10 +141,19 @@ export default function AuditarPage() {
                 />
                 {quota && (
                   <div className="flex items-center gap-1.5 mt-1.5">
-                    {Array.from({ length: quota.limit }).map((_, i) => (
-                      <span key={i} className={`w-2 h-2 rounded-full ${i < quota.used ? 'bg-orange-500' : 'bg-slate-700'}`} />
-                    ))}
-                    <span className="text-[10px] font-mono text-slate-500 ml-0.5">{quota.used} de {quota.limit} auditorías usadas</span>
+                    {quota.limit < 0 ? (
+                      <>
+                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <span className="text-[10px] font-mono text-emerald-400 ml-0.5">Demo · auditorías ilimitadas</span>
+                      </>
+                    ) : (
+                      <>
+                        {Array.from({ length: quota.limit }).map((_, i) => (
+                          <span key={i} className={`w-2 h-2 rounded-full ${i < quota.used ? 'bg-orange-500' : 'bg-slate-700'}`} />
+                        ))}
+                        <span className="text-[10px] font-mono text-slate-500 ml-0.5">{quota.used} de {quota.limit} auditorías usadas</span>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
