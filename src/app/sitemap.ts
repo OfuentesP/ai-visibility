@@ -1,12 +1,24 @@
 import type { MetadataRoute } from 'next'
+import { posts } from '@/lib/blog'
 
 export const dynamic = 'force-static'
 
 const base = 'https://ai-visibility.cl'
-const hoy = new Date('2026-05-14')
+const hoy = new Date('2026-05-27')
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const blog: MetadataRoute.Sitemap = [
+    { url: `${base}/blog/`, lastModified: hoy, changeFrequency: 'daily', priority: 0.9 },
+    ...posts.map((p) => ({
+      url: `${base}/blog/${p.slug}/`,
+      lastModified: new Date(p.fechaActualizacion ?? p.fecha),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    })),
+  ]
+
   return [
+    ...blog,
     // Core
     { url: `${base}/`,        lastModified: hoy, changeFrequency: 'weekly',  priority: 1.0 },
     { url: `${base}/auditar/`,lastModified: hoy, changeFrequency: 'weekly',  priority: 0.9 },
