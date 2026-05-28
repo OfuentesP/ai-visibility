@@ -6,6 +6,8 @@ export type Industria = {
   queries: string[]
   dolores: { titulo: string; desc: string }[]
   faq: { q: string; a: string }[]
+  tituloSeo?: string
+  descripcionSeo?: string
 }
 
 export const industrias: Industria[] = [
@@ -259,6 +261,9 @@ export const industrias: Industria[] = [
     id: 'ecommerce',
     nombre: 'E-commerce & Tiendas Online',
     tagline: 'GEO para E-commerce en Chile',
+    tituloSeo: 'Auditoría de E-commerce en Chile: ¿te recomienda ChatGPT o a tu competencia? | Ai Visibility',
+    descripcionSeo:
+      'Auditoría gratuita de visibilidad para tiendas online en Chile. Descubre si ChatGPT y Perplexity recomiendan tu e-commerce o a Falabella cuando tus clientes preguntan. Resultado en 60 segundos.',
     descripcion:
       'Tu tienda online compite en dos frentes: Google y ChatGPT. El segundo ya decide si tu marca es confiable antes de que el cliente vea tu precio. Sin visibilidad en IA, el tráfico llega — pero la confianza no.',
     queries: [

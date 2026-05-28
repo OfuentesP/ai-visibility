@@ -5,6 +5,9 @@ export type Termino = {
   definicion: string
   ampliacion: string[]
   relacionados: string[]
+  tituloSeo?: string
+  descripcionSeo?: string
+  lecturas?: { slug: string; titulo: string }[]
 }
 
 export const terminos: Termino[] = [
@@ -51,6 +54,13 @@ export const terminos: Termino[] = [
     id: 'rag',
     tag: 'Arquitectura',
     termino: 'RAG (Retrieval-Augmented Generation)',
+    tituloSeo: '¿Qué es RAG? Retrieval-Augmented Generation explicado simple | Ai Visibility',
+    descripcionSeo:
+      'RAG (Retrieval-Augmented Generation) es la arquitectura que permite a ChatGPT y Perplexity buscar información en internet antes de responder. Te explicamos qué es, cómo funciona y por qué decide si la IA cita tu marca.',
+    lecturas: [
+      { slug: 'que-es-rag-como-decide-citas-ia', titulo: '¿Qué es RAG y cómo decide qué marcas cita la IA?' },
+      { slug: 'google-seo-sigue-vivo-busqueda-ia', titulo: 'Google confirmó que el SEO sigue vivo en la búsqueda con IA' },
+    ],
     definicion:
       'Arquitectura técnica donde un LLM busca información externa en tiempo real (como bases de datos o internet) antes de generar una respuesta. Es el motor detrás de herramientas como Perplexity, haciendo crucial que las marcas tengan información estructurada y accesible.',
     ampliacion: [

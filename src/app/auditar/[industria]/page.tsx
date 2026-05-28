@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: { params: Promise<{ industria
   const ind = getIndustria(slug)
   if (!ind) return {}
   return {
-    title: `${ind.tagline} — Auditoría de Visibilidad en ChatGPT | Ai Visibility`,
-    description: ind.descripcion,
+    title: ind.tituloSeo ?? `${ind.tagline} — Auditoría de Visibilidad en ChatGPT | Ai Visibility`,
+    description: ind.descripcionSeo ?? ind.descripcion,
     keywords: [ind.tagline, 'GEO Chile', 'Share of Model', 'ChatGPT ' + ind.nombre, 'Ai Visibility'],
     alternates: {
       canonical: `https://ai-visibility.cl/auditar/${ind.id}/`,

@@ -23,9 +23,91 @@ export type Post = {
   ctaTexto?: string
   ctaUrl?: string
   relacionados?: string[]
+  glosario?: { slug: string; termino: string }[]
 }
 
 export const posts: Post[] = [
+  {
+    slug: 'que-es-rag-como-decide-citas-ia',
+    titulo: '¿Qué es RAG (Retrieval-Augmented Generation) y cómo decide qué marcas cita la IA?',
+    descripcion:
+      'RAG es la arquitectura que permite a ChatGPT y Perplexity buscar en internet antes de responder. Explicamos en simple qué es, cómo funciona paso a paso y por qué determina si la IA recomienda tu marca o la de tu competencia.',
+    fecha: '2026-05-27',
+    categoria: 'Análisis LLM',
+    tags: ['RAG', 'LLM', 'ChatGPT', 'Perplexity', 'GEO'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '6 min',
+    resumen:
+      'RAG (Retrieval-Augmented Generation) es la arquitectura donde un LLM recupera documentos de internet y luego genera la respuesta a partir de ellos. Si tu contenido no está en ese paso de recuperación, la IA no puede citarte — por más bueno que seas.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si te preguntas por qué ChatGPT recomienda a tu competencia y no a ti, la respuesta casi siempre pasa por entender RAG. Es la arquitectura que hoy decide qué marcas entran en una respuesta de IA y cuáles quedan fuera. Y la buena noticia es que se puede influir.',
+      },
+      { tipo: 'h2', texto: 'Qué significa RAG, en simple' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'RAG son las siglas de Retrieval-Augmented Generation: generación aumentada por recuperación. Traducido: en lugar de responder solo con lo que "memorizó" durante su entrenamiento, el modelo primero busca información actual en fuentes externas (internet, bases de datos) y recién entonces redacta la respuesta usando ese material.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Es lo que hace que Perplexity, ChatGPT con búsqueda web y el modo de búsqueda de Claude puedan citar páginas concretas y datos recientes, en vez de inventar o quedarse con información vieja.',
+      },
+      { tipo: 'h2', texto: 'Cómo funciona, paso a paso' },
+      {
+        tipo: 'lista',
+        items: [
+          'Recuperación (retrieval): ante tu pregunta, el sistema busca y trae los documentos más relevantes de fuentes externas.',
+          'Aumento (augmentation): esos documentos se inyectan como contexto adicional junto a tu pregunta.',
+          'Generación (generation): el modelo redacta la respuesta apoyándose en ese contexto, y suele citar de dónde lo sacó.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'La consecuencia clave: si tu marca no aparece en el paso de recuperación, no existe para la respuesta final. No importa cuán buena sea tu oferta — si no te recuperan, no te citan.',
+      },
+      { tipo: 'h2', texto: 'Por qué RAG decide si la IA cita tu marca' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El paso de recuperación funciona parecido a un buscador: prioriza fuentes accesibles, con autoridad y alineadas con la consulta. Por eso una marca puede tener un gran producto y aun así ser invisible para la IA: si su contenido no es rastreable, no responde preguntas concretas o no aparece en fuentes que el sistema considera confiables, simplemente no entra al material que el modelo usa para responder.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'En la era RAG, no compites por estar en la memoria del modelo. Compites por estar entre los documentos que recupera en el momento exacto en que tu cliente pregunta.',
+        fuente: 'Análisis Ai Visibility',
+      },
+      { tipo: 'h2', texto: 'Qué hacer para que RAG te recupere' },
+      {
+        tipo: 'lista',
+        items: [
+          'Asegura que tu sitio sea rastreable e indexable — es la puerta de entrada al paso de recuperación.',
+          'Crea contenido que responda preguntas concretas de tu categoría, no textos genéricos.',
+          'Usa JSON-LD para que la IA lea tu identidad de marca sin equivocarse de entidad.',
+          'Construye presencia en fuentes que los sistemas RAG consideran autoritativas para tu industria (reseñas, medios de nicho, foros).',
+          'Mide tu Share of Model para saber si, hoy, te están recuperando o no.',
+        ],
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'RAG no es magia ni una caja negra inaccesible. Es un proceso de recuperación que premia el contenido accesible, claro y confiable. La marca que entiende esto deja de rogar por aparecer y empieza a construir las señales que hacen que la IA la elija.',
+      },
+    ],
+    ctaTexto: 'Ver si la IA me recupera →',
+    ctaUrl: '/auditar/',
+    relacionados: ['google-seo-sigue-vivo-busqueda-ia', 'chatgpt-busqueda-web-cambia-geo-2026', '5-hacks-geo-que-google-dice-no-sirven'],
+    glosario: [
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+      { slug: 'llm', termino: 'LLM' },
+      { slug: 'alucinacion-ia', termino: 'Alucinación de IA' },
+    ],
+  },
   {
     slug: '5-hacks-geo-que-google-dice-no-sirven',
     titulo: 'Los 5 hacks de GEO que Google dice que NO sirven (y qué hacer en su lugar)',
