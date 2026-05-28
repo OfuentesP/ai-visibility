@@ -30,58 +30,14 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const jsonLd = {
+const orgJsonLd = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Organization",
+  "@id": "https://ai-visibility.cl/#organization",
   "name": "Ai Visibility",
   "url": "https://ai-visibility.cl",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "Herramienta de auditoría para Generative Engine Optimization (GEO). Analiza la visibilidad de marcas en modelos fundacionales de IA como GPT-4, Claude 3, y Gemini.",
-  "offers": {
-    "@type": "Offer",
-    "price": "12.00",
-    "priceCurrency": "USD"
-  },
-  "featureList": [
-    "Auditoría de marca en LLMs",
-    "Análisis de sentimiento en respuestas generativas",
-    "Benchmarking de competidores en motores de respuesta",
-    "Generación de arquetipos de usuario para búsqueda de IA",
-    "Seguimiento de tendencias en visibilidad generativa"
-  ],
-  "author": {
-    "@type": "Organization",
-    "name": "Ai Visibility",
-    "url": "https://ai-visibility.cl"
-  }
-}
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "¿Qué es Generative Engine Optimization (GEO)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini." }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Cuál es la diferencia entre SEO y GEO?",
-      "acceptedAnswer": { "@type": "Answer", "text": "El SEO busca posicionar enlaces en Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por IA, donde no hay listas de enlaces, sino una única recomendación directa." }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Qué es el Share of Model (SoM)?",
-      "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) representa el porcentaje exacto de veces que un modelo de inteligencia artificial cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios." }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Si tu marca no aparece en LLMs se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad o carencia de datos estructurados legibles para máquinas en tu sitio web." }
-    }
-  ]
+  "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization (GEO).",
+  "address": { "@type": "PostalAddress", "addressCountry": "CL" }
 }
 
 export default function RootLayout({
@@ -108,11 +64,7 @@ export default function RootLayout({
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-slate-950">

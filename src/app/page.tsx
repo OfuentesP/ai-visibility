@@ -29,19 +29,12 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
-      "@id": "https://ai-visibility.cl/#organization",
-      "name": "Ai Visibility",
-      "url": "https://ai-visibility.cl",
-      "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization.",
-      "address": { "@type": "PostalAddress", "addressCountry": "CL" }
-    },
-    {
       "@type": "SoftwareApplication",
       "@id": "https://ai-visibility.cl/#software",
       "name": "Ai Visibility Auditor",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web browser",
+      "publisher": { "@id": "https://ai-visibility.cl/#organization" },
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     },
     {
