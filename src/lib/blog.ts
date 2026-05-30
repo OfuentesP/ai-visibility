@@ -28,6 +28,122 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'ecommerce-chileno-busqueda-ia-cyberday-2026',
+    titulo: 'El e-commerce chileno frente a la búsqueda con IA: lo que ya cambió y qué hacer antes del CyberDay 2026',
+    descripcion:
+      'En 2025-2026 el tráfico desde IA generativa al retail creció +4.700% y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 incorpora "Cyber AI" oficial y Latam-GPT empieza a operar. Guía aterrizada para una pyme chilena que quiere llegar al evento siendo recomendada por ChatGPT, no ignorada.',
+    fecha: '2026-05-29',
+    categoria: 'Casos & Datos',
+    tags: ['Chile', 'E-commerce', 'CyberDay', 'ChatGPT', 'Cyber AI', 'Latam-GPT'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '9 min',
+    destacado: true,
+    resumen:
+      'El tráfico desde IA generativa al retail creció +4.700% en 2025 y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 (1-3 junio) incorpora "Cyber AI" oficial y ya opera Latam-GPT. Para una pyme local, optimizar para IA antes de junio es la ventana más rentable del año.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'El cliente chileno que va a comprar en el CyberDay 2026 ya no abre primero Google. Abre ChatGPT y pregunta si tu tienda es confiable, si tus precios son reales, o cuál opción de tu categoría conviene más. Esa conversación ocurre antes de que tu landing exista en su mente — y, si la IA no te conoce, ya perdiste la venta.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No es una predicción. Los datos de 2025-2026 muestran que el cambio ya pasó. En Chile, además, el CyberDay 2026 incorpora un agente conversacional oficial llamado "Cyber AI" y al mismo tiempo opera Latam-GPT, el primer modelo de IA pensado para nuestra región. La ventana para entrar al mapa con ventaja se cuenta en semanas, no meses.',
+      },
+      { tipo: 'h2', texto: 'Los números que cambiaron el juego en 2025-2026' },
+      {
+        tipo: 'lista',
+        items: [
+          'El tráfico desde IA generativa al retail creció +4.700% interanual en 2025 (Adobe). Cyber Monday por sí solo subió +670%.',
+          'Las visitas que llegan desde ChatGPT, Perplexity y AI Overviews convierten entre 4x y 5x más que el orgánico clásico — múltiples estudios independientes 2025-2026 lo confirman.',
+          'El tráfico de ChatGPT específicamente convierte +31% sobre el no-branded organic (Visibility Labs, 94 tiendas analizadas).',
+          'Perplexity cita el 4,2% de las páginas optimizadas; Google AI Overviews solo el 2,1%. Diferencia material a la hora de elegir dónde poner el esfuerzo.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Traducción para una pyme chilena: cada visita que llega desde IA vale como 4 o 5 visitas de Google. No estás eligiendo entre canales que pesan igual — estás eligiendo entre el canal viejo y el que multiplica conversión.',
+      },
+      { tipo: 'h2', texto: 'Lo que ya cambió en Chile' },
+      { tipo: 'h3', texto: 'CyberDay 2026 con "Cyber AI" oficial' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La Cámara de Comercio de Santiago confirmó que el CyberDay 2026 (1 al 3 de junio) incorpora "Cyber AI", un agente conversacional que ayuda al consumidor a buscar productos, comparar opciones y obtener recomendaciones personalizadas durante el evento. Es la primera vez que el agente vive dentro del evento mismo — no solo en ChatGPT, también en el portal oficial.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Implicancia directa: tu marca tiene que ser legible por ese agente. Si tu catálogo, precios y políticas no están estructurados, el "Cyber AI" puede recomendar a tu competencia incluso desde el portal donde tú participas.',
+      },
+      { tipo: 'h3', texto: 'Latam-GPT, el modelo regional' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Lanzado en Chile con inversión pública y privada, Latam-GPT es el primer LLM entrenado con datos regionales. Aún es temprano para medir su impacto comercial, pero la señal estratégica es clara: el contenido local, en español de Chile, con referencias a marcas y medios chilenos, empieza a ser una ventaja competitiva, no solo una nota de color.',
+      },
+      { tipo: 'h2', texto: 'La paradoja del retail chileno' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Adobe documentó en 2026 algo incómodo: el tráfico desde IA crece, pero los sitios de retail no son legibles para máquinas. Falta JSON-LD, los datos de producto son inconsistentes, y las plataformas estándar (Tiendanube, Shopify) no agregan structured data por defecto. Esa brecha es uniforme en LATAM — y en Chile la viven incluso retailers grandes.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El otro dato que importa: la mayoría de los equipos de marketing enterprise ya tienen una iniciativa de GEO en marcha, pero la mayoría de los equipos de pyme aún no empezó. Eso significa una cosa concreta: la ventaja competitiva está abierta para quien se mueva primero, antes de que el espacio se sature.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'La ventaja competitiva ya no está en acceder a herramientas de IA — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
+        fuente: 'Tendencias e-Commerce LATAM 2026',
+      },
+      { tipo: 'h2', texto: 'Por qué Google Shopping sigue siendo palanca (sí, en serio)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Uno de los hallazgos más accionables de 2026: el 83% del carrusel de productos de ChatGPT Shopping se nutre directamente de Google Shopping (Merchant Center). Para una tienda chilena, esto significa que la inversión que ya hiciste en feed de Merchant Center está alimentando tu visibilidad en ChatGPT — quieras o no.',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Revisa que tu feed de Merchant Center esté activo, sin errores, con precios y stock actualizados.',
+          'Completa los atributos opcionales (GTIN, marca, condición, despacho) — son los que la IA usa para decidir.',
+          'Asegúrate de que las imágenes sean de tu catálogo real, no stock genérico.',
+          'Sincroniza políticas de devolución y despacho con lo que muestra tu sitio. Inconsistencia = pérdida de confianza para el agente.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Checklist para llegar al CyberDay con tu marca visible' },
+      {
+        tipo: 'lista',
+        items: [
+          'Audita tu Share of Model esta semana: descubre si ChatGPT te recomienda hoy en queries reales de tu categoría.',
+          'Implementa JSON-LD de tipo Organization, Store y Product en tu sitio. Es código que tu equipo puede pegar esta tarde.',
+          'Pide 5 reseñas nuevas en Google Reviews esta semana. Frescura es señal de ranking en el paso de recuperación.',
+          'Limpia tu feed de Merchant Center — es lo que alimenta el carrusel de ChatGPT Shopping.',
+          'Publica una pieza propia con datos o experiencia real (no contenido genérico) que medios de nicho o blogs chilenos puedan citar.',
+          'Verifica consistencia entre tu sitio, Google Business Profile y feeds. La IA cruza fuentes — si discrepan, te penaliza.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Quedan pocos días para el CyberDay. Los sistemas RAG de Perplexity y ChatGPT con búsqueda web indexan cambios en 48-72 horas. Lo que implementes ahora alcanza la ventana de búsquedas de validación previas al peak (25 al 31 de mayo).',
+      },
+    ],
+    ctaTexto: 'Auditar mi tienda antes del CyberDay →',
+    ctaUrl: '/auditar/ecommerce/',
+    relacionados: ['5-hacks-geo-que-google-dice-no-sirven', 'que-es-rag-como-decide-citas-ia', 'chatgpt-busqueda-web-cambia-geo-2026', 'comercio-conversacional-agentes-ucp'],
+    glosario: [
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+    ],
+  },
+  {
     slug: 'que-es-rag-como-decide-citas-ia',
     titulo: '¿Qué es RAG (Retrieval-Augmented Generation) y cómo decide qué marcas cita la IA?',
     descripcion:
@@ -118,7 +234,6 @@ export const posts: Post[] = [
     tags: ['Google', 'GEO', 'AEO', 'SEO', 'LLMS.txt'],
     autor: 'Ai Visibility',
     tiempoLectura: '7 min',
-    destacado: true,
     resumen:
       'En su guía oficial, Google desmiente 5 hacks de GEO: LLMS.txt, fragmentar contenido, reescribir para IA, buscar menciones falsas y sobre-optimizar structured data. La conclusión: los fundamentos de SEO siguen mandando.',
     bloques: [
