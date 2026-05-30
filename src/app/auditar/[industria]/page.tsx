@@ -156,6 +156,32 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
         </div>
       </section>
 
+      {/* LECTURAS RECOMENDADAS — cluster auditar↔blog */}
+      {ind.lecturas && ind.lecturas.length > 0 && (
+        <section className="border-t border-slate-800/60 py-12 sm:py-16 px-4">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Profundiza el tema</p>
+            <h2 className="text-2xl font-extrabold text-white text-center mb-10">
+              Lecturas recomendadas
+            </h2>
+            <div className="space-y-3">
+              {ind.lecturas.map((l) => (
+                <Link
+                  key={l.slug}
+                  href={`/blog/${l.slug}/`}
+                  className="block bg-slate-900 border border-slate-800 hover:border-indigo-600/60 rounded-sm px-5 py-4 transition-colors group"
+                >
+                  <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Blog</span>
+                  <p className="text-sm font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors mt-1.5 leading-snug">
+                    {l.titulo}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FOOTER NAV */}
       <section className="border-t border-slate-800/60 py-8 px-4">
         <div className="max-w-3xl mx-auto flex flex-wrap justify-between items-center gap-4">

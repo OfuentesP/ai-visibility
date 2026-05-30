@@ -8,11 +8,17 @@ export type Industria = {
   faq: { q: string; a: string }[]
   tituloSeo?: string
   descripcionSeo?: string
+  lecturas?: { slug: string; titulo: string }[]
 }
 
 export const industrias: Industria[] = [
   {
     id: 'saas',
+    lecturas: [
+      { slug: 'geo-saas-chile-aparecer-chatgpt-salesforce-hubspot', titulo: 'GEO para SaaS en Chile: cómo aparecer en ChatGPT cuando comparan tu producto con Salesforce o HubSpot' },
+      { slug: 'perplexity-vs-chatgpt-citas-2026', titulo: 'Perplexity vs ChatGPT: cómo citan marcas y cuál te conviene optimizar primero' },
+      { slug: 'guia-google-ia-acciones-marca-chilena', titulo: 'La guía de Google para búsqueda con IA, traducida a acciones para una marca chilena' },
+    ],
     nombre: 'SaaS & Software',
     tagline: 'GEO para SaaS en Chile',
     descripcion:
@@ -54,6 +60,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'retail',
+    lecturas: [
+      { slug: 'geo-retail-chile-tiendas-fisicas-chatgpt', titulo: 'GEO para retail en Chile: por qué tus tiendas físicas también necesitan aparecer en ChatGPT' },
+      { slug: 'ecommerce-chileno-busqueda-ia-cyberday-2026', titulo: 'El e-commerce chileno frente a la búsqueda con IA: qué hacer antes del CyberDay 2026' },
+      { slug: 'jsonld-organization-chile', titulo: 'JSON-LD Organization para marcas chilenas: plantilla lista para copiar' },
+    ],
     nombre: 'Retail & E-commerce',
     tagline: 'GEO para Retail en Chile',
     descripcion:
@@ -95,6 +106,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'salud',
+    lecturas: [
+      { slug: 'geo-clinicas-chile-evitar-alucinacion-ia', titulo: 'GEO para clínicas en Chile: cómo evitar que ChatGPT desinforme sobre tu centro médico' },
+      { slug: 'jsonld-organization-chile', titulo: 'JSON-LD Organization para marcas chilenas: plantilla lista para copiar' },
+      { slug: 'guia-google-ia-acciones-marca-chilena', titulo: 'La guía de Google para búsqueda con IA, traducida a acciones para una marca chilena' },
+    ],
     nombre: 'Salud & Clínicas',
     tagline: 'GEO para Clínicas y Salud en Chile',
     descripcion:
@@ -136,6 +152,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'banca',
+    lecturas: [
+      { slug: 'geo-banca-fintech-chile-comparativas-ia', titulo: 'GEO para banca en Chile: cómo aparecer en las comparativas que ChatGPT hace de productos financieros' },
+      { slug: '5-hacks-geo-que-google-dice-no-sirven', titulo: 'Los 5 hacks de GEO que Google dice que NO sirven' },
+      { slug: 'perplexity-vs-chatgpt-citas-2026', titulo: 'Perplexity vs ChatGPT: cómo citan marcas y cuál te conviene optimizar primero' },
+    ],
     nombre: 'Banca & Servicios Financieros',
     tagline: 'GEO para Banca en Chile',
     descripcion:
@@ -177,6 +198,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'pyme',
+    lecturas: [
+      { slug: 'geo-pymes-chile-competir-grandes-chatgpt', titulo: 'GEO para pymes en Chile: cómo competir con las grandes en ChatGPT sin presupuesto de retail' },
+      { slug: 'jsonld-organization-chile', titulo: 'JSON-LD Organization para marcas chilenas: plantilla lista para copiar' },
+      { slug: 'contenido-commodity-vs-experiencia-real-ia', titulo: 'Contenido commodity vs. experiencia real: qué premia la IA según Google' },
+    ],
     nombre: 'Pymes & Emprendimientos',
     tagline: 'GEO para Pymes en Chile',
     descripcion:
@@ -218,6 +244,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'inmobiliaria',
+    lecturas: [
+      { slug: 'geo-inmobiliarias-chile-decision-comprar-ia', titulo: 'GEO para inmobiliarias en Chile: cómo aparecer en ChatGPT cuando alguien decide dónde vivir' },
+      { slug: 'jsonld-organization-chile', titulo: 'JSON-LD Organization para marcas chilenas: plantilla lista para copiar' },
+      { slug: 'contenido-commodity-vs-experiencia-real-ia', titulo: 'Contenido commodity vs. experiencia real: qué premia la IA según Google' },
+    ],
     nombre: 'Inmobiliaria & Propiedades',
     tagline: 'GEO para Inmobiliarias en Chile',
     descripcion:
@@ -259,6 +290,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'ecommerce',
+    lecturas: [
+      { slug: 'ecommerce-chileno-busqueda-ia-cyberday-2026', titulo: 'El e-commerce chileno frente a la búsqueda con IA: qué hacer antes del CyberDay 2026' },
+      { slug: 'ecommerce-latam-cambio-modelo-busqueda-2026', titulo: 'El e-commerce LATAM frente al cambio del modelo de búsqueda: cómo se mueve cada país' },
+      { slug: 'comercio-conversacional-agentes-ucp', titulo: 'Comercio conversacional y agentes de compra: qué es UCP y por qué importa' },
+    ],
     nombre: 'E-commerce & Tiendas Online',
     tagline: 'GEO para E-commerce en Chile',
     tituloSeo: 'Auditoría de E-commerce en Chile: ¿te recomienda ChatGPT o a tu competencia? | Ai Visibility',
@@ -303,6 +339,11 @@ export const industrias: Industria[] = [
   },
   {
     id: 'cyberday',
+    lecturas: [
+      { slug: 'ecommerce-chileno-busqueda-ia-cyberday-2026', titulo: 'El e-commerce chileno frente a la búsqueda con IA: qué hacer antes del CyberDay 2026' },
+      { slug: '5-hacks-geo-que-google-dice-no-sirven', titulo: 'Los 5 hacks de GEO que Google dice que NO sirven' },
+      { slug: 'chatgpt-busqueda-web-cambia-geo-2026', titulo: 'ChatGPT con búsqueda web por defecto: lo que cambia para tu marca en 2026' },
+    ],
     nombre: 'CyberDay 2026',
     tagline: 'GEO para el CyberDay 2026 en Chile',
     descripcion:
