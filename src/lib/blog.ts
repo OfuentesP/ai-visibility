@@ -277,6 +277,464 @@ export const posts: Post[] = [
     ],
   },
   {
+    slug: 'geo-saas-chile-aparecer-chatgpt-salesforce-hubspot',
+    titulo: 'GEO para SaaS en Chile: cómo aparecer en ChatGPT cuando comparan tu producto con Salesforce o HubSpot',
+    descripcion:
+      'El 67% de los compradores B2B ya consulta a la IA antes de su primera llamada con ventas. Cómo posicionar un SaaS chileno o latinoamericano en ChatGPT y Perplexity cuando los evaluadores buscan alternativas a software internacional.',
+    fecha: '2026-05-29',
+    categoria: 'GEO & AEO',
+    tags: ['SaaS', 'B2B', 'ChatGPT', 'GEO', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'El comprador B2B ya armó su shortlist con ChatGPT antes de tu primera llamada. Para un SaaS chileno o LATAM, pelear contra Salesforce o HubSpot en queries genéricas es perdido — ganar las queries de especificidad ("alternativa local con integración al SII") es posible y barato.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si vendes un SaaS B2B en Chile y todavía mides el funnel desde el primer formulario, te estás perdiendo el 67% del proceso de evaluación. Esa fracción —según múltiples estudios B2B de 2025-2026— ya pasó antes de que el comprador hable contigo. Y cada vez más, esa investigación previa la modera ChatGPT.',
+      },
+      { tipo: 'h2', texto: 'El ciclo B2B se mudó al chat' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los compradores ya no comparan tres pestañas abiertas en el navegador. Le preguntan a ChatGPT cuál es el mejor CRM para una pyme chilena, qué alternativas a HubSpot existen en LATAM, o si tu producto sirve mejor que el de la competencia para su industria. Si no apareces en esas respuestas, ni siquiera entras al shortlist.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'La consecuencia operativa es directa: las leads que llegan a tu CRM hoy son solo los que ChatGPT ya validó. Los que la IA descartó ni se contactan. Tu pipeline está siendo filtrado antes de que existas para él.',
+      },
+      { tipo: 'h2', texto: 'Por qué pelear contra Salesforce en queries genéricas es la trampa' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Salesforce, HubSpot y Monday acumularon una década de menciones en fuentes que los LLM indexan como autoritativas: G2, Capterra, TechCrunch, Forrester, Gartner. Esa densidad de entidad es prácticamente imposible de igualar a corto plazo. Si tu estrategia GEO es "aparecer en \'mejor CRM\'", ya empezaste perdiendo.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La buena noticia: los LLM no responden solo queries genéricas. Recompensan especificidad. Una query como "CRM para pyme chilena con integración al SII y atención en español" no la gana Salesforce — la gana quien posicione exactamente esa propuesta de valor.',
+      },
+      { tipo: 'h2', texto: 'Las 3 categorías de queries donde un SaaS local puede ganar' },
+      {
+        tipo: 'lista',
+        items: [
+          'Queries de alternativa-a-X: "alternativa a HubSpot para empresas latinoamericanas con ciclos de venta cortos". El comprador ya conoce al líder y busca la opción local.',
+          'Queries de integración específica: "software de facturación con conexión al SII y multi-RUT". La especificidad técnica es tu cancha.',
+          'Queries de comparación entre dos: "comparar [Tu SaaS] vs [Competidor directo]". Si no controlas cómo se cuenta esa comparación, lo hace tu competidor.',
+        ],
+      },
+      { tipo: 'h2', texto: 'La señal más subestimada: G2, Capterra y Software Advice' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Perplexity y ChatGPT con búsqueda web tratan las plataformas de reseñas B2B como fuentes de alta confianza. Un perfil de G2 con menos de 10 reseñas en el último año es señal de inactividad — la IA prefiere recomendar un producto con menor calificación pero más reseñas recientes que uno con 5 estrellas y silencio prolongado.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Para un SaaS chileno, lo accionable es invertir en perfil de G2 y Capterra, pedir reseñas a clientes activos cada trimestre, y responder públicamente las negativas. Es donde la IA mira primero cuando alguien le pregunta por tu categoría.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'En enterprise B2B con múltiples stakeholders, cada evaluador hace sus propias consultas a la IA. Aparecer en cada una de esas consultas equivale a tener un SDR trabajando 24/7 en cada cuenta — sin payroll.',
+        fuente: 'Análisis Ai Visibility',
+      },
+      { tipo: 'h2', texto: 'Checklist GEO para un SaaS chileno' },
+      {
+        tipo: 'lista',
+        items: [
+          'Implementa JSON-LD de tipo SoftwareApplication con featureList, applicationCategory y precio. Es lo que la IA usa para clasificarte.',
+          'Construye un perfil sólido en G2 y Capterra con reseñas recientes. Mide cantidad y frescura, no solo rating.',
+          'Identifica 3-5 queries de alternativa-a-X o integración específica que sí puedes ganar. Crea contenido propio que las responda con experiencia real.',
+          'Trabaja Digital PR en medios tech de LATAM (FayerWayer, Pisapapeles, blogs de startups) — no necesitas TechCrunch.',
+          'Audita tu Share of Model en queries de tu categoría todos los meses. Mide drift, no estado.',
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi SaaS en ChatGPT →',
+    ctaUrl: '/auditar/saas/',
+    relacionados: ['guia-google-ia-acciones-marca-chilena', 'contenido-commodity-vs-experiencia-real-ia', 'perplexity-vs-chatgpt-citas-2026'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
+    slug: 'geo-retail-chile-tiendas-fisicas-chatgpt',
+    titulo: 'GEO para retail en Chile: por qué tus tiendas físicas también necesitan aparecer en ChatGPT',
+    descripcion:
+      'Las consultas locales a IA ("mejor tienda de [categoría] en [comuna]") crecen más rápido que las genéricas. Cómo estructurar un retail con presencia física para aparecer en ChatGPT, Perplexity y AI Overviews cuando un cliente busca cerca.',
+    fecha: '2026-05-29',
+    categoria: 'GEO & AEO',
+    tags: ['Retail', 'Local SEO', 'LocalBusiness', 'GEO', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '6 min',
+    resumen:
+      'Las queries del tipo "mejor [categoría] en [comuna]" están creciendo más rápido que las genéricas en ChatGPT. Un retail con tiendas físicas necesita JSON-LD LocalBusiness por sucursal, Google Business Profile actualizado y reseñas frescas por local — no solo a nivel marca.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Todo el discurso de "GEO para retail" termina hablando de e-commerce. Pero el retail con tiendas físicas en Chile tiene una oportunidad propia, y la mayoría la está dejando pasar: las consultas locales a IA son el segmento que más crece, y el más fácil de ganar.',
+      },
+      { tipo: 'h2', texto: 'La consulta local es el segmento de mayor crecimiento' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Cuando alguien le pregunta a ChatGPT "mejor tienda de muebles en Providencia" o "ferretería con despacho mismo día en Ñuñoa", la IA responde con marcas específicas — y en esas respuestas, la ventaja no es del retailer con más facturación, sino del que tiene su información local estructurada.',
+      },
+      { tipo: 'h2', texto: 'LocalBusiness, no Organization' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El error técnico más común en retail multi-sucursal: tener un único JSON-LD de Organization a nivel marca. Para queries locales, eso no sirve. La IA necesita un nodo LocalBusiness (o subtipo más específico: HomeAndConstructionBusiness, ClothingStore, Pharmacy) por cada sucursal, con su dirección, horarios, teléfono y enlace al GBP correspondiente.',
+      },
+      { tipo: 'h2', texto: 'Google Business Profile sigue mandando (sí, en la era de la IA)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Tanto Google AI Overviews como ChatGPT con búsqueda web consultan datos de Google Business Profile cuando responden queries locales. Un GBP completo, con horarios actualizados, fotos recientes y reseñas respondidas, es la señal estructurada más fácil y de mayor retorno que un retail puede mover esta semana.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Verifica además que cada sucursal tenga su GBP propio (no uno solo a nivel marca). Esto es lo que permite a la IA responder por comuna y no por nombre comercial.',
+      },
+      { tipo: 'h2', texto: 'Reseñas por sucursal, no por marca' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Una tienda con 4,8 estrellas globales pero con sucursales sin reseñas individuales pierde en queries locales. La IA prefiere recomendar una sucursal con 4,3 y reseñas recientes específicas a esa dirección que una marca con buen promedio pero datos genéricos. Pídeles reseñas a tus clientes mencionando la sucursal.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'En retail físico, el JSON-LD LocalBusiness por sucursal + GBP completo + reseñas por dirección es la trinidad técnica. Sin esos tres, eres invisible en queries locales — el segmento donde más fácil ganas.',
+        fuente: 'Análisis Ai Visibility',
+      },
+      { tipo: 'h2', texto: 'Checklist GEO para retail físico chileno' },
+      {
+        tipo: 'lista',
+        items: [
+          'JSON-LD LocalBusiness (o subtipo) por cada sucursal, con address, openingHours, telephone y sameAs al GBP.',
+          'GBP por sucursal, con categorías correctas, horarios actualizados y al menos 10 fotos recientes.',
+          'Campaña de reseñas por sucursal: pide al cliente que mencione la dirección o comuna en su review.',
+          'Consistencia de datos entre tu sitio, GBP y portales tipo Reclamos.cl o Yelp Chile.',
+          'Audita Share of Model por comuna, no solo a nivel marca. La visibilidad puede variar fuerte entre sucursales.',
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi retail en ChatGPT →',
+    ctaUrl: '/auditar/retail/',
+    relacionados: ['guia-google-ia-acciones-marca-chilena', 'ecommerce-chileno-busqueda-ia-cyberday-2026', 'jsonld-organization-chile'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+    ],
+  },
+  {
+    slug: 'geo-clinicas-chile-evitar-alucinacion-ia',
+    titulo: 'GEO para clínicas en Chile: cómo evitar que ChatGPT desinforme sobre tu centro médico',
+    descripcion:
+      'Las alucinaciones de IA en salud son riesgo clínico, no solo reputacional. Cómo estructurar la información pública de una clínica chilena para que los LLM respondan con precisión sobre especialidades, médicos y coberturas — y no inventen datos.',
+    fecha: '2026-05-29',
+    categoria: 'GEO & AEO',
+    tags: ['Salud', 'Clínicas', 'JSON-LD', 'Alucinación IA', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'Una alucinación de IA sobre tu clínica —especialidad inventada, médico mal atribuido, cobertura equivocada— es riesgo clínico, no solo de marketing. La defensa es JSON-LD MedicalClinic/Physician preciso y consistencia entre tu sitio, GBP, redes y portales de salud.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'En cualquier industria, una alucinación de IA sobre tu marca es un problema. En salud, es algo más serio: un paciente que llega a la consulta con la convicción de que tu clínica tiene una especialidad que no tiene, o que cubre un seguro que no cubre, ya tomó una decisión basada en información incorrecta. La responsabilidad de prevenir eso es de la clínica, no del LLM.',
+      },
+      { tipo: 'h2', texto: 'Cómo se ve una alucinación de IA sobre una clínica' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No son errores estridentes. Son errores plausibles. Un LLM puede afirmar con seguridad que tu centro médico cubre Isapre Cruz Blanca cuando no lo hace, que tu jefe de cardiología es alguien que se fue hace dos años, o que tu sucursal de Las Condes atiende urgencias 24/7 cuando solo es ambulatoria. El paciente no verifica — actúa.',
+      },
+      { tipo: 'h2', texto: 'Por qué pasa: el LLM rellena vacíos cuando faltan datos estructurados' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Las alucinaciones no son errores aleatorios. Ocurren cuando el modelo no tiene suficiente información de alta calidad sobre una entidad y "rellena" con datos plausibles. Si tu sitio no declara qué especialidades ofreces, qué isapres cubres y qué médicos integran tu staff de forma estructurada, la IA infiere. Y a veces, mal.',
+      },
+      { tipo: 'h2', texto: 'Schema.org tiene tipos médicos que casi nadie usa' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La mayoría de las clínicas chilenas declara como mucho un Organization genérico. Schema.org tiene tipos específicos diseñados para reducir ambigüedad: MedicalClinic, Hospital, Physician, MedicalSpecialty, MedicalProcedure, HealthInsurancePlan. Cada uno tiene campos pensados para que la IA lea sin inferir.',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'MedicalClinic o Hospital para el centro: medicalSpecialty, availableService, paymentAccepted.',
+          'Physician por cada médico: medicalSpecialty, availableService, hospitalAffiliation.',
+          'HealthInsurancePlan listando isapres y previsiones que efectivamente cubres.',
+          'MedicalProcedure para tratamientos especializados con descripción clara.',
+        ],
+      },
+      { tipo: 'h2', texto: 'La consistencia importa más que la cantidad' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM cruzan tu sitio con Google Business Profile, portales como Doctoralia o Examedi y redes sociales. Si tu sitio dice una cosa y tu GBP otra, la IA elige cualquiera de las dos versiones, y a veces inventa una tercera. Auditoría de consistencia es tan importante como agregar más datos.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'En salud, el problema no es que la IA te omita. Es que te describa con datos plausibles pero erróneos. Tu defensa no es contenido más persuasivo — es información estructurada y consistente que cierre el espacio donde la IA podría inferir.',
+        fuente: 'Análisis Ai Visibility',
+      },
+      { tipo: 'h2', texto: 'Lo que NO recomendamos hacer en salud' },
+      {
+        tipo: 'lista',
+        items: [
+          'No infles aggregateRating ni inventes reseñas: los LLM cruzan con fuentes externas y te penalizan más de lo que ganarías.',
+          'No uses IA generativa para contenido médico sin revisión profesional. El riesgo regulatorio y clínico no compensa el ahorro de tiempo.',
+          'No omitas información negativa o limitaciones reales: la IA premia la transparencia, y un paciente que llega informado de verdad es un paciente que vuelve.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Checklist GEO para una clínica o centro médico chileno' },
+      {
+        tipo: 'lista',
+        items: [
+          'Implementa JSON-LD con tipos médicos específicos (MedicalClinic, Physician, MedicalSpecialty), no solo Organization.',
+          'Audita consistencia entre tu sitio, GBP, Doctoralia, Examedi y redes sociales.',
+          'Lista explícitamente isapres y previsiones cubiertas en tu sitio y en datos estructurados.',
+          'Mantén actualizado el staff médico — un médico que ya no atiende y sigue listado es una alucinación esperando ocurrir.',
+          'Audita tu Share of Model por especialidad. Tu visibilidad puede ser distinta en cardiología que en pediatría, incluso siendo la misma clínica.',
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi clínica en ChatGPT →',
+    ctaUrl: '/auditar/salud/',
+    relacionados: ['guia-google-ia-acciones-marca-chilena', 'jsonld-organization-chile', '5-hacks-geo-que-google-dice-no-sirven'],
+    glosario: [
+      { slug: 'alucinacion-ia', termino: 'Alucinación de IA' },
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
+    slug: 'geo-banca-fintech-chile-comparativas-ia',
+    titulo: 'GEO para banca en Chile: cómo aparecer en las comparativas que ChatGPT hace de productos financieros',
+    descripcion:
+      'Tasas, comisiones y requisitos: los clientes le piden a ChatGPT que les compare bancos y fintechs antes de decidir. Cómo posicionar tu institución para entrar en esas síntesis, declarando explícitamente la regulación CMF como señal estructurada.',
+    fecha: '2026-05-29',
+    categoria: 'GEO & AEO',
+    tags: ['Banca', 'Fintech', 'CMF', 'Comparativas', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'ChatGPT ya hace comparativas de productos financieros chilenos antes de que el cliente entre al comparador. La señal más subestimada para aparecer: declarar tu regulación CMF en JSON-LD. Sin eso, la IA puede omitirte como opción "no validada" frente a alternativas más conocidas.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'El cliente chileno que está por contratar un crédito, abrir una cuenta o tomar un seguro ya no entra primero a un comparador. Le pregunta a ChatGPT cuál banco le conviene, qué fintech tiene mejor tasa, o si tal institución es confiable. La síntesis que recibe define gran parte de la decisión — y la mayoría de las instituciones medianas y fintechs no aparece en ella.',
+      },
+      { tipo: 'h2', texto: 'Anatomía de una comparativa que hace ChatGPT' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Cuando un usuario pregunta "compara cuenta corriente empresarial entre BCI y Banco Estado", el LLM no recupera un comparador prearmado: sintetiza datos públicos (tasas referenciales, comisiones, requisitos) que encuentra en los sitios de las propias instituciones, en medios financieros y en foros. Si esos datos no están legibles en tu sitio, la IA usa los del competidor — y arma la comparativa sin ti.',
+      },
+      { tipo: 'h2', texto: 'Por qué declarar regulación CMF cambia tu visibilidad' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM evalúan confianza antes de recomendar. En servicios financieros, la regulación es la señal de confianza institucional más importante. Pero ChatGPT no sabe que estás regulado por la CMF a menos que lo declares de forma estructurada en tu JSON-LD (campo memberOf o award referenciando CMF) y en el contenido visible.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Es una de las brechas más fáciles de cerrar y de mayor impacto: una fintech regulada cuyo sitio no menciona explícitamente la fiscalización CMF puede ser omitida en respuestas comparativas frente a un banco grande que sí lo declara desde el footer.',
+      },
+      { tipo: 'h2', texto: 'Digital PR financiero como palanca crítica' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Pulso, Diario Financiero y El Mercurio Economía son fuentes que los LLM tratan como autoridad para temas financieros chilenos. Una mención editorial (no publicidad) en cualquiera de esos medios pesa más en la respuesta de ChatGPT que tres meses de campañas en Meta Ads. Para una institución mediana o fintech, esta es la palanca más subestimada.',
+      },
+      { tipo: 'h2', texto: 'Fintechs: la ventana específica donde sí pueden ganar' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Una fintech no le va a ganar a BCI en queries genéricas ("mejor banco para pymes"). Pero sí puede dominar consultas específicas: "crédito rápido para independientes sin aval", "cuenta para freelancers con boleta de honorarios", "tasa más baja para crédito automotriz para profesionales jóvenes". Cada una de esas consultas tiene volumen real y baja competencia GEO.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'La regulación CMF declarada de forma estructurada y un par de menciones recientes en medios financieros pesan más en el ranking del LLM que diez años de presencia de marca sin esa señal.',
+        fuente: 'Análisis Ai Visibility',
+      },
+      { tipo: 'h2', texto: 'Checklist GEO para banca y fintech chilena' },
+      {
+        tipo: 'lista',
+        items: [
+          'Declara la regulación CMF en JSON-LD (memberOf, award) y en footer visible del sitio.',
+          'Implementa JSON-LD FinancialProduct para cuentas, créditos y seguros, con campos de tasa referencial y requisitos.',
+          'Identifica 5 queries de nicho donde tu producto tiene ventaja real y crea contenido propio que las responda.',
+          'Invierte en Digital PR de medios financieros chilenos — la mención editorial pesa más que la pauta.',
+          'Audita tu Share of Model en queries comparativas ("comparar X vs Y") cada mes.',
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi institución en ChatGPT →',
+    ctaUrl: '/auditar/banca/',
+    relacionados: ['guia-google-ia-acciones-marca-chilena', 'perplexity-vs-chatgpt-citas-2026', 'jsonld-organization-chile'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
+    slug: 'geo-pymes-chile-competir-grandes-chatgpt',
+    titulo: 'GEO para pymes en Chile: cómo competir con las grandes en ChatGPT sin presupuesto de retail',
+    descripcion:
+      'Las pymes chilenas son invisibles por defecto en las respuestas de ChatGPT. La buena noticia: el GEO escala con esfuerzo, no con presupuesto. Cómo una pyme puede dominar nichos específicos donde Falabella o Sodimac no pueden alcanzarte.',
+    fecha: '2026-05-29',
+    categoria: 'GEO & AEO',
+    tags: ['Pyme', 'Emprendimiento', 'Especialización', 'GEO', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '6 min',
+    resumen:
+      'Una pyme chilena no le va a ganar a Falabella en queries genéricas. Pero sí puede dominar consultas específicas de nicho ("ferretería con despacho en Ñuñoa con atención personalizada") con JSON-LD bien estructurado y 5 reseñas frescas. El GEO escala con esfuerzo, no con plata.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si eres una pyme chilena y miras los rankings genéricos de ChatGPT, la conclusión es desmoralizante: Falabella, Sodimac, Banco Estado y Walmart dominan casi todo. Pero esa lectura está incompleta. El GEO funciona distinto para una pyme — y entendiendo esa diferencia, hay una cancha donde sí puedes ganar.',
+      },
+      { tipo: 'h2', texto: 'La regla pyme: especificidad gana' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La query "mejor ferretería en Chile" la responde Sodimac y no hay nada que hacer ahí. Pero la query "ferretería en Ñuñoa con despacho mismo día y asesoría para electricistas residenciales" no la responde Sodimac — la responde quien posicione exactamente esa propuesta. Y ese alguien puedes ser tú, con muy poco esfuerzo.',
+      },
+      { tipo: 'h2', texto: 'La economía del GEO para una pyme' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'A diferencia de la publicidad masiva, el GEO no escala con presupuesto, escala con esfuerzo focalizado. Un JSON-LD bien configurado se paga una vez. Una reseña real cuesta un mensaje de WhatsApp a un cliente satisfecho. Una mención en un blog de nicho cuesta un buen email a su autor. La inversión total para mover el Share of Model de una pyme en consultas específicas se mide en horas, no en pesos.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Esta es la ventana real: la mayoría de los equipos de marketing pyme aún no empezó con GEO. La saturación está en grandes empresas, no en nichos. Quien se mueva primero captura el espacio.',
+      },
+      { tipo: 'h2', texto: 'Tu zona, tu nicho, tu ventaja' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Identificar tus queries ganadoras es un ejercicio concreto: combina tu ubicación geográfica (comuna o región), tu nicho de especialización y un atributo diferenciador. Tres dimensiones. La intersección de las tres define un terreno donde casi nadie compite. Ejemplos: "estudio de yoga en Ñuñoa con clases de embarazadas", "veterinaria de exóticos en Providencia", "carpintero a domicilio en Maipú con experiencia en muebles a medida".',
+      },
+      { tipo: 'h2', texto: 'El plan de 14 días para una pyme' },
+      {
+        tipo: 'lista',
+        items: [
+          'Días 1-2: Audita tu Share of Model en 3 queries específicas de tu nicho. Identifica el gap.',
+          'Días 3-4: Implementa JSON-LD LocalBusiness con tu zona, especialidad y atributos diferenciadores claros.',
+          'Días 5-7: Pide 5 reseñas a clientes recientes en Google Reviews. Pídeles que mencionen tu zona o especialidad en el texto.',
+          'Días 8-10: Actualiza tu Google Business Profile con fotos recientes, horarios, y categorías secundarias relevantes.',
+          'Días 11-14: Escribe a 3 blogs o medios locales de tu nicho con una propuesta de contenido valioso (no autopromoción). Una sola mención editorial mueve la aguja.',
+        ],
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'A diferencia de las grandes, la pyme no necesita ganar 100 queries. Necesita ganar las 5 queries específicas donde su cliente ideal realmente pregunta. Ahí, el GEO es la palanca de captación más barata que existe hoy.',
+        fuente: 'Análisis Ai Visibility',
+      },
+    ],
+    ctaTexto: 'Auditar mi pyme en ChatGPT →',
+    ctaUrl: '/auditar/pyme/',
+    relacionados: ['guia-google-ia-acciones-marca-chilena', 'jsonld-organization-chile', 'contenido-commodity-vs-experiencia-real-ia'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+    ],
+  },
+  {
+    slug: 'geo-inmobiliarias-chile-decision-comprar-ia',
+    titulo: 'GEO para inmobiliarias en Chile: cómo aparecer en ChatGPT cuando alguien decide dónde vivir',
+    descripcion:
+      'La búsqueda de propiedad empieza meses antes del contacto, y ChatGPT ya es el primer consejero. Cómo posicionar una inmobiliaria o corredor chileno en consultas sobre comunas, proyectos en preventa y decisión de compra vs arriendo.',
+    fecha: '2026-05-29',
+    categoria: 'GEO & AEO',
+    tags: ['Inmobiliaria', 'Propiedades', 'RealEstate', 'GEO', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'La decisión inmobiliaria se cocina por meses en ChatGPT antes del primer contacto con un corredor. Para una inmobiliaria o corredor chileno, aparecer en esa fase exploratoria —preguntas sobre comunas, valores y proyectos— es la palanca de captación más subestimada hoy.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'En e-commerce, una visita en ChatGPT termina en compra en horas. En inmobiliario, la ventana es de meses. El cliente que llega a tu corredor en agosto empezó a preguntarle a ChatGPT en marzo sobre qué comuna le conviene, cuánto vale el metro cuadrado y qué inmobiliarias son confiables. Si no apareciste en esa conversación de cinco meses, llegaste tarde aunque te llame.',
+      },
+      { tipo: 'h2', texto: 'La fase exploratoria es donde se gana o se pierde' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La búsqueda inmobiliaria tiene una característica única: el comprador investiga por mucho tiempo y le hace preguntas amplias a la IA. "¿Conviene comprar en Ñuñoa o Maipú?", "¿qué pasa con las tasas hipotecarias?", "¿es buena inversión un departamento de un dormitorio en Estación Central?". En ninguna de esas queries el usuario está pidiendo un corredor — pero cada respuesta de ChatGPT está moldeando a quién contactará cuando esté listo.',
+      },
+      { tipo: 'h2', texto: 'La IA opina sobre comunas con o sin ti' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'ChatGPT responde con confianza sobre qué comunas están en alza, cuáles tienen mejor proyección y qué barrios conviene evitar. Esos contenidos los toma de medios, foros y portales. Si tu inmobiliaria publica análisis de mercado fundamentados (datos reales de tu cartera, observaciones de campo, comparativas con cifras) en tu blog o en medios chilenos, te conviertes en una de las fuentes que la IA cita cuando alguien pregunta. Si no publicas nada, la IA cita a tu competencia.',
+      },
+      { tipo: 'h2', texto: 'RealEstateListing: la ventana técnica para proyectos en preventa' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Un proyecto en preventa con JSON-LD de tipo RealEstateListing (ubicación, tipologías, precio referencial, fecha de entrega, área en m²) puede aparecer en respuestas de ChatGPT antes de que tenga su primer aviso pagado en portal inmobiliario. Es una ventaja temporal que casi nadie está usando.',
+      },
+      { tipo: 'h2', texto: 'El riesgo asimétrico de las reseñas negativas' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM ponderan reseñas negativas con más peso que positivas cuando responden sobre decisiones de alto monto. Una reseña negativa en un portal indexado puede hacer que ChatGPT te incluya en la respuesta con advertencia ("la inmobiliaria X aparece mencionada pero algunos clientes reportan…"). Auditar tu Share of Model incluye detectar si estás siendo recomendado o "recomendado con asterisco" — algo invisible en cualquier dashboard tradicional.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'En inmobiliario, no estás compitiendo por aparecer cuando el cliente busca un corredor. Estás compitiendo por aparecer cinco meses antes, cuando todavía decide en qué comuna mirar. Esa fase la define ChatGPT, y la inmobiliaria que lo entienda primero captura el ciclo entero.',
+        fuente: 'Análisis Ai Visibility',
+      },
+      { tipo: 'h2', texto: 'Checklist GEO para una inmobiliaria o corredor chileno' },
+      {
+        tipo: 'lista',
+        items: [
+          'Publica análisis de mercado con datos propios (variación de precios por comuna, demanda observada, tipologías más buscadas). Esto te convierte en fuente para la IA.',
+          'JSON-LD RealEstateOrganization o RealEstateAgent con areaServed por comuna y especialización por tipo de propiedad.',
+          'RealEstateListing para cada proyecto en preventa, con datos completos y consistentes.',
+          'Pide reseñas a clientes recientes en Google Reviews y portales como Mercado Libre Propiedades. Tres reseñas positivas por trimestre mantienen la frescura.',
+          'Monitorea reseñas negativas — responde públicamente y resuelve. El LLM lee la respuesta y ajusta su síntesis.',
+          'Audita Share of Model en queries exploratorias ("conviene comprar en Ñuñoa", "cuánto vale el metro cuadrado en Providencia") — no solo en "inmobiliarias confiables en Chile".',
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi inmobiliaria en ChatGPT →',
+    ctaUrl: '/auditar/inmobiliaria/',
+    relacionados: ['guia-google-ia-acciones-marca-chilena', 'jsonld-organization-chile', 'contenido-commodity-vs-experiencia-real-ia'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'alucinacion-ia', termino: 'Alucinación de IA' },
+    ],
+  },
+  {
     slug: 'que-es-rag-como-decide-citas-ia',
     titulo: '¿Qué es RAG (Retrieval-Augmented Generation) y cómo decide qué marcas cita la IA?',
     descripcion:
