@@ -28,6 +28,139 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'ecommerce-latam-cambio-modelo-busqueda-2026',
+    titulo: 'El e-commerce LATAM frente al cambio del modelo de búsqueda: cómo se mueve cada país',
+    descripcion:
+      'Brasil, México, Colombia, Chile y Perú no están entrando a la era de la búsqueda con IA al mismo ritmo. Mapa comparativo 2026 con tamaños de mercado, velocidad de adopción y dónde priorizar el esfuerzo GEO si operas en varios países de la región.',
+    fecha: '2026-05-29',
+    categoria: 'Casos & Datos',
+    tags: ['LATAM', 'E-commerce', 'GEO', 'Brasil', 'México', 'Colombia', 'Perú', 'Chile'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '10 min',
+    resumen:
+      'El e-commerce LATAM proyectado en USD 1,78 billones en 2026, con Brasil (45%) y México (26%) concentrando >70% del volumen. Pero la velocidad de adopción de IA en búsqueda y la saturación de GEO varían por país — y eso cambia dónde conviene invertir primero si operas en varios mercados.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si manejas marketing para una marca que opera en varios países de LATAM, la pregunta no es "¿hay que hacer GEO?". Es "¿en qué mercado empezar?". La respuesta no se contesta solo con tamaño de mercado — porque en algunos países el espacio en respuestas de IA ya empieza a saturarse, y en otros está completamente abierto.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Este es el mapa 2026: dónde está el volumen, dónde está la velocidad, y dónde está la ventaja competitiva real para una marca regional.',
+      },
+      { tipo: 'h2', texto: 'El tamaño del juego: dónde está el volumen' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El e-commerce LATAM se proyecta en USD 1,78 billones en 2026, con una penetración promedio del 18% sobre el comercio total. Pero esa cifra agregada esconde una concentración fuerte: Brasil y México juntos superan el 70% del volumen regional. El resto se reparte entre Argentina, Colombia, Chile y Perú.',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Brasil: ~45% del volumen LATAM. El mercado más grande, en portugués — requiere optimización diferenciada del resto.',
+          'México: ~26% del volumen. Puerta hacia Norteamérica, en plena expansión acelerada.',
+          'Colombia: 186,4 millones de transacciones e-commerce solo en Q1 2026 (+22,2% YoY).',
+          'Perú: proyección de +35% en ventas online para 2026. 7 de cada 10 peruanos ya compran en línea.',
+          'Chile: ~USD 9 mil millones proyectados a fin de 2026, 15% de penetración. Mercado pequeño pero maduro y con primer agente oficial de IA (Cyber AI).',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Lectura estratégica: priorizar solo por volumen te lleva a Brasil y México. Priorizar por velocidad de cambio y baja saturación competitiva en IA te lleva a Chile, Colombia y Perú primero. La decisión correcta depende de tu producto y tu capacidad operativa por país.',
+      },
+      { tipo: 'h2', texto: 'Cómo se mueve cada país en IA + e-commerce' },
+      { tipo: 'h3', texto: 'Brasil — gran volumen, capa de idioma propia' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Es el mercado más grande, pero también el más particular: el portugués brasileño tiene comportamiento propio en los LLMs. Lo que optimices en español para México o Chile no aplica directo. Para una marca regional, Brasil suele requerir un equipo o agencia local y contenido nativo en portugués — no traducciones. La buena noticia: la saturación de GEO sigue siendo baja en portugués, incluso con un mercado enorme.',
+      },
+      { tipo: 'h3', texto: 'México — el "nuevo asistente de ventas" según AMVO' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La AMVO documentó en 2026 que los compradores mexicanos ya usan IA como "asistente de ventas" — comparan productos, validan ofertas y resuelven dudas antes de llegar al checkout. La cita más reveladora: en una búsqueda tradicional un retailer muestra cientos de productos; un agente de IA propone cinco. Tu marca está en esos cinco, o no existe.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Un estudio mexicano reciente encontró que publicar contenido con datos objetivos (estadísticas, comparativas) mejora la visibilidad en IA en ~33%. Implicancia directa para marcas con presencia regional: el contenido tipo "informe", "estudio" o "comparativa" rinde fuerte en el mercado mexicano.',
+      },
+      { tipo: 'h3', texto: 'Colombia — crecimiento sostenido, momento de adopción IA' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Con +22% interanual en transacciones e-commerce el primer trimestre de 2026, Colombia está en una fase de crecimiento sostenido que coincide con el inicio masivo de la conversación sobre IA en el sector. El eCommerce Day Colombia 2026 puso la IA al centro junto con pagos digitales — señal de que el ecosistema apenas empieza a moverse. Ventana abierta para quien se posicione primero.',
+      },
+      { tipo: 'h3', texto: 'Perú — agentic commerce como tesis central' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los reportes peruanos para 2026 son explícitos: la tesis es agentic commerce. Agentes de IA que median entre el consumidor y la marca, ejecutando búsqueda, comparación y compra. Para un mercado con +35% de crecimiento proyectado, es la combinación más interesante de la región — volumen creciendo y un consenso emergente sobre hacia dónde va el modelo.',
+      },
+      { tipo: 'h3', texto: 'Chile — primer agente oficial dentro del evento (Cyber AI)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Chile va adelante en un aspecto puntual: el CyberDay 2026 (1-3 de junio) incorpora "Cyber AI", un agente conversacional oficial dentro del portal del evento. Es el primer caso en la región donde un agente vive en el e-commerce mismo, no solo en ChatGPT o Perplexity. Además, Latam-GPT (lanzado en Chile con inversión pública-privada) opera ya como modelo regional.',
+      },
+      { tipo: 'h2', texto: 'Tres patrones que se repiten en toda la región' },
+      {
+        tipo: 'lista',
+        items: [
+          'El retail LATAM no es legible para máquinas. Adobe documentó que los sitios de retail tienen JSON-LD incompleto o ausente — patrón uniforme en todos los países.',
+          'Los equipos enterprise ya empezaron con GEO; los equipos pyme aún no. La brecha es estructural y deja una ventana competitiva clara para quien se mueve primero.',
+          'El idioma sigue siendo determinante. Lo que optimizas en español de Chile, Colombia, Perú o México sí transfiere razonablemente entre esos mercados. Brasil necesita estrategia propia.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Latam-GPT: la dimensión regional que recién aparece' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Lanzado en 2026 con inversión pública y privada desde Chile, Latam-GPT es el primer LLM entrenado con datos regionales y orientado a reducir el sesgo de los modelos angloparlantes. Aún es temprano para medir impacto comercial real, pero la señal estratégica para marcas regionales es nítida: el contenido en español local, con referencias a marcas, medios y contexto LATAM, empieza a ser una palanca diferencial.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'La ventaja competitiva en 2026 no está en acceder a herramientas de IA — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
+        fuente: 'Tendencias e-Commerce LATAM 2026',
+      },
+      { tipo: 'h2', texto: 'Cómo estructurar una estrategia GEO multi-país en LATAM' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si operas en varios mercados, intentar lanzar GEO simultáneo en todos es la receta para no mover la aguja en ninguno. Recomendación práctica para marketers regionales:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Empieza por 1 o 2 mercados donde la combinación volumen + velocidad de cambio + saturación competitiva te favorezca. Para marcas regionales pequeñas, Chile, Colombia o Perú suelen ser mejor primer paso que México por menor saturación.',
+          'Trata Brasil como track independiente con equipo o agencia local en portugués.',
+          'Centraliza el contenido de autoridad (estudios propios, comparativas, datos) y traduce/adapta por mercado, manteniendo cifras y referencias locales.',
+          'Audita tu Share of Model país por país. La visibilidad de tu marca en ChatGPT México puede ser muy distinta a la de ChatGPT Chile — son consultas distintas con corpus distintos.',
+          'Sincroniza Merchant Center por país: el 83% del carrusel de ChatGPT Shopping se nutre de Google Shopping, y la indexación es por mercado.',
+          'Construye señales locales: reseñas en plataformas indexadas del país, menciones en medios de nicho locales y entidades regionales en tu JSON-LD (Organization con areaServed por país).',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'El error más común en marcas regionales: copiar el JSON-LD de su sitio global y servirlo igual en todos los países. Una Organization sin areaServed específico y sin sameAs hacia perfiles locales hace que la IA no pueda ubicarte en el mercado correcto — y por defecto recomiende a competencia local que sí tiene esa señal.',
+      },
+    ],
+    ctaTexto: 'Auditar mi marca por país →',
+    ctaUrl: '/auditar/ecommerce/',
+    relacionados: ['ecommerce-chileno-busqueda-ia-cyberday-2026', 'comercio-conversacional-agentes-ucp', 'perplexity-vs-chatgpt-citas-2026', 'chatgpt-busqueda-web-cambia-geo-2026'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
     slug: 'ecommerce-chileno-busqueda-ia-cyberday-2026',
     titulo: 'El e-commerce chileno frente a la búsqueda con IA: lo que ya cambió y qué hacer antes del CyberDay 2026',
     descripcion:
