@@ -4,7 +4,7 @@ import { posts } from '@/lib/blog'
 export const dynamic = 'force-static'
 
 const base = 'https://ai-visibility.cl'
-const hoy = new Date('2026-05-27')
+const hoy = new Date()
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const blog: MetadataRoute.Sitemap = [
