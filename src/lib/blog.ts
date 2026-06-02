@@ -28,6 +28,127 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'fin-de-la-pagina-como-destino',
+    titulo: 'Si Google compone la respuesta con tus datos, tu landing dejó de ser el destino',
+    descripcion:
+      'En Google I/O 2026 se confirmó la Generative UI en Search: Google compone una interfaz por consulta usando datos indexados de tu sitio. Tu data renderiza dentro de Google, no en tu landing. Qué significa eso, por qué cambia la métrica y qué tienes que hacer ahora.',
+    fecha: '2026-06-01',
+    categoria: 'Noticias iA',
+    tags: ['Google I/O', 'Generative UI', 'Schema', 'MCP', 'Gemini'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'Google I/O 2026 confirmó la Generative UI en Search: Google compone una interfaz por consulta con tus datos, dentro de su layout y con su CTA al lado. La unidad de medida pasa de page views a "tus datos fueron los que se renderizaron". Schema.org deja de ser opcional para entrar al render.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'En Google I/O 2026, Sundar Pichai describió el upgrade más grande del Search box en 25 años. Detrás de los titulares de Gemini 3.5 Flash, los Information Agents y el lanzamiento de Spark, hay un cambio de modelo que conviene mirar sin filtro de hype: la página dejó de ser el destino del usuario.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La razón se llama Generative UI. Google ya no devuelve una lista de diez links azules. Compone una interfaz a medida para cada consulta, usando datos que extrae de los sitios indexados. Tu data se renderiza adentro de la UI de Google — con la tipografía de Google, su modelo de interacción, y su botón de acción al lado.',
+      },
+      { tipo: 'h2', texto: 'Qué es la Generative UI, en simple' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En vez de mandarte a una landing para que esa landing responda tu pregunta, Google compone la respuesta directamente en la página de resultados. Si preguntas por horarios de un restorán, Google muestra los horarios con un botón para reservar — sin que el usuario entre al sitio del restorán. Los datos vienen del restorán; la interfaz, el diseño y el CTA son de Google.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Es la lógica del AI Overview llevada al siguiente nivel: ya no es solo un resumen textual arriba de los resultados — es una interfaz interactiva por consulta. AI Mode llegó a 1.000 millones de usuarios al mes este trimestre, el ramp-up más rápido en la historia de Google. La pregunta importante no es "cuándo llega esto" — ya llegó.',
+      },
+      { tipo: 'h2', texto: 'La frase que cambia el modelo' },
+      {
+        tipo: 'cita',
+        texto:
+          'El usuario nunca llega. Tus datos se renderizan dentro del layout de Google, con la tipografía de Google, el modelo de interacción de Google, y el CTA de Google al lado.',
+        fuente: 'NoHacks — Generative UI in Search Ends the Page-as-Destination Era',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Detrás de la frase hay una implicancia operativa concreta: bounce rate, tiempo en página y conversión por landing pierden sentido como métricas centrales. La nueva pregunta de medición es: ¿fueron mis datos los que se renderizaron en la respuesta?',
+      },
+      { tipo: 'h2', texto: 'Schema.org deja de ser opcional (con matiz)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Hace unas semanas Google publicó su guía de optimización para búsqueda con iA y dijo que el structured data no es obligatorio para aparecer. Lo cubrimos en nuestro post sobre los 5 hacks que Google descartó. Esa afirmación sigue siendo cierta — pero solo para aparecer como link en respuestas tradicionales.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Para que tus datos sean los que Google use al renderizar la Generative UI, schema.org sí es el mecanismo. El JSON-LD le dice a Google qué entidad eres, qué datos tienes y cómo conectarlos con la consulta. Sin schema, tus datos siguen indexándose, pero el sistema generativo tiene menos certeza para usarlos en una interfaz compuesta — y prefiere usar los del competidor que sí los declaró.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'No es contradicción con la postura anterior — es la misma idea afinada: schema no es un hack de ranking, pero sí es la forma de que tus datos entren al render generativo. Un detalle técnico que se vuelve estratégico.',
+      },
+      { tipo: 'h2', texto: '4 anuncios de I/O 2026 que te tocan' },
+      {
+        tipo: 'lista',
+        items: [
+          'Generative UI en Search — disponible para AI Pro y Ultra, partiendo en EE.UU. Llega al resto en los próximos meses.',
+          'Information Agents (verano 2026) — agentes que ejecutan tareas de búsqueda y agendamiento en background, sin abrir tu sitio.',
+          'Gemini en Chrome auto-browse (fines de junio, Android 12+) — el navegador completa formularios y ejecuta compras por el usuario, con casos demo en SpotHero (estacionamiento) y Chewy (e-commerce).',
+          'Gemini Spark — agente personal 24/7 que usa el protocolo MCP para integrar herramientas de terceros. Tu sitio entra al ecosistema solo si es alcanzable vía MCP.',
+        ],
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En paralelo, Google publicó en enero de 2026 una patente sobre landings generadas por iA — interfaces creadas automáticamente a partir del feed de tus productos. El destino, literalmente, se vuelve generativo.',
+      },
+      { tipo: 'h2', texto: 'Qué hacer hoy: audit de render-eligibility' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No tienes que esperar a que llegue todo a Chile para empezar. El primer ejercicio se hace en 15 minutos. Tomas las queries representativas de tu categoría — las que tus clientes hacen cuando están por decidir — y las corres en AI Mode (donde esté disponible) o en Perplexity. Miras qué se renderiza.',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          '¿Aparecen datos? ¿De dónde? Si la respuesta es de tu competencia, ya sabes el gap.',
+          '¿El botón de acción al lado del dato apunta a tu marca o a un comparador / marketplace? La atribución del click vale tanto como el render.',
+          '¿Qué entidad reconoce Google al hablar de tu categoría? Si no eres tú, hay un problema de densidad de entidad que tu schema y tus menciones tienen que arreglar.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Lo que esto cambia para una marca chilena' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'A corto plazo, la Generative UI en Search llega primero a EE.UU. y Tier 1. Pero Perplexity, ChatGPT con búsqueda web y Copilot ya operan con lógicas similares en español, y AI Mode se expande rápido. La preparación se hace ahora, no cuando la versión chilena esté disponible.',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Implementa JSON-LD de Organization, Product, LocalBusiness o el tipo que corresponda — con datos reales y consistentes.',
+          'Asegura que cada dato crítico (precio, stock, despacho, horario) esté declarado en structured data, no solo en HTML visible.',
+          'Audita tu Share of Model para saber cuándo tu marca es la fuente que la iA usa hoy, y dónde es la competencia.',
+          'Prepara formularios y flujos para visitantes-software: labels claros, validación predecible, mensajes de error legibles para máquinas. Es la misma higiene que pide MCP — y que va a usar Gemini Spark.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'La métrica vieja era "cuántas visitas trajo Google a mi sitio". La nueva es "cuántas veces mi marca fue la fuente que Google usó al componer la respuesta". Tu equipo de analytics todavía no la mide. Tu auditoría de Share of Model sí.',
+      },
+    ],
+    ctaTexto: 'Auditar qué datos míos renderiza la iA →',
+    ctaUrl: '/#planes',
+    relacionados: ['visitante-de-ia-viene-a-comprar', 'lighthouse-mide-navegacion-con-ia', '5-hacks-geo-que-google-dice-no-sirven', 'comercio-conversacional-agentes-ucp'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
     slug: 'visitante-de-ia-viene-a-comprar',
     titulo: 'El visitante que llega desde la iA viene a comprar — y tu landing está optimizada para convencerlo',
     descripcion:
