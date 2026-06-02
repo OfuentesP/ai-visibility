@@ -17,7 +17,7 @@ export function UrlForm({ urlInput, urlLoading, loadingPhase, onUrlChange, onSub
   return (
     <>
       <div className="mb-4">
-        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">URL del sitio web</label>
+        <label htmlFor="input-url" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">URL del sitio web</label>
         <input
           id="input-url"
           type="url"

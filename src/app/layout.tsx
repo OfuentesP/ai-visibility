@@ -37,6 +37,15 @@ const orgJsonLd = {
   "name": "Ai Visibility",
   "url": "https://ai-visibility.cl",
   "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization (GEO).",
+  "foundingDate": "2025",
+  "knowsAbout": [
+    "Generative Engine Optimization (GEO)",
+    "Share of Model",
+    "AI search visibility",
+    "Schema.org / JSON-LD",
+    "RAG (Retrieval-Augmented Generation)",
+    "ChatGPT, Perplexity, Gemini, Claude"
+  ],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Alonso de Córdova 5870, Edificio Quantum",

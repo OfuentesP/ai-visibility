@@ -17,7 +17,7 @@ export function BrandForm({ brand, query, loading, loadingPhase, onBrandChange, 
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca</label>
+          <label htmlFor="input-brand" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca</label>
           <input
             id="input-brand"
             type="text"
@@ -30,7 +30,7 @@ export function BrandForm({ brand, query, loading, loadingPhase, onBrandChange, 
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Búsqueda</label>
+          <label htmlFor="input-query" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Búsqueda</label>
           <input
             id="input-query"
             type="text"
