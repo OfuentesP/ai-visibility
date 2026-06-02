@@ -1,5 +1,5 @@
 import asyncio
-from openai import AsyncOpenAI
+from openai_tracking import TrackingAsyncOpenAI as AsyncOpenAI
 from dotenv import load_dotenv
 import os
 import logging

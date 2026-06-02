@@ -402,9 +402,239 @@ function MetricsTab() {
   )
 }
 
+// ── OpenAI usage tab ──────────────────────────────────────────────────────────
+
+interface OpenAIBucket {
+  prompt_tokens: number
+  completion_tokens: number
+  total_tokens: number
+  cost_usd: number
+  calls: number
+}
+
+interface OpenAIUsageResponse {
+  rango_dias: number
+  hoy: OpenAIBucket
+  ultimos_7d: OpenAIBucket
+  ultimos_30d: OpenAIBucket
+  mes_actual: OpenAIBucket
+  por_dia: { fecha: string; tokens: number; usd: number; calls: number }[]
+  por_modelo: { model: string; tokens: number; usd: number; calls: number }[]
+  por_endpoint: { endpoint: string; tokens: number; usd: number; calls: number }[]
+}
+
+interface OpenAIUpstream {
+  rango_dias: number
+  costs: {
+    available: boolean
+    error?: string
+    total_usd?: number
+    por_dia?: { fecha: string; usd: number }[]
+  }
+  tokens: {
+    available: boolean
+    error?: string
+    total_in?: number
+    total_out?: number
+    total_tokens?: number
+    por_dia?: { fecha: string; in: number; out: number; total: number }[]
+  }
+}
+
+function fmtUSD(v: number) {
+  return v.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+function fmtNum(v: number) {
+  return v.toLocaleString('es-CL')
+}
+
+function OpenAITab() {
+  const [usage, setUsage] = useState<OpenAIUsageResponse | null>(null)
+  const [upstream, setUpstream] = useState<OpenAIUpstream | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    Promise.all([
+      fetch(`${API}/api/admin/openai/usage?days=30`).then(r => { if (!r.ok) throw new Error(`Error ${r.status}`); return r.json() }),
+      fetch(`${API}/api/admin/openai/upstream?days=30`).then(r => r.ok ? r.json() : null).catch(() => null),
+    ])
+      .then(([u, up]) => { setUsage(u); setUpstream(up) })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <div className="py-20 text-center text-slate-500 text-sm font-mono">Cargando consumo OpenAI...</div>
+  if (error) return <div className="py-20 text-center text-rose-600 text-sm">{error}</div>
+  if (!usage) return null
+
+  const reconcileUsd = upstream?.costs?.available && upstream.costs.total_usd != null
+    ? upstream.costs.total_usd - usage.ultimos_30d.cost_usd
+    : null
+  const reconcileTokens = upstream?.tokens?.available && upstream.tokens.total_tokens != null
+    ? upstream.tokens.total_tokens - usage.ultimos_30d.total_tokens
+    : null
+
+  return (
+    <div className="space-y-8">
+      {/* KPI row — hoy / 7d / 30d / mes */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[
+          { label: 'Hoy', bucket: usage.hoy, color: 'text-indigo-600' },
+          { label: 'Últimos 7 días', bucket: usage.ultimos_7d, color: 'text-slate-900' },
+          { label: 'Últimos 30 días', bucket: usage.ultimos_30d, color: 'text-slate-900' },
+          { label: 'Mes en curso', bucket: usage.mes_actual, color: 'text-emerald-700' },
+        ].map(({ label, bucket, color }) => (
+          <div key={label} className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
+            <p className="text-xs text-slate-500 mb-1">{label}</p>
+            <p className={`text-2xl font-bold ${color}`}>{fmtUSD(bucket.cost_usd)}</p>
+            <p className="text-xs text-slate-500 mt-1 font-mono">
+              {fmtNum(bucket.total_tokens)} tok · {bucket.calls} calls
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Reconciliación nuestro tracking vs OpenAI */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Tracking interno (30 días)</p>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between"><span className="text-slate-500">Costo</span><span className="font-mono text-slate-900">{fmtUSD(usage.ultimos_30d.cost_usd)}</span></div>
+            <div className="flex justify-between"><span className="text-slate-500">Tokens totales</span><span className="font-mono text-slate-900">{fmtNum(usage.ultimos_30d.total_tokens)}</span></div>
+            <div className="flex justify-between"><span className="text-slate-500">Llamadas</span><span className="font-mono text-slate-900">{usage.ultimos_30d.calls}</span></div>
+          </div>
+        </div>
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Reportado por OpenAI (30 días)</p>
+          {upstream?.costs?.available && upstream?.tokens?.available ? (
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between"><span className="text-slate-500">Costo</span><span className="font-mono text-slate-900">{fmtUSD(upstream.costs.total_usd ?? 0)}</span></div>
+              <div className="flex justify-between"><span className="text-slate-500">Tokens totales</span><span className="font-mono text-slate-900">{fmtNum(upstream.tokens.total_tokens ?? 0)}</span></div>
+              <div className="border-t border-slate-100 my-2" />
+              {reconcileUsd != null && (
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500">Δ vs interno</span>
+                  <span className={`font-mono ${Math.abs(reconcileUsd) < 0.5 ? 'text-emerald-700' : 'text-orange-600'}`}>
+                    {reconcileUsd >= 0 ? '+' : ''}{fmtUSD(reconcileUsd)} USD
+                  </span>
+                </div>
+              )}
+              {reconcileTokens != null && (
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500">Δ tokens</span>
+                  <span className={`font-mono ${Math.abs(reconcileTokens) < 1000 ? 'text-emerald-700' : 'text-orange-600'}`}>
+                    {reconcileTokens >= 0 ? '+' : ''}{fmtNum(reconcileTokens)}
+                  </span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-xs text-slate-500">
+              <p className="mb-2">Sin datos de OpenAI Admin API.</p>
+              <p className="font-mono text-[10px] text-rose-600">
+                {upstream?.costs?.error || upstream?.tokens?.error || 'Configura OPENAI_ADMIN_KEY en el backend (sk-admin-...)'}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Serie diaria */}
+      <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
+        <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Costo diario — últimos 30 días</p>
+        {usage.por_dia.length === 0 ? (
+          <p className="text-slate-500 text-sm text-center py-8">Sin datos en este período</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={usage.por_dia} barCategoryGap="30%">
+              <XAxis
+                dataKey="fecha"
+                tick={{ fontSize: 10, fill: '#475569', fontFamily: 'monospace' }}
+                tickFormatter={v => v.slice(5)}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fontSize: 10, fill: '#475569', fontFamily: 'monospace' }}
+                axisLine={false}
+                tickLine={false}
+                width={48}
+                tickFormatter={(v) => `$${v.toFixed(2)}`}
+              />
+              <Tooltip
+                contentStyle={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 4, fontSize: 11 }}
+                labelStyle={{ color: '#94a3b8' }}
+                itemStyle={{ color: '#818cf8' }}
+                cursor={{ fill: '#1e293b' }}
+                formatter={(v) => fmtUSD(Number(v ?? 0))}
+              />
+              <Bar dataKey="usd" name="USD" fill="#818cf8" radius={[2, 2, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+
+      {/* Breakdown por modelo y endpoint */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Por modelo</p>
+          {usage.por_modelo.length === 0 ? (
+            <p className="text-slate-500 text-sm">Sin datos</p>
+          ) : (
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-left text-slate-500 border-b border-slate-100">
+                  <th className="py-2 font-mono">Modelo</th>
+                  <th className="py-2 text-right font-mono">Tokens</th>
+                  <th className="py-2 text-right font-mono">USD</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usage.por_modelo.map(r => (
+                  <tr key={r.model} className="border-b border-slate-50">
+                    <td className="py-2 text-slate-800 font-mono">{r.model}</td>
+                    <td className="py-2 text-right font-mono text-slate-700">{fmtNum(r.tokens)}</td>
+                    <td className="py-2 text-right font-mono text-slate-900">{fmtUSD(r.usd)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Por endpoint</p>
+          {usage.por_endpoint.length === 0 ? (
+            <p className="text-slate-500 text-sm">Sin datos</p>
+          ) : (
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-left text-slate-500 border-b border-slate-100">
+                  <th className="py-2 font-mono">Endpoint</th>
+                  <th className="py-2 text-right font-mono">Calls</th>
+                  <th className="py-2 text-right font-mono">USD</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usage.por_endpoint.map(r => (
+                  <tr key={r.endpoint} className="border-b border-slate-50">
+                    <td className="py-2 text-slate-800 font-mono truncate max-w-[180px]" title={r.endpoint}>{r.endpoint}</td>
+                    <td className="py-2 text-right font-mono text-slate-700">{r.calls}</td>
+                    <td className="py-2 text-right font-mono text-slate-900">{fmtUSD(r.usd)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Main panel ────────────────────────────────────────────────────────────────
 
-type Tab = 'leads' | 'metricas'
+type Tab = 'leads' | 'metricas' | 'openai'
 
 export default function AdminPanel() {
   const [unlocked, setUnlocked] = useState(false)
@@ -503,7 +733,7 @@ export default function AdminPanel() {
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 border-b border-slate-200">
-          {([['leads', 'Leads'], ['metricas', 'Métricas']] as [Tab, string][]).map(([key, label]) => (
+          {([['leads', 'Leads'], ['metricas', 'Métricas'], ['openai', 'OpenAI']] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setTab(key)}
@@ -519,6 +749,7 @@ export default function AdminPanel() {
         </div>
 
         {tab === 'metricas' && <MetricsTab />}
+        {tab === 'openai' && <OpenAITab />}
 
         {tab === 'leads' && (
           <>

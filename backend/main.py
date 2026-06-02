@@ -14,12 +14,18 @@ import asyncio
 import json
 import uuid
 
-from openai import AsyncOpenAI
+from openai_tracking import (
+    TrackingAsyncOpenAI as AsyncOpenAI,
+    set_usage_context,
+    clear_usage_context,
+    fetch_openai_costs,
+    fetch_openai_token_usage,
+)
 import httpx
 from pydantic import BaseModel, Field
 from config import AI_MODEL, URL_CACHE_TTL, AUDIT_CACHE_TTL_DAYS
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
-from database import get_db, test_connection, Lead, AuditCache, SharedReport
+from database import get_db, test_connection, Lead, AuditCache, SharedReport, OpenAIUsage
 
 load_dotenv()
 
@@ -216,6 +222,30 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+_PATH_TO_MODO = {
+    "/api/audit": "brand",
+    "/api/audit/from-url": "url",
+    "/api/audit/comparison": "compare",
+    "/api/audit/citability": "cita",
+    "/api/discovery": "cita",
+    "/api/marketing/brief": "brief",
+    "/api/trends/related": "trends",
+}
+
+
+@app.middleware("http")
+async def _openai_usage_context_mw(request: Request, call_next):
+    path = request.url.path
+    modo = _PATH_TO_MODO.get(path)
+    set_usage_context(endpoint=path, modo=modo)
+    try:
+        response = await call_next(request)
+    finally:
+        clear_usage_context()
+    return response
+
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request: Request, exc: Exception):
@@ -1453,6 +1483,127 @@ async def obtener_share(code: str, db: Session = Depends(get_db)):
         "resultado": row.resultado,
         "created_at": row.created_at.isoformat() if row.created_at else None,
     }
+
+
+# ── Admin: consumo de OpenAI ──────────────────────────────────────────────────
+
+
+@app.get("/api/admin/openai/usage")
+async def admin_openai_usage(days: int = 30, db: Session = Depends(get_db)):
+    """Agregados desde nuestra tabla openai_usage."""
+    if db is None:
+        raise HTTPException(status_code=503, detail="DB no disponible")
+    days = max(1, min(int(days or 30), 90))
+    try:
+        from sqlalchemy import func, cast, Date
+        from datetime import timedelta as td
+        hoy = datetime.utcnow().date()
+        desde = datetime.utcnow() - td(days=days)
+        desde_hoy = datetime.combine(hoy, datetime.min.time())
+        desde_7 = datetime.utcnow() - td(days=7)
+        desde_mes = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        def _bucket(since):
+            q = db.query(
+                func.coalesce(func.sum(OpenAIUsage.prompt_tokens), 0),
+                func.coalesce(func.sum(OpenAIUsage.completion_tokens), 0),
+                func.coalesce(func.sum(OpenAIUsage.total_tokens), 0),
+                func.coalesce(func.sum(OpenAIUsage.cost_usd), 0.0),
+                func.count(OpenAIUsage.id),
+            ).filter(OpenAIUsage.created_at >= since).one()
+            return {
+                "prompt_tokens": int(q[0]),
+                "completion_tokens": int(q[1]),
+                "total_tokens": int(q[2]),
+                "cost_usd": round(float(q[3]), 4),
+                "calls": int(q[4]),
+            }
+
+        hoy_b = _bucket(desde_hoy)
+        d7 = _bucket(desde_7)
+        d30 = _bucket(desde)
+        mes_actual = _bucket(desde_mes)
+
+        # Serie diaria últimos N días
+        rows = (
+            db.query(
+                cast(OpenAIUsage.created_at, Date).label("fecha"),
+                func.coalesce(func.sum(OpenAIUsage.total_tokens), 0).label("tokens"),
+                func.coalesce(func.sum(OpenAIUsage.cost_usd), 0.0).label("usd"),
+                func.count(OpenAIUsage.id).label("calls"),
+            )
+            .filter(OpenAIUsage.created_at >= desde)
+            .group_by(cast(OpenAIUsage.created_at, Date))
+            .order_by(cast(OpenAIUsage.created_at, Date))
+            .all()
+        )
+        por_dia = [
+            {
+                "fecha": str(r.fecha),
+                "tokens": int(r.tokens),
+                "usd": round(float(r.usd), 4),
+                "calls": int(r.calls),
+            }
+            for r in rows
+        ]
+
+        # Breakdown por modelo y por endpoint (en el rango de N días)
+        por_modelo_q = (
+            db.query(
+                OpenAIUsage.model,
+                func.coalesce(func.sum(OpenAIUsage.total_tokens), 0),
+                func.coalesce(func.sum(OpenAIUsage.cost_usd), 0.0),
+                func.count(OpenAIUsage.id),
+            )
+            .filter(OpenAIUsage.created_at >= desde)
+            .group_by(OpenAIUsage.model)
+            .order_by(func.sum(OpenAIUsage.total_tokens).desc())
+            .all()
+        )
+        por_modelo = [
+            {"model": r[0] or "?", "tokens": int(r[1]), "usd": round(float(r[2]), 4), "calls": int(r[3])}
+            for r in por_modelo_q
+        ]
+
+        por_endpoint_q = (
+            db.query(
+                OpenAIUsage.endpoint,
+                func.coalesce(func.sum(OpenAIUsage.total_tokens), 0),
+                func.coalesce(func.sum(OpenAIUsage.cost_usd), 0.0),
+                func.count(OpenAIUsage.id),
+            )
+            .filter(OpenAIUsage.created_at >= desde)
+            .group_by(OpenAIUsage.endpoint)
+            .order_by(func.sum(OpenAIUsage.cost_usd).desc())
+            .all()
+        )
+        por_endpoint = [
+            {"endpoint": r[0] or "—", "tokens": int(r[1]), "usd": round(float(r[2]), 4), "calls": int(r[3])}
+            for r in por_endpoint_q
+        ]
+
+        return {
+            "rango_dias": days,
+            "hoy": hoy_b,
+            "ultimos_7d": d7,
+            "ultimos_30d": d30,
+            "mes_actual": mes_actual,
+            "por_dia": por_dia,
+            "por_modelo": por_modelo,
+            "por_endpoint": por_endpoint,
+        }
+    except Exception as e:
+        logger.error(f"Error en admin/openai/usage: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/admin/openai/upstream")
+async def admin_openai_upstream(days: int = 30):
+    """Consumo según la API oficial de OpenAI (Costs + Usage)."""
+    days = max(1, min(int(days or 30), 90))
+    costs = await fetch_openai_costs(days=days)
+    tokens = await fetch_openai_token_usage(days=days)
+    return {"rango_dias": days, "costs": costs, "tokens": tokens}
 
 
 # ── Admin metrics ─────────────────────────────────────────────────────────────

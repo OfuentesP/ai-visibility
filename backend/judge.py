@@ -6,7 +6,7 @@ import logging
 import unicodedata
 from typing import List, Optional
 from dotenv import load_dotenv
-from openai import AsyncOpenAI
+from openai_tracking import TrackingAsyncOpenAI as AsyncOpenAI
 from models import AnalisisMarca, PrioridadEjecutiva, PlanAccion, VehiculoContenido, AccionICE, CATALOGO_TACTICAS_AEO, CompetitorAdvantage, CompetitorAdvantageRow
 from config import AI_MODEL
 

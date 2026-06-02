@@ -92,7 +92,7 @@ def test_connection():
 
 
 # Models using SQLAlchemy ORM
-from sqlalchemy import Column, String, DateTime, Float, Text, JSON
+from sqlalchemy import Column, String, DateTime, Float, Integer, Text, JSON, Index
 from datetime import datetime
 
 
@@ -132,6 +132,26 @@ class Lead(Base):
     modo = Column(String, nullable=True)  # brand, url, compare, cita
     resultado = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class OpenAIUsage(Base):
+    __tablename__ = "openai_usage"
+
+    id = Column(String, primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    model = Column(String, nullable=False, index=True)
+    endpoint = Column(String, nullable=True, index=True)  # ej. /api/audit
+    modo = Column(String, nullable=True)                  # brand|url|compare|cita
+    prompt_tokens = Column(Integer, nullable=False, default=0)
+    completion_tokens = Column(Integer, nullable=False, default=0)
+    total_tokens = Column(Integer, nullable=False, default=0)
+    cost_usd = Column(Float, nullable=False, default=0.0)
+    latency_ms = Column(Integer, nullable=True)
+    ok = Column(Integer, nullable=False, default=1)  # 1=ok, 0=error
+
+    __table_args__ = (
+        Index("ix_openai_usage_day_model", "created_at", "model"),
+    )
 
 
 

@@ -4,7 +4,7 @@ import os
 import logging
 from typing import List
 from dotenv import load_dotenv
-from openai import AsyncOpenAI
+from openai_tracking import TrackingAsyncOpenAI as AsyncOpenAI
 from pytrends.request import TrendReq
 from config import AI_MODEL
 
