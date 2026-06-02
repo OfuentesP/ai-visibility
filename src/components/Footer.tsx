@@ -22,8 +22,9 @@ export default function Footer() {
               Mide el Share of Model de tu marca en ChatGPT, Perplexity y Claude.
             </p>
             <p className="text-slate-500 text-xs mt-3 leading-relaxed">
-              Av. Apoquindo 4501, Of. 12<br />
-              Las Condes, Santiago, Chile
+              Alonso de Córdova 5870<br />
+              Edificio Quantum, Las Condes<br />
+              Santiago, Chile
             </p>
           </div>
 

@@ -37,7 +37,13 @@ const orgJsonLd = {
   "name": "Ai Visibility",
   "url": "https://ai-visibility.cl",
   "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization (GEO).",
-  "address": { "@type": "PostalAddress", "addressCountry": "CL" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Alonso de Córdova 5870, Edificio Quantum",
+    "addressLocality": "Las Condes",
+    "addressRegion": "Región Metropolitana",
+    "addressCountry": "CL"
+  },
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "+56997065555",
