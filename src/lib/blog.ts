@@ -28,7 +28,7 @@ export type Post = {
 
 export const posts: Post[] = [
   {
-    slug: 'lighthouse-agentic-browsing-llms-txt-webmcp',
+    slug: 'lighthouse-mide-navegacion-con-ia',
     titulo: 'Chrome agregó un audit de "navegación con iA" a Lighthouse: lo que mide y por qué pasar el test no significa que la iA te entienda',
     descripcion:
       'Lighthouse 13.3 incorpora una categoría experimental de "Agentic Browsing" que audita llms.txt y WebMCP. Te explicamos qué mide, por qué Google ya dijo que llms.txt no mueve visibilidad y qué señales sí importan para que la iA entienda tu marca.',
