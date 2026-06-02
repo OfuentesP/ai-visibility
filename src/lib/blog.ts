@@ -29,6 +29,146 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: '8-reglas-google-sitios-aptos-agentes',
+    titulo: 'Google publicó 8 reglas para que tu sitio sea apto para agentes — y son las mismas 8 reglas de accesibilidad que llevas posponiendo',
+    descripcion:
+      'Google publicó en web.dev una guía oficial para hacer sitios apto para agentes de iA: 8 reglas técnicas concretas. El detalle interesante: cada una es una pauta de accesibilidad WCAG existente, solo que dirigida a otra audiencia. Una sola inversión, dos audiencias recuperadas.',
+    fecha: '2026-06-02',
+    categoria: 'Tutoriales',
+    tags: ['Google', 'Agentes iA', 'Accesibilidad', 'WCAG', 'Tailwind', 'Semantic HTML'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '8 min',
+    resumen:
+      'Google publicó en web.dev (abril 2026) 8 reglas técnicas para hacer tu sitio apto para agentes de iA: HTML semántico, cursor: pointer, labels asociadas, layout estable, sin overlays fantasma, elementos > 8 px². Cada regla es una pauta WCAG existente. Si ya inviertes en accesibilidad, tu sitio ya es agent-friendly. Y al revés.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'El 1 de abril de 2026, Google publicó en web.dev una guía oficial para hacer sitios apto para agentes de iA. Son 8 reglas técnicas, escritas por el equipo de Chrome para developers. La novedad no es que existan — es lo que se ve cuando las miras al lado de la guía WCAG: son exactamente las mismas reglas que llevamos años pidiendo para usuarios con tecnología asistiva.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Para una marca chilena que tiene la accesibilidad en "lista de pendientes" desde hace tres años, la noticia es buena: el ROI dejó de ser solo ético — ahora también es comercial. Una sola auditoría, dos audiencias recuperadas.',
+      },
+      { tipo: 'h2', texto: 'Cómo "ven" los agentes tu sitio' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Antes de las reglas, conviene entender el qué. Un agente de iA (Chrome auto-browse, Gemini Spark, ChatGPT con navegación) no consume tu sitio como humano. Lo procesa con 3 modalidades:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Capturas de pantalla — modelos de visión analizan la página renderizada, identifican elementos por color, tamaño y proximidad. Caro en tokens, se usa como respaldo.',
+          'HTML / DOM — análisis de la jerarquía estructural, atributos, anidación. Un botón "Comprar" dentro de un contenedor de producto es legible como "acción de compra del producto".',
+          'Árbol de accesibilidad — la API nativa del navegador que destila roles, nombres y estados. Es el "resumen semántico" que ignora el ruido visual. Es lo que mejor entiende un agente.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'La regla implícita: si tu sitio depende solo de capturas de pantalla para ser entendido (porque tu DOM es un mar de divs sin semántica), eres caro de procesar — y los agentes te abandonan.',
+      },
+      { tipo: 'h2', texto: 'Las 8 reglas oficiales de Google' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Estas son las 8 reglas que Google publicó. Al lado de cada una marco la pauta WCAG que es exactamente la misma idea, escrita para otra audiencia:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          '1. Refleja cada acción en la interfaz. Cuando el usuario (o el agente) hace click en "Agregar al carro", tiene que pasar algo visible. Acciones silenciosas son invisibles para agentes. (WCAG 4.1.3, mensajes de estado)',
+          '2. Mantén el layout estable. Elementos interactivos en posiciones consistentes entre páginas. Saltos visuales rompen el análisis. (WCAG 3.2, predecible)',
+          '3. Sin elementos fantasma ni superposiciones transparentes. Cualquier elemento que cubra un componente interactivo lo descarta del análisis visual, aunque sea transparente. (WCAG 2.4.7, foco visible)',
+          '4. Usa HTML semántico. <button>, <a>, <nav>, <main>. Nada de divs estilizados para botones. (WCAG 4.1.2, nombre, rol, valor)',
+          '5. Si no puedes usar HTML semántico, usa role y tabindex como fallback. <div role="button" tabindex="0"> es legible. <div onclick="..."> sin más es invisible para agentes y para lectores de pantalla.',
+          '6. cursor: pointer en CSS para elementos interactivos. "Una señal fuerte de accionabilidad", según Google literalmente. (WCAG 1.3.3, características sensoriales)',
+          '7. Asocia <label> a <input> con el atributo for. Mapea el texto visible al campo subyacente. Sin esto, ni el agente ni el lector de pantalla saben qué campo es cuál. (WCAG 1.3.1, info y relaciones)',
+          '8. Elementos interactivos > 8 píxeles cuadrados. Los modelos de visión filtran lo más chico. (WCAG 2.5.5, tamaño del objetivo)',
+        ],
+      },
+      { tipo: 'h2', texto: 'El bug de Tailwind v4 que rompe la regla 6 (y muchas pymes chilenas lo tienen)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Tailwind CSS v4 cambió el estilo nativo de los botones de cursor: pointer a cursor: default. Si tu sitio usa Tailwind v4 (mucha pyme chilena modernizó a v4 en 2025), todos tus <button> nativos rompen la regla 6 de Google sin que lo sepas. El fix son tres líneas en tu CSS global:',
+      },
+      {
+        tipo: 'codigo',
+        lenguaje: 'css',
+        codigo: `@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}`,
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Cinco minutos de trabajo. Vuelves a cumplir la regla 6 — y, de paso, WCAG 1.3.3.',
+      },
+      { tipo: 'h2', texto: 'La oportunidad: una inversión, dos audiencias' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La mayoría de los equipos de producto chilenos tratan accesibilidad y "preparación para iA" como dos workstreams distintos. Distintos planes, distintos presupuestos, distintos plazos. Es desperdicio.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Las 8 reglas de Google son la misma auditoría que pasa una persona con lector de pantalla. La empresa que se toma WCAG en serio ya tiene 80% del trabajo hecho para Chrome auto-browse, Gemini Spark y los agentes que vienen. La empresa que lo posterga paga dos veces: en clientes con discapacidad que no pueden completar la compra, y en agentes de iA que mandan al cliente a la competencia.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'Todo lo que sugerimos para que un sitio esté listo para agentes, también lo hace mejor para humanos.',
+        fuente: 'Kasper Kulikowski y Omkar More — Equipo Chrome, web.dev',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Dato curioso: las búsquedas de "web accessibility" en Google Trends se mantuvieron planas entre 2021 y 2024, y se cuadruplicaron en 2025-2026 — cuando la cobertura de agentes de iA empezó a alinearse con accesibilidad. La presión de proveedores movió la aguja más que la regulación de la European Accessibility Act (vigente desde junio 2025).',
+      },
+      { tipo: 'h2', texto: 'Lo accionable esta semana' },
+      {
+        tipo: 'lista',
+        items: [
+          'Identifica tus 5 páginas con más tráfico (homepage, formularios de captura, página de producto principal, checkout, login).',
+          'Pásales un Lighthouse en categoría Accessibility y un escaneo con axe DevTools o WAVE. Cada uno es gratis y se corre en 30 segundos.',
+          'Si usas Tailwind v4, aplica el fix del cursor en tu globals.css. Se hace una vez y queda.',
+          'Audita los formularios: ¿cada <input> tiene su <label for="...">? ¿Los mensajes de error son legibles por máquinas, no solo iconos rojos?',
+          'Revisa el contraste de los botones primarios. WCAG AA pide 4.5:1 para texto normal. La iA usa el mismo criterio para detectar si un botón "se ve clickeable".',
+        ],
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En una semana de trabajo de un developer, puedes resolver las 8 reglas para tus páginas críticas. Cuando llegue Chrome auto-browse (fines de junio en Android), tu sitio va a estar listo. Y de paso, vas a estar más cerca de cumplir la Ley 20.422 chilena de inclusión.',
+      },
+      {
+        tipo: 'referencias',
+        items: [
+          { label: 'Crea sitios web aptos para agentes — web.dev / Google (Kasper Kulikowski, Omkar More, abril 2026)', url: 'https://web.dev/articles/ai-agent-site-ux?hl=es-419' },
+          { label: "Google's Agent-Friendly Checklist Is the Accessibility Audit Restated — NoHacks", url: 'https://nohacks.co/blog/google-agent-friendly-checklist' },
+          { label: 'WebMCP — estándar web propuesto (Chrome team)', url: 'https://developer.chrome.com/blog/webmcp-epp?hl=es-419' },
+          { label: 'Árbol de accesibilidad en Chrome DevTools', url: 'https://developer.chrome.com/docs/devtools/accessibility/reference?hl=es-419#tree' },
+          { label: 'Aprender accesibilidad — web.dev', url: 'https://web.dev/learn/accessibility' },
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi sitio para agentes de iA →',
+    ctaUrl: '/#planes',
+    relacionados: ['lighthouse-mide-navegacion-con-ia', 'fin-de-la-pagina-como-destino', 'visitante-de-ia-viene-a-comprar', '5-hacks-geo-que-google-dice-no-sirven'],
+    glosario: [
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
     slug: 'un-ano-de-ai-mode-datos-google',
     titulo: 'Un año de AI Mode según Google: queries 3x más largas, planning crece 80% y 1 de cada 6 búsquedas ya es multimodal',
     descripcion:
