@@ -28,6 +28,130 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'lighthouse-agentic-browsing-llms-txt-webmcp',
+    titulo: 'Chrome agregó un audit de "navegación con iA" a Lighthouse: lo que mide y por qué pasar el test no significa que la iA te entienda',
+    descripcion:
+      'Lighthouse 13.3 incorpora una categoría experimental de "Agentic Browsing" que audita llms.txt y WebMCP. Te explicamos qué mide, por qué Google ya dijo que llms.txt no mueve visibilidad y qué señales sí importan para que la iA entienda tu marca.',
+    fecha: '2026-06-01',
+    categoria: 'Noticias iA',
+    tags: ['Lighthouse', 'LLMS.txt', 'WebMCP', 'Agentic Browsing', 'Chrome'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '6 min',
+    resumen:
+      'Lighthouse 13.3 incluye un audit experimental de "navegación con iA": chequea árbol de accesibilidad, CLS, llms.txt y tres métricas de WebMCP. Pasarlo es fácil — pero Google ya dijo en mayo 2026 que llms.txt no mueve visibilidad en su búsqueda con iA. El audit mide parseabilidad, no utilidad.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Chrome publicó Lighthouse 13.3.0 con algo que vale la pena notar: una categoría experimental nueva llamada "Agentic Browsing". Es la primera vez que herramientas mainstream de auditoría web reconocen explícitamente la navegación con iA como un eje a medir junto a Performance, SEO y Accessibility.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La noticia es buena por lo simbólico: el ecosistema asume que tu sitio ya no le habla solo a humanos y a Googlebot. Pero antes de correr a "pasar el audit", conviene entender qué mide en serio — y qué no.',
+      },
+      { tipo: 'h2', texto: 'Qué mide el nuevo audit' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'A diferencia de las categorías clásicas que devuelven un score de 0 a 100, esta usa ratios fraccionarios de "passed" sobre 6 métricas:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Validación del árbol de accesibilidad (lo que un agente "lee" de tu DOM).',
+          'Cumulative Layout Shift (CLS) — la misma métrica de Core Web Vitals.',
+          'Descubribilidad de llms.txt — si el archivo existe y está en la ruta esperada.',
+          'WebMCP tools registradas — herramientas que tu sitio expone a agentes vía Model Context Protocol.',
+          'WebMCP cobertura de formularios — qué porcentaje de tus formularios puede ejecutar un agente.',
+          'WebMCP validez de schemas — si tu structured data se ajusta a las expectativas del agente.',
+        ],
+      },
+      { tipo: 'h2', texto: 'La trampa: el audit mide parseabilidad, no utilidad' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Aquí está el matiz que casi nadie explica. El audit no evalúa si tu sitio es útil para un agente de iA. Evalúa si tus archivos son legibles por máquinas. Es una distinción crítica.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Ejemplo concreto: el plugin AIOSEO de WordPress (lo usan más de 3 millones de sitios) genera automáticamente un llms.txt con sintaxis markdown válida. Pasa el audit sin problema. Pero el contenido del archivo suele ser una lista vacía o genérica. Un archivo curado a mano con descripciones útiles pero sin la sintaxis exacta de markdown, falla.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'El audit revisa si tu archivo es parseable. No revisa si tu archivo es útil.',
+        fuente: 'NoHacks — Lighthouse, Agentic Browsing, llms.txt, and Markdown',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Traducción para tu equipo: "Lighthouse Agentic Browsing 1.0" es un buen check de higiene técnica, no una garantía de que la iA va a recomendar tu marca.',
+      },
+      { tipo: 'h2', texto: 'WebMCP — lo interesante de verdad' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Las tres métricas de WebMCP son las que apuntan al futuro real. WebMCP es la versión web del Model Context Protocol: una forma estandarizada de que un agente de iA descubra qué acciones puede ejecutar en tu sitio (reservar, comprar, comparar) sin necesidad de "ver" la página como un humano.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Hoy es temprano para implementarlo en una pyme. Pero tener Schema.org sólido y formularios bien estructurados es la base sobre la que WebMCP se construye. Esa inversión sí rinde, con o sin agentes.',
+      },
+      { tipo: 'h2', texto: 'Lo que NO cambia: Google ya dijo que llms.txt no rankea' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En mayo de 2026, Google Search Central confirmó explícitamente que los archivos llms.txt no influyen en la visibilidad de tu marca en su búsqueda con iA. Que Lighthouse ahora lo audite no cambia esa realidad — son herramientas distintas con objetivos distintos.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Si llegaste aquí porque alguien te vendió que llms.txt iba a posicionarte en ChatGPT, te recomendamos nuestro post "Los 5 hacks de GEO que Google dice que NO sirven". llms.txt es el #1 de esa lista.',
+      },
+      { tipo: 'h2', texto: 'El comando para auditar tu sitio hoy' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si quieres correr el audit en tu sitio, es una línea:',
+      },
+      {
+        tipo: 'codigo',
+        lenguaje: 'bash',
+        codigo: `npx lighthouse@latest https://tumarca.cl --only-categories=agentic-browsing`,
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Te devuelve un reporte HTML con el detalle de cada métrica. Si falla por "missing links" en llms.txt, convertir descripciones de texto plano a sintaxis markdown ([texto](url)) toma menos de 5 minutos.',
+      },
+      { tipo: 'h2', texto: 'Tres pasos prácticos para una marca chilena' },
+      {
+        tipo: 'lista',
+        items: [
+          'Corre el audit. Te da higiene técnica gratis y un punto de partida medible.',
+          'No confundas el resultado con visibilidad real en iA. Pasa el audit como hygiene, no como estrategia. Para saber si ChatGPT te cita en tu categoría, audita tu Share of Model — que es otra cosa.',
+          'Empieza a trabajar Schema.org con seriedad. Es la base de WebMCP, de los rich results de Google con iA, y de la precisión de entidad que evita que la iA te confunda con otra marca.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'La noticia es que Chrome reconoce la "navegación con iA" como categoría. El matiz es que medir parseabilidad no equivale a vender más. La capa que sí mueve la aguja sigue siendo la misma: contenido con experiencia real, structured data correcto, presencia en fuentes que los LLM consideran autoridad para tu industria.',
+      },
+    ],
+    ctaTexto: 'Ver mi diagnóstico real →',
+    ctaUrl: '/#planes',
+    relacionados: ['5-hacks-geo-que-google-dice-no-sirven', 'checklist-tecnico-google-busqueda-ia', 'comercio-conversacional-agentes-ucp', 'google-seo-sigue-vivo-busqueda-ia'],
+    glosario: [
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'llm', termino: 'LLM' },
+    ],
+  },
+  {
     slug: 'ecommerce-latam-cambio-modelo-busqueda-2026',
     titulo: 'El e-commerce LATAM frente al cambio del modelo de búsqueda: cómo se mueve cada país',
     descripcion:
