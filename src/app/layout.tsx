@@ -38,6 +38,13 @@ const orgJsonLd = {
   "url": "https://ai-visibility.cl",
   "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization (GEO).",
   "address": { "@type": "PostalAddress", "addressCountry": "CL" },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+56997065555",
+    "contactType": "customer service",
+    "areaServed": "CL",
+    "availableLanguage": ["Spanish"]
+  },
   "sameAs": [
     "https://www.instagram.com/ai_visibility_latam/",
     "https://www.linkedin.com/company/ai-visibility-latam/"
@@ -76,7 +83,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <a
-          href="https://wa.me/56912345678?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Ai%20Visibility"
+          href="https://wa.me/56997065555?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Ai%20Visibility"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contactar por WhatsApp"

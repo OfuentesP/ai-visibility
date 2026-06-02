@@ -76,7 +76,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-5">
             <a
-              href="https://wa.me/56912345678?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Ai%20Visibility"
+              href="https://wa.me/56997065555?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Ai%20Visibility"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
