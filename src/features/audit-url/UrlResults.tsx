@@ -79,10 +79,10 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         const days = Math.round((Date.now() - new Date(urlResult.prev_cached_at!).getTime()) / 86400000)
         const up = delta > 0
         return (
-          <div className={`flex items-center gap-3 px-4 py-3 rounded-sm border text-sm ${up ? 'bg-emerald-950/30 border-emerald-800/40' : 'bg-rose-950/30 border-rose-800/40'}`}>
+          <div className={`flex items-center gap-3 px-4 py-3 rounded-sm border text-sm ${up ? 'bg-emerald-50 border-emerald-300' : 'bg-rose-50 border-rose-300'}`}>
             <span className={`text-2xl font-bold ${up ? 'text-emerald-700' : 'text-rose-600'}`}>{up ? '↑' : '↓'}</span>
             <div>
-              <p className={`font-semibold ${up ? 'text-emerald-300' : 'text-rose-300'}`}>
+              <p className={`font-semibold ${up ? 'text-emerald-700' : 'text-rose-700'}`}>
                 {up ? `Subiste ${delta}%` : `Bajaste ${Math.abs(delta)}%`} de visibilidad en {days} días
               </p>
               <p className="text-slate-500 text-xs font-mono">Visibilidad anterior: {prev}% → actual: {curr}%</p>
@@ -232,7 +232,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                       <tr key={ri} className="border-b border-slate-200/40 last:border-0">
                         <td className="py-3.5 pr-6 align-top"><span className="text-sm font-semibold text-slate-900">{row.atributo}</span></td>
                         <td className="py-3.5 pr-6 align-top"><span className="text-sm text-slate-500">{row.autoridad_digital}</span></td>
-                        <td className="py-3.5 align-top"><span className="text-sm text-rose-300">{row.impacto_comercial}</span></td>
+                        <td className="py-3.5 align-top"><span className="text-sm text-rose-700">{row.impacto_comercial}</span></td>
                       </tr>
                     ))}
                   </tbody>
@@ -251,7 +251,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             <span className="text-sm text-slate-500 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
-          <motion.div id="zone-url-untapped-territories" variants={fadeUp} className="bg-white border border-emerald-900/40 rounded-sm overflow-hidden">
+          <motion.div id="zone-url-untapped-territories" variants={fadeUp} className="bg-white border border-emerald-200 rounded-sm overflow-hidden">
             <div className="px-6 py-5 border-b border-slate-200 flex items-start gap-4">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
@@ -263,7 +263,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             <div className="divide-y divide-slate-800/50">
               {urlResult.untapped_territories.map((territory, ti) => {
                 const n = territory.nivel_competencia_ia
-                const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
+                const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' } : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
                     <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
@@ -320,7 +320,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         {showPerfilesDetalle && (
           <div className="border-t border-slate-200 divide-y divide-slate-800/60">
             {urlResult.resultados.map((r, i) => (
-              <div key={i} className={r.mencionada ? 'bg-emerald-950/10' : 'bg-white/40'}>
+              <div key={i} className={r.mencionada ? 'bg-emerald-50' : 'bg-white/40'}>
                 <div className="px-5 py-3 flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm font-semibold text-slate-900">{r.arquetipo}</p>
@@ -328,11 +328,11 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {r.sentimiento && (
-                      <span className={`text-xs sm:text-[10px] font-semibold px-2 py-0.5 rounded border ${r.sentimiento === 'positivo' ? 'bg-emerald-950/30 text-emerald-700 border-emerald-700/30' : r.sentimiento === 'negativo' ? 'bg-rose-950/20 text-rose-600 border-rose-800/30' : 'bg-slate-100 text-slate-500 border-slate-300'}`}>
+                      <span className={`text-xs sm:text-[10px] font-semibold px-2 py-0.5 rounded border ${r.sentimiento === 'positivo' ? 'bg-emerald-50 text-emerald-700 border-emerald-700/30' : r.sentimiento === 'negativo' ? 'bg-rose-50 text-rose-600 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'}`}>
                         {r.sentimiento === 'positivo' ? '😊' : r.sentimiento === 'negativo' ? '😞' : '😐'} {r.sentimiento}
                       </span>
                     )}
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${r.mencionada ? 'bg-emerald-950/30 text-emerald-700 border-emerald-700/40' : 'bg-rose-950/20 text-rose-600 border-rose-800/40'}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${r.mencionada ? 'bg-emerald-50 text-emerald-700 border-emerald-700/40' : 'bg-rose-50 text-rose-600 border-rose-300'}`}>
                       {r.mencionada ? `#${r.posicion} ✓` : 'No aparece'}
                     </span>
                   </div>
@@ -361,7 +361,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                             const isWinner = j === 0
                             const isOurBrand = m.toLowerCase() === urlResult.marca.toLowerCase()
                             return (
-                              <span key={j} className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border ${isOurBrand ? 'bg-sky-950/40 text-sky-600 border-sky-700/40' : isWinner ? 'bg-amber-950/30 text-amber-400 border-amber-800/40' : 'bg-slate-100 text-slate-500 border-slate-300'}`}>
+                              <span key={j} className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border ${isOurBrand ? 'bg-sky-50 text-sky-600 border-sky-700/40' : isWinner ? 'bg-amber-50 text-amber-400 border-amber-300' : 'bg-slate-100 text-slate-500 border-slate-300'}`}>
                                 {isWinner && !isOurBrand && <span>👑</span>}{m}
                               </span>
                             )
@@ -372,9 +372,9 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                     )
                   })()}
                   {!r.mencionada && (
-                    <div className="flex items-start gap-2 p-2.5 bg-rose-950/15 border border-rose-900/30 rounded-sm">
+                    <div className="flex items-start gap-2 p-2.5 bg-rose-50 border border-rose-200 rounded-sm">
                       <AlertTriangle className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
-                      <p className="text-rose-300/80 text-xs">Este comprador no te encuentra. La iA recomienda a <span className="font-semibold text-rose-300">{r.marca_ganadora || 'la competencia'}</span>.</p>
+                      <p className="text-rose-700/80 text-xs">Este comprador no te encuentra. La iA recomienda a <span className="font-semibold text-rose-700">{r.marca_ganadora || 'la competencia'}</span>.</p>
                     </div>
                   )}
                   {r.snippet && (

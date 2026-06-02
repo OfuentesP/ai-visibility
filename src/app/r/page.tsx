@@ -50,7 +50,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
 
   const sent = d.sentimiento
   const sentColor = sent === 'positivo' ? 'text-emerald-700' : sent === 'negativo' ? 'text-rose-600' : 'text-yellow-400'
-  const sentBg = sent === 'positivo' ? 'bg-emerald-950/30 border-emerald-800/40' : sent === 'negativo' ? 'bg-rose-950/30 border-rose-800/40' : 'bg-yellow-950/30 border-yellow-800/40'
+  const sentBg = sent === 'positivo' ? 'bg-emerald-50 border-emerald-300' : sent === 'negativo' ? 'bg-rose-50 border-rose-300' : 'bg-yellow-50 border-yellow-300'
   const sentLabel = sent === 'positivo' ? 'Positivo' : sent === 'negativo' ? 'Negativo / Riesgo de Alucinación' : 'Neutral'
 
   const pos = d.posicion_mi_marca
@@ -213,7 +213,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
                       <tr key={ri} className="border-b border-slate-200/40 last:border-0">
                         <td className="py-3 pr-4 align-top text-sm font-semibold text-slate-900">{row.atributo_ganador}</td>
                         <td className="py-3 pr-4 align-top text-sm text-slate-500">{row.fuente_de_verdad}</td>
-                        <td className="py-3 align-top text-sm text-rose-300">{row.gap_nuestra_marca}</td>
+                        <td className="py-3 align-top text-sm text-rose-700">{row.gap_nuestra_marca}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -232,7 +232,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <span className="text-sm text-slate-500 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
-          <div className="bg-white border border-emerald-900/40 rounded-sm overflow-hidden">
+          <div className="bg-white border border-emerald-200 rounded-sm overflow-hidden">
             <div className="px-5 py-5 border-b border-slate-200 flex items-start gap-4">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
@@ -244,9 +244,9 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <div className="divide-y divide-slate-800/50">
               {d.territorios_desatendidos.map((t: { topico_emergente: string; porque_es_oportunidad: string; nivel_oportunidad: string }, ti: number) => {
                 const n = t.nivel_oportunidad
-                const cfg = n === 'Alta' ? { label: 'Alta oportunidad', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' }
+                const cfg = n === 'Alta' ? { label: 'Alta oportunidad', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' }
                   : n === 'Media' ? { label: 'Oportunidad media', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' }
-                  : { label: 'Explorar', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
+                  : { label: 'Explorar', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
                     <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0">{String(ti + 1).padStart(2, '0')}</span>
@@ -275,7 +275,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
           </div>
           <div className="flex flex-wrap gap-1.5">
             {d.conceptos_faltantes.map((c: string) => (
-              <span key={c} className="inline-block px-2 py-0.5 bg-rose-900/30 text-rose-300 text-xs sm:text-[10px] rounded-sm">{c}</span>
+              <span key={c} className="inline-block px-2 py-0.5 bg-rose-100 text-rose-700 text-xs sm:text-[10px] rounded-sm">{c}</span>
             ))}
           </div>
         </section>
@@ -296,7 +296,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             </div>
             {allActions[0] && (
               <div className="px-5 pt-4 pb-2">
-                <div className="flex items-start gap-3 px-4 py-3 bg-amber-950/20 border border-amber-800/30 rounded-sm">
+                <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-300 rounded-sm">
                   <span className="text-amber-400 font-bold shrink-0 mt-0.5">✦</span>
                   <div>
                     <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Empezar aquí</p>
@@ -311,7 +311,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
                 const areaCls = areaColorMap[a.area_responsable ?? ''] ?? 'text-slate-500 bg-slate-100/60 border-slate-300'
                 const areaLabel = areaLabelMap[a.area_responsable ?? ''] ?? a.area_responsable ?? 'Equipo'
                 return (
-                  <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-sm border ${i === 0 ? 'border-amber-800/40 bg-amber-950/10' : 'border-slate-200/60 bg-slate-100/10'}`}>
+                  <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-sm border ${i === 0 ? 'border-amber-300 bg-amber-50' : 'border-slate-200/60 bg-slate-100/10'}`}>
                     <span className={`text-sm font-mono w-5 shrink-0 ${i === 0 ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>{i + 1}.</span>
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm leading-snug ${i === 0 ? 'text-slate-900 font-semibold' : 'text-slate-700 font-medium'}`}>{a.tactica_tecnica}</p>
@@ -372,11 +372,11 @@ function CompareView({ r }: { r: any }) {
 
       {/* Recomendada */}
       {r.marca_recomendada && (
-        <div className="flex items-center gap-3 bg-emerald-900/20 border border-emerald-800/40 rounded-sm p-4">
+        <div className="flex items-center gap-3 bg-emerald-100 border border-emerald-300 rounded-sm p-4">
           <span className="text-emerald-700 text-lg">✓</span>
           <div>
             <p className="text-xs sm:text-[10px] text-emerald-600 uppercase tracking-widest mb-0.5">Recomendada por la iA</p>
-            <p className="text-emerald-300 font-bold">{r.marca_recomendada}</p>
+            <p className="text-emerald-700 font-bold">{r.marca_recomendada}</p>
             {r.razon_recomendacion && <p className="text-slate-500 text-xs mt-1">{r.razon_recomendacion}</p>}
           </div>
         </div>
@@ -416,9 +416,9 @@ function CompareView({ r }: { r: any }) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CitaView({ r }: { r: any }) {
   const nivelColor: Record<string, string> = {
-    baja: 'text-emerald-700 bg-emerald-900/20 border-emerald-800/40',
+    baja: 'text-emerald-700 bg-emerald-100 border-emerald-300',
     media: 'text-orange-400 bg-orange-900/20 border-orange-800/40',
-    alta: 'text-rose-600 bg-rose-900/20 border-rose-800/40',
+    alta: 'text-rose-600 bg-rose-100 border-rose-300',
   }
   const nivelLabel: Record<string, string> = {
     baja: 'Oportunidad alta',
@@ -709,7 +709,7 @@ function UrlView({ r }: { r: any }) {
                       <tr key={ri} className="border-b border-slate-200/40 last:border-0">
                         <td className="py-3 pr-4 align-top text-sm font-semibold text-slate-900">{row.atributo}</td>
                         <td className="py-3 pr-4 align-top text-sm text-slate-500">{row.autoridad_digital}</td>
-                        <td className="py-3 align-top text-sm text-rose-300">{row.impacto_comercial}</td>
+                        <td className="py-3 align-top text-sm text-rose-700">{row.impacto_comercial}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -728,7 +728,7 @@ function UrlView({ r }: { r: any }) {
             <span className="text-sm text-slate-500 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
-          <div className="bg-white border border-emerald-900/40 rounded-sm overflow-hidden">
+          <div className="bg-white border border-emerald-200 rounded-sm overflow-hidden">
             <div className="px-5 py-5 border-b border-slate-200 flex items-start gap-4">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
@@ -740,9 +740,9 @@ function UrlView({ r }: { r: any }) {
             <div className="divide-y divide-slate-800/50">
               {r.untapped_territories.map((t: { titulo: string; justificacion_negocio: string; nivel_competencia_ia: string }, ti: number) => {
                 const n = t.nivel_competencia_ia
-                const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' }
+                const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' }
                   : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' }
-                  : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
+                  : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
                     <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0">{String(ti + 1).padStart(2, '0')}</span>
@@ -779,7 +779,7 @@ function UrlView({ r }: { r: any }) {
                     <p className="text-xs sm:text-[10px] text-amber-600 mt-0.5">Gana: {res.marca_ganadora}</p>
                   )}
                 </div>
-                <span className={`text-xs sm:text-[10px] font-mono font-semibold shrink-0 px-2 py-0.5 rounded border ${res.mencionada ? 'text-emerald-700 bg-emerald-950/30 border-emerald-700/30' : 'text-rose-600 bg-rose-950/20 border-rose-800/30'}`}>
+                <span className={`text-xs sm:text-[10px] font-mono font-semibold shrink-0 px-2 py-0.5 rounded border ${res.mencionada ? 'text-emerald-700 bg-emerald-50 border-emerald-700/30' : 'text-rose-600 bg-rose-50 border-rose-300'}`}>
                   {res.mencionada ? `#${res.posicion ?? '?'} ✓` : 'No aparece'}
                 </span>
               </div>
@@ -803,7 +803,7 @@ function UrlView({ r }: { r: any }) {
             </div>
             {allActions[0] && (
               <div className="px-5 pt-4 pb-2">
-                <div className="flex items-start gap-3 px-4 py-3 bg-amber-950/20 border border-amber-800/30 rounded-sm">
+                <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-300 rounded-sm">
                   <span className="text-amber-400 font-bold shrink-0 mt-0.5">✦</span>
                   <div>
                     <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Empezar aquí</p>
@@ -820,7 +820,7 @@ function UrlView({ r }: { r: any }) {
                 const areaCls = areaColorMap[a.area_responsable ?? ''] ?? 'text-slate-500 bg-slate-100/60 border-slate-300'
                 const areaLabel = areaLabelMap[a.area_responsable ?? ''] ?? a.area_responsable ?? 'Equipo'
                 return (
-                  <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-sm border ${i === 0 ? 'border-amber-800/40 bg-amber-950/10' : 'border-slate-200/60 bg-slate-100/10'}`}>
+                  <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-sm border ${i === 0 ? 'border-amber-300 bg-amber-50' : 'border-slate-200/60 bg-slate-100/10'}`}>
                     <span className={`text-sm font-mono w-5 shrink-0 ${i === 0 ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>{i + 1}.</span>
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm leading-snug ${i === 0 ? 'text-slate-900 font-semibold' : 'text-slate-700 font-medium'}`}>
@@ -851,7 +851,7 @@ function UrlView({ r }: { r: any }) {
             </div>
             {r.plan_accion?.roi_estimado && (
               <div className="border-t border-slate-200/60 px-5 py-4">
-                <div className="flex items-start gap-3 px-4 py-3 bg-emerald-950/20 border border-emerald-900/20 rounded-sm">
+                <div className="flex items-start gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-sm">
                   <span className="text-emerald-500 shrink-0 mt-0.5">↑</span>
                   <p className="text-slate-700 text-sm leading-relaxed">{r.plan_accion.roi_estimado}</p>
                 </div>

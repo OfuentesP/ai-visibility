@@ -110,9 +110,9 @@ const MODO_LABEL: Record<string, string> = {
 }
 
 const MODO_COLOR: Record<string, string> = {
-  brand: 'bg-indigo-900/40 text-indigo-600 border-indigo-800',
-  url: 'bg-sky-900/40 text-sky-300 border-sky-800',
-  compare: 'bg-violet-900/40 text-violet-300 border-violet-800',
+  brand: 'bg-indigo-100 text-indigo-600 border-indigo-300',
+  url: 'bg-sky-100 text-sky-700 border-sky-300',
+  compare: 'bg-violet-100 text-violet-700 border-violet-300',
   cita: 'bg-teal-900/40 text-teal-300 border-teal-800',
 }
 
@@ -146,9 +146,9 @@ function Score({ value, max = 100 }: { value: number; max?: number }) {
 function Pill({ text, color = 'slate' }: { text: string; color?: string }) {
   const cls: Record<string, string> = {
     slate: 'bg-slate-100 text-slate-700',
-    indigo: 'bg-indigo-900/40 text-indigo-600',
-    rose: 'bg-rose-900/40 text-rose-300',
-    emerald: 'bg-emerald-900/40 text-emerald-300',
+    indigo: 'bg-indigo-100 text-indigo-600',
+    rose: 'bg-rose-100 text-rose-700',
+    emerald: 'bg-emerald-100 text-emerald-700',
     orange: 'bg-orange-900/40 text-orange-300',
   }
   return (

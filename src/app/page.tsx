@@ -168,34 +168,17 @@ export default function LandingPage() {
             <div>
               <p className="text-xs sm:text-[11px] font-mono text-rose-600 uppercase tracking-widest mb-4">El punto ciego de tu estrategia</p>
               <h2 className="hidden sm:block text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-5">
-                Miles de chilenos usan ChatGPT para decidir qué comprar.{' '}
-                <span className="text-slate-700 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
+                Mientras pules tu landing,{' '}
+                <span className="text-slate-700 font-normal">ChatGPT ya le recomendó otra marca a tu cliente.</span>
               </h2>
               <h2 className="sm:hidden text-2xl font-extrabold text-slate-900 leading-tight mb-5">
-                Tus clientes preguntan a ChatGPT.{' '}
-                <span className="text-slate-700 font-normal">Si no estás en la respuesta, vendes menos.</span>
+                ChatGPT ya le recomendó otra marca a tu cliente.
               </h2>
               <p className="text-slate-700 text-base leading-relaxed mb-8">
-                El SEO optimiza para una lista de 10 links. La iA genera <strong className="text-slate-900">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
+                La iA sintetiza <strong className="text-slate-900">una sola respuesta</strong>. Si tu marca no está en esa síntesis, no entras al proceso de decisión — ni siquiera para perderlo.
               </p>
-              <div className="space-y-5 mb-9">
-                {[
-                  { n: '1', title: 'Lo que preguntan cuando no miras', desc: '"¿Cuál es el mejor software de RRHH en Chile?" o "Compara [Tu Marca] con [Competencia]".' },
-                  { n: '2', title: 'El costo de la invisibilidad', desc: 'Si la iA no tiene datos estructurados de tu web para validar tu autoridad, le entrega la venta al competidor que sí los tenga.' },
-                ].map((item) => (
-                  <div key={item.n} className="flex gap-4">
-                    <div className="w-7 h-7 rounded-sm bg-slate-100 border border-slate-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-slate-500 text-xs font-bold font-mono">{item.n}</span>
-                    </div>
-                    <div>
-                      <p className="text-slate-800 text-sm font-semibold mb-1">{item.title}</p>
-                      <p className="text-slate-500 text-sm">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Link href="/#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
-                Descubrir si mi marca aparece →
+              <Link href="/#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
+                Ver cómo me cita ChatGPT →
               </Link>
             </div>
             <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
@@ -210,16 +193,16 @@ export default function LandingPage() {
                 <div className="bg-white border border-slate-200 rounded-sm px-4 py-4 w-full text-sm">
                   <p className="text-slate-500 mb-3 leading-relaxed">Basado en reseñas y autoridad técnica, las mejores opciones en Santiago son:</p>
                   <ul className="space-y-2 mb-4">
-                    <li className="flex items-center gap-2 text-emerald-700 font-medium bg-emerald-600/10 px-3 py-2 rounded-sm border border-emerald-400/20 text-xs">
+                    <li className="flex items-center gap-2 text-emerald-800 font-medium bg-emerald-50 px-3 py-2 rounded-md border border-emerald-200 text-xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 flex-shrink-0" />Toner Chile — Recomendado
                     </li>
-                    <li className="flex items-center gap-2 text-slate-500 px-3 py-2 text-xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0" />3D Studio Santiago
+                    <li className="flex items-center gap-2 text-slate-600 px-3 py-2 text-xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0" />3D Studio Santiago
                     </li>
                   </ul>
-                  <div className="p-3 bg-rose-950/40 border border-rose-900/40 rounded-sm flex items-start gap-2">
-                    <span className="text-rose-600 flex-shrink-0 text-xs mt-0.5">⚠</span>
-                    <p className="text-rose-300/90 text-sm sm:text-xs leading-relaxed"><strong>Tu marca no fue mencionada.</strong> El tráfico de esta consulta fue derivado 100% a la competencia.</p>
+                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-md flex items-start gap-2">
+                    <span className="text-rose-600 flex-shrink-0 text-sm mt-0.5">⚠</span>
+                    <p className="text-rose-900 text-sm sm:text-xs leading-relaxed"><strong>Tu marca no fue mencionada.</strong> El tráfico se fue 100% a la competencia.</p>
                   </div>
                 </div>
               </div>
@@ -246,11 +229,11 @@ export default function LandingPage() {
                 { n: '04', icon: <Terminal size={18} className="text-emerald-700" />, title: 'Hoja de ruta de recuperación GEO', desc: 'Pasamos del diagnóstico a la ejecución. Un plan priorizado por ICE que incluye código JSON-LD estructurado listo para que tu equipo de TI lo copie y pegue.', highlight: false },
               ].map((step) => (
                 <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
-                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-950/40 border-indigo-500/30' : 'bg-white shadow-sm border-slate-200'}`}>
+                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-50 border-indigo-500/30' : 'bg-white shadow-sm border-slate-200'}`}>
                     {step.icon}
                     <span className={`mt-1.5 font-mono text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-600' : 'text-slate-500'}`}>{step.n}</span>
                   </div>
-                  <div className={`flex-1 p-6 rounded-sm border ${step.highlight ? 'bg-indigo-950/20 border-indigo-900/40' : 'bg-slate-50/40 border-slate-200 hover:bg-slate-50/60 transition-colors'}`}>
+                  <div className={`flex-1 p-6 rounded-sm border ${step.highlight ? 'bg-indigo-50 border-indigo-200' : 'bg-slate-50/40 border-slate-200 hover:bg-slate-50/60 transition-colors'}`}>
                     {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-600 text-xs sm:text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">Tecnología exclusiva</span>}
                     <h3 className="text-base font-semibold text-slate-900 mb-2">{step.title}</h3>
                     <p className="text-slate-500 text-sm leading-relaxed">{step.desc}</p>

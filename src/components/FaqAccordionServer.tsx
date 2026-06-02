@@ -16,7 +16,7 @@ export function FaqAccordionServer({ items }: { items: { q: string; a: string }[
           </summary>
           <div className="flex gap-5 pb-5">
             <span className="w-5 shrink-0" />
-            <p className="text-slate-500 text-[13px] leading-relaxed border-l-2 border-indigo-900/60 pl-4">
+            <p className="text-slate-500 text-[13px] leading-relaxed border-l-2 border-indigo-200 pl-4">
               {item.a}
             </p>
           </div>

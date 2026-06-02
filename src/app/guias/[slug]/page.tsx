@@ -141,7 +141,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
         </div>
 
         {/* CTA mid */}
-        <div className="my-12 border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
+        <div className="my-12 border border-indigo-200 bg-indigo-50 rounded-sm p-6">
           <p className="text-slate-700 text-sm font-semibold mb-2">¿Aparece tu tienda cuando tus clientes preguntan en ChatGPT?</p>
           <p className="text-slate-500 text-sm sm:text-xs leading-relaxed mb-5">
             Audita tu Share of Model gratis. Resultado en menos de 60 segundos.

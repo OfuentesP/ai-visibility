@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* CTA */}
         {p.ctaTexto && p.ctaUrl && (
-          <div className="my-12 border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
+          <div className="my-12 border border-indigo-200 bg-indigo-50 rounded-sm p-6">
             <p className="text-slate-700 text-sm font-semibold mb-2">
               ¿Aparece tu marca cuando tus clientes preguntan en ChatGPT?
             </p>

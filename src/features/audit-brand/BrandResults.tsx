@@ -35,7 +35,7 @@ function getScoreTextColor(estado: string) {
 function getScoreBarColor(estado: string) {
   if (estado === 'visible') return 'bg-emerald-700'
   if (estado === 'en_riesgo') return 'bg-orange-700'
-  return 'bg-rose-900'
+  return 'bg-rose-100'
 }
 
 export function BrandResults({ result, brand, query, userEmail, userName, discoveryResult, discoveryLoading, trendsResult, trendsLoading, onDownloadJson }: Props) {
@@ -59,10 +59,10 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
   const isAtacar = clasificacion === 'Atacar'
   const isDefender = clasificacion === 'Defender'
   const theme = isAtacar
-    ? { bg: 'bg-rose-950/20', border: 'border-rose-500/30', bar: 'bg-rose-500', icon: <AlertTriangle className="w-5 h-5 text-rose-600" /> }
+    ? { bg: 'bg-rose-50', border: 'border-rose-500/30', bar: 'bg-rose-500', icon: <AlertTriangle className="w-5 h-5 text-rose-600" /> }
     : isDefender
-    ? { bg: 'bg-amber-950/25', border: 'border-amber-900/40', bar: 'bg-amber-500', icon: <TriangleAlert className="w-5 h-5 text-amber-500" /> }
-    : { bg: 'bg-emerald-950/20', border: 'border-emerald-900/30', bar: 'bg-emerald-500', icon: <ShieldCheck className="w-5 h-5 text-emerald-500" /> }
+    ? { bg: 'bg-amber-50', border: 'border-amber-200', bar: 'bg-amber-500', icon: <TriangleAlert className="w-5 h-5 text-amber-500" /> }
+    : { bg: 'bg-emerald-50', border: 'border-emerald-200', bar: 'bg-emerald-500', icon: <ShieldCheck className="w-5 h-5 text-emerald-500" /> }
   const score = d.invisibilidad_score ?? 0
   const marcasRivales = d.marcas_mencionadas?.filter((m: string) => m.toLowerCase() !== brand.toLowerCase()).slice(0, 2) ?? []
   const rivales = marcasRivales.length >= 2 ? `${marcasRivales[0]} y ${marcasRivales[1]}` : marcasRivales[0] || ganador
@@ -93,7 +93,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
   const label = rawScore === 0 ? 'Riesgo Crítico' : estado === 'visible' ? 'Visible' : estado === 'en_riesgo' ? 'En Riesgo' : 'Invisible'
   const sent = d.sentimiento
   const sentColor = sent === 'positivo' ? 'text-emerald-700' : sent === 'negativo' ? 'text-rose-600' : 'text-yellow-400'
-  const sentBg = sent === 'positivo' ? 'bg-emerald-950/30 border-emerald-800/40' : sent === 'negativo' ? 'bg-rose-950/30 border-rose-800/40' : 'bg-yellow-950/30 border-yellow-800/40'
+  const sentBg = sent === 'positivo' ? 'bg-emerald-50 border-emerald-300' : sent === 'negativo' ? 'bg-rose-50 border-rose-300' : 'bg-yellow-50 border-yellow-300'
   const sentLabel = sent === 'positivo' ? 'Positivo' : sent === 'negativo' ? 'Negativo / Riesgo de Alucinación' : 'Neutral'
 
   const rival = d.competidor_principal || (d.marca_ganadora?.toLowerCase() !== brand.toLowerCase() ? d.marca_ganadora : null) || 'la competencia'
@@ -116,10 +116,10 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
         const days = Math.round((Date.now() - new Date(result.prev_cached_at!).getTime()) / 86400000)
         const up = delta > 0
         return (
-          <div className={`flex items-center gap-3 px-4 py-3 rounded-sm border text-sm ${up ? 'bg-emerald-950/30 border-emerald-800/40' : 'bg-rose-950/30 border-rose-800/40'}`}>
+          <div className={`flex items-center gap-3 px-4 py-3 rounded-sm border text-sm ${up ? 'bg-emerald-50 border-emerald-300' : 'bg-rose-50 border-rose-300'}`}>
             <span className={`text-2xl font-bold ${up ? 'text-emerald-700' : 'text-rose-600'}`}>{up ? '↑' : '↓'}</span>
             <div>
-              <p className={`font-semibold ${up ? 'text-emerald-300' : 'text-rose-300'}`}>
+              <p className={`font-semibold ${up ? 'text-emerald-700' : 'text-rose-700'}`}>
                 {up ? `Subiste ${delta} puntos` : `Bajaste ${Math.abs(delta)} puntos`} en {days} días
               </p>
               <p className="text-slate-500 text-xs font-mono">Score anterior: {Math.round(prev)} → Score actual: {curr}</p>
@@ -282,7 +282,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                   <tr key={i} className="border-b border-slate-200/40 last:border-0">
                     <td className="py-3.5 pr-6 align-top"><span className="text-sm font-semibold text-slate-900">{fila.atributo_ganador}</span></td>
                     <td className="py-3.5 pr-6 align-top"><span className="text-sm text-slate-500">{fila.fuente_de_verdad}</span></td>
-                    <td className="py-3.5 align-top"><span className="text-sm text-rose-300">{fila.gap_nuestra_marca}</span></td>
+                    <td className="py-3.5 align-top"><span className="text-sm text-rose-700">{fila.gap_nuestra_marca}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -319,7 +319,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                 const n = t.nivel_oportunidad
                 const esAlza = t.crecimiento_trends?.startsWith('+')
                 const esBaja = t.crecimiento_trends?.startsWith('-')
-                const opp = n === 'Alto' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } : n === 'Medio' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
+                const opp = n === 'Alto' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' } : n === 'Medio' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
                 return (
                   <div key={idx} className="flex items-start gap-4 px-5 py-4">
                     <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(idx + 1).padStart(2, '0')}</span>
@@ -328,7 +328,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                         <p className="text-sm font-semibold text-slate-900 leading-snug">{t.topico_emergente}</p>
                         <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${opp.cls}`}>{opp.label}</span>
                         {t.crecimiento_trends && (
-                          <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${esAlza ? 'bg-amber-500/10 text-amber-300 border-amber-500/30' : esBaja ? 'bg-rose-500/10 text-rose-300 border-rose-500/30' : 'bg-slate-100/60 text-slate-500 border-slate-300'}`}>
+                          <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${esAlza ? 'bg-amber-500/10 text-amber-700 border-amber-500/30' : esBaja ? 'bg-rose-500/10 text-rose-700 border-rose-500/30' : 'bg-slate-100/60 text-slate-500 border-slate-300'}`}>
                             {t.crecimiento_trends}
                           </span>
                         )}
@@ -382,7 +382,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                         <div className="flex-1 min-w-0 relative">
                           <div className={`absolute inset-y-0 left-0 rounded-sm transition-all duration-500 ${isTop ? 'bg-amber-500/15' : 'bg-slate-700/25'}`} style={{ width: `${barWidth}%` }} />
                           <div className="relative flex items-center justify-between gap-2 px-2.5 py-1.5">
-                            <span className={`text-xs truncate ${isTop ? 'text-amber-300 font-medium' : 'text-slate-700'}`}>{item.query}</span>
+                            <span className={`text-xs truncate ${isTop ? 'text-amber-700 font-medium' : 'text-slate-700'}`}>{item.query}</span>
                             <span className={`text-xs sm:text-[10px] font-mono tabular-nums ${isTop ? 'text-amber-400' : 'text-slate-500'}`}>{item.value}</span>
                           </div>
                         </div>
@@ -452,7 +452,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                     const preguntaCorta = firstQ > 0 ? raw.slice(0, firstQ + 1) : raw
                     const esMiMarca = op.ganador?.toLowerCase() === brand.toLowerCase()
                     return (
-                      <div key={idx} className={`rounded-sm border px-4 py-3 ${op.isWin ? 'bg-emerald-950/10 border-emerald-900/20' : op.ganador ? 'bg-white/40 border-rose-900/15' : 'bg-amber-950/10 border-amber-800/20'}`}>
+                      <div key={idx} className={`rounded-sm border px-4 py-3 ${op.isWin ? 'bg-emerald-50 border-emerald-200' : op.ganador ? 'bg-white/40 border-rose-200' : 'bg-amber-50 border-amber-300'}`}>
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1 min-w-0">
                             <p className="text-slate-500 text-xs mb-1">{iconos[idx] || '👤'} {nombre}{op.necesidad_principal && <span className="text-slate-500"> · {op.necesidad_principal.split(',')[0]}</span>}</p>
@@ -486,7 +486,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             )}
             {!discoveryLoading && d.plan_accion?.roi_estimado && (
               <div className="px-6 pb-5">
-                <div className="flex items-start gap-3 px-4 py-3 bg-emerald-950/20 border border-emerald-900/20 rounded-sm">
+                <div className="flex items-start gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-sm">
                   <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                   <p className="text-slate-700 text-sm leading-relaxed">{d.plan_accion.roi_estimado}</p>
                 </div>

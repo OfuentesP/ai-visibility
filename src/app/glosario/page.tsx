@@ -32,12 +32,12 @@ const jsonLd = {
 }
 
 const tagColor: Record<string, string> = {
-  Métrica:      'text-indigo-600 bg-indigo-950/60 border-indigo-800/40',
-  Estrategia:   'text-violet-700 bg-violet-950/60 border-violet-800/40',
-  Riesgo:       'text-rose-600 bg-rose-950/40 border-rose-800/40',
-  Arquitectura: 'text-sky-600 bg-sky-950/40 border-sky-800/40',
-  Metodología:  'text-amber-400 bg-amber-950/40 border-amber-800/40',
-  Tecnología:   'text-emerald-700 bg-emerald-950/40 border-emerald-800/40',
+  Métrica:      'text-indigo-600 bg-indigo-50 border-indigo-300',
+  Estrategia:   'text-violet-700 bg-violet-50 border-violet-300',
+  Riesgo:       'text-rose-600 bg-rose-50 border-rose-300',
+  Arquitectura: 'text-sky-600 bg-sky-50 border-sky-300',
+  Metodología:  'text-amber-400 bg-amber-50 border-amber-300',
+  Tecnología:   'text-emerald-700 bg-emerald-50 border-emerald-300',
 }
 
 export default function GlosarioPage() {

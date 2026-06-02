@@ -201,7 +201,7 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
 
         {topAction && (
           <div className="px-6 pt-4 pb-2">
-            <div className="flex items-start gap-3 px-4 py-3 bg-amber-950/20 border border-amber-800/30 rounded-sm">
+            <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-300 rounded-sm">
               <span className="text-amber-400 font-bold shrink-0 mt-0.5">✦</span>
               <div>
                 <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Empezar aquí</p>
@@ -222,7 +222,7 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
 
         {planAccion.roi_estimado && (
           <div className="border-t border-slate-200/60 px-5 py-4">
-            <div className="flex items-start gap-3 px-4 py-3 bg-emerald-950/20 border border-emerald-900/20 rounded-sm">
+            <div className="flex items-start gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-sm">
               <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
               <p className="text-slate-700 text-sm leading-relaxed">{planAccion.roi_estimado}</p>
             </div>

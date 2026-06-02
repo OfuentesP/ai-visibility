@@ -261,9 +261,9 @@ export default function AuditarPage() {
               </motion.div>
               {cita.citaResult.territorios.map((t, i) => {
                 const colorMap: Record<string, { bar: string; badge: string; border: string }> = {
-                  baja:  { bar: 'bg-emerald-500', badge: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20', border: 'border-emerald-800/30' },
-                  media: { bar: 'bg-amber-500',   badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',     border: 'border-amber-800/20' },
-                  alta:  { bar: 'bg-rose-500',    badge: 'bg-rose-500/10 text-rose-600 border-rose-500/20',       border: 'border-rose-800/20' },
+                  baja:  { bar: 'bg-emerald-500', badge: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20', border: 'border-emerald-300' },
+                  media: { bar: 'bg-amber-500',   badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',     border: 'border-amber-300' },
+                  alta:  { bar: 'bg-rose-500',    badge: 'bg-rose-500/10 text-rose-600 border-rose-500/20',       border: 'border-rose-300' },
                 }
                 const c = colorMap[t.nivel] ?? colorMap.media
                 return (
@@ -343,9 +343,9 @@ export default function AuditarPage() {
                   { marca: cmp.compareResult.marca_a, ventajas: cmp.compareResult.ventajas_marca_a, debilidades: cmp.compareResult.debilidades_marca_a, isWinner: cmp.compareResult.marca_recomendada.toLowerCase().includes(cmp.compareResult.marca_a.toLowerCase()) },
                   { marca: cmp.compareResult.marca_b, ventajas: cmp.compareResult.ventajas_marca_b, debilidades: cmp.compareResult.debilidades_marca_b, isWinner: cmp.compareResult.marca_recomendada.toLowerCase().includes(cmp.compareResult.marca_b.toLowerCase()) },
                 ].map(({ marca, ventajas, debilidades, isWinner }) => (
-                  <div key={marca} className={`border rounded-sm overflow-hidden ${isWinner ? 'border-sky-800/40 bg-sky-950/10' : 'border-slate-200 bg-white shadow-sm'}`}>
-                    <div className={`px-5 py-3 border-b flex items-center justify-between ${isWinner ? 'border-sky-800/30' : 'border-slate-200'}`}>
-                      <h3 className={`font-semibold text-sm ${isWinner ? 'text-sky-300' : 'text-slate-700'}`}>{marca}</h3>
+                  <div key={marca} className={`border rounded-sm overflow-hidden ${isWinner ? 'border-sky-300 bg-sky-50' : 'border-slate-200 bg-white shadow-sm'}`}>
+                    <div className={`px-5 py-3 border-b flex items-center justify-between ${isWinner ? 'border-sky-300' : 'border-slate-200'}`}>
+                      <h3 className={`font-semibold text-sm ${isWinner ? 'text-sky-700' : 'text-slate-700'}`}>{marca}</h3>
                       {isWinner && <span className="text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-600 border border-sky-500/30">iA prefiere</span>}
                     </div>
                     <div className="px-5 py-4 space-y-3">
