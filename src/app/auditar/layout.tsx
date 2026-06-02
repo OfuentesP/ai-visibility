@@ -26,7 +26,7 @@ const jsonLd = {
   "provider": { "@id": "https://ai-visibility.cl/#organization" },
   "featureList": [
     "Cálculo de AI Readiness Score",
-    "Análisis de sentimiento de marca en IA",
+    "Análisis de sentimiento de marca en iA",
     "Hoja de ruta estratégica para ChatGPT, Gemini y Perplexity"
   ]
 }

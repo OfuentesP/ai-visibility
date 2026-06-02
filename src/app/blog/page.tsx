@@ -5,10 +5,10 @@ import { getPostsOrdenados, getCategorias } from '@/lib/blog'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Blog | Ai Visibility — Noticias y análisis de IA y LLM',
+  title: 'Blog | Ai Visibility — Noticias y análisis de iA y LLM',
   description:
     'Actualizaciones, análisis y casos sobre cómo ChatGPT, Perplexity y otros LLM recomiendan marcas. GEO, AEO y Share of Model en español, con foco en Chile.',
-  keywords: ['blog GEO', 'noticias IA', 'análisis LLM', 'ChatGPT marcas', 'Perplexity Chile', 'Ai Visibility blog'],
+  keywords: ['blog GEO', 'noticias iA', 'análisis LLM', 'ChatGPT marcas', 'Perplexity Chile', 'Ai Visibility blog'],
   alternates: {
     canonical: 'https://ai-visibility.cl/blog/',
     types: {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Blog Ai Visibility — Noticias y análisis de IA y LLM',
+    title: 'Blog Ai Visibility — Noticias y análisis de iA y LLM',
     description:
       'Cómo los LLM recomiendan marcas en 2026. Análisis, casos y tácticas de GEO en español.',
     url: 'https://ai-visibility.cl/blog/',

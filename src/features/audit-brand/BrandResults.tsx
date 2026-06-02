@@ -70,16 +70,16 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
   let subtitulo = ''
   if (pos === 0 || score < 10) {
     titulo = 'Riesgo Crítico de Invisibilidad Digital'
-    subtitulo = `Sus clientes potenciales están siendo derivados activamente a ${rivales} porque la IA no encuentra fuentes de confianza que validen su propuesta de valor.`
+    subtitulo = `Sus clientes potenciales están siendo derivados activamente a ${rivales} porque la iA no encuentra fuentes de confianza que validen su propuesta de valor.`
   } else if (pos > 5 || score < 30) {
     titulo = `Alerta: ${brand} está perdiendo demanda activa`
     subtitulo = `${rivales} captura la intención de compra de sus clientes antes de que lleguen a usted.`
   } else if (pos === 1) {
     titulo = `${brand} lidera — proteja esa posición`
-    subtitulo = `La IA lo recomienda primero, pero ${ganador} está invirtiendo para desplazarle.`
+    subtitulo = `La iA lo recomienda primero, pero ${ganador} está invirtiendo para desplazarle.`
   } else {
     titulo = `${brand} aparece, pero ${ganador} se lleva la decisión`
-    subtitulo = `Está en posición #${pos}. Los compradores que llegan a la IA ven primero a ${ganador}.`
+    subtitulo = `Está en posición #${pos}. Los compradores que llegan a la iA ven primero a ${ganador}.`
   }
 
   // Score ring
@@ -144,7 +144,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
           </div>
         </div>
         <div className={`border rounded-sm p-6 ${sentBg}`}>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la IA (Contexto Semántico)</p>
+          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la iA (Contexto Semántico)</p>
           <div className="flex items-center gap-2 mb-3">
             <span className={`text-xs font-semibold px-2.5 py-1 rounded border ${sentBg} ${sentColor}`}>{sentLabel}</span>
           </div>
@@ -192,13 +192,13 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
             <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
-            <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la IA cuando tu cliente busca?</span>
+            <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la iA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
           <motion.div id="zone-share-of-voice" variants={fadeUp} className="bg-slate-950 border border-slate-800 rounded-sm p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
-                <h3 className="text-sm font-semibold text-slate-100">¿A quién recomienda la IA para <span className="text-slate-400 font-normal italic">&ldquo;{result.prompt_original}&rdquo;</span>?</h3>
+                <h3 className="text-sm font-semibold text-slate-100">¿A quién recomienda la iA para <span className="text-slate-400 font-normal italic">&ldquo;{result.prompt_original}&rdquo;</span>?</h3>
                 <p className="text-slate-500 text-xs mt-1">Marcas ordenadas por relevancia en la respuesta</p>
               </div>
               <span className="text-xs font-mono text-slate-500 bg-slate-800 border border-slate-700 px-2 py-1 rounded shrink-0">{d.marcas_mencionadas.length} marcas</span>
@@ -215,7 +215,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
               <div className="mt-3">
                 <button onClick={() => setShowRawOutput(!showRawOutput)} className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-slate-300 transition-colors">
                   <Terminal className="w-3 h-3" />
-                  {showRawOutput ? 'Ocultar respuesta original' : 'Ver respuesta original de la IA'}
+                  {showRawOutput ? 'Ocultar respuesta original' : 'Ver respuesta original de la iA'}
                 </button>
                 {showRawOutput && (
                   <div className="mt-2 p-3 bg-slate-900/80 border border-slate-800 rounded-sm max-h-40 overflow-y-auto">
@@ -302,7 +302,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
             <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
-            <span className="text-sm text-slate-400 font-medium">Temas donde la IA no tiene un ganador claro</span>
+            <span className="text-sm text-slate-400 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
           <motion.div id="zone-territorios" variants={fadeUp} className="bg-slate-950 border border-slate-800 rounded-sm overflow-hidden">
@@ -310,7 +310,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
-                <h3 className="text-base font-semibold text-slate-100">Temas donde la IA no tiene un ganador claro</h3>
+                <h3 className="text-base font-semibold text-slate-100">Temas donde la iA no tiene un ganador claro</h3>
                 <p className="text-slate-500 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
               </div>
             </div>

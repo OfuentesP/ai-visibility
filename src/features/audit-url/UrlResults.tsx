@@ -107,7 +107,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
           </div>
           <div className="text-right shrink-0">
             <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
-            <p className="text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en IA</p>
+            <p className="text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en iA</p>
           </div>
         </div>
         <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800/60">
@@ -115,7 +115,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             <span className="text-rose-400 text-base font-bold leading-none mt-0.5 shrink-0">①</span>
             <div>
               <p className="text-sm font-semibold text-white leading-snug mb-1">
-                {invisible === 0 ? 'Apareces en todas las búsquedas de IA' : invisible === urlResult.total_queries ? 'La IA no te menciona en ninguna búsqueda' : `De cada ${urlResult.total_queries} búsquedas con IA, ${invisible} no te incluyen`}
+                {invisible === 0 ? 'Apareces en todas las búsquedas de iA' : invisible === urlResult.total_queries ? 'La iA no te menciona en ninguna búsqueda' : `De cada ${urlResult.total_queries} búsquedas con iA, ${invisible} no te incluyen`}
               </p>
               <p className="text-sm text-slate-400 leading-relaxed">{invisible === 0 ? 'Mantén y expande tu posición.' : `Esas consultas las gana ${topCompetitor}.`}</p>
             </div>
@@ -123,8 +123,8 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
           <div className="px-5 py-5 flex gap-3 items-start">
             <span className="text-amber-400 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
             <div>
-              <p className="text-sm font-semibold text-white leading-snug mb-1">La IA elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas</p>
-              <p className="text-sm text-slate-400 leading-relaxed">Tiene más presencia en las fuentes que la IA consulta.</p>
+              <p className="text-sm font-semibold text-white leading-snug mb-1">La iA elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas</p>
+              <p className="text-sm text-slate-400 leading-relaxed">Tiene más presencia en las fuentes que la iA consulta.</p>
             </div>
           </div>
           <div className="px-5 py-5 flex gap-3 items-start">
@@ -141,7 +141,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         </div>
         {urlResult.diferenciadores.length > 0 && (
           <div className="border-t border-slate-800/60 px-6 py-3">
-            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la IA no menciona</p>
+            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la iA no menciona</p>
             <div className="flex flex-wrap gap-2">
               {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
                 <span key={i} className="text-xs text-slate-400 bg-slate-800/50 border border-slate-700/60 rounded px-2.5 py-1">{dif}</span>
@@ -156,12 +156,12 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
             <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
-            <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la IA cuando tu cliente busca?</span>
+            <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la iA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
           <motion.div id="zone-url-share-of-voice" variants={fadeUp} className="bg-slate-950 border border-slate-800 rounded-sm p-6">
             <div className="mb-5">
-              <h3 className="text-sm font-semibold text-slate-100">¿A quién recomienda la IA cuando tu cliente busca?</h3>
+              <h3 className="text-sm font-semibold text-slate-100">¿A quién recomienda la iA cuando tu cliente busca?</h3>
               <p className="text-slate-400 text-sm mt-1">Estas son las marcas que aparecen cuando un comprador real le pregunta a ChatGPT, Gemini o Perplexity.</p>
             </div>
             <ShareOfVoiceChart
@@ -248,7 +248,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
             <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
-            <span className="text-sm text-slate-400 font-medium">Temas donde la IA no tiene un ganador claro</span>
+            <span className="text-sm text-slate-400 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
           <motion.div id="zone-url-untapped-territories" variants={fadeUp} className="bg-slate-950 border border-emerald-900/40 rounded-sm overflow-hidden">
@@ -256,7 +256,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
-                <h3 className="text-base font-semibold text-slate-100">Temas donde la IA no tiene un ganador claro</h3>
+                <h3 className="text-base font-semibold text-slate-100">Temas donde la iA no tiene un ganador claro</h3>
                 <p className="text-slate-500 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
               </div>
             </div>
@@ -355,7 +355,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                     const hidden = r.marcas_mencionadas.length - visible.length
                     return (
                       <div>
-                        <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1.5">La IA recomienda a</p>
+                        <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1.5">La iA recomienda a</p>
                         <div className="flex flex-wrap gap-1.5 items-center">
                           {visible.map((m, j) => {
                             const isWinner = j === 0
@@ -374,14 +374,14 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                   {!r.mencionada && (
                     <div className="flex items-start gap-2 p-2.5 bg-rose-950/15 border border-rose-900/30 rounded-sm">
                       <AlertTriangle className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
-                      <p className="text-rose-300/80 text-xs">Este comprador no te encuentra. La IA recomienda a <span className="font-semibold text-rose-300">{r.marca_ganadora || 'la competencia'}</span>.</p>
+                      <p className="text-rose-300/80 text-xs">Este comprador no te encuentra. La iA recomienda a <span className="font-semibold text-rose-300">{r.marca_ganadora || 'la competencia'}</span>.</p>
                     </div>
                   )}
                   {r.snippet && (
                     <div>
                       <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-slate-300 transition-colors">
                         <Terminal className="w-3 h-3" />
-                        {showUrlSnippet[i] ? 'Ocultar respuesta original' : 'Ver respuesta original de la IA'}
+                        {showUrlSnippet[i] ? 'Ocultar respuesta original' : 'Ver respuesta original de la iA'}
                       </button>
                       {showUrlSnippet[i] && (
                         <div className="mt-2 p-3 bg-slate-900/80 border border-slate-800 rounded-sm max-h-40 overflow-y-auto">
@@ -400,7 +400,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
       {/* Footer metadata */}
       <motion.div variants={fade} className="pt-2">
         <p className="text-slate-500 text-[10px] font-mono">
-          Análisis generado por IA · {new Date().toLocaleDateString('es-CL')} · {urlResult.total_queries} tipos de cliente · {urlResult.mercado}
+          Análisis generado por iA · {new Date().toLocaleDateString('es-CL')} · {urlResult.total_queries} tipos de cliente · {urlResult.mercado}
         </p>
       </motion.div>
 

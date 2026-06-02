@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ai Visibility | Auditoría de Visibilidad en LLMs y Motores de Respuesta Generativa (GEO)",
-  description: "Plataforma de análisis de presencia de marca en modelos de lenguaje (LLMs). Evalúa cómo ChatGPT, Perplexity, Claude y Gemini citan tu marca frente a la competencia mediante auditorías basadas en IA.",
+  description: "Plataforma de análisis de presencia de marca en modelos de lenguaje (LLMs). Evalúa cómo ChatGPT, Perplexity, Claude y Gemini citan tu marca frente a la competencia mediante auditorías basadas en iA.",
   metadataBase: new URL('https://ai-visibility.cl'),
   alternates: {
     canonical: '/',

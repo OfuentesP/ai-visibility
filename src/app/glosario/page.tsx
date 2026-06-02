@@ -3,15 +3,15 @@ import { terminos } from '@/lib/terminos'
 
 export const metadata = {
   title: 'Glosario de Inteligencia Artificial y GEO | Ai Visibility',
-  description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model (SoM), GEO, RAG, Alucinaciones de IA y más.',
-  keywords: ['Share of Model', 'GEO', 'RAG', 'LLM', 'Alucinación IA', 'Generative Engine Optimization'],
+  description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model (SoM), GEO, RAG, Alucinaciones de iA y más.',
+  keywords: ['Share of Model', 'GEO', 'RAG', 'LLM', 'Alucinación iA', 'Generative Engine Optimization'],
   alternates: {
     canonical: 'https://ai-visibility.cl/glosario/',
     languages: { 'es': 'https://ai-visibility.cl/glosario/', 'es-CL': 'https://ai-visibility.cl/glosario/' },
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Glosario de IA y GEO | Ai Visibility',
+    title: 'Glosario de iA y GEO | Ai Visibility',
     description: 'Diccionario técnico para CMOs y fundadores. Definiciones claras de Share of Model, GEO, RAG y más.',
   },
 }
@@ -52,7 +52,7 @@ export default function GlosarioPage() {
         <div className="mb-8 md:mb-14">
           <p className="text-[10px] font-mono text-indigo-500 uppercase tracking-widest mb-3">Referencia técnica</p>
           <h1 className="text-xl font-semibold text-slate-100 leading-snug">
-            Glosario de IA &amp; GEO
+            Glosario de iA &amp; GEO
           </h1>
           <p className="text-slate-400 text-sm mt-2">
             Conceptos fundamentales para entender la visibilidad de marca en motores generativos.

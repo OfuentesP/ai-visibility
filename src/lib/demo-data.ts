@@ -109,7 +109,7 @@ export const DEMO_URL_DATA = {
       marca_ganadora: "Basement",
       sentimiento: "neutral",
       snippet:
-        "En el segmento de tallas inclusivas en Chile, las grandes cadenas de retail dominan las menciones de IA debido a su mayor volumen de contenido indexado.",
+        "En el segmento de tallas inclusivas en Chile, las grandes cadenas de retail dominan las menciones de iA debido a su mayor volumen de contenido indexado.",
       competitor_winning_reasons: [
         "Falta de contenido dedicado a 'tallas inclusivas' en el dominio de Amalia Jeans",
         "Sin menciones en artículos de moda inclusiva de medios chilenos",
@@ -125,7 +125,7 @@ export const DEMO_URL_DATA = {
   competitive_deep_dive: {
     competidor: "Basement",
     percepcion_nuestra_marca:
-      "La IA percibe a Amalia Jeans como una marca local emergente con buena propuesta de valor en moldería latina, pero con baja autoridad digital comparada con las cadenas establecidas. Es mencionada de forma esporádica y sin contexto de liderazgo.",
+      "La iA percibe a Amalia Jeans como una marca local emergente con buena propuesta de valor en moldería latina, pero con baja autoridad digital comparada con las cadenas establecidas. Es mencionada de forma esporádica y sin contexto de liderazgo.",
     mensaje_competidor:
       "Basement se posiciona como la referencia de moda femenina accesible en Chile, con discurso editorial consistente en medios, alta densidad de reviews y presencia en todas las plataformas relevantes para LLMs.",
     tabla_atributos: [

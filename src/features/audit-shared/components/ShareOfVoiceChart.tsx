@@ -101,7 +101,7 @@ export function ShareOfVoiceChart({
                       ))}
                       {winnerSources.length > 0 && (
                         <div style={{ marginTop: 8 }}>
-                          <div style={{ color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Fuentes IA</div>
+                          <div style={{ color: '#a78bfa', fontSize: 12, fontWeight: 700, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Fuentes iA</div>
                           {winnerSources.map((s, si) => (
                             <div key={si} style={{ color: '#c4b5fd', fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 3 }}>
                               <span style={{ color: '#a78bfa' }}>→</span>{s}

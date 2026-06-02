@@ -5,7 +5,7 @@ import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 export const metadata = {
   title: 'Ai Visibility | Plataforma de Optimización para Motores Generativos (GEO)',
   description: 'Mide y optimiza el Share of Model (SoM) de tu marca en ChatGPT, Gemini y Perplexity. La plataforma líder en Generative Engine Optimization en Chile.',
-  keywords: ['Generative Engine Optimization', 'GEO', 'Share of Model', 'Auditoría IA', 'AI Readiness Score', 'ChatGPT SEO'],
+  keywords: ['Generative Engine Optimization', 'GEO', 'Share of Model', 'Auditoría iA', 'AI Readiness Score', 'ChatGPT SEO'],
   alternates: {
     canonical: 'https://ai-visibility.cl',
     languages: { 'es': 'https://ai-visibility.cl', 'es-CL': 'https://ai-visibility.cl' },
@@ -41,12 +41,12 @@ const jsonLd = {
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "¿Qué es Generative Engine Optimization (GEO)?", "acceptedAnswer": { "@type": "Answer", "text": "Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG)." } },
-        { "@type": "Question", "name": "¿Cuál es la diferencia entre SEO y GEO?", "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por IA, donde no hay listas de enlaces, sino una única recomendación directa." } },
-        { "@type": "Question", "name": "¿Qué es el Share of Model (SoM)?", "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al Share of Voice. Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca frente a tus competidores directos cuando se le pregunta sobre tu industria." } },
+        { "@type": "Question", "name": "¿Cuál es la diferencia entre SEO y GEO?", "acceptedAnswer": { "@type": "Answer", "text": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google. El GEO posiciona tu marca como la respuesta definitiva dentro de un texto conversacional generado por iA, donde no hay listas de enlaces, sino una única recomendación directa." } },
+        { "@type": "Question", "name": "¿Qué es el Share of Model (SoM)?", "acceptedAnswer": { "@type": "Answer", "text": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al Share of Voice. Representa el porcentaje exacto de veces que un modelo de iA cita a tu marca frente a tus competidores directos cuando se le pregunta sobre tu industria." } },
         { "@type": "Question", "name": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?", "acceptedAnswer": { "@type": "Answer", "text": "Si tu marca no aparece en LLMs se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad o carencia de datos estructurados legibles para máquinas en tu sitio web." } },
-        { "@type": "Question", "name": "¿Cómo evalúa Ai Visibility mi presencia en la IA?", "acceptedAnswer": { "@type": "Answer", "text": "Ai Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. Extrae métricas clave: si tu marca es mencionada, análisis de sentimiento, porcentaje de visibilidad y qué competidor domina las respuestas." } },
+        { "@type": "Question", "name": "¿Cómo evalúa Ai Visibility mi presencia en la iA?", "acceptedAnswer": { "@type": "Answer", "text": "Ai Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. Extrae métricas clave: si tu marca es mencionada, análisis de sentimiento, porcentaje de visibilidad y qué competidor domina las respuestas." } },
         { "@type": "Question", "name": "¿Pueden garantizar que apareceré siempre como la marca #1?", "acceptedAnswer": { "@type": "Answer", "text": "No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado." } },
-        { "@type": "Question", "name": "¿Cuánto tiempo tarda en hacer efecto la optimización GEO?", "acceptedAnswer": { "@type": "Answer", "text": "La inyección de JSON-LD es legible por la IA en 48 horas. Para que los modelos ajusten sus respuestas RAG, suele tomar entre 3 y 6 semanas ver un aumento sostenido." } },
+        { "@type": "Question", "name": "¿Cuánto tiempo tarda en hacer efecto la optimización GEO?", "acceptedAnswer": { "@type": "Answer", "text": "La inyección de JSON-LD es legible por la iA en 48 horas. Para que los modelos ajusten sus respuestas RAG, suele tomar entre 3 y 6 semanas ver un aumento sostenido." } },
         { "@type": "Question", "name": "¿Por qué la auditoría Beta se centra en ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "Porque concentra más del 80% de las consultas generativas B2B y B2C en Chile. Priorizamos dominar el motor principal. Además, optimizar para OpenAI mejora automáticamente tu legibilidad para Gemini, que está en nuestra hoja de ruta." } }
       ]
     }
@@ -62,7 +62,7 @@ const features = [
   {
     icon: '△',
     title: 'Brecha Semántica',
-    desc: 'Detecta los conceptos y entidades que la IA asocia a tus competidores pero no a ti. Son exactamente los temas que debes crear.',
+    desc: 'Detecta los conceptos y entidades que la iA asocia a tus competidores pero no a ti. Son exactamente los temas que debes crear.',
   },
   {
     icon: '▶',
@@ -83,11 +83,11 @@ const faqConceptos = [
   },
   {
     q: '¿Cuál es la diferencia entre SEO y GEO?',
-    a: 'El SEO tradicional busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la "respuesta definitiva" dentro de un texto conversacional generado por IA, donde no hay listas de enlaces, sino una única recomendación directa.',
+    a: 'El SEO tradicional busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la "respuesta definitiva" dentro de un texto conversacional generado por iA, donde no hay listas de enlaces, sino una única recomendación directa.',
   },
   {
     q: '¿Qué es el Share of Model (SoM)?',
-    a: 'El Share of Model (SoM) es la métrica de nueva generación que reemplaza al "Share of Voice". Representa el porcentaje exacto de veces que un modelo de IA cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios.',
+    a: 'El Share of Model (SoM) es la métrica de nueva generación que reemplaza al "Share of Voice". Representa el porcentaje exacto de veces que un modelo de iA cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios.',
   },
   {
     q: '¿Por qué mi marca no aparece en ChatGPT o Perplexity?',
@@ -97,16 +97,16 @@ const faqConceptos = [
 
 const faqEstrategia = [
   {
-    q: '¿Cómo evalúa Ai Visibility mi presencia en la IA?',
+    q: '¿Cómo evalúa Ai Visibility mi presencia en la iA?',
     a: 'Ai Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. La plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento, tu porcentaje de visibilidad y qué competidor está dominando las respuestas.',
   },
   {
     q: '¿Pueden garantizar que apareceré siempre como la marca #1?',
-    a: 'No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado: desde JSON-LD hasta PR en medios que la IA indexa como fuentes de autoridad.',
+    a: 'No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado: desde JSON-LD hasta PR en medios que la iA indexa como fuentes de autoridad.',
   },
   {
     q: '¿Cuánto tiempo tarda en hacer efecto la optimización GEO?',
-    a: 'La inyección de JSON-LD es legible por la IA en 48 horas. Para que los modelos ajusten sus respuestas de recuperación (RAG), suele tomar entre 3 y 6 semanas ver un aumento sostenido. El Digital PR en medios autorizados puede impactar Perplexity en 24–48 horas.',
+    a: 'La inyección de JSON-LD es legible por la iA en 48 horas. Para que los modelos ajusten sus respuestas de recuperación (RAG), suele tomar entre 3 y 6 semanas ver un aumento sostenido. El Digital PR en medios autorizados puede impactar Perplexity en 24–48 horas.',
   },
   {
     q: '¿Por qué la auditoría Beta se centra en ChatGPT?',
@@ -128,7 +128,7 @@ export default function LandingPage() {
           Generative Engine Optimization · Share of Model
         </p>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-3xl mb-6">
-          ¿Te menciona la IA<br className="hidden sm:block" /> cuando alguien busca{' '}
+          ¿Te menciona la iA<br className="hidden sm:block" /> cuando alguien busca{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
             lo que tú vendes?
           </span>
@@ -175,12 +175,12 @@ export default function LandingPage() {
                 <span className="text-slate-400 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
               </h2>
               <p className="text-slate-400 text-base leading-relaxed mb-8">
-                El SEO optimiza para una lista de 10 links. La IA genera <strong className="text-slate-200">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
+                El SEO optimiza para una lista de 10 links. La iA genera <strong className="text-slate-200">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
               </p>
               <div className="space-y-5 mb-9">
                 {[
                   { n: '1', title: 'Lo que preguntan cuando no miras', desc: '"¿Cuál es el mejor software de RRHH en Chile?" o "Compara [Tu Marca] con [Competencia]".' },
-                  { n: '2', title: 'El costo de la invisibilidad', desc: 'Si la IA no tiene datos estructurados de tu web para validar tu autoridad, le entrega la venta al competidor que sí los tenga.' },
+                  { n: '2', title: 'El costo de la invisibilidad', desc: 'Si la iA no tiene datos estructurados de tu web para validar tu autoridad, le entrega la venta al competidor que sí los tenga.' },
                 ].map((item) => (
                   <div key={item.n} className="flex gap-4">
                     <div className="w-7 h-7 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -205,7 +205,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 text-xs font-bold text-white">IA</div>
+                <div className="w-7 h-7 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 text-xs font-bold text-white">iA</div>
                 <div className="bg-slate-950 border border-slate-800 rounded-sm px-4 py-4 w-full text-sm">
                   <p className="text-slate-400 mb-3 leading-relaxed">Basado en reseñas y autoridad técnica, las mejores opciones en Santiago son:</p>
                   <ul className="space-y-2 mb-4">
@@ -292,7 +292,7 @@ export default function LandingPage() {
             <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Ejemplo de diagnóstico real</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Lo que tu informe revela — con precisión quirúrgica</h2>
             <p className="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed">
-              No decimos "mejora tu presencia digital". Te decimos exactamente qué fuente de datos le falta a la IA para recomendarte.
+              No decimos "mejora tu presencia digital". Te decimos exactamente qué fuente de datos le falta a la iA para recomendarte.
             </p>
           </div>
           <div className="grid sm:grid-cols-3 gap-5 mb-6">
@@ -301,7 +301,7 @@ export default function LandingPage() {
                 badge: 'Foros y comunidades',
                 badgeColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
                 title: 'Sin menciones en Reddit Chile ni Reclamos.cl',
-                desc: 'Perplexity valida la confianza de una marca usando foros y reviews de usuarios reales. Sin menciones en estas fuentes, la IA no tiene evidencia social para recomendarte.',
+                desc: 'Perplexity valida la confianza de una marca usando foros y reviews de usuarios reales. Sin menciones en estas fuentes, la iA no tiene evidencia social para recomendarte.',
                 icon: '⚠',
                 iconColor: 'text-amber-400',
               },
@@ -309,7 +309,7 @@ export default function LandingPage() {
                 badge: 'Datos estructurados',
                 badgeColor: 'text-rose-400 bg-rose-400/10 border-rose-400/20',
                 title: 'Sin Schema JSON-LD en tu homepage',
-                desc: 'ChatGPT extrae datos estructurados de tu sitio para describir tu negocio. Sin JSON-LD, la IA infiere quién eres desde fuentes de terceros — y puede equivocarse.',
+                desc: 'ChatGPT extrae datos estructurados de tu sitio para describir tu negocio. Sin JSON-LD, la iA infiere quién eres desde fuentes de terceros — y puede equivocarse.',
                 icon: '✗',
                 iconColor: 'text-rose-400',
               },
@@ -317,7 +317,7 @@ export default function LandingPage() {
                 badge: 'Autoridad en medios',
                 badgeColor: 'text-rose-400 bg-rose-400/10 border-rose-400/20',
                 title: '0 menciones en medios indexados (90 días)',
-                desc: 'Tu competencia aparece citada en La Tercera, Emol y Pulso. La IA usa esas citas como señal de autoridad. Quien no aparece en medios que la IA indexa, no existe para ella.',
+                desc: 'Tu competencia aparece citada en La Tercera, Emol y Pulso. La iA usa esas citas como señal de autoridad. Quien no aparece en medios que la iA indexa, no existe para ella.',
                 icon: '✗',
                 iconColor: 'text-rose-400',
               },
@@ -374,7 +374,7 @@ export default function LandingPage() {
             {[
               {
                 name: 'Métricas de éxito',
-                ai: 'Share of Model (SoM) y citas en IA',
+                ai: 'Share of Model (SoM) y citas en iA',
                 seo: 'Posición en los 10 links de Google',
                 xType: 'minus',
               },
@@ -398,7 +398,7 @@ export default function LandingPage() {
               },
               {
                 name: 'El objetivo final',
-                ai: 'Ser la recomendación única de la IA',
+                ai: 'Ser la recomendación única de la iA',
                 seo: 'Pelear por clics en una lista',
                 xType: 'x',
               },
@@ -521,10 +521,10 @@ export default function LandingPage() {
         <div className="max-w-2xl mx-auto">
           <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">Última llamada</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
-            Tu competencia ya está optimizando para la IA.
+            Tu competencia ya está optimizando para la iA.
           </h2>
           <p className="text-slate-400 text-base leading-relaxed mb-10">
-            Cada día que la IA recomienda a otro, es un cliente que no llegó a ti. Audita tu marca en 60 segundos — gratis durante el Beta.
+            Cada día que la iA recomienda a otro, es un cliente que no llegó a ti. Audita tu marca en 60 segundos — gratis durante el Beta.
           </p>
           <Link
             href="/auditar"

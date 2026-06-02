@@ -37,7 +37,7 @@ export function CitaForm({ citaMarca, citaCategoria, citaLoading, onChangeMarca,
         </div>
       </div>
       <p className="text-slate-400 text-xs mb-4">
-        Generamos 12 queries de nicho, auditamos qué marcas menciona la IA y priorizamos donde puedes entrar más fácilmente.
+        Generamos 12 queries de nicho, auditamos qué marcas menciona la iA y priorizamos donde puedes entrar más fácilmente.
       </p>
       <button
         onClick={onSubmit}

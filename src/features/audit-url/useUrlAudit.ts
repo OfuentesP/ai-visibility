@@ -29,7 +29,7 @@ export function useUrlAudit({ userName, userEmail, setError, onFreemiumHit }: Co
       const phases = [
         'Analizando página... 20%',
         'Generando arquetipos de clientes... 45%',
-        'Consultando motores de IA... 70%',
+        'Consultando motores de iA... 70%',
         'Procesando resultados... 90%',
       ]
       for (const p of phases) {

@@ -23,7 +23,7 @@ export const guias: Guia[] = [
     slug: 'cyberday-2026-chatgpt',
     titulo: 'Cómo preparar tu marca para el CyberDay 2026 antes de que ChatGPT decida por tus clientes',
     descripcion:
-      'El CyberDay 2026 (1–3 de junio) se gana en ChatGPT la semana antes, no en tu landing de descuentos. Guía práctica para emprendedores y tiendas online que quieren aparecer en las respuestas de IA cuando sus clientes validan la compra.',
+      'El CyberDay 2026 (1–3 de junio) se gana en ChatGPT la semana antes, no en tu landing de descuentos. Guía práctica para emprendedores y tiendas online que quieren aparecer en las respuestas de iA cuando sus clientes validan la compra.',
     fecha: '2026-05-14',
     categoria: 'E-commerce & CyberDay',
     intro:
@@ -33,7 +33,7 @@ export const guias: Guia[] = [
         h2: 'El CyberDay no empieza el 1 de junio',
         parrafos: [
           'Para el comprador moderno, el CyberDay empieza cuando abre ChatGPT y pregunta "¿qué tiendas de electrónica tienen buen CyberDay en Chile?" o "¿es confiable comprar en [tienda] para el Cyber?". Esas consultas ocurren entre el 25 y el 31 de mayo — una semana antes del evento.',
-          'En esa ventana, la IA actúa como un consejero de compra que sintetiza reseñas, historial de precios y reputación de marca. Si no estás en esa síntesis, no entras al proceso de decisión. El cliente llega a tu competidor con la decisión tomada.',
+          'En esa ventana, la iA actúa como un consejero de compra que sintetiza reseñas, historial de precios y reputación de marca. Si no estás en esa síntesis, no entras al proceso de decisión. El cliente llega a tu competidor con la decisión tomada.',
         ],
       },
       {
@@ -51,14 +51,14 @@ export const guias: Guia[] = [
         nota: 'Ninguna de estas queries tiene tu landing de CyberDay como respuesta. Las responde ChatGPT con las fuentes que tiene disponibles — y tú no controlas cuáles son, a menos que trabajes el GEO.',
       },
       {
-        h2: 'Los 3 errores que hacen invisible tu tienda en la IA',
+        h2: 'Los 3 errores que hacen invisible tu tienda en la iA',
         parrafos: [
           'No es un problema de presupuesto. Es un problema de infraestructura de datos. Los LLMs construyen su opinión sobre tu marca usando tres fuentes principales: tu propio sitio web, las plataformas de reseñas y los medios que tienen autoridad en tu industria.',
         ],
         lista: [
           'Sin JSON-LD en tu homepage: ChatGPT no sabe qué vendes, dónde despachas ni cuánto tiempo llevas operando. Infiere esa información de fuentes de terceros — y puede equivocarse.',
           'Sin reseñas recientes en fuentes indexadas: Google Reviews, Trustpilot y Reclamos.cl son las plataformas que los LLMs usan para evaluar la confianza de una tienda. Menos de 10 reseñas en los últimos 6 meses es señal de poca actividad.',
-          'Sin menciones en medios de nicho: Un artículo en un blog de tecnología chilena, una mención en un medio de consumidores o una nota en La Tercera Tendencias vale más para la IA que 50 posts en Instagram.',
+          'Sin menciones en medios de nicho: Un artículo en un blog de tecnología chilena, una mención en un medio de consumidores o una nota en La Tercera Tendencias vale más para la iA que 50 posts en Instagram.',
         ],
       },
       {
@@ -69,7 +69,7 @@ export const guias: Guia[] = [
         lista: [
           'Audita tu Share of Model hoy: Antes de optimizar, sabe dónde estás. Usa Ai Visibility para ver si ChatGPT te menciona cuando preguntan por tu categoría en CyberDay. El diagnóstico tarda menos de 60 segundos.',
           'Agrega JSON-LD de tipo Organization + Store: Declara quién eres, qué vendes, en qué comunas despachas y cuántos años llevas. Es código que tu equipo puede copiar y pegar en el header de tu sitio esta tarde.',
-          'Consigue 5 reseñas nuevas en Google esta semana: Escríbele a tus últimos 20 clientes satisfechos. Una tasa de respuesta del 25% ya te da el volumen necesario para que la IA tenga señales de confianza actualizadas.',
+          'Consigue 5 reseñas nuevas en Google esta semana: Escríbele a tus últimos 20 clientes satisfechos. Una tasa de respuesta del 25% ya te da el volumen necesario para que la iA tenga señales de confianza actualizadas.',
           'Publica un artículo o nota en un medio de nicho: No necesita ser La Tercera. Un blog de tecnología, una nota en Emprende.cl o una publicación en LinkedIn de un periodista chileno con buen alcance son suficientes para que Perplexity te empiece a citar como fuente.',
         ],
         nota: 'Los sistemas RAG de Perplexity y ChatGPT con búsqueda web indexan contenido nuevo en 48 a 72 horas. Si implementas el JSON-LD hoy, estarás en la ventana de indexación antes del peak de búsquedas del 25 al 31 de mayo.',
@@ -79,7 +79,7 @@ export const guias: Guia[] = [
         parrafos: [
           'No es que tengan mejor GEO — es que tienen años de menciones acumuladas en fuentes que los LLMs pesan como autoritativas. Medios nacionales, miles de reseñas, comparadores de precio y foros de consumidores. Esa densidad de entidad es casi imposible de igualar en volumen.',
           'Pero el volumen no lo es todo. Los LLMs también responden consultas específicas donde una marca más pequeña puede dominar: "tienda de [nicho muy específico] confiable en Chile", "mejor opción para [producto especializado] con garantía extendida". Ahí, con el JSON-LD correcto y tres reseñas de calidad, una tienda mediana puede aparecer como primera recomendación.',
-          'La estrategia correcta para una pyme o emprendimiento en CyberDay no es competir con Falabella en las queries genéricas. Es dominar el nicho donde tienes ventaja real, y hacer que la IA lo sepa.',
+          'La estrategia correcta para una pyme o emprendimiento en CyberDay no es competir con Falabella en las queries genéricas. Es dominar el nicho donde tienes ventaja real, y hacer que la iA lo sepa.',
         ],
       },
     ],
@@ -94,7 +94,7 @@ export const guias: Guia[] = [
       },
       {
         q: '¿Funciona para una tienda que participa en CyberDay por primera vez?',
-        a: 'Sí, y es donde más ventaja proporciona. Las tiendas nuevas no tienen historial de precios que la IA pueda consultar. Pero sí pueden construir señales de confianza rápidas: JSON-LD declarando especialización, reseñas en Google y una mención en un medio de nicho. Con eso, ChatGPT puede recomendarte en consultas específicas de tu categoría.',
+        a: 'Sí, y es donde más ventaja proporciona. Las tiendas nuevas no tienen historial de precios que la iA pueda consultar. Pero sí pueden construir señales de confianza rápidas: JSON-LD declarando especialización, reseñas en Google y una mención en un medio de nicho. Con eso, ChatGPT puede recomendarte en consultas específicas de tu categoría.',
       },
       {
         q: '¿Cómo sé si ChatGPT me está recomendando o diciéndole a mis clientes que vayan a otro lado?',
