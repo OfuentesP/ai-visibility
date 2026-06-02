@@ -269,25 +269,49 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Relacionados */}
         {relacionados.length > 0 && (
-          <section className="mt-14">
-            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5">
-              Sigue leyendo
-            </h2>
-            <div className="space-y-3">
+          <section className="mt-16 pt-10 border-t border-slate-200">
+            <div className="mb-8">
+              <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-2">Sigue leyendo</p>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">
+                Más sobre cómo la iA recomienda marcas
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-5">
               {relacionados.map((r) => (
                 <Link
                   key={r.slug}
                   href={`/blog/${r.slug}/`}
-                  className="block border border-slate-200 hover:border-indigo-700/60 bg-slate-50/30 rounded-sm p-4 transition-colors group"
+                  className="group block bg-white shadow-sm hover:shadow-md border border-slate-200 hover:border-indigo-300 rounded-md p-5 transition-all"
                 >
-                  <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest">
-                    {r.categoria}
-                  </span>
-                  <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors mt-1.5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest">
+                      {r.categoria}
+                    </span>
+                    <span className="text-xs sm:text-[10px] font-mono text-slate-500">
+                      {new Date(r.fecha).toLocaleDateString('es-CL', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-snug mb-3">
                     {r.titulo}
+                  </h3>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                    {r.resumen}
                   </p>
+                  <div className="flex items-center gap-3 text-xs sm:text-[11px] font-mono text-slate-500">
+                    <span>{r.tiempoLectura}</span>
+                    <span>·</span>
+                    <span className="text-indigo-600 group-hover:text-indigo-700 transition-colors">Leer →</span>
+                  </div>
                 </Link>
               ))}
+            </div>
+            <div className="mt-8 text-center">
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 text-sm font-mono text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                Ver todos los posts del blog →
+              </Link>
             </div>
           </section>
         )}
