@@ -455,9 +455,14 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/auditar/" className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
+              <a
+                href="https://wa.me/56997065555?text=Hola%2C%20me%20interesa%20el%20Diagn%C3%B3stico%20de%20Ai%20Visibility"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors"
+              >
                 Empezar diagnóstico →
-              </Link>
+              </a>
             </div>
 
             {/* 2. Asesoría */}
