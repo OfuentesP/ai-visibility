@@ -56,23 +56,23 @@ const jsonLd = {
 const features = [
   {
     icon: '◉',
-    title: 'AI Readiness Score',
-    desc: 'Puntaje 0–100 que mide cuán preparada está tu marca para ser recomendada por LLMs. Riesgo Crítico, En Riesgo o Visible.',
-  },
-  {
-    icon: '△',
-    title: 'Brecha Semántica',
-    desc: 'Detecta los conceptos y entidades que la iA asocia a tus competidores pero no a ti. Son exactamente los temas que debes crear.',
-  },
-  {
-    icon: '▶',
-    title: 'Tácticas Accionables (ICE)',
-    desc: 'Hoja de ruta priorizada por impacto, confianza y esfuerzo: desde JSON-LD hasta PR en Reddit y Perplexity Pages.',
+    title: 'AI Readiness Score (0–100)',
+    desc: 'Un puntaje y un estado: Riesgo Crítico, En Riesgo o Visible. La métrica que llevas al directorio.',
   },
   {
     icon: '◈',
-    title: 'Share of Model (SoM)',
-    desc: 'Benchmark contra competidores directos: quién domina las respuestas de ChatGPT, Gemini y Perplexity en tu categoría.',
+    title: 'Cómo te cita ChatGPT',
+    desc: 'Tu posición exacta, el sentimiento de la mención (positivo, neutral o riesgo de alucinación) y la marca ganadora que recomienda en tu lugar.',
+  },
+  {
+    icon: '△',
+    title: 'Brecha semántica',
+    desc: 'Los conceptos y temas que la iA asocia a tu competencia y no a ti. La hoja de ruta de contenido que sí tienes que crear.',
+  },
+  {
+    icon: '▶',
+    title: 'Plan ICE con ejecutor',
+    desc: 'Acciones priorizadas por Impacto, Confianza y Esfuerzo. Cada una con quién la ejecuta (TI, marketing, agencia) + JSON-LD listo para copiar.',
   },
 ]
 
@@ -250,21 +250,25 @@ export default function LandingPage() {
       <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Qué incluye el informe</p>
-            <h2 className="text-2xl font-bold text-slate-900">Todo lo que necesitas para dominar los LLMs</h2>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Qué te llevas</p>
+            <h2 className="hidden sm:block text-2xl sm:text-3xl font-extrabold text-slate-900">Un informe que tu equipo puede ejecutar mañana</h2>
+            <h2 className="sm:hidden text-2xl font-extrabold text-slate-900">Un informe que se ejecuta</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((f) => (
-              <div key={f.title} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 hover:border-indigo-500/30 transition-colors">
-                <span className="text-indigo-600 text-xl block mb-3 font-mono">{f.icon}</span>
-                <h3 className="text-sm font-semibold text-slate-900 mb-2">{f.title}</h3>
-                <p className="text-slate-500 text-sm sm:text-xs leading-relaxed">{f.desc}</p>
+              <div key={f.title} className="bg-white shadow-sm border border-slate-200 rounded-md p-6 hover:shadow-md transition-shadow">
+                <span className="text-indigo-600 text-2xl block mb-4 font-mono leading-none">{f.icon}</span>
+                <h3 className="text-sm font-semibold text-slate-900 mb-2 leading-snug">{f.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
-          <div className="mt-10 text-center">
-            <Link href="/#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-colors">
-              Obtener mi informe GEO →
+          <p className="text-slate-500 text-xs sm:text-[11px] font-mono text-center mt-8">
+            Auditoría Beta enfocada en ChatGPT · Gemini y Perplexity en la hoja de ruta
+          </p>
+          <div className="mt-6 text-center">
+            <Link href="/#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
+              Quiero mi informe →
             </Link>
           </div>
         </div>
