@@ -6,6 +6,7 @@ export type BloqueBlog =
   | { tipo: 'cita'; texto: string; fuente?: string }
   | { tipo: 'codigo'; lenguaje?: string; codigo: string }
   | { tipo: 'nota'; texto: string }
+  | { tipo: 'referencias'; items: { label: string; url: string }[] }
 
 export type Post = {
   slug: string
@@ -27,6 +28,107 @@ export type Post = {
 }
 
 export const posts: Post[] = [
+  {
+    slug: 'un-ano-de-ai-mode-datos-google',
+    titulo: 'Un año de AI Mode según Google: queries 3x más largas, planning crece 80% y 1 de cada 6 búsquedas ya es multimodal',
+    descripcion:
+      'Google publicó (mayo 2026) los datos del primer año de AI Mode: 1.000 millones de usuarios mensuales, queries 3x más largas que la búsqueda tradicional y más voz/imagen que nunca. Te traducimos los 5 datos clave para entender qué cambia en cómo te buscan tus clientes — y qué hacer al respecto.',
+    fecha: '2026-06-02',
+    categoria: 'Casos & Datos',
+    tags: ['AI Mode', 'Google', 'Multimodal', 'Search Behavior', 'Planning'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'Google publicó (mayo 2026) los datos del primer año de AI Mode: 1.000 millones de usuarios mensuales, queries 3x más largas que la búsqueda tradicional, planning queries crecen 80% más rápido que el promedio, y 1 de cada 6 búsquedas ya usa voz o imágenes. La conducta de búsqueda cambió en serio.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'El 19 de mayo de 2026, Shivani Mohan (VP de Data Science y UXR en Google) publicó los datos oficiales del primer año de AI Mode. No son cifras del marketing del producto — son las métricas reales de comportamiento de búsqueda. Para una marca que vive de aparecer en Google, conviene leerlas con calma.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El titular es contundente: las nuevas funciones de iA son la razón principal por la que Google ve un máximo histórico de búsquedas. La gente no busca menos por la iA — busca más, y busca distinto.',
+      },
+      { tipo: 'h2', texto: 'Los 5 datos que conviene memorizar' },
+      {
+        tipo: 'lista',
+        items: [
+          'AI Mode llegó a 1.000 millones de usuarios activos al mes — y las queries se duplican cada trimestre desde el lanzamiento.',
+          'Las queries en AI Mode son aproximadamente 3 veces más largas que las búsquedas tradicionales.',
+          'Más de 1 de cada 6 búsquedas ya incorpora voz o imágenes (multimodal).',
+          'Las búsquedas con imagen crecen 40% mes a mes.',
+          'Las queries de "planning" (planificación) crecen 80% más rápido que el promedio. Las de "brainstorming" crecen 30% más rápido.',
+        ],
+      },
+      { tipo: 'h2', texto: '"Queries 3x más largas" — qué significa en práctica' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No es un detalle de longitud, es un cambio de naturaleza. La búsqueda tradicional optimizaba para queries cortas y específicas: "mejor CRM Chile". AI Mode permite y premia el contexto: "cuál CRM con integración al SII y soporte en español me sirve para una pyme de servicios de 8 personas que ya tiene HubSpot pero le sale caro".',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Para tu sitio, la implicancia es directa: el contenido que solo responde a la query corta queda corto. El que responde con la profundidad de la query larga — incluyendo casos, comparaciones, contexto y restricciones — es el que la iA usa para componer la respuesta. Y la gente que llega ya tomó la decisión basada en esa síntesis.',
+      },
+      { tipo: 'h2', texto: '1 de cada 6 búsquedas ya es multimodal' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Esta cifra cambia el peso de algo que muchas marcas chilenas tratan como secundario: las imágenes de producto y los datos visuales. Más del 16% de las búsquedas ya usa voz o imagen, y la búsqueda por imagen específicamente crece 40% mes a mes. El usuario saca una foto de un producto en una vitrina y le pregunta a Google qué es y dónde comprarlo.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Lo que tienes que asegurar: imágenes de producto reales (no stock), alt text descriptivo en español, structured data de Product con imágenes declaradas, y nombre del producto consistente entre sitio, Google Business Profile y Merchant Center. La iA cruza las tres fuentes para identificar la entidad.',
+      },
+      { tipo: 'h2', texto: 'Planning + brainstorming: la decisión se cocina antes del click' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los datos de mayor crecimiento son las queries de planificación y exploración. Búsquedas que empiezan con "dónde puedo", "qué debería", "ideas para". El usuario no llega a Google con la decisión tomada — la cocina dentro de AI Mode, refinando varias veces, hasta que sale con un proveedor elegido.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si tu marca no aparece en esa fase exploratoria — que dura minutos, no segundos — ni siquiera entras al shortlist. Y como cubrimos en nuestro post anterior, cuando finalmente el visitante hace click, viene a ejecutar, no a que lo convenzas.',
+      },
+      { tipo: 'h2', texto: 'Lo accionable esta semana, para una marca chilena' },
+      {
+        tipo: 'lista',
+        items: [
+          'Audita tu Share of Model en queries largas y de planificación, no solo en las cortas. Los volúmenes de cola larga son donde está el crecimiento real.',
+          'Crea contenido que responda preguntas con contexto completo (caso, comparativa, restricciones, criterios). El contenido "5 tips de…" ya no compite.',
+          'Refresca tus imágenes de producto y agrega alt text descriptivo en español. La búsqueda por imagen +40% mes a mes ya está afectando tráfico de descubrimiento.',
+          'Implementa structured data de Product (con imágenes, precio, disponibilidad) si vendes; LocalBusiness con horarios actuales si tienes presencia física; Organization con sameAs si todavía no lo hiciste.',
+          'Segmenta tu tráfico en GA4 por queries 3+ palabras vs 1-2 palabras. La proporción te muestra si ya estás recibiendo el tráfico nuevo o solo el viejo.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'El cambio no es solo en cómo busca la gente — es en qué espera encontrar. Una landing genérica con "Somos la mejor solución" pierde frente a una página con datos concretos, comparativas reales y casos. La iA premia precisión informativa, no persuasión.',
+      },
+      {
+        tipo: 'referencias',
+        items: [
+          { label: 'How AI Mode is changing the way people search in the U.S. — Google Blog (mayo 2026)', url: 'https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/' },
+          { label: 'AI Mode — Plataforma oficial', url: 'https://g.ai/' },
+          { label: 'AI Mode Sends a Different Visitor — NoHacks (lectura complementaria)', url: 'https://nohacks.co/blog/ai-mode-sends-different-visitor' },
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar cómo aparece mi marca en AI Mode →',
+    ctaUrl: '/#planes',
+    relacionados: ['visitante-de-ia-viene-a-comprar', 'fin-de-la-pagina-como-destino', 'lighthouse-mide-navegacion-con-ia', 'ecommerce-chileno-busqueda-ia-cyberday-2026'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
   {
     slug: 'fin-de-la-pagina-como-destino',
     titulo: 'Si Google compone la respuesta con tus datos, tu landing dejó de ser el destino',

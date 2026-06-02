@@ -190,6 +190,27 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </p>
               )
             }
+            if (b.tipo === 'referencias') {
+              return (
+                <section key={i} className="mt-6 pt-6 border-t border-slate-200">
+                  <p className="text-[11px] font-mono text-slate-500 uppercase tracking-widest mb-4">Referencias</p>
+                  <ul className="space-y-2">
+                    {b.items.map((ref, j) => (
+                      <li key={j} className="text-sm leading-relaxed">
+                        <a
+                          href={ref.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-indigo-600 hover:text-indigo-700 underline underline-offset-2 break-words"
+                        >
+                          {ref.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )
+            }
             return null
           })}
         </article>
