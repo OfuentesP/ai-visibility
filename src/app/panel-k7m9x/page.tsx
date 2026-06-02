@@ -36,9 +36,9 @@ function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4 text-center">Acceso restringido</p>
+        <p className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4 text-center">Acceso restringido</p>
         <div className={`bg-slate-900 border rounded-sm p-6 transition-colors ${error ? 'border-rose-700' : 'border-slate-800'}`}>
-          <label className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wide">Contraseña</label>
+          <label className="block text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wide">Contraseña</label>
           <input
             ref={inputRef}
             type="password"
@@ -152,7 +152,7 @@ function Pill({ text, color = 'slate' }: { text: string; color?: string }) {
     orange: 'bg-orange-900/40 text-orange-300',
   }
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-medium ${cls[color] ?? cls.slate}`}>
+    <span className={`inline-block px-2 py-0.5 rounded-sm text-xs sm:text-[10px] font-medium ${cls[color] ?? cls.slate}`}>
       {text}
     </span>
   )
@@ -184,10 +184,10 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
           <div>
-            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Historial de consultas</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Historial de consultas</p>
             <h2 className="text-sm font-bold text-white">{email}</h2>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-300 text-lg leading-none">✕</button>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-300 text-lg leading-none">✕</button>
         </div>
 
         <div className="px-6 py-5">
@@ -206,21 +206,21 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         {e.modo && (
-                          <span className={`inline-block px-1.5 py-0.5 rounded-sm text-[10px] font-semibold border ${MODO_COLOR[e.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+                          <span className={`inline-block px-1.5 py-0.5 rounded-sm text-xs sm:text-[10px] font-semibold border ${MODO_COLOR[e.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
                             {MODO_LABEL[e.modo] ?? e.modo}
                           </span>
                         )}
                         <span className="text-slate-300 text-xs font-medium truncate">{e.marca ?? e.query ?? '—'}</span>
                       </div>
                       {e.query && e.marca && (
-                        <p className="text-slate-400 text-[10px] truncate">{e.query}</p>
+                        <p className="text-slate-400 text-xs sm:text-[10px] truncate">{e.query}</p>
                       )}
-                      <p className="text-slate-500 text-[10px] font-mono mt-1">{formatDateShort(e.created_at)}</p>
+                      <p className="text-slate-400 text-xs sm:text-[10px] font-mono mt-1">{formatDateShort(e.created_at)}</p>
                     </div>
                     {scoreVal != null && (
                       <div className="text-right shrink-0">
                         <p className={`text-2xl font-bold font-mono ${scoreColor}`}>{scoreVal}</p>
-                        <p className="text-slate-500 text-[10px]">score</p>
+                        <p className="text-slate-400 text-xs sm:text-[10px]">score</p>
                       </div>
                     )}
                   </div>
@@ -275,7 +275,7 @@ function MetricsTab() {
           { label: 'Freemium bloqueados', value: metrics.freemium_bloqueados, color: 'text-orange-400' },
         ].map(({ label, value, color }) => (
           <div key={label} className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-            <p className="text-xs text-slate-500 mb-1">{label}</p>
+            <p className="text-xs text-slate-400 mb-1">{label}</p>
             <p className={`text-3xl font-bold ${color}`}>{value}</p>
           </div>
         ))}
@@ -283,9 +283,9 @@ function MetricsTab() {
 
       {/* Leads per day */}
       <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
-        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Leads por día — últimos 30 días</p>
+        <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Leads por día — últimos 30 días</p>
         {metrics.por_dia.length === 0 ? (
-          <p className="text-slate-500 text-sm text-center py-8">Sin datos en este período</p>
+          <p className="text-slate-400 text-sm text-center py-8">Sin datos en este período</p>
         ) : (
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={metrics.por_dia} barCategoryGap="30%">
@@ -318,9 +318,9 @@ function MetricsTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Por modo */}
         <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Distribución por tipo</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Distribución por tipo</p>
           {modoChartData.every(d => d.value === 0) ? (
-            <p className="text-slate-500 text-sm text-center py-8">Sin datos</p>
+            <p className="text-slate-400 text-sm text-center py-8">Sin datos</p>
           ) : (
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
@@ -353,7 +353,7 @@ function MetricsTab() {
 
         {/* Cache stats */}
         <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Estado del caché</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Estado del caché</p>
           <div className="space-y-3 mb-4">
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">Total en BD</span>
@@ -487,7 +487,7 @@ export default function AdminPanel() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-1">Panel de control</p>
+            <p className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-1">Panel de control</p>
             <h1 className="text-2xl font-bold text-white">Ai Visibility</h1>
           </div>
           <button
@@ -495,7 +495,7 @@ export default function AdminPanel() {
               setLoading(true); setError('')
               fetch(`${API}/api/leads`).then(r => r.json()).then(setLeads).catch(e => setError(e.message)).finally(() => setLoading(false))
             }}
-            className="text-xs text-slate-500 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono"
+            className="text-xs text-slate-400 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono"
           >
             ↺ Actualizar
           </button>
@@ -510,7 +510,7 @@ export default function AdminPanel() {
               className={`px-4 py-2 text-xs font-semibold transition border-b-2 -mb-px ${
                 tab === key
                   ? 'border-indigo-500 text-indigo-300'
-                  : 'border-transparent text-slate-500 hover:text-slate-300'
+                  : 'border-transparent text-slate-400 hover:text-slate-300'
               }`}
             >
               {label}
@@ -525,16 +525,16 @@ export default function AdminPanel() {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
               <div className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-                <p className="text-xs text-slate-500 mb-1">Total leads</p>
+                <p className="text-xs text-slate-400 mb-1">Total leads</p>
                 <p className="text-3xl font-bold text-white">{stats.total}</p>
               </div>
               <div className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-                <p className="text-xs text-slate-500 mb-1">Con resultado guardado</p>
+                <p className="text-xs text-slate-400 mb-1">Con resultado guardado</p>
                 <p className="text-3xl font-bold text-emerald-400">{stats.conResultado}</p>
               </div>
               {stats.porModo.slice(0, 2).map(({ modo, count }) => (
                 <div key={modo} className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-                  <p className="text-xs text-slate-500 mb-1">{MODO_LABEL[modo] ?? modo}</p>
+                  <p className="text-xs text-slate-400 mb-1">{MODO_LABEL[modo] ?? modo}</p>
                   <p className="text-3xl font-bold text-slate-200">{count}</p>
                 </div>
               ))}
@@ -557,7 +557,7 @@ export default function AdminPanel() {
                     className={`px-3 py-1.5 rounded-sm text-xs font-semibold transition border ${
                       filterModo === m
                         ? 'bg-slate-700 text-slate-100 border-slate-600'
-                        : 'text-slate-500 border-slate-800 hover:text-slate-300'
+                        : 'text-slate-400 border-slate-800 hover:text-slate-300'
                     }`}
                   >
                     {m === 'all' ? 'Todos' : MODO_LABEL[m]}
@@ -578,19 +578,19 @@ export default function AdminPanel() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-800 text-left">
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Fecha</th>
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Nombre</th>
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Correo</th>
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Tipo</th>
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Marca / URL</th>
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Consulta</th>
-                      <th className="px-4 py-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Informe</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Fecha</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Nombre</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Correo</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Tipo</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Marca / URL</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Consulta</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Informe</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {filtered.map((lead) => (
                       <tr key={lead.id} className="hover:bg-slate-800/30 transition-colors">
-                        <td className="px-4 py-3 text-xs text-slate-500 font-mono whitespace-nowrap">
+                        <td className="px-4 py-3 text-xs text-slate-400 font-mono whitespace-nowrap">
                           {formatDate(lead.created_at)}
                         </td>
                         <td className="px-4 py-3 text-slate-200 font-medium whitespace-nowrap">
@@ -607,10 +607,10 @@ export default function AdminPanel() {
                         </td>
                         <td className="px-4 py-3">
                           {lead.modo ? (
-                            <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-semibold border ${MODO_COLOR[lead.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+                            <span className={`inline-block px-2 py-0.5 rounded-sm text-xs sm:text-[10px] font-semibold border ${MODO_COLOR[lead.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
                               {MODO_LABEL[lead.modo] ?? lead.modo}
                             </span>
-                          ) : <span className="text-slate-500">—</span>}
+                          ) : <span className="text-slate-400">—</span>}
                         </td>
                         <td className="px-4 py-3 text-slate-300 max-w-[180px]">
                           {lead.modo === 'url' ? (
@@ -627,7 +627,7 @@ export default function AdminPanel() {
                             <button
                               onClick={() => openDetalle(lead)}
                               disabled={detalleLoading === lead.id}
-                              className="inline-flex items-center gap-1.5 text-[10px] font-mono text-indigo-400 hover:text-indigo-300 disabled:opacity-40 transition-colors"
+                              className="inline-flex items-center gap-1.5 text-xs sm:text-[10px] font-mono text-indigo-400 hover:text-indigo-300 disabled:opacity-40 transition-colors"
                             >
                               {detalleLoading === lead.id ? (
                                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
@@ -637,7 +637,7 @@ export default function AdminPanel() {
                               {detalleLoading === lead.id ? 'cargando...' : 'ver informe'}
                             </button>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 font-mono">
+                            <span className="inline-flex items-center gap-1 text-xs sm:text-[10px] text-slate-400 font-mono">
                               <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
                               sin datos
                             </span>
@@ -651,7 +651,7 @@ export default function AdminPanel() {
             </div>
 
             {!loading && !error && (
-              <p className="text-xs text-slate-500 font-mono mt-3 text-right">
+              <p className="text-xs text-slate-400 font-mono mt-3 text-right">
                 {filtered.length} de {leads.length} registros
               </p>
             )}

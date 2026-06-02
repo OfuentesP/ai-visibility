@@ -85,7 +85,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
               <p className={`font-semibold ${up ? 'text-emerald-300' : 'text-rose-300'}`}>
                 {up ? `Subiste ${delta}%` : `Bajaste ${Math.abs(delta)}%`} de visibilidad en {days} días
               </p>
-              <p className="text-slate-500 text-xs font-mono">Visibilidad anterior: {prev}% → actual: {curr}%</p>
+              <p className="text-slate-400 text-xs font-mono">Visibilidad anterior: {prev}% → actual: {curr}%</p>
             </div>
           </div>
         )
@@ -93,7 +93,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
 
       {/* 01 · Resumen Ejecutivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">01</span>
+        <span className="text-xs font-mono text-slate-400 shrink-0">01</span>
         <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>
@@ -102,12 +102,12 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
       >
         <div className="px-6 pt-5 pb-4 border-b border-slate-800 flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs text-slate-500 mb-0.5">{urlResult.marca} · {urlResult.mercado}</p>
+            <p className="text-xs text-slate-400 mb-0.5">{urlResult.marca} · {urlResult.mercado}</p>
             <p className="text-xs font-mono text-slate-400">{urlResult.categoria}</p>
           </div>
           <div className="text-right shrink-0">
             <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
-            <p className="text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en iA</p>
+            <p className="text-xs sm:text-[10px] text-slate-400 uppercase tracking-widest">visibilidad en iA</p>
           </div>
         </div>
         <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800/60">
@@ -141,7 +141,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         </div>
         {urlResult.diferenciadores.length > 0 && (
           <div className="border-t border-slate-800/60 px-6 py-3">
-            <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la iA no menciona</p>
+            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la iA no menciona</p>
             <div className="flex flex-wrap gap-2">
               {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
                 <span key={i} className="text-xs text-slate-400 bg-slate-800/50 border border-slate-700/60 rounded px-2.5 py-1">{dif}</span>
@@ -155,7 +155,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
       {hasMentions && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
+            <span className="text-xs font-mono text-slate-400 shrink-0">02</span>
             <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la iA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -180,7 +180,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
       {urlResult.competitive_deep_dive?.competidor && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">03</span>
+            <span className="text-xs font-mono text-slate-400 shrink-0">03</span>
             <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -188,13 +188,13 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             <div className="px-6 py-4 border-b border-slate-800 flex items-start gap-3">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-rose-500 to-violet-600 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-1">Diagnóstico Competitivo</p>
                 <h3 className="text-base font-semibold text-slate-100">Por qué <span className="text-amber-400">{urlResult.competitive_deep_dive.competidor}</span> aparece donde tú no</h3>
               </div>
             </div>
             <div className="grid md:grid-cols-5 gap-0 border-b border-slate-800/60">
               <div className="md:col-span-2 px-5 py-4 border-b md:border-b-0 md:border-r border-slate-800/60 border-l-2 border-l-rose-600/50">
-                <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">Cómo nos ven tus clientes</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">Cómo nos ven tus clientes</p>
                 <ul className="space-y-1.5">
                   {(urlResult.competitive_deep_dive.percepcion_nuestra_marca ?? '').split(/\.\s+/).map(s => s.replace(/\.$/, '').trim()).filter(s => s.length > 8).slice(0, 3).map((bullet, bi) => (
                     <li key={bi} className="flex items-start gap-2">
@@ -205,7 +205,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                 </ul>
               </div>
               <div className="md:col-span-3 px-5 py-4 border-l-2 border-l-amber-600/40">
-                <p className="text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">Por qué prefieren a {urlResult.competitive_deep_dive.competidor}</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">Por qué prefieren a {urlResult.competitive_deep_dive.competidor}</p>
                 <ul className="space-y-1.5">
                   {(urlResult.competitive_deep_dive.mensaje_competidor ?? '').split(/\.\s+/).map(s => s.replace(/\.$/, '').trim()).filter(s => s.length > 8).slice(0, 3).map((bullet, bi) => (
                     <li key={bi} className="flex items-start gap-2">
@@ -218,13 +218,13 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             </div>
             {urlResult.competitive_deep_dive.tabla_atributos?.length > 0 && (
               <div className="px-5 pb-4 pt-4">
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">Dónde exactamente te gana</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">Dónde exactamente te gana</p>
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-slate-800">
-                      <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
-                      <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
-                      <th className="text-left text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -247,7 +247,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
       {urlResult.untapped_territories && urlResult.untapped_territories.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
+            <span className="text-xs font-mono text-slate-400 shrink-0">04</span>
             <span className="text-sm text-slate-400 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/30" />
           </motion.div>
@@ -255,9 +255,9 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             <div className="px-6 py-5 border-b border-slate-800 flex items-start gap-4">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
                 <h3 className="text-base font-semibold text-slate-100">Temas donde la iA no tiene un ganador claro</h3>
-                <p className="text-slate-500 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
+                <p className="text-slate-400 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
               </div>
             </div>
             <div className="divide-y divide-slate-800/50">
@@ -266,7 +266,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                 const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' } : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
+                    <span className="text-xs sm:text-[11px] font-mono text-slate-400 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-3 mb-2">
                         <p className="text-sm font-semibold text-slate-100 leading-snug">{territory.titulo}</p>
@@ -280,7 +280,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
             </div>
             <div className="border-t border-slate-800/60 px-6 py-3 flex items-center gap-2">
               <TrendingUp className="w-3.5 h-3.5 text-emerald-500/60 shrink-0" />
-              <p className="text-xs text-slate-500">El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.</p>
+              <p className="text-xs text-slate-400">El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.</p>
             </div>
           </motion.div>
         </>
@@ -299,7 +299,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
 
       {/* 06 · Evidencia */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">06</span>
+        <span className="text-xs font-mono text-slate-400 shrink-0">06</span>
         <span className="text-sm text-slate-400 font-medium">Exportar informe</span>
         <div className="flex-1 h-px bg-slate-800/30" />
       </motion.div>
@@ -310,11 +310,11 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
         >
           <div className="flex items-center gap-3">
             <span className="text-sm font-semibold text-slate-300">Ver los prompts exactos que usamos para este análisis</span>
-            <span className="text-[10px] font-mono text-slate-500 bg-slate-800 px-2 py-0.5 rounded">{urlResult.total_queries} perfiles</span>
+            <span className="text-xs sm:text-[10px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">{urlResult.total_queries} perfiles</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">{showPerfilesDetalle ? 'Cerrar' : 'Ver evidencia →'}</span>
-            <span className={`text-slate-500 text-xs transition-transform ${showPerfilesDetalle ? 'rotate-180' : ''}`}>▾</span>
+            <span className="text-xs text-slate-400">{showPerfilesDetalle ? 'Cerrar' : 'Ver evidencia →'}</span>
+            <span className={`text-slate-400 text-xs transition-transform ${showPerfilesDetalle ? 'rotate-180' : ''}`}>▾</span>
           </div>
         </button>
         {showPerfilesDetalle && (
@@ -324,11 +324,11 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                 <div className="px-5 py-3 flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm font-semibold text-slate-100">{r.arquetipo}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">Busca: <span className="text-slate-400">{r.driver}</span></p>
+                    <p className="text-xs text-slate-400 mt-0.5">Busca: <span className="text-slate-400">{r.driver}</span></p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {r.sentimiento && (
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${r.sentimiento === 'positivo' ? 'bg-emerald-950/30 text-emerald-400 border-emerald-700/30' : r.sentimiento === 'negativo' ? 'bg-rose-950/20 text-rose-400 border-rose-800/30' : 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+                      <span className={`text-xs sm:text-[10px] font-semibold px-2 py-0.5 rounded border ${r.sentimiento === 'positivo' ? 'bg-emerald-950/30 text-emerald-400 border-emerald-700/30' : r.sentimiento === 'negativo' ? 'bg-rose-950/20 text-rose-400 border-rose-800/30' : 'bg-slate-800 text-slate-400 border-slate-700'}`}>
                         {r.sentimiento === 'positivo' ? '😊' : r.sentimiento === 'negativo' ? '😞' : '😐'} {r.sentimiento}
                       </span>
                     )}
@@ -339,7 +339,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                 </div>
                 <div className="px-5 pb-4 space-y-3">
                   <div className="bg-slate-900 border border-slate-800 rounded-sm px-3 py-2.5">
-                    <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Intención de Búsqueda Simulada</p>
+                    <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-2">Intención de Búsqueda Simulada</p>
                     <ul className="space-y-1">
                       {queryToBullets(r.query).map((bullet, bi) => (
                         <li key={bi} className="flex items-start gap-1.5 text-xs text-slate-400">
@@ -355,7 +355,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                     const hidden = r.marcas_mencionadas.length - visible.length
                     return (
                       <div>
-                        <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-1.5">La iA recomienda a</p>
+                        <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-1.5">La iA recomienda a</p>
                         <div className="flex flex-wrap gap-1.5 items-center">
                           {visible.map((m, j) => {
                             const isWinner = j === 0
@@ -366,7 +366,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                               </span>
                             )
                           })}
-                          {hidden > 0 && <span className="text-[10px] text-slate-400">+{hidden} más</span>}
+                          {hidden > 0 && <span className="text-xs sm:text-[10px] text-slate-400">+{hidden} más</span>}
                         </div>
                       </div>
                     )
@@ -379,13 +379,13 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
                   )}
                   {r.snippet && (
                     <div>
-                      <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-slate-300 transition-colors">
+                      <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-400 hover:text-slate-300 transition-colors">
                         <Terminal className="w-3 h-3" />
                         {showUrlSnippet[i] ? 'Ocultar respuesta original' : 'Ver respuesta original de la iA'}
                       </button>
                       {showUrlSnippet[i] && (
                         <div className="mt-2 p-3 bg-slate-900/80 border border-slate-800 rounded-sm max-h-40 overflow-y-auto">
-                          <p className="text-slate-500 text-[11px] font-mono leading-relaxed whitespace-pre-wrap">{r.snippet}</p>
+                          <p className="text-slate-400 text-xs sm:text-[11px] font-mono leading-relaxed whitespace-pre-wrap">{r.snippet}</p>
                         </div>
                       )}
                     </div>
@@ -399,7 +399,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
 
       {/* Footer metadata */}
       <motion.div variants={fade} className="pt-2">
-        <p className="text-slate-500 text-[10px] font-mono">
+        <p className="text-slate-400 text-xs sm:text-[10px] font-mono">
           Análisis generado por iA · {new Date().toLocaleDateString('es-CL')} · {urlResult.total_queries} tipos de cliente · {urlResult.mercado}
         </p>
       </motion.div>

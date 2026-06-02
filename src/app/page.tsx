@@ -124,7 +124,7 @@ export default function LandingPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="flex flex-col items-center justify-center text-center px-4 pt-16 sm:pt-24 pb-12 sm:pb-20">
-        <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">
+        <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">
           Generative Engine Optimization · Share of Model
         </p>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-3xl mb-6">
@@ -133,16 +133,19 @@ export default function LandingPage() {
             lo que tú vendes?
           </span>
         </h1>
-        <p className="text-slate-400 text-lg max-w-xl mb-10 leading-relaxed">
-          Mide tu <strong className="text-slate-200">Share of Model</strong> en ChatGPT, Perplexity y Gemini.
+        <p className="hidden sm:block text-slate-300 text-lg max-w-xl mb-10 leading-relaxed">
+          Mide tu <strong className="text-slate-100">Share of Model</strong> en ChatGPT, Perplexity y Gemini.
           Detecta quién te está quitando clientes en la era generativa y ejecuta tácticas GEO en días.
+        </p>
+        <p className="sm:hidden text-slate-300 text-base max-w-xl mb-10 leading-relaxed px-2">
+          Mide tu <strong className="text-slate-100">Share of Model</strong> en ChatGPT, Perplexity y Gemini. Descubre quién te está quitando clientes.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center w-full sm:w-auto">
           <Link
             href="/auditar"
             className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors text-center"
           >
-            Auditar mi marca gratis →
+            Auditar mi marca →
           </Link>
           <Link
             href="/glosario"
@@ -169,13 +172,17 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
-              <p className="text-[11px] font-mono text-rose-400 uppercase tracking-widest mb-4">El punto ciego de tu estrategia</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
+              <p className="text-xs sm:text-[11px] font-mono text-rose-400 uppercase tracking-widest mb-4">El punto ciego de tu estrategia</p>
+              <h2 className="hidden sm:block text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
                 Miles de chilenos usan ChatGPT para decidir qué comprar.{' '}
-                <span className="text-slate-400 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
+                <span className="text-slate-300 font-normal">Si no estás en la respuesta, tu competencia se lleva la venta.</span>
               </h2>
-              <p className="text-slate-400 text-base leading-relaxed mb-8">
-                El SEO optimiza para una lista de 10 links. La iA genera <strong className="text-slate-200">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
+              <h2 className="sm:hidden text-2xl font-extrabold text-white leading-tight mb-5">
+                Tus clientes preguntan a ChatGPT.{' '}
+                <span className="text-slate-300 font-normal">Si no estás en la respuesta, vendes menos.</span>
+              </h2>
+              <p className="text-slate-300 text-base leading-relaxed mb-8">
+                El SEO optimiza para una lista de 10 links. La iA genera <strong className="text-slate-100">una sola respuesta sintetizada</strong>. O apareces en esa síntesis, o literalmente no existes.
               </p>
               <div className="space-y-5 mb-9">
                 {[
@@ -188,7 +195,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <p className="text-slate-200 text-sm font-semibold mb-1">{item.title}</p>
-                      <p className="text-slate-500 text-sm">{item.desc}</p>
+                      <p className="text-slate-400 text-sm">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -218,7 +225,7 @@ export default function LandingPage() {
                   </ul>
                   <div className="p-3 bg-rose-950/40 border border-rose-900/40 rounded-sm flex items-start gap-2">
                     <span className="text-rose-500 flex-shrink-0 text-xs mt-0.5">⚠</span>
-                    <p className="text-rose-300/90 text-xs leading-relaxed"><strong>Tu marca no fue mencionada.</strong> El tráfico de esta consulta fue derivado 100% a la competencia.</p>
+                    <p className="text-rose-300/90 text-sm sm:text-xs leading-relaxed"><strong>Tu marca no fue mencionada.</strong> El tráfico de esta consulta fue derivado 100% a la competencia.</p>
                   </div>
                 </div>
               </div>
@@ -231,7 +238,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Nuestra metodología</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Nuestra metodología</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">No es magia. Es ingeniería inversa.</h2>
             <p className="text-slate-400 text-base max-w-xl mx-auto leading-relaxed">De la pregunta del usuario a la inserción de tu código técnico, en 4 pasos auditables.</p>
           </div>
@@ -247,10 +254,10 @@ export default function LandingPage() {
                 <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
                   <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-950/40 border-indigo-500/30' : 'bg-slate-900 border-slate-800'}`}>
                     {step.icon}
-                    <span className={`mt-1.5 font-mono text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-400' : 'text-slate-500'}`}>{step.n}</span>
+                    <span className={`mt-1.5 font-mono text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-400' : 'text-slate-400'}`}>{step.n}</span>
                   </div>
                   <div className={`flex-1 p-6 rounded-sm border ${step.highlight ? 'bg-indigo-950/20 border-indigo-900/40' : 'bg-slate-900/40 border-slate-800 hover:bg-slate-900/60 transition-colors'}`}>
-                    {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">Tecnología exclusiva</span>}
+                    {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-xs sm:text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">Tecnología exclusiva</span>}
                     <h3 className="text-base font-semibold text-white mb-2">{step.title}</h3>
                     <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
                   </div>
@@ -265,7 +272,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Qué incluye el informe</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Qué incluye el informe</p>
             <h2 className="text-2xl font-bold text-white">Todo lo que necesitas para dominar los LLMs</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -273,7 +280,7 @@ export default function LandingPage() {
               <div key={f.title} className="bg-slate-900 border border-slate-800 rounded-sm p-6 hover:border-indigo-500/30 transition-colors">
                 <span className="text-indigo-400 text-xl block mb-3 font-mono">{f.icon}</span>
                 <h3 className="text-sm font-semibold text-slate-100 mb-2">{f.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{f.desc}</p>
+                <p className="text-slate-400 text-sm sm:text-xs leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -289,7 +296,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Ejemplo de diagnóstico real</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Ejemplo de diagnóstico real</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Lo que tu informe revela — con precisión quirúrgica</h2>
             <p className="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed">
               No decimos "mejora tu presencia digital". Te decimos exactamente qué fuente de datos le falta a la iA para recomendarte.
@@ -324,18 +331,18 @@ export default function LandingPage() {
             ].map((card) => (
               <div key={card.title} className="bg-slate-900 border border-slate-800 rounded-sm p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border ${card.badgeColor}`}>{card.badge}</span>
+                  <span className={`text-xs sm:text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border ${card.badgeColor}`}>{card.badge}</span>
                   <span className={`text-lg font-bold ${card.iconColor}`}>{card.icon}</span>
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-2">{card.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{card.desc}</p>
+                <p className="text-slate-400 text-sm sm:text-xs leading-relaxed">{card.desc}</p>
               </div>
             ))}
           </div>
           {/* Metadata bar */}
           <div className="border border-slate-800 rounded-sm bg-slate-900/50 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 justify-center">
             {['14 fuentes analizadas', '3 arquetipos de comprador simulados', 'Tiempo de análisis: 47s', 'Motor: ChatGPT GPT-4o'].map((m) => (
-              <span key={m} className="text-slate-500 text-[11px] font-mono">{m}</span>
+              <span key={m} className="text-slate-400 text-xs sm:text-[11px] font-mono">{m}</span>
             ))}
           </div>
         </div>
@@ -345,7 +352,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">GEO vs SEO</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">GEO vs SEO</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">
               ¿Por qué el SEO tradicional ya no es suficiente?
             </h2>
@@ -361,11 +368,11 @@ export default function LandingPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 border-b border-slate-800 bg-slate-900">
               <div className="p-5 hidden md:block" />
               <div className="p-5 border-b-2 border-indigo-500 bg-indigo-500/5">
-                <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1">Plataforma GEO</span>
+                <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest block mb-1">Plataforma GEO</span>
                 <p className="text-white font-bold text-sm">Ai Visibility</p>
               </div>
               <div className="p-5 opacity-60">
-                <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest block mb-1">Marketing tradicional</span>
+                <span className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1">Marketing tradicional</span>
                 <p className="text-slate-300 font-bold text-sm">Agencia SEO</p>
               </div>
             </div>
@@ -416,8 +423,8 @@ export default function LandingPage() {
                 <div className="p-4 md:p-5 flex items-center gap-3 opacity-60">
                   <div className="w-5 h-5 rounded-sm bg-slate-800 flex items-center justify-center flex-shrink-0">
                     {row.xType === 'x'
-                      ? <X size={12} className="text-slate-500" />
-                      : <Minus size={12} className="text-slate-500" />
+                      ? <X size={12} className="text-slate-400" />
+                      : <Minus size={12} className="text-slate-400" />
                     }
                   </div>
                   <span className="text-slate-400 text-sm">{row.seo}</span>
@@ -427,7 +434,7 @@ export default function LandingPage() {
 
             {/* Footer CTA */}
             <div className="bg-slate-900 px-5 py-4 text-center border-t border-slate-800">
-              <p className="text-slate-500 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
+              <p className="text-slate-400 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
               <Link href="/auditar" className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors">
                 Auditar mi marca en ChatGPT →
               </Link>
@@ -440,7 +447,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Planes</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Planes</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Cuatro formas de trabajar con Ai Visibility</h2>
             <p className="text-slate-400 text-base max-w-xl mx-auto">Desde un diagnóstico puntual hasta la creación y medición mes a mes. Empieza por donde lo necesites.</p>
           </div>
@@ -448,10 +455,10 @@ export default function LandingPage() {
 
             {/* 1. Diagnóstico */}
             <div className="bg-slate-900 border-2 border-indigo-500/50 rounded-sm p-6 relative flex flex-col">
-              <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
-              <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
+              <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-xs sm:text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
+              <p className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
               <p className="text-3xl font-extrabold text-white mb-1">US$ 200</p>
-              <p className="text-slate-500 text-xs mb-5">pago único</p>
+              <p className="text-slate-400 text-xs mb-5">pago único</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
                 La radiografía de cómo te ve la iA hoy frente a tu competencia. Punto de partida con datos, no opiniones.
               </p>
@@ -476,9 +483,9 @@ export default function LandingPage() {
 
             {/* 2. Asesoría */}
             <div className="bg-slate-900 border border-slate-800 rounded-sm p-6 flex flex-col">
-              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">02 · Asesoría</p>
+              <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">02 · Asesoría</p>
               <p className="text-3xl font-extrabold text-white mb-1">$290.000</p>
-              <p className="text-slate-500 text-xs mb-5">CLP · pago único</p>
+              <p className="text-slate-400 text-xs mb-5">CLP · pago único</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
                 Una sesión con tu equipo para definir qué contenido crear, cómo y en qué orden. Sales con un plan, no con apuntes.
               </p>
@@ -508,9 +515,9 @@ export default function LandingPage() {
 
             {/* 3. Capacitación */}
             <div className="bg-slate-900 border border-slate-800 rounded-sm p-6 flex flex-col">
-              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">03 · Capacitación</p>
+              <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">03 · Capacitación</p>
               <p className="text-3xl font-extrabold text-white mb-1">$490.000</p>
-              <p className="text-slate-500 text-xs mb-5">CLP · programa de 3 clases</p>
+              <p className="text-slate-400 text-xs mb-5">CLP · programa de 3 clases</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
                 Tu equipo interno aprende a crear contenido que la iA recomiende — sin depender de una agencia externa cada mes.
               </p>
@@ -540,10 +547,10 @@ export default function LandingPage() {
 
             {/* 4. Plan Mensual */}
             <div className="bg-slate-900 border-2 border-violet-500/50 rounded-sm p-6 relative flex flex-col">
-              <span className="absolute -top-3 left-5 bg-violet-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Más completo</span>
-              <p className="text-[10px] font-mono text-violet-400 uppercase tracking-widest mb-2">04 · Plan Mensual</p>
+              <span className="absolute -top-3 left-5 bg-violet-600 text-white text-xs sm:text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Más completo</span>
+              <p className="text-xs sm:text-[10px] font-mono text-violet-400 uppercase tracking-widest mb-2">04 · Plan Mensual</p>
               <p className="text-3xl font-extrabold text-white mb-1">$690.000</p>
-              <p className="text-slate-500 text-xs mb-5">CLP · por mes</p>
+              <p className="text-slate-400 text-xs mb-5">CLP · por mes</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
                 Trabajamos junto a tu equipo todos los meses: objetivos, contenidos y medición. La forma sostenida de mover tu Share of Model.
               </p>
@@ -572,7 +579,7 @@ export default function LandingPage() {
             </div>
 
           </div>
-          <p className="text-slate-500 text-[11px] font-mono text-center mt-8">
+          <p className="text-slate-400 text-xs sm:text-[11px] font-mono text-center mt-8">
             Valores referenciales · USD en el diagnóstico · CLP en servicios locales
           </p>
         </div>
@@ -582,16 +589,16 @@ export default function LandingPage() {
       <section id="faq-geo" className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
             <h2 className="text-2xl font-bold text-white">Todo lo que necesitas saber sobre GEO</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             <div>
-              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">Conceptos clave</p>
+              <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-5">Conceptos clave</p>
               <FaqAccordionServer items={faqConceptos} />
             </div>
             <div>
-              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">Estrategia y resultados</p>
+              <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-5">Estrategia y resultados</p>
               <FaqAccordionServer items={faqEstrategia} />
             </div>
           </div>
@@ -601,12 +608,15 @@ export default function LandingPage() {
       {/* ── CTA CIERRE ────────────────────────────────────────────── */}
       <section className="border-t border-slate-800/60 py-16 sm:py-24 px-4 text-center">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">Última llamada</p>
+          <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">Última llamada</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
             Tu competencia ya está optimizando para la iA.
           </h2>
-          <p className="text-slate-400 text-base leading-relaxed mb-10">
-            Cada día que la iA recomienda a otro, es un cliente que no llegó a ti. Audita tu marca en 60 segundos — gratis durante el Beta.
+          <p className="hidden sm:block text-slate-300 text-base leading-relaxed mb-10">
+            Cada día que la iA recomienda a otro, es un cliente que no llegó a ti. Empieza con un diagnóstico claro de dónde estás hoy.
+          </p>
+          <p className="sm:hidden text-slate-300 text-base leading-relaxed mb-10">
+            Cada día que la iA recomienda a otro, es un cliente que no llegó a ti.
           </p>
           <Link
             href="/auditar"
@@ -614,7 +624,7 @@ export default function LandingPage() {
           >
             Auditar mi marca ahora →
           </Link>
-          <p className="text-slate-500 text-xs font-mono mt-5">Sin tarjeta de crédito · 2 auditorías gratis · Resultado en &lt;60s</p>
+          <p className="text-slate-400 text-sm sm:text-xs font-mono mt-5">Diagnóstico US$ 200 · Resultado en menos de 60 segundos</p>
         </div>
       </section>
 

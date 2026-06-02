@@ -17,7 +17,7 @@ export function UrlForm({ urlInput, urlLoading, loadingPhase, onUrlChange, onSub
   return (
     <>
       <div className="mb-4">
-        <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">URL del sitio web</label>
+        <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">URL del sitio web</label>
         <input
           id="input-url"
           type="url"
@@ -43,7 +43,7 @@ export function UrlForm({ urlInput, urlLoading, loadingPhase, onUrlChange, onSub
       {process.env.NODE_ENV === 'development' && (
         <button
           onClick={() => onLoadDemo(DEMO_URL_DATA as unknown as UrlAuditResult)}
-          className="w-full px-6 py-2 bg-transparent border border-slate-700 hover:border-indigo-600 hover:text-indigo-400 text-slate-500 font-medium rounded-sm transition flex items-center justify-center gap-2 text-xs"
+          className="w-full px-6 py-2 bg-transparent border border-slate-700 hover:border-indigo-600 hover:text-indigo-400 text-slate-400 font-medium rounded-sm transition flex items-center justify-center gap-2 text-xs"
         >
           <FlaskConical className="w-3.5 h-3.5" />
           Modo demo — amaliajeans.cl

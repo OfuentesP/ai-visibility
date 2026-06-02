@@ -65,7 +65,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
 
       {/* HERO */}
       <section className="flex flex-col items-center justify-center text-center px-4 pt-16 sm:pt-24 pb-12 sm:pb-20">
-        <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">
+        <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-5">
           {ind.nombre} · GEO · Share of Model
         </p>
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight max-w-3xl mb-6">
@@ -80,13 +80,13 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
         >
           Auditar mi marca gratis →
         </Link>
-        <p className="text-slate-500 text-xs font-mono mt-4">Sin tarjeta de crédito · Resultado en &lt;60s</p>
+        <p className="text-slate-400 text-xs font-mono mt-4">Sin tarjeta de crédito · Resultado en &lt;60s</p>
       </section>
 
       {/* QUERIES que hace tu cliente */}
       <section className="border-t border-slate-800/60 py-12 sm:py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Lo que preguntan cuando no miras</p>
+          <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Lo que preguntan cuando no miras</p>
           <h2 className="text-2xl font-extrabold text-white text-center mb-10">
             Consultas reales de tus clientes a ChatGPT
           </h2>
@@ -109,7 +109,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
       {/* DOLORES */}
       <section className="border-t border-slate-800/60 py-12 sm:py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">El problema real</p>
+          <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">El problema real</p>
           <h2 className="text-2xl font-extrabold text-white text-center mb-10">
             Por qué el {ind.nombre} pierde clientes en la era de la iA
           </h2>
@@ -119,7 +119,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
                 <span className="text-rose-500 text-lg flex-shrink-0 mt-0.5">⚠</span>
                 <div>
                   <h3 className="text-sm font-semibold text-white mb-2">{d.titulo}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{d.desc}</p>
+                  <p className="text-slate-400 text-sm leading-relaxed">{d.desc}</p>
                 </div>
               </div>
             ))}
@@ -148,7 +148,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
       {/* FAQ */}
       <section className="border-t border-slate-800/60 py-12 sm:py-16 px-4">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Preguntas frecuentes</p>
+          <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Preguntas frecuentes</p>
           <h2 className="text-2xl font-extrabold text-white text-center mb-10">
             GEO para {ind.nombre}
           </h2>
@@ -160,7 +160,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
       {ind.lecturas && ind.lecturas.length > 0 && (
         <section className="border-t border-slate-800/60 py-12 sm:py-16 px-4">
           <div className="max-w-3xl mx-auto">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Profundiza el tema</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3 text-center">Profundiza el tema</p>
             <h2 className="text-2xl font-extrabold text-white text-center mb-10">
               Lecturas recomendadas
             </h2>
@@ -171,7 +171,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
                   href={`/blog/${l.slug}/`}
                   className="block bg-slate-900 border border-slate-800 hover:border-indigo-600/60 rounded-sm px-5 py-4 transition-colors group"
                 >
-                  <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Blog</span>
+                  <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Blog</span>
                   <p className="text-sm font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors mt-1.5 leading-snug">
                     {l.titulo}
                   </p>

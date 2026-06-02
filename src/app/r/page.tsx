@@ -21,7 +21,7 @@ function Score({ value, max = 100, label }: { value: number; max?: number; label
   const text = pct >= 60 ? 'text-emerald-400' : pct >= 30 ? 'text-orange-400' : 'text-rose-400'
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-      <p className="text-xs text-slate-500 mb-1">{label}</p>
+      <p className="text-xs text-slate-400 mb-1">{label}</p>
       <p className={`text-3xl font-bold mb-2 ${text}`}>{value}</p>
       <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
@@ -31,7 +31,7 @@ function Score({ value, max = 100, label }: { value: number; max?: number; label
 }
 
 function Pill({ text }: { text: string }) {
-  return <span className="inline-block px-2 py-0.5 bg-slate-800 text-slate-300 text-[10px] rounded-sm">{text}</span>
+  return <span className="inline-block px-2 py-0.5 bg-slate-800 text-slate-300 text-xs sm:text-[10px] rounded-sm">{text}</span>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,7 +106,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
       {/* 01 Score + sentimiento */}
       <section>
         <div className="flex items-center gap-3 mb-3">
-          <span className="text-xs font-mono text-slate-500">01</span>
+          <span className="text-xs font-mono text-slate-400">01</span>
           <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
           <div className="flex-1 h-px bg-slate-800/40" />
         </div>
@@ -121,13 +121,13 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
               <text x="64" y="76" textAnchor="middle" fill="#64748b" fontSize="10">/100</text>
             </svg>
             <div>
-              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">AI Readiness Score</p>
+              <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">AI Readiness Score</p>
               <p className="text-lg font-semibold" style={{ color: strokeColor }}>{label}</p>
-              <p className="text-slate-500 text-xs mt-2 leading-relaxed">Posición #{pos} en el radar de la iA</p>
+              <p className="text-slate-400 text-xs mt-2 leading-relaxed">Posición #{pos} en el radar de la iA</p>
             </div>
           </div>
           <div className={`border rounded-sm p-6 ${sentBg}`}>
-            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la iA</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-3">Percepción de la iA</p>
             <span className={`text-xs font-semibold px-2.5 py-1 rounded border ${sentBg} ${sentColor} mb-3 inline-block`}>{sentLabel}</span>
             {d.recomendacion_ia && (
               <p className="text-slate-300 text-sm leading-relaxed mt-2">{d.recomendacion_ia}</p>
@@ -139,8 +139,8 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
           <p className="text-slate-400 text-sm leading-relaxed">{subtitulo}</p>
           {d.prioridad_ejecutiva && (
             <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t border-slate-800 text-xs">
-              <div><span className="text-slate-500">Foco: </span><span className="text-slate-200">{d.prioridad_ejecutiva.foco_principal}</span></div>
-              <div><span className="text-slate-500">Impacto: </span><span className="text-slate-200">{d.prioridad_ejecutiva.impacto_esperado}</span></div>
+              <div><span className="text-slate-400">Foco: </span><span className="text-slate-200">{d.prioridad_ejecutiva.foco_principal}</span></div>
+              <div><span className="text-slate-400">Impacto: </span><span className="text-slate-200">{d.prioridad_ejecutiva.impacto_esperado}</span></div>
             </div>
           )}
         </div>
@@ -150,7 +150,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
       {sov.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">02</span>
+            <span className="text-xs font-mono text-slate-400">02</span>
             <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la iA?</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -160,7 +160,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
               const isUser = m.toLowerCase() === (marca ?? '').toLowerCase()
               return (
                 <div key={m} className="flex items-center gap-3">
-                  <span className="text-[10px] font-mono text-slate-500 w-4 shrink-0">#{i + 1}</span>
+                  <span className="text-xs sm:text-[10px] font-mono text-slate-400 w-4 shrink-0">#{i + 1}</span>
                   <span className={`text-xs w-28 shrink-0 truncate ${isUser ? 'text-sky-400 font-semibold' : isUser && i === 0 ? 'text-amber-400' : 'text-slate-400'}`}>
                     {isUser ? `→ ${m}` : m}
                   </span>
@@ -168,7 +168,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
                     <div className={`h-full rounded-full ${isUser ? 'bg-sky-500' : i === 0 ? 'bg-orange-500' : 'bg-slate-600'}`}
                       style={{ width: `${pct}%` }} />
                   </div>
-                  <span className="text-[10px] font-mono text-slate-500 w-8 text-right">{pct}%</span>
+                  <span className="text-xs sm:text-[10px] font-mono text-slate-400 w-8 text-right">{pct}%</span>
                 </div>
               )
             })}
@@ -180,7 +180,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
       {d.competitor_advantage?.rival && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">03</span>
+            <span className="text-xs font-mono text-slate-400">03</span>
             <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -188,7 +188,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <div className="px-5 py-4 border-b border-slate-800 flex items-start gap-3">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-rose-500 to-violet-600 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-1">Diagnóstico Competitivo</p>
                 <h3 className="text-base font-semibold text-slate-100">
                   Por qué <span className="text-amber-400">{d.competitor_advantage.rival}</span> aparece donde tú no
                 </h3>
@@ -199,13 +199,13 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             </div>
             {d.competitor_advantage.filas?.length > 0 && (
               <div className="px-5 py-4">
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">Dónde exactamente te gana</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">Dónde exactamente te gana</p>
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-slate-800">
-                      <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-4 w-[30%]">Atributo ganador</th>
-                      <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-4 w-[35%]">Fuente de verdad</th>
-                      <th className="text-left text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[35%]">Gap nuestra marca</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2 pr-4 w-[30%]">Atributo ganador</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2 pr-4 w-[35%]">Fuente de verdad</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[35%]">Gap nuestra marca</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -228,7 +228,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
       {d.territorios_desatendidos?.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">04</span>
+            <span className="text-xs font-mono text-slate-400">04</span>
             <span className="text-sm text-slate-400 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -236,9 +236,9 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <div className="px-5 py-5 border-b border-slate-800 flex items-start gap-4">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
                 <h3 className="text-base font-semibold text-slate-100">Oportunidades de contenido desatendidas</h3>
-                <p className="text-slate-500 text-sm mt-1">Temas emergentes donde la marca puede posicionarse antes que la competencia.</p>
+                <p className="text-slate-400 text-sm mt-1">Temas emergentes donde la marca puede posicionarse antes que la competencia.</p>
               </div>
             </div>
             <div className="divide-y divide-slate-800/50">
@@ -249,7 +249,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
                   : { label: 'Explorar', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0">{String(ti + 1).padStart(2, '0')}</span>
+                    <span className="text-xs sm:text-[11px] font-mono text-slate-400 pt-1 w-5 shrink-0">{String(ti + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-3 mb-1.5">
                         <p className="text-sm font-semibold text-slate-100 leading-snug">{t.topico_emergente}</p>
@@ -269,13 +269,13 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
       {d.conceptos_faltantes?.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">05</span>
+            <span className="text-xs font-mono text-slate-400">05</span>
             <span className="text-sm text-slate-400 font-medium">Conceptos que la iA no asocia a tu marca</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
           <div className="flex flex-wrap gap-1.5">
             {d.conceptos_faltantes.map((c: string) => (
-              <span key={c} className="inline-block px-2 py-0.5 bg-rose-900/30 text-rose-300 text-[10px] rounded-sm">{c}</span>
+              <span key={c} className="inline-block px-2 py-0.5 bg-rose-900/30 text-rose-300 text-xs sm:text-[10px] rounded-sm">{c}</span>
             ))}
           </div>
         </section>
@@ -285,14 +285,14 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
       {allActions.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">06</span>
+            <span className="text-xs font-mono text-slate-400">06</span>
             <span className="text-sm text-slate-400 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
           <div className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-800">
               <h3 className="text-base font-semibold text-slate-100">Qué necesitamos hacer y quién lo ejecuta</h3>
-              <p className="text-slate-500 text-sm mt-0.5">{allActions.length} acciones priorizadas por impacto</p>
+              <p className="text-slate-400 text-sm mt-0.5">{allActions.length} acciones priorizadas por impacto</p>
             </div>
             {allActions[0] && (
               <div className="px-5 pt-4 pb-2">
@@ -308,25 +308,25 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             )}
             <div className="px-5 pb-5 pt-3 space-y-2">
               {allActions.map((a, i) => {
-                const areaCls = areaColorMap[a.area_responsable ?? ''] ?? 'text-slate-500 bg-slate-800/60 border-slate-700'
+                const areaCls = areaColorMap[a.area_responsable ?? ''] ?? 'text-slate-400 bg-slate-800/60 border-slate-700'
                 const areaLabel = areaLabelMap[a.area_responsable ?? ''] ?? a.area_responsable ?? 'Equipo'
                 return (
                   <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-sm border ${i === 0 ? 'border-amber-800/40 bg-amber-950/10' : 'border-slate-800/60 bg-slate-800/10'}`}>
-                    <span className={`text-sm font-mono w-5 shrink-0 ${i === 0 ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>{i + 1}.</span>
+                    <span className={`text-sm font-mono w-5 shrink-0 ${i === 0 ? 'text-amber-400 font-bold' : 'text-slate-400'}`}>{i + 1}.</span>
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm leading-snug ${i === 0 ? 'text-slate-100 font-semibold' : 'text-slate-300 font-medium'}`}>{a.tactica_tecnica}</p>
                       <p className="text-slate-400 text-xs mt-0.5">{a.tiempo_indexacion_ia?.split('(')[0].trim()}</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       {a.area_responsable && (
-                        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded border ${areaCls}`}>{areaLabel}</span>
+                        <span className={`text-xs sm:text-[10px] font-semibold px-1.5 py-0.5 rounded border ${areaCls}`}>{areaLabel}</span>
                       )}
                       {a.ice_score >= 7 ? (
                         <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">↑ Alto</span>
                       ) : a.ice_score >= 5 ? (
                         <span className="text-xs text-amber-600">→ Medio</span>
                       ) : (
-                        <span className="text-xs text-slate-500">Comp.</span>
+                        <span className="text-xs text-slate-400">Comp.</span>
                       )}
                     </div>
                   </div>
@@ -353,7 +353,7 @@ function CompareView({ r }: { r: any }) {
           { label: r.marca_b, score: r.score_marca_b, color: scoreColorB },
         ].map(({ label, score, color }) => (
           <div key={label} className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-            <p className="text-xs text-slate-500 mb-1 truncate">{label}</p>
+            <p className="text-xs text-slate-400 mb-1 truncate">{label}</p>
             <p className={`text-3xl font-bold font-mono ${color}`}>{score}</p>
             <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden mt-2">
               <div className={`h-full rounded-full ${color.replace('text-', 'bg-').replace('-400', '-500')}`} style={{ width: `${score}%` }} />
@@ -365,7 +365,7 @@ function CompareView({ r }: { r: any }) {
       {/* Veredicto */}
       {r.veredicto_ia && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Veredicto de la iA</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">Veredicto de la iA</p>
           <p className="text-slate-300 text-sm leading-relaxed bg-slate-900 border border-slate-800 rounded-sm p-4">{r.veredicto_ia}</p>
         </section>
       )}
@@ -375,7 +375,7 @@ function CompareView({ r }: { r: any }) {
         <div className="flex items-center gap-3 bg-emerald-900/20 border border-emerald-800/40 rounded-sm p-4">
           <span className="text-emerald-400 text-lg">✓</span>
           <div>
-            <p className="text-[10px] text-emerald-600 uppercase tracking-widest mb-0.5">Recomendada por la iA</p>
+            <p className="text-xs sm:text-[10px] text-emerald-600 uppercase tracking-widest mb-0.5">Recomendada por la iA</p>
             <p className="text-emerald-300 font-bold">{r.marca_recomendada}</p>
             {r.razon_recomendacion && <p className="text-slate-400 text-xs mt-1">{r.razon_recomendacion}</p>}
           </div>
@@ -388,11 +388,11 @@ function CompareView({ r }: { r: any }) {
         { marca: r.marca_b, ventajas: r.ventajas_marca_b, debilidades: r.debilidades_marca_b },
       ].map(({ marca, ventajas, debilidades }) => (
         <section key={marca}>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">{marca}</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-3">{marca}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {ventajas?.length > 0 && (
               <div className="bg-slate-900 border border-slate-800 rounded-sm p-3">
-                <p className="text-[10px] text-emerald-600 uppercase tracking-widest mb-2">Ventajas</p>
+                <p className="text-xs sm:text-[10px] text-emerald-600 uppercase tracking-widest mb-2">Ventajas</p>
                 <ul className="space-y-1">
                   {ventajas.map((v: string) => <li key={v} className="text-slate-300 text-xs flex gap-2"><span className="text-emerald-500 shrink-0">+</span>{v}</li>)}
                 </ul>
@@ -400,7 +400,7 @@ function CompareView({ r }: { r: any }) {
             )}
             {debilidades?.length > 0 && (
               <div className="bg-slate-900 border border-slate-800 rounded-sm p-3">
-                <p className="text-[10px] text-rose-600 uppercase tracking-widest mb-2">Debilidades</p>
+                <p className="text-xs sm:text-[10px] text-rose-600 uppercase tracking-widest mb-2">Debilidades</p>
                 <ul className="space-y-1">
                   {debilidades.map((d: string) => <li key={d} className="text-slate-300 text-xs flex gap-2"><span className="text-rose-500 shrink-0">−</span>{d}</li>)}
                 </ul>
@@ -431,22 +431,22 @@ function CitaView({ r }: { r: any }) {
       <section className="grid grid-cols-3 gap-3">
         <div className="bg-slate-900 border border-slate-800 rounded-sm p-4 text-center">
           <p className="text-2xl font-bold text-emerald-400">{r.total_bajas ?? 0}</p>
-          <p className="text-[10px] text-slate-500 mt-1">Oportunidades</p>
+          <p className="text-xs sm:text-[10px] text-slate-400 mt-1">Oportunidades</p>
         </div>
         <div className="bg-slate-900 border border-slate-800 rounded-sm p-4 text-center">
           <p className="text-2xl font-bold text-orange-400">{r.total_medias ?? 0}</p>
-          <p className="text-[10px] text-slate-500 mt-1">Competencia media</p>
+          <p className="text-xs sm:text-[10px] text-slate-400 mt-1">Competencia media</p>
         </div>
         <div className="bg-slate-900 border border-slate-800 rounded-sm p-4 text-center">
           <p className="text-2xl font-bold text-rose-400">{r.total_altas ?? 0}</p>
-          <p className="text-[10px] text-slate-500 mt-1">Dominados</p>
+          <p className="text-xs sm:text-[10px] text-slate-400 mt-1">Dominados</p>
         </div>
       </section>
 
       {/* Resumen texto */}
       {r.resumen && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Resumen</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">Resumen</p>
           <p className="text-slate-300 text-sm leading-relaxed bg-slate-900 border border-slate-800 rounded-sm p-4">{r.resumen}</p>
         </section>
       )}
@@ -454,24 +454,24 @@ function CitaView({ r }: { r: any }) {
       {/* Territorios */}
       {r.territorios?.length > 0 && (
         <section>
-          <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Territorios analizados</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-3">Territorios analizados</p>
           <div className="space-y-3">
             {r.territorios.map((t: { query: string; dificultad: number; nivel: string; marcas_mencionadas: string[]; razon: string; recomendacion: string }, i: number) => (
               <div key={i} className={`border rounded-sm p-4 ${nivelColor[t.nivel] ?? 'bg-slate-900 border-slate-800'}`}>
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <p className="text-slate-200 text-xs font-medium flex-1">{t.query}</p>
-                  <span className={`text-[10px] font-mono shrink-0 ${t.nivel === 'baja' ? 'text-emerald-400' : t.nivel === 'media' ? 'text-orange-400' : 'text-rose-400'}`}>
+                  <span className={`text-xs sm:text-[10px] font-mono shrink-0 ${t.nivel === 'baja' ? 'text-emerald-400' : t.nivel === 'media' ? 'text-orange-400' : 'text-rose-400'}`}>
                     {nivelLabel[t.nivel] ?? t.nivel}
                   </span>
                 </div>
-                <p className="text-slate-400 text-[11px] mb-2">{t.razon}</p>
+                <p className="text-slate-400 text-xs sm:text-[11px] mb-2">{t.razon}</p>
                 {t.recomendacion && (
-                  <p className="text-slate-300 text-[11px] border-t border-slate-700 pt-2 mt-2">→ {t.recomendacion}</p>
+                  <p className="text-slate-300 text-xs sm:text-[11px] border-t border-slate-700 pt-2 mt-2">→ {t.recomendacion}</p>
                 )}
                 {t.marcas_mencionadas?.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {t.marcas_mencionadas.map((m: string) => (
-                      <span key={m} className="inline-block px-1.5 py-0.5 bg-slate-800/60 text-slate-400 text-[10px] rounded-sm">{m}</span>
+                      <span key={m} className="inline-block px-1.5 py-0.5 bg-slate-800/60 text-slate-400 text-xs sm:text-[10px] rounded-sm">{m}</span>
                     ))}
                   </div>
                 )}
@@ -538,19 +538,19 @@ function UrlView({ r }: { r: any }) {
       {/* 01 Resumen ejecutivo */}
       <section>
         <div className="flex items-center gap-3 mb-3">
-          <span className="text-xs font-mono text-slate-500">01</span>
+          <span className="text-xs font-mono text-slate-400">01</span>
           <span className="text-sm text-slate-400 font-medium">Resumen ejecutivo</span>
           <div className="flex-1 h-px bg-slate-800/40" />
         </div>
         <div className={`bg-slate-900 border border-slate-700 border-l-4 ${accentBorder} rounded-sm overflow-hidden`}>
           <div className="px-5 pt-5 pb-4 border-b border-slate-800 flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs text-slate-500 mb-0.5">{r.marca} · {r.mercado}</p>
+              <p className="text-xs text-slate-400 mb-0.5">{r.marca} · {r.mercado}</p>
               <p className="text-xs font-mono text-slate-400">{r.categoria}</p>
             </div>
             <div className="text-right shrink-0">
               <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en iA</p>
+              <p className="text-xs sm:text-[10px] text-slate-400 uppercase tracking-widest">visibilidad en iA</p>
             </div>
           </div>
           <div className="divide-y divide-slate-800/60">
@@ -584,7 +584,7 @@ function UrlView({ r }: { r: any }) {
           </div>
           {r.diferenciadores?.length > 0 && (
             <div className="border-t border-slate-800/60 px-5 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la iA no menciona</p>
+              <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-2">Diferenciadores que la iA no menciona</p>
               <div className="flex flex-wrap gap-2">
                 {r.diferenciadores.slice(0, 4).map((d: string) => (
                   <span key={d} className="text-xs text-slate-400 bg-slate-800/50 border border-slate-700/60 rounded px-2.5 py-1">{d}</span>
@@ -599,7 +599,7 @@ function UrlView({ r }: { r: any }) {
       {sovData.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">02</span>
+            <span className="text-xs font-mono text-slate-400">02</span>
             <span className="text-sm text-slate-400 font-medium">¿A quién recomienda la iA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -613,8 +613,8 @@ function UrlView({ r }: { r: any }) {
                 const isGhost = isUser && !miMarcaEnLista
                 return (
                   <div key={marca} className="flex items-center gap-3">
-                    {!isGhost && <span className="text-[10px] font-mono text-slate-500 w-4 shrink-0">#{i + 1}</span>}
-                    {isGhost && <span className="text-[10px] font-mono text-slate-500 w-4 shrink-0">—</span>}
+                    {!isGhost && <span className="text-xs sm:text-[10px] font-mono text-slate-400 w-4 shrink-0">#{i + 1}</span>}
+                    {isGhost && <span className="text-xs sm:text-[10px] font-mono text-slate-400 w-4 shrink-0">—</span>}
                     <span className={`text-xs w-32 shrink-0 truncate ${isUser ? 'text-sky-400 font-semibold' : isWinner ? 'text-amber-400' : 'text-slate-400'}`}>
                       {isUser ? `→ ${marca}` : marca}
                     </span>
@@ -627,7 +627,7 @@ function UrlView({ r }: { r: any }) {
                         style={{ width: `${isGhost ? 2 : pct}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-500 w-8 text-right">
+                    <span className="text-xs sm:text-[10px] font-mono text-slate-400 w-8 text-right">
                       {isGhost ? '–' : `${pct}%`}
                     </span>
                   </div>
@@ -655,7 +655,7 @@ function UrlView({ r }: { r: any }) {
       {r.competitive_deep_dive?.competidor && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">03</span>
+            <span className="text-xs font-mono text-slate-400">03</span>
             <span className="text-sm text-slate-400 font-medium">Diagnóstico Competitivo</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -663,7 +663,7 @@ function UrlView({ r }: { r: any }) {
             <div className="px-5 py-4 border-b border-slate-800 flex items-start gap-3">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-rose-500 to-violet-600 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 mb-1">Diagnóstico Competitivo</p>
                 <h3 className="text-base font-semibold text-slate-100">
                   Por qué <span className="text-amber-400">{r.competitive_deep_dive.competidor}</span> aparece donde tú no
                 </h3>
@@ -671,7 +671,7 @@ function UrlView({ r }: { r: any }) {
             </div>
             <div className="grid sm:grid-cols-5 gap-0 border-b border-slate-800/60">
               <div className="sm:col-span-2 px-5 py-4 border-b sm:border-b-0 sm:border-r border-slate-800/60 border-l-2 border-l-rose-600/50">
-                <p className="text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">Cómo nos ven tus clientes</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-rose-400 mb-3">Cómo nos ven tus clientes</p>
                 <ul className="space-y-1.5">
                   {(r.competitive_deep_dive.percepcion_nuestra_marca ?? '').split(/\.\s+/).map((s: string) => s.replace(/\.$/, '').trim()).filter((s: string) => s.length > 8).slice(0, 3).map((bullet: string, bi: number) => (
                     <li key={bi} className="flex items-start gap-2">
@@ -682,7 +682,7 @@ function UrlView({ r }: { r: any }) {
                 </ul>
               </div>
               <div className="sm:col-span-3 px-5 py-4 border-l-2 border-l-amber-600/40">
-                <p className="text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">Por qué prefieren a {r.competitive_deep_dive.competidor}</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">Por qué prefieren a {r.competitive_deep_dive.competidor}</p>
                 <ul className="space-y-1.5">
                   {(r.competitive_deep_dive.mensaje_competidor ?? '').split(/\.\s+/).map((s: string) => s.replace(/\.$/, '').trim()).filter((s: string) => s.length > 8).slice(0, 3).map((bullet: string, bi: number) => (
                     <li key={bi} className="flex items-start gap-2">
@@ -695,13 +695,13 @@ function UrlView({ r }: { r: any }) {
             </div>
             {r.competitive_deep_dive.tabla_atributos?.length > 0 && (
               <div className="px-5 py-4">
-                <p className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">Dónde exactamente te gana</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">Dónde exactamente te gana</p>
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-slate-800">
-                      <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-4 w-[28%]">Qué tiene</th>
-                      <th className="text-left text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-4 w-[32%]">Dónde está publicado</th>
-                      <th className="text-left text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2 pr-4 w-[28%]">Qué tiene</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold pb-2 pr-4 w-[32%]">Dónde está publicado</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-rose-400 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -724,7 +724,7 @@ function UrlView({ r }: { r: any }) {
       {r.untapped_territories?.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">04</span>
+            <span className="text-xs font-mono text-slate-400">04</span>
             <span className="text-sm text-slate-400 font-medium">Temas donde la iA no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -732,9 +732,9 @@ function UrlView({ r }: { r: any }) {
             <div className="px-5 py-5 border-b border-slate-800 flex items-start gap-4">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">Contenido sin dueño</p>
                 <h3 className="text-base font-semibold text-slate-100">Temas donde la iA no tiene un ganador claro</h3>
-                <p className="text-slate-500 text-sm mt-1">Ningún competidor tiene contenido de autoridad en estas búsquedas. La marca que publique primero se queda con esas respuestas.</p>
+                <p className="text-slate-400 text-sm mt-1">Ningún competidor tiene contenido de autoridad en estas búsquedas. La marca que publique primero se queda con esas respuestas.</p>
               </div>
             </div>
             <div className="divide-y divide-slate-800/50">
@@ -745,7 +745,7 @@ function UrlView({ r }: { r: any }) {
                   : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-300 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0">{String(ti + 1).padStart(2, '0')}</span>
+                    <span className="text-xs sm:text-[11px] font-mono text-slate-400 pt-1 w-5 shrink-0">{String(ti + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-3 mb-1.5">
                         <p className="text-sm font-semibold text-slate-100 leading-snug">{t.titulo}</p>
@@ -765,7 +765,7 @@ function UrlView({ r }: { r: any }) {
       {r.resultados?.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">05</span>
+            <span className="text-xs font-mono text-slate-400">05</span>
             <span className="text-sm text-slate-400 font-medium">Resultados por perfil de búsqueda</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
@@ -774,12 +774,12 @@ function UrlView({ r }: { r: any }) {
               <div key={i} className="bg-slate-900 border border-slate-800 rounded-sm p-3 flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="text-slate-300 text-xs font-medium">{res.arquetipo}</p>
-                  <p className="text-slate-400 text-[10px] truncate mt-0.5">{res.query}</p>
+                  <p className="text-slate-400 text-xs sm:text-[10px] truncate mt-0.5">{res.query}</p>
                   {!res.mencionada && res.marca_ganadora && (
-                    <p className="text-[10px] text-amber-600 mt-0.5">Gana: {res.marca_ganadora}</p>
+                    <p className="text-xs sm:text-[10px] text-amber-600 mt-0.5">Gana: {res.marca_ganadora}</p>
                   )}
                 </div>
-                <span className={`text-[10px] font-mono font-semibold shrink-0 px-2 py-0.5 rounded border ${res.mencionada ? 'text-emerald-400 bg-emerald-950/30 border-emerald-700/30' : 'text-rose-400 bg-rose-950/20 border-rose-800/30'}`}>
+                <span className={`text-xs sm:text-[10px] font-mono font-semibold shrink-0 px-2 py-0.5 rounded border ${res.mencionada ? 'text-emerald-400 bg-emerald-950/30 border-emerald-700/30' : 'text-rose-400 bg-rose-950/20 border-rose-800/30'}`}>
                   {res.mencionada ? `#${res.posicion ?? '?'} ✓` : 'No aparece'}
                 </span>
               </div>
@@ -792,14 +792,14 @@ function UrlView({ r }: { r: any }) {
       {allActions.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-mono text-slate-500">06</span>
+            <span className="text-xs font-mono text-slate-400">06</span>
             <span className="text-sm text-slate-400 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-800/40" />
           </div>
           <div className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-800">
               <h3 className="text-base font-semibold text-slate-100">Qué necesitamos hacer y quién lo ejecuta</h3>
-              <p className="text-slate-500 text-sm mt-0.5">Plan de recuperación completa · 30–60 días · {allActions.length} acciones priorizadas</p>
+              <p className="text-slate-400 text-sm mt-0.5">Plan de recuperación completa · 30–60 días · {allActions.length} acciones priorizadas</p>
             </div>
             {allActions[0] && (
               <div className="px-5 pt-4 pb-2">
@@ -817,11 +817,11 @@ function UrlView({ r }: { r: any }) {
             )}
             <div className="px-5 pb-5 pt-3 space-y-2">
               {allActions.map((a, i) => {
-                const areaCls = areaColorMap[a.area_responsable ?? ''] ?? 'text-slate-500 bg-slate-800/60 border-slate-700'
+                const areaCls = areaColorMap[a.area_responsable ?? ''] ?? 'text-slate-400 bg-slate-800/60 border-slate-700'
                 const areaLabel = areaLabelMap[a.area_responsable ?? ''] ?? a.area_responsable ?? 'Equipo'
                 return (
                   <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-sm border ${i === 0 ? 'border-amber-800/40 bg-amber-950/10' : 'border-slate-800/60 bg-slate-800/10'}`}>
-                    <span className={`text-sm font-mono w-5 shrink-0 ${i === 0 ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>{i + 1}.</span>
+                    <span className={`text-sm font-mono w-5 shrink-0 ${i === 0 ? 'text-amber-400 font-bold' : 'text-slate-400'}`}>{i + 1}.</span>
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm leading-snug ${i === 0 ? 'text-slate-100 font-semibold' : 'text-slate-300 font-medium'}`}>
                         {a.concepto_objetivo ? (a.concepto_objetivo.charAt(0).toUpperCase() + a.concepto_objetivo.slice(1)) : a.tactica_tecnica}
@@ -830,19 +830,19 @@ function UrlView({ r }: { r: any }) {
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       {a.tiempo_indexacion_ia && (
-                        <span className="hidden sm:inline text-[10px] font-mono text-slate-500 border border-slate-700/60 px-1.5 py-0.5 rounded">
+                        <span className="hidden sm:inline text-xs sm:text-[10px] font-mono text-slate-400 border border-slate-700/60 px-1.5 py-0.5 rounded">
                           {a.tiempo_indexacion_ia.split('(')[0].trim()}
                         </span>
                       )}
                       {a.area_responsable && (
-                        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded border ${areaCls}`}>{areaLabel}</span>
+                        <span className={`text-xs sm:text-[10px] font-semibold px-1.5 py-0.5 rounded border ${areaCls}`}>{areaLabel}</span>
                       )}
                       {a.ice_score >= 7 ? (
                         <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">↑ Alto</span>
                       ) : a.ice_score >= 5 ? (
                         <span className="text-xs text-amber-600">→ Medio</span>
                       ) : (
-                        <span className="text-xs text-slate-500">Comp.</span>
+                        <span className="text-xs text-slate-400">Comp.</span>
                       )}
                     </div>
                   </div>
@@ -887,15 +887,15 @@ export default function SharedReportPage() {
     <div className="min-h-screen bg-slate-950 px-4 py-12">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
-          <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">Informe compartido · Ai Visibility</p>
+          <p className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">Informe compartido · Ai Visibility</p>
           {data && (
             <>
               <h1 className="text-2xl font-bold text-white mb-1">
                 {MODO_LABEL[data.modo] ?? data.modo}
                 {data.marca && <span className="text-slate-400 font-normal"> — {data.marca}</span>}
               </h1>
-              {data.query && <p className="text-slate-500 text-sm">Consulta: {data.query}</p>}
-              <p className="text-slate-500 text-xs font-mono mt-1">Generado el {formatDate(data.created_at)}</p>
+              {data.query && <p className="text-slate-400 text-sm">Consulta: {data.query}</p>}
+              <p className="text-slate-400 text-xs font-mono mt-1">Generado el {formatDate(data.created_at)}</p>
             </>
           )}
         </div>

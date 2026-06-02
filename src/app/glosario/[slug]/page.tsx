@@ -71,17 +71,17 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
       <main className="max-w-2xl mx-auto py-12 md:py-20 px-4">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-10">
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
           <Link href="/" className="hover:text-slate-400 transition-colors">Ai Visibility</Link>
           <span>/</span>
           <Link href="/glosario/" className="hover:text-slate-400 transition-colors">Glosario</Link>
           <span>/</span>
-          <span className="text-slate-500">{t.termino}</span>
+          <span className="text-slate-400">{t.termino}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-10">
-          <span className={`inline-block text-[10px] font-mono px-2 py-0.5 rounded border mb-4 ${tagColor[t.tag] ?? 'text-slate-500 bg-slate-800 border-slate-700'}`}>
+          <span className={`inline-block text-xs sm:text-[10px] font-mono px-2 py-0.5 rounded border mb-4 ${tagColor[t.tag] ?? 'text-slate-400 bg-slate-800 border-slate-700'}`}>
             {t.tag}
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-5">
@@ -104,7 +104,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
         {/* Related terms */}
         {relacionados.length > 0 && (
           <div className="border-t border-slate-800 pt-8 mb-12">
-            <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Términos relacionados</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Términos relacionados</p>
             <div className="flex flex-wrap gap-3">
               {relacionados.map((r) => r && (
                 <Link
@@ -122,7 +122,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
         {/* Sigue leyendo — enlaces a artículos del blog */}
         {t.lecturas && t.lecturas.length > 0 && (
           <div className="border-t border-slate-800 pt-8 mb-12">
-            <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Sigue leyendo</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Sigue leyendo</p>
             <div className="space-y-3">
               {t.lecturas.map((l) => (
                 <Link
@@ -130,7 +130,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
                   href={`/blog/${l.slug}/`}
                   className="block border border-slate-800 hover:border-indigo-700/60 bg-slate-900/30 rounded-sm p-4 transition-colors group"
                 >
-                  <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Blog</span>
+                  <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Blog</span>
                   <p className="text-sm font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors mt-1.5">
                     {l.titulo}
                   </p>
@@ -143,7 +143,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
         {/* CTA */}
         <div className="border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
           <p className="text-slate-300 text-sm font-semibold mb-2">¿Tu marca aparece cuando un cliente pregunta sobre tu industria?</p>
-          <p className="text-slate-500 text-xs leading-relaxed mb-5">
+          <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-5">
             Audita tu Share of Model en ChatGPT gratis — resultado en menos de 60 segundos.
           </p>
           <Link

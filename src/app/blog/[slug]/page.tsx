@@ -92,17 +92,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-20">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-10">
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
           <Link href="/" className="hover:text-slate-300 transition-colors">Ai Visibility</Link>
           <span>/</span>
           <Link href="/blog" className="hover:text-slate-300 transition-colors">Blog</Link>
           <span>/</span>
-          <span className="text-slate-500 truncate max-w-[180px]">{p.categoria}</span>
+          <span className="text-slate-400 truncate max-w-[180px]">{p.categoria}</span>
         </nav>
 
         {/* Header */}
         <header className="mb-12">
-          <span className="inline-block text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
             {p.categoria}
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-6">
@@ -111,7 +111,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <p className="text-slate-300 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
             {p.resumen}
           </p>
-          <div className="flex flex-wrap items-center gap-3 mt-6 text-[11px] font-mono text-slate-500">
+          <div className="flex flex-wrap items-center gap-3 mt-6 text-xs sm:text-[11px] font-mono text-slate-400">
             <span>{p.autor}</span>
             <span>·</span>
             <time dateTime={p.fecha}>
@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <blockquote key={i} className="border-l-2 border-indigo-500/60 pl-5 py-1">
                   <p className="text-slate-200 text-sm italic leading-relaxed">"{b.texto}"</p>
                   {b.fuente && (
-                    <footer className="mt-2 text-[11px] font-mono text-slate-500">— {b.fuente}</footer>
+                    <footer className="mt-2 text-xs sm:text-[11px] font-mono text-slate-400">— {b.fuente}</footer>
                   )}
                 </blockquote>
               )
@@ -200,7 +200,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <p className="text-slate-300 text-sm font-semibold mb-2">
               ¿Aparece tu marca cuando tus clientes preguntan en ChatGPT?
             </p>
-            <p className="text-slate-500 text-xs leading-relaxed mb-5">
+            <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-5">
               Audita tu Share of Model gratis. Resultado en menos de 60 segundos.
             </p>
             <Link
@@ -219,7 +219,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {p.tags.map((t) => (
                 <span
                   key={t}
-                  className="text-[10px] font-mono text-slate-400 border border-slate-800 px-2.5 py-1 rounded-sm"
+                  className="text-xs sm:text-[10px] font-mono text-slate-400 border border-slate-800 px-2.5 py-1 rounded-sm"
                 >
                   #{t}
                 </span>
@@ -231,7 +231,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Conceptos del glosario */}
         {p.glosario && p.glosario.length > 0 && (
           <div className="mt-10 pt-6 border-t border-slate-800">
-            <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Conceptos relacionados</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Conceptos relacionados</p>
             <div className="flex flex-wrap gap-3">
               {p.glosario.map((g) => (
                 <Link
@@ -259,7 +259,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   href={`/blog/${r.slug}/`}
                   className="block border border-slate-800 hover:border-indigo-700/60 bg-slate-900/30 rounded-sm p-4 transition-colors group"
                 >
-                  <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
+                  <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
                     {r.categoria}
                   </span>
                   <p className="text-sm font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors mt-1.5">

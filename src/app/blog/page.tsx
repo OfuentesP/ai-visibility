@@ -64,15 +64,15 @@ export default function BlogIndexPage() {
 
       <main className="max-w-5xl mx-auto px-4 py-12 md:py-20">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-10">
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
           <Link href="/" className="hover:text-slate-300 transition-colors">Ai Visibility</Link>
           <span>/</span>
-          <span className="text-slate-500">Blog</span>
+          <span className="text-slate-400">Blog</span>
         </nav>
 
         {/* Header */}
         <header className="mb-14 max-w-3xl">
-          <span className="inline-block text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
             Blog
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-5">
@@ -89,7 +89,7 @@ export default function BlogIndexPage() {
           {categorias.map((c) => (
             <span
               key={c}
-              className="text-[10px] font-mono uppercase tracking-wider text-slate-400 border border-slate-800 px-3 py-1.5 rounded-sm"
+              className="text-xs sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 border border-slate-800 px-3 py-1.5 rounded-sm"
             >
               {c}
             </span>
@@ -103,10 +103,10 @@ export default function BlogIndexPage() {
             className="block mb-16 group border border-slate-800 hover:border-indigo-600/60 bg-gradient-to-br from-slate-900/40 to-slate-950 rounded-sm p-7 transition-colors"
           >
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
+              <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
                 Destacado · {destacado.categoria}
               </span>
-              <span className="text-[10px] font-mono text-slate-600">
+              <span className="text-xs sm:text-[10px] font-mono text-slate-600">
                 {new Date(destacado.fecha).toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
             </div>
@@ -116,7 +116,7 @@ export default function BlogIndexPage() {
             <p className="text-slate-400 text-sm leading-relaxed mb-5 max-w-3xl">
               {destacado.resumen}
             </p>
-            <div className="flex items-center gap-4 text-[11px] font-mono text-slate-500">
+            <div className="flex items-center gap-4 text-xs sm:text-[11px] font-mono text-slate-400">
               <span>{destacado.autor}</span>
               <span>·</span>
               <span>{destacado.tiempoLectura}</span>
@@ -135,20 +135,20 @@ export default function BlogIndexPage() {
               className="group border border-slate-800 hover:border-slate-700 bg-slate-900/30 rounded-sm p-6 transition-colors"
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
+                <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
                   {p.categoria}
                 </span>
-                <span className="text-[10px] font-mono text-slate-600">
+                <span className="text-xs sm:text-[10px] font-mono text-slate-600">
                   {new Date(p.fecha).toLocaleDateString('es-CL', { year: 'numeric', month: 'short', day: 'numeric' })}
                 </span>
               </div>
               <h3 className="text-base font-bold text-white group-hover:text-indigo-300 transition-colors leading-snug mb-3">
                 {p.titulo}
               </h3>
-              <p className="text-slate-400 text-xs leading-relaxed mb-4 line-clamp-3">
+              <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-4 line-clamp-3">
                 {p.resumen}
               </p>
-              <div className="flex items-center gap-3 text-[10px] font-mono text-slate-500">
+              <div className="flex items-center gap-3 text-xs sm:text-[10px] font-mono text-slate-400">
                 <span>{p.tiempoLectura}</span>
                 <span>·</span>
                 <span className="text-indigo-500 group-hover:text-indigo-300 transition-colors">Leer →</span>
@@ -159,7 +159,7 @@ export default function BlogIndexPage() {
 
         {/* RSS hint */}
         <div className="mt-16 pt-8 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-xs font-mono text-slate-500">
+          <p className="text-xs font-mono text-slate-400">
             ¿Quieres recibir las novedades en tu lector? Suscríbete al feed RSS.
           </p>
           <a

@@ -18,7 +18,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca A (tuya)</label>
+          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Marca A (tuya)</label>
           <input
             type="text"
             placeholder="Falabella"
@@ -29,7 +29,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca B (rival)</label>
+          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Marca B (rival)</label>
           <input
             type="text"
             placeholder="Ripley"
@@ -40,7 +40,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Categoría</label>
+          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Categoría</label>
           <input
             type="text"
             placeholder="retail de moda"

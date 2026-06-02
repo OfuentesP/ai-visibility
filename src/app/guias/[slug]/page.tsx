@@ -80,17 +80,17 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-20">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-400 mb-10">
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
           <Link href="/" className="hover:text-slate-400 transition-colors">Ai Visibility</Link>
           <span>/</span>
-          <span className="text-slate-500">Guías</span>
+          <span className="text-slate-400">Guías</span>
           <span>/</span>
-          <span className="text-slate-500 truncate max-w-[160px]">{g.categoria}</span>
+          <span className="text-slate-400 truncate max-w-[160px]">{g.categoria}</span>
         </nav>
 
         {/* Header */}
         <header className="mb-12">
-          <span className="inline-block text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
             {g.categoria}
           </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-6">
@@ -100,7 +100,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
           <p className="text-slate-300 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
             {g.intro}
           </p>
-          <div className="flex items-center gap-4 mt-6 text-[11px] font-mono text-slate-500">
+          <div className="flex items-center gap-4 mt-6 text-xs sm:text-[11px] font-mono text-slate-400">
             <span>Ai Visibility</span>
             <span>·</span>
             <time dateTime={g.fecha}>{new Date(g.fecha).toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
@@ -143,7 +143,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
         {/* CTA mid */}
         <div className="my-12 border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
           <p className="text-slate-300 text-sm font-semibold mb-2">¿Aparece tu tienda cuando tus clientes preguntan en ChatGPT?</p>
-          <p className="text-slate-500 text-xs leading-relaxed mb-5">
+          <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-5">
             Audita tu Share of Model gratis. Resultado en menos de 60 segundos.
           </p>
           <Link

@@ -14,7 +14,7 @@ export function CitaForm({ citaMarca, citaCategoria, citaLoading, onChangeMarca,
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Tu marca</label>
+          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Tu marca</label>
           <input
             type="text"
             placeholder="Amalia Jeans"
@@ -25,7 +25,7 @@ export function CitaForm({ citaMarca, citaCategoria, citaLoading, onChangeMarca,
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Categoría de producto</label>
+          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Categoría de producto</label>
           <input
             type="text"
             placeholder="jeans de mujer Chile"
