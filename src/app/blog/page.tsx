@@ -100,7 +100,7 @@ export default function BlogIndexPage() {
         {destacado && (
           <Link
             href={`/blog/${destacado.slug}/`}
-            className="block mb-16 group border border-slate-200 hover:border-indigo-600/60 bg-gradient-to-br from-slate-900/40 to-slate-950 rounded-sm p-7 transition-colors"
+            className="block mb-16 group border border-slate-200 hover:border-indigo-300 bg-white shadow-md hover:shadow-xl rounded-md p-7 transition-all"
           >
             <div className="flex items-center gap-3 mb-4">
               <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest">
