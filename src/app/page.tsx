@@ -215,28 +215,29 @@ export default function LandingPage() {
       <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Nuestra metodología</p>
+            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Cómo trabajamos</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4">No es magia. Es ingeniería inversa.</h2>
-            <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">De la pregunta del usuario a la inserción de tu código técnico, en 4 pasos auditables.</p>
+            <p className="hidden sm:block text-slate-600 text-base max-w-xl mx-auto leading-relaxed">4 pasos auditables para ir del diagnóstico al código que la iA lee.</p>
+            <p className="sm:hidden text-slate-600 text-base max-w-xl mx-auto leading-relaxed">4 pasos del diagnóstico al código.</p>
           </div>
           <div className="relative">
-            <div className="hidden md:block absolute left-11 top-0 bottom-0 w-px bg-slate-100/60" />
-            <div className="space-y-8">
+            <div className="hidden md:block absolute left-11 top-8 bottom-8 w-px bg-slate-200" />
+            <div className="space-y-6">
               {[
-                { n: '01', icon: <Search size={18} className="text-slate-500" />, title: 'Mapeo del ecosistema', desc: 'Ingresas tu dominio o nombre de marca y nuestro motor perfila el entorno competitivo y las intenciones de búsqueda de tu industria. Sin configuraciones complejas.', highlight: false },
-                { n: '02', icon: <Users size={18} className="text-indigo-600" />, title: 'Auditoría con usuarios sintéticos', desc: 'Desplegamos múltiples agentes sintéticos que simulan perfiles de compradores reales — exploración, comparación, decisión — para auditar cómo ChatGPT responde a cada contexto.', highlight: true },
-                { n: '03', icon: <PieChart size={18} className="text-slate-500" />, title: 'Diagnóstico de posicionamiento', desc: 'Procesamos las respuestas crudas de los LLMs y te revelamos tu Share of Model real: sentimiento de marca, con quién te comparan y qué competidor se está llevando tu tráfico.', highlight: false },
-                { n: '04', icon: <Terminal size={18} className="text-emerald-700" />, title: 'Hoja de ruta de recuperación GEO', desc: 'Pasamos del diagnóstico a la ejecución. Un plan priorizado por ICE que incluye código JSON-LD estructurado listo para que tu equipo de TI lo copie y pegue.', highlight: false },
+                { n: '01', icon: <Search size={18} className="text-slate-600" />, title: 'Mapeamos tu mercado', desc: 'Identificamos las preguntas reales que tus clientes le hacen a la iA sobre tu categoría.', highlight: false },
+                { n: '02', icon: <Users size={18} className="text-indigo-600" />, title: 'Te auditamos en ChatGPT, Perplexity y Gemini', desc: 'Simulamos a tus compradores reales para ver qué dice cada motor cuando preguntan por lo que tú vendes.', highlight: true },
+                { n: '03', icon: <PieChart size={18} className="text-slate-600" />, title: 'Te mostramos quién se lleva tu venta', desc: 'Recibes tu Share of Model real, el sentimiento de marca y el competidor exacto que la iA recomienda en tu lugar.', highlight: false },
+                { n: '04', icon: <Terminal size={18} className="text-emerald-700" />, title: 'Te entregamos qué tocar primero', desc: 'Plan priorizado por ICE + código JSON-LD listo para copiar y pegar. Tu equipo de TI lo implementa el mismo día.', highlight: false },
               ].map((step) => (
-                <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
-                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-50 border-indigo-500/30' : 'bg-white shadow-sm border-slate-200'}`}>
+                <div key={step.n} className="relative flex flex-col md:flex-row gap-5 md:gap-6 items-start">
+                  <div className={`relative z-10 w-[88px] h-[88px] rounded-md flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-50 border-indigo-300' : 'bg-white shadow-sm border-slate-200'}`}>
                     {step.icon}
-                    <span className={`mt-1.5 font-mono text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-600' : 'text-slate-500'}`}>{step.n}</span>
+                    <span className={`mt-1.5 font-mono text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-700' : 'text-slate-500'}`}>{step.n}</span>
                   </div>
-                  <div className={`flex-1 p-6 rounded-sm border ${step.highlight ? 'bg-indigo-50 border-indigo-200' : 'bg-slate-50/40 border-slate-200 hover:bg-slate-50/60 transition-colors'}`}>
-                    {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-500/20 text-indigo-600 text-xs sm:text-[10px] font-bold uppercase tracking-wider rounded-sm mb-2">Tecnología exclusiva</span>}
-                    <h3 className="text-base font-semibold text-slate-900 mb-2">{step.title}</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed">{step.desc}</p>
+                  <div className={`flex-1 p-6 rounded-md border transition-all ${step.highlight ? 'bg-indigo-50 border-indigo-200 shadow-sm' : 'bg-white shadow-sm border-slate-200 hover:shadow-md'}`}>
+                    {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-[10px] font-bold uppercase tracking-wider rounded mb-2">Nuestro core</span>}
+                    <h3 className="text-base font-semibold text-slate-900 mb-2 leading-snug">{step.title}</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
               ))}
