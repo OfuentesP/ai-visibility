@@ -450,10 +450,10 @@ export default function LandingPage() {
             <div className="bg-slate-900 border-2 border-indigo-500/50 rounded-sm p-6 relative flex flex-col">
               <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
               <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
-              <p className="text-3xl font-extrabold text-white mb-1">Gratis</p>
-              <p className="text-slate-500 text-xs mb-5">durante el Beta</p>
+              <p className="text-3xl font-extrabold text-white mb-1">US$ 200</p>
+              <p className="text-slate-500 text-xs mb-5">pago único</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
-                Tu primera radiografía: cómo te ve la iA hoy frente a tu competencia, sin compromiso.
+                La radiografía de cómo te ve la iA hoy frente a tu competencia. Punto de partida con datos, no opiniones.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {[
@@ -470,7 +470,7 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link href="/auditar" className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
-                Auditar gratis →
+                Empezar diagnóstico →
               </Link>
             </div>
 
@@ -480,7 +480,7 @@ export default function LandingPage() {
               <p className="text-3xl font-extrabold text-white mb-1">$290.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · pago único</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
-                Cómo enfrentar la estrategia de contenidos GEO dentro de tu empresa. Consejo accionable, no teoría.
+                Una sesión con tu equipo para definir qué contenido crear, cómo y en qué orden. Sales con un plan, no con apuntes.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {[
@@ -512,15 +512,15 @@ export default function LandingPage() {
               <p className="text-3xl font-extrabold text-white mb-1">$490.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · programa de 3 clases</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
-                Tu equipo aprende a generar contenido y llevarlo a la web para que los buscadores de iA lo lean.
+                Tu equipo interno aprende a crear contenido que la iA recomiende — sin depender de una agencia externa cada mes.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {[
+                  'Diagnóstico inicial incluido',
                   '3 sesiones en vivo (90 min c/u)',
-                  'Crear contenido para LLMs',
+                  'Crear contenido que la iA cite',
                   'Estructura técnica para que la iA lea',
                   'Material y grabaciones descargables',
-                  'Certificado de participación',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-slate-300 text-sm">
                     <Check size={14} className="text-indigo-400 flex-shrink-0 mt-0.5" />
@@ -545,15 +545,15 @@ export default function LandingPage() {
               <p className="text-3xl font-extrabold text-white mb-1">$690.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · por mes</p>
               <p className="text-slate-300 text-sm mb-5 leading-relaxed">
-                Objetivos, creación de contenidos y medición de avances mes a mes. La forma sostenida de mover tu Share of Model.
+                Trabajamos junto a tu equipo todos los meses: objetivos, contenidos y medición. La forma sostenida de mover tu Share of Model.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {[
-                  'Definición de objetivos GEO',
+                  'Diagnóstico inicial incluido',
+                  'Definición de objetivos mensuales',
                   'Creación de contenidos mensuales',
-                  'Implementación técnica',
-                  'Medición y reporte mensual',
-                  'Reuniones de seguimiento',
+                  'Implementación técnica continua',
+                  'Reporte y reunión de avances mensual',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-slate-300 text-sm">
                     <Check size={14} className="text-violet-400 flex-shrink-0 mt-0.5" />
@@ -573,7 +573,7 @@ export default function LandingPage() {
 
           </div>
           <p className="text-slate-500 text-[11px] font-mono text-center mt-8">
-            Valores referenciales en CLP · Sin tarjeta de crédito en el diagnóstico
+            Valores referenciales · USD en el diagnóstico · CLP en servicios locales
           </p>
         </div>
       </section>
