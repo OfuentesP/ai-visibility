@@ -87,7 +87,9 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/ai_visibility_latam/"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Instagram"
               className="text-slate-500 hover:text-pink-400 transition-colors"
             >
@@ -98,7 +100,9 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="#"
+              href="https://www.linkedin.com/company/ai-visibility-latam/"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="text-slate-500 hover:text-sky-400 transition-colors"
             >

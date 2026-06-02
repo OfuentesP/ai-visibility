@@ -37,7 +37,11 @@ const orgJsonLd = {
   "name": "Ai Visibility",
   "url": "https://ai-visibility.cl",
   "description": "Empresa especializada en análisis de Share of Model y Generative Engine Optimization (GEO).",
-  "address": { "@type": "PostalAddress", "addressCountry": "CL" }
+  "address": { "@type": "PostalAddress", "addressCountry": "CL" },
+  "sameAs": [
+    "https://www.instagram.com/ai_visibility_latam/",
+    "https://www.linkedin.com/company/ai-visibility-latam/"
+  ]
 }
 
 export default function RootLayout({
