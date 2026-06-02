@@ -28,6 +28,118 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'visitante-de-ia-viene-a-comprar',
+    titulo: 'El visitante que llega desde la iA viene a comprar — y tu landing está optimizada para convencerlo',
+    descripcion:
+      'Google AI Mode llegó a 1.000 millones de usuarios activos al mes y el tráfico de iA convierte 42% más que el orgánico clásico. La razón es contra-intuitiva: el visitante ya hizo la investigación dentro de la iA. Llega a completar una tarea, no a que lo convenzas — y tu landing está peleando contra eso.',
+    fecha: '2026-06-01',
+    categoria: 'Casos & Datos',
+    tags: ['AI Mode', 'Conversión', 'Adobe', 'Google', 'Landing'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '7 min',
+    resumen:
+      'El tráfico desde iA convierte 42% más que el orgánico clásico (Adobe Q2 2026) porque el visitante ya hizo la investigación dentro de ChatGPT o AI Mode. Llega a completar una tarea — no a leer tu propuesta de valor. La mayoría de las landings chilenas le pelean al visitante con un funnel "awareness → decisión" que él ya recorrió.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Google reportó en mayo de 2026 que su AI Mode alcanzó 1.000 millones de usuarios activos al mes. Adobe, en su Q2 2026 AI Traffic Report, midió algo que cambia la conversación: el tráfico desde iA convierte 42% más que el orgánico clásico. El dato es real. La conclusión que la mayoría saca de él, no.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La lectura fácil es "necesito más tráfico de iA". La lectura correcta es que el visitante que llega desde la iA es otra persona — con otra intención, otro nivel de información y otras necesidades — y la mayoría de las landings chilenas están preparadas para el visitante orgánico de hace 5 años.',
+      },
+      { tipo: 'h2', texto: 'Por qué el visitante de iA es otra cosa' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Tres datos lo definen. Primero: las queries dentro de AI Mode son aproximadamente 3 veces más largas que las búsquedas tradicionales. El usuario no escribe "mejor CRM Chile"; escribe "cuál CRM con integración al SII y soporte en español me sirve para una pyme de servicios de 8 personas que ya tiene HubSpot pero le sale caro". Segundo: las queries de "planning" crecen 80% más rápido que el promedio. Tercero: el visitante refina su pregunta dentro de la iA varias veces antes de hacer click.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La consecuencia: cuando llega a tu sitio, ya comparó opciones, ya descartó alternativas y ya decidió cuál evaluar más a fondo. Tu landing no es el primer paso de su funnel — es el último.',
+      },
+      {
+        tipo: 'cita',
+        texto:
+          'El visitante comparó tres productos dentro de ChatGPT, eligió uno y hizo click. Llega a tu página con la intención que un visitante orgánico tradicional tarda cinco páginas en construir.',
+        fuente: 'NoHacks — AI Mode Sends a Different Visitor',
+      },
+      { tipo: 'h2', texto: 'La trampa: tu landing fue diseñada para otro visitante' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La estructura clásica de landing chilena va así: hero con propuesta de valor, sección de beneficios, social proof, "por qué confiar en nosotros", testimonios, FAQ, y al final un CTA. Es el funnel "awareness → consideración → decisión" empaquetado en una página. Funciona perfecto para alguien que llegó por Google Ads y necesita persuasión.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Pero para el visitante que llega desde la iA, esa estructura es un obstáculo. Él no necesita que le expliques quién eres — la iA ya se lo dijo. No necesita social proof — la iA ya le dijo si confiar o no. No necesita beneficios — la iA ya los listó. Lo que necesita es ejecutar: ver el precio exacto, agendar la reunión, llenar el formulario corto, completar la compra.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'En la práctica, cada scroll que le pides al visitante de iA antes de la acción es fricción gratuita. El bounce rate de esa cohorte es alto no porque el visitante no estaba calificado — al revés, era el más calificado del día y lo perdiste haciéndolo leer.',
+      },
+      { tipo: 'h2', texto: 'Tres cambios concretos en tu landing' },
+      {
+        tipo: 'lista',
+        items: [
+          'Mueve la acción principal arriba. El formulario, el precio, el botón "agendar / comprar / empezar". Que estén en el primer scroll, sin scroll inicial obligatorio.',
+          'Datos críticos visibles antes del fold: precio real (no "consultar"), tiempo de despacho, política de devolución, plazos. La iA ya respondió al "qué". El visitante valida el "cuándo y cuánto".',
+          'Elimina o relega la sección "por qué confiar en nosotros" abajo del fold de acción. Esa información ya fue procesada antes del click. Repetirla retrasa la conversión.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Cómo identificar qué páginas necesitan el cambio' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No tienes que rehacer todo el sitio. Auditas tus 10 landings que más tráfico de iA reciben (segmenta GA4 por referrers de chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com) y aplicas un solo criterio: ¿puede este visitante completar la tarea por la que vino en los primeros 30 segundos?',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si la respuesta es "sí pero hay que scrollear" o "sí pero hay que buscar el formulario en el menú", esa landing está dejando dinero arriba de la mesa. La iA te trajo al cliente listo. Tu trabajo es no entorpecerlo.',
+      },
+      { tipo: 'h2', texto: 'Lo que viene: el visitante no clickeará' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'A fines de junio de 2026, Chrome activa en Android su modo de auto-browse — un agente que navega sitios web por el usuario, completa formularios y ejecuta acciones sin que el visitante tenga que clickear cada paso. El concepto se extiende: en pocos meses, el "visitante" más rentable de tu sitio puede no ser una persona, sino un agente que llega con instrucciones específicas.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Las landings que ya están optimizadas para el visitante de iA son también las que el agente puede procesar más rápido. Las que requieren persuasión multi-scroll son las que el agente abandona. La inversión que hagas hoy en simplificar el camino a la acción rinde por dos vías.',
+      },
+      { tipo: 'h2', texto: 'Lo accionable esta semana, para una marca chilena' },
+      {
+        tipo: 'lista',
+        items: [
+          'Segmenta tu tráfico en GA4 por referrer de iA. Sabes exactamente qué landings ya están recibiendo este perfil.',
+          'En las top 3 más visitadas desde iA, mueve el CTA principal y los datos transaccionales al primer scroll. Mide una semana.',
+          'Compara conversión antes y después. Si replicas el patrón Adobe (+42%), tienes el caso de negocio para extender el cambio al resto del sitio.',
+          'Audita tu Share of Model en paralelo: aparecer en la iA y convertir bien al visitante de iA son dos palancas distintas. La primera sin la segunda es tráfico que rebota.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'El dato de Adobe (+42% de conversión) es promedio. Las marcas con landings optimizadas para tráfico de iA están bien arriba de esa cifra. Las que dejaron su funnel intacto, bien abajo. El número agregado esconde la verdadera dispersión — y es exactamente ahí donde se decide si la iA es un canal de ganancia o de pérdida silenciosa.',
+      },
+    ],
+    ctaTexto: 'Auditar cómo me cita la iA →',
+    ctaUrl: '/#planes',
+    relacionados: ['ecommerce-chileno-busqueda-ia-cyberday-2026', 'chatgpt-busqueda-web-cambia-geo-2026', 'comercio-conversacional-agentes-ucp', 'lighthouse-mide-navegacion-con-ia'],
+    glosario: [
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+    ],
+  },
+  {
     slug: 'lighthouse-mide-navegacion-con-ia',
     titulo: 'Chrome agregó un audit de "navegación con iA" a Lighthouse: lo que mide y por qué pasar el test no significa que la iA te entienda',
     descripcion:
