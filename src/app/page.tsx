@@ -438,61 +438,143 @@ export default function LandingPage() {
 
       {/* ── PRICING ───────────────────────────────────────────────── */}
       <section className="border-t border-slate-800/60 py-12 sm:py-20 px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Precio</p>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Gratis durante el Beta</h2>
-            <p className="text-slate-400 text-base max-w-xl mx-auto">Sin tarjeta de crédito. Sin configuración. Tu primer diagnóstico GEO en menos de 60 segundos.</p>
+            <p className="text-[11px] font-mono text-indigo-400 uppercase tracking-widest mb-3">Planes</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">Cuatro formas de trabajar con Ai Visibility</h2>
+            <p className="text-slate-400 text-base max-w-xl mx-auto">Desde un diagnóstico puntual hasta la creación y medición mes a mes. Empieza por donde lo necesites.</p>
           </div>
-          <div className="max-w-2xl mx-auto grid sm:grid-cols-2 gap-5 pt-4">
-            {/* Beta free */}
-            <div className="bg-slate-900 border-2 border-indigo-500/50 rounded-sm p-7 relative">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-4">
+
+            {/* 1. Diagnóstico */}
+            <div className="bg-slate-900 border-2 border-indigo-500/50 rounded-sm p-6 relative flex flex-col">
               <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
-              <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">Beta gratuito</p>
-              <p className="text-4xl font-extrabold text-white mb-1">$0</p>
-              <p className="text-slate-500 text-xs mb-6">2 auditorías completas por email</p>
-              <ul className="space-y-3 mb-8">
+              <p className="text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
+              <p className="text-3xl font-extrabold text-white mb-1">Gratis</p>
+              <p className="text-slate-500 text-xs mb-5">durante el Beta</p>
+              <p className="text-slate-300 text-sm mb-5 leading-relaxed">
+                Tu primera radiografía: cómo te ve la iA hoy frente a tu competencia, sin compromiso.
+              </p>
+              <ul className="space-y-3 mb-8 flex-1">
                 {[
                   'Share of Model vs competidores',
                   'Plan de acción con tácticas ICE',
                   'Código JSON-LD listo para copiar',
-                  'Análisis de sentimiento de marca',
-                  'Informe compartible en 1 clic',
+                  'Análisis de sentimiento',
+                  'Informe compartible',
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-slate-300 text-sm">
-                    <Check size={14} className="text-indigo-400 flex-shrink-0" />
-                    {item}
+                  <li key={item} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <Check size={14} className="text-indigo-400 flex-shrink-0 mt-0.5" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
               <Link href="/auditar" className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
-                Auditar mi marca gratis →
+                Auditar gratis →
               </Link>
             </div>
-            {/* Pro coming soon */}
-            <div className="bg-slate-900/50 border border-slate-800 rounded-sm p-7 opacity-70">
-              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Pro</p>
-              <p className="text-4xl font-extrabold text-slate-400 mb-1">Pronto</p>
-              <p className="text-slate-400 text-xs mb-6">Auditorías ilimitadas + monitoreo continuo</p>
-              <ul className="space-y-3 mb-8">
+
+            {/* 2. Asesoría */}
+            <div className="bg-slate-900 border border-slate-800 rounded-sm p-6 flex flex-col">
+              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">02 · Asesoría</p>
+              <p className="text-3xl font-extrabold text-white mb-1">$290.000</p>
+              <p className="text-slate-500 text-xs mb-5">CLP · pago único</p>
+              <p className="text-slate-300 text-sm mb-5 leading-relaxed">
+                Cómo enfrentar la estrategia de contenidos GEO dentro de tu empresa. Consejo accionable, no teoría.
+              </p>
+              <ul className="space-y-3 mb-8 flex-1">
                 {[
-                  'Todo lo del plan Beta',
-                  'Auditorías ilimitadas',
-                  'Alertas semanales de posición',
-                  'Comparación multi-competidor',
-                  'API access',
+                  'Diagnóstico previo incluido',
+                  'Sesión 1:1 con tu equipo (90 min)',
+                  'Roadmap de prioridades de contenido',
+                  'Recomendaciones por canal y motor',
+                  'Reporte ejecutivo descargable',
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-slate-500 text-sm">
-                    <Minus size={14} className="text-slate-700 flex-shrink-0" />
-                    {item}
+                  <li key={item} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <Check size={14} className="text-indigo-400 flex-shrink-0 mt-0.5" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="block w-full text-center px-5 py-3 rounded-sm bg-slate-800 text-slate-400 font-semibold text-sm cursor-not-allowed">
-                Próximamente
-              </div>
+              <a
+                href="https://wa.me/56997065555?text=Hola%2C%20me%20interesa%20la%20Asesor%C3%ADa%20de%20Ai%20Visibility"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center px-5 py-3 rounded-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-sm transition-colors"
+              >
+                Conversemos →
+              </a>
             </div>
+
+            {/* 3. Capacitación */}
+            <div className="bg-slate-900 border border-slate-800 rounded-sm p-6 flex flex-col">
+              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-2">03 · Capacitación</p>
+              <p className="text-3xl font-extrabold text-white mb-1">$490.000</p>
+              <p className="text-slate-500 text-xs mb-5">CLP · programa de 3 clases</p>
+              <p className="text-slate-300 text-sm mb-5 leading-relaxed">
+                Tu equipo aprende a generar contenido y llevarlo a la web para que los buscadores de iA lo lean.
+              </p>
+              <ul className="space-y-3 mb-8 flex-1">
+                {[
+                  '3 sesiones en vivo (90 min c/u)',
+                  'Crear contenido para LLMs',
+                  'Estructura técnica para que la iA lea',
+                  'Material y grabaciones descargables',
+                  'Certificado de participación',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <Check size={14} className="text-indigo-400 flex-shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="https://wa.me/56997065555?text=Hola%2C%20me%20interesa%20la%20Capacitaci%C3%B3n%20de%20Ai%20Visibility"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center px-5 py-3 rounded-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold text-sm transition-colors"
+              >
+                Reservar cupos →
+              </a>
+            </div>
+
+            {/* 4. Plan Mensual */}
+            <div className="bg-slate-900 border-2 border-violet-500/50 rounded-sm p-6 relative flex flex-col">
+              <span className="absolute -top-3 left-5 bg-violet-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Más completo</span>
+              <p className="text-[10px] font-mono text-violet-400 uppercase tracking-widest mb-2">04 · Plan Mensual</p>
+              <p className="text-3xl font-extrabold text-white mb-1">$690.000</p>
+              <p className="text-slate-500 text-xs mb-5">CLP · por mes</p>
+              <p className="text-slate-300 text-sm mb-5 leading-relaxed">
+                Objetivos, creación de contenidos y medición de avances mes a mes. La forma sostenida de mover tu Share of Model.
+              </p>
+              <ul className="space-y-3 mb-8 flex-1">
+                {[
+                  'Definición de objetivos GEO',
+                  'Creación de contenidos mensuales',
+                  'Implementación técnica',
+                  'Medición y reporte mensual',
+                  'Reuniones de seguimiento',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-slate-300 text-sm">
+                    <Check size={14} className="text-violet-400 flex-shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="https://wa.me/56997065555?text=Hola%2C%20me%20interesa%20el%20Plan%20Mensual%20de%20Ai%20Visibility"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center px-5 py-3 rounded-sm bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm transition-colors"
+              >
+                Conversemos →
+              </a>
+            </div>
+
           </div>
+          <p className="text-slate-500 text-[11px] font-mono text-center mt-8">
+            Valores referenciales en CLP · Sin tarjeta de crédito en el diagnóstico
+          </p>
         </div>
       </section>
 
