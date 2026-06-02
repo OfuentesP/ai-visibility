@@ -37,14 +37,14 @@ export function ExportBar({ userEmail, userName, marca, query, score, modo, getS
   }
 
   return (
-    <div className="border-t border-slate-800 pt-6 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="border-t border-slate-200 pt-6 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
-        <p className="text-sm font-semibold text-slate-200">¿Quieres guardar este informe?</p>
-        <p className="text-xs text-slate-400 mt-0.5">
+        <p className="text-sm font-semibold text-slate-800">¿Quieres guardar este informe?</p>
+        <p className="text-xs text-slate-500 mt-0.5">
           {state === 'error'
-            ? <span className="text-rose-400">{errorMsg}</span>
+            ? <span className="text-rose-600">{errorMsg}</span>
             : state === 'sent'
-            ? <span className="text-emerald-400">Informe enviado a {userEmail}</span>
+            ? <span className="text-emerald-700">Informe enviado a {userEmail}</span>
             : `Te lo enviamos directo a ${userEmail || 'tu correo'} para revisarlo cuando quieras.`}
         </p>
       </div>

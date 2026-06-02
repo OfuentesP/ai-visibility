@@ -178,7 +178,7 @@ export function ShareOfVoiceChart({
       </ResponsiveContainer>
 
       <div className="flex items-center gap-5 mt-4 px-1">
-        <span className="flex items-center gap-1.5 text-xs text-sky-400">
+        <span className="flex items-center gap-1.5 text-xs text-sky-600">
           <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" />
           Tu marca
         </span>

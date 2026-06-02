@@ -71,7 +71,7 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="bg-white min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -80,27 +80,27 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-20">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
-          <Link href="/" className="hover:text-slate-400 transition-colors">Ai Visibility</Link>
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-500 mb-10">
+          <Link href="/" className="hover:text-slate-500 transition-colors">Ai Visibility</Link>
           <span>/</span>
-          <span className="text-slate-400">Guías</span>
+          <span className="text-slate-500">Guías</span>
           <span>/</span>
-          <span className="text-slate-400 truncate max-w-[160px]">{g.categoria}</span>
+          <span className="text-slate-500 truncate max-w-[160px]">{g.categoria}</span>
         </nav>
 
         {/* Header */}
         <header className="mb-12">
-          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-4">
             {g.categoria}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-6">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight mb-6">
             {g.titulo}
           </h1>
           {/* Intro — optimizado para AI Overviews: respuesta directa en el primer párrafo */}
-          <p className="text-slate-300 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
+          <p className="text-slate-700 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
             {g.intro}
           </p>
-          <div className="flex items-center gap-4 mt-6 text-xs sm:text-[11px] font-mono text-slate-400">
+          <div className="flex items-center gap-4 mt-6 text-xs sm:text-[11px] font-mono text-slate-500">
             <span>Ai Visibility</span>
             <span>·</span>
             <time dateTime={g.fecha}>{new Date(g.fecha).toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
@@ -111,12 +111,12 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
         <div className="space-y-12">
           {g.secciones.map((sec) => (
             <section key={sec.h2}>
-              <h2 className="text-lg font-bold text-white mb-4 pb-3 border-b border-slate-800">
+              <h2 className="text-lg font-bold text-slate-900 mb-4 pb-3 border-b border-slate-200">
                 {sec.h2}
               </h2>
               <div className="space-y-4">
                 {sec.parrafos.map((p, i) => (
-                  <p key={i} className="text-slate-400 text-sm leading-relaxed">
+                  <p key={i} className="text-slate-500 text-sm leading-relaxed">
                     {p}
                   </p>
                 ))}
@@ -126,13 +126,13 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
                   {sec.lista.map((item, i) => (
                     <li key={i} className="flex gap-3 text-sm">
                       <span className="text-indigo-500 font-mono flex-shrink-0 mt-0.5">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="text-slate-300 leading-relaxed">{item}</span>
+                      <span className="text-slate-700 leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
               )}
               {sec.nota && (
-                <p className="mt-5 text-[12px] text-slate-400 font-mono leading-relaxed border-l-2 border-slate-800 pl-4">
+                <p className="mt-5 text-[12px] text-slate-500 font-mono leading-relaxed border-l-2 border-slate-200 pl-4">
                   {sec.nota}
                 </p>
               )}
@@ -142,8 +142,8 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
 
         {/* CTA mid */}
         <div className="my-12 border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
-          <p className="text-slate-300 text-sm font-semibold mb-2">¿Aparece tu tienda cuando tus clientes preguntan en ChatGPT?</p>
-          <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-5">
+          <p className="text-slate-700 text-sm font-semibold mb-2">¿Aparece tu tienda cuando tus clientes preguntan en ChatGPT?</p>
+          <p className="text-slate-500 text-sm sm:text-xs leading-relaxed mb-5">
             Audita tu Share of Model gratis. Resultado en menos de 60 segundos.
           </p>
           <Link
@@ -156,18 +156,18 @@ export default async function GuiaPage({ params }: { params: Promise<{ slug: str
 
         {/* FAQ — estructurado para AI Overviews y featured snippets */}
         <section id="faq">
-          <h2 className="text-lg font-bold text-white mb-6 pb-3 border-b border-slate-800">
+          <h2 className="text-lg font-bold text-slate-900 mb-6 pb-3 border-b border-slate-200">
             Preguntas frecuentes
           </h2>
           <FaqAccordionServer items={g.faq} />
         </section>
 
         {/* Footer nav */}
-        <div className="mt-12 pt-6 border-t border-slate-800 flex justify-between items-center">
-          <Link href="/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
+        <div className="mt-12 pt-6 border-t border-slate-200 flex justify-between items-center">
+          <Link href="/" className="text-xs font-mono text-slate-500 hover:text-slate-700 transition-colors">
             ← Volver al inicio
           </Link>
-          <Link href={g.ctaUrl} className="text-xs font-mono text-indigo-500 hover:text-indigo-300 transition-colors">
+          <Link href={g.ctaUrl} className="text-xs font-mono text-indigo-500 hover:text-indigo-600 transition-colors">
             Auditar mi marca →
           </Link>
         </div>

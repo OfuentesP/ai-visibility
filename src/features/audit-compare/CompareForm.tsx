@@ -18,36 +18,36 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Marca A (tuya)</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca A (tuya)</label>
           <input
             type="text"
             placeholder="Falabella"
             value={compareA}
             onChange={e => onChangeA(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && onSubmit()}
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+            className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Marca B (rival)</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca B (rival)</label>
           <input
             type="text"
             placeholder="Ripley"
             value={compareB}
             onChange={e => onChangeB(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && onSubmit()}
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+            className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Categoría</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Categoría</label>
           <input
             type="text"
             placeholder="retail de moda"
             value={compareCategoria}
             onChange={e => onChangeCategoria(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && onSubmit()}
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+            className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
           />
         </div>
       </div>

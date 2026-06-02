@@ -34,24 +34,24 @@ function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <p className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4 text-center">Acceso restringido</p>
-        <div className={`bg-slate-900 border rounded-sm p-6 transition-colors ${error ? 'border-rose-700' : 'border-slate-800'}`}>
-          <label className="block text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wide">Contraseña</label>
+        <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-4 text-center">Acceso restringido</p>
+        <div className={`bg-slate-50 border rounded-sm p-6 transition-colors ${error ? 'border-rose-700' : 'border-slate-200'}`}>
+          <label className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wide">Contraseña</label>
           <input
             ref={inputRef}
             type="password"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && check()}
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm mb-4"
+            className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm mb-4"
           />
           <button onClick={check} className="w-full py-2 bg-slate-700 hover:bg-slate-600 text-slate-50 text-sm font-medium rounded-sm transition">
             Entrar
           </button>
           {error && (
-            <p className="text-rose-400 text-xs text-center mt-3 font-mono">
+            <p className="text-rose-600 text-xs text-center mt-3 font-mono">
               {!ADMIN_PASSWORD ? 'NEXT_PUBLIC_ADMIN_PASSWORD no está configurado en el build' : 'Contraseña incorrecta'}
             </p>
           )}
@@ -110,7 +110,7 @@ const MODO_LABEL: Record<string, string> = {
 }
 
 const MODO_COLOR: Record<string, string> = {
-  brand: 'bg-indigo-900/40 text-indigo-300 border-indigo-800',
+  brand: 'bg-indigo-900/40 text-indigo-600 border-indigo-800',
   url: 'bg-sky-900/40 text-sky-300 border-sky-800',
   compare: 'bg-violet-900/40 text-violet-300 border-violet-800',
   cita: 'bg-teal-900/40 text-teal-300 border-teal-800',
@@ -135,18 +135,18 @@ function Score({ value, max = 100 }: { value: number; max?: number }) {
   const color = pct >= 60 ? 'bg-emerald-500' : pct >= 30 ? 'bg-orange-500' : 'bg-rose-500'
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+      <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-xs font-mono text-slate-300 w-8 text-right">{value}</span>
+      <span className="text-xs font-mono text-slate-700 w-8 text-right">{value}</span>
     </div>
   )
 }
 
 function Pill({ text, color = 'slate' }: { text: string; color?: string }) {
   const cls: Record<string, string> = {
-    slate: 'bg-slate-800 text-slate-300',
-    indigo: 'bg-indigo-900/40 text-indigo-300',
+    slate: 'bg-slate-100 text-slate-700',
+    indigo: 'bg-indigo-900/40 text-indigo-600',
     rose: 'bg-rose-900/40 text-rose-300',
     emerald: 'bg-emerald-900/40 text-emerald-300',
     orange: 'bg-orange-900/40 text-orange-300',
@@ -175,52 +175,52 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/90 backdrop-blur-sm p-4 pt-10 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-white/90 backdrop-blur-sm p-4 pt-10 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-slate-900 border border-slate-700 rounded-sm w-full max-w-2xl shadow-2xl mb-10"
+        className="bg-slate-50 border border-slate-300 rounded-sm w-full max-w-2xl shadow-2xl mb-10"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
           <div>
-            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Historial de consultas</p>
-            <h2 className="text-sm font-bold text-white">{email}</h2>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Historial de consultas</p>
+            <h2 className="text-sm font-bold text-slate-900">{email}</h2>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-300 text-lg leading-none">✕</button>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 text-lg leading-none">✕</button>
         </div>
 
         <div className="px-6 py-5">
-          {loading && <p className="text-slate-400 text-sm text-center py-8 font-mono">Cargando...</p>}
-          {error && <p className="text-rose-400 text-sm text-center py-8">{error}</p>}
+          {loading && <p className="text-slate-500 text-sm text-center py-8 font-mono">Cargando...</p>}
+          {error && <p className="text-rose-600 text-sm text-center py-8">{error}</p>}
           {!loading && !error && entries.length === 0 && (
-            <p className="text-slate-400 text-sm text-center py-8">Sin auditorías registradas para este email.</p>
+            <p className="text-slate-500 text-sm text-center py-8">Sin auditorías registradas para este email.</p>
           )}
           {entries.length > 0 && (
             <div className="space-y-2">
               {entries.map((e) => {
                 const scoreVal = e.score != null ? Math.round(e.score) : null
-                const scoreColor = scoreVal == null ? 'text-slate-400' : scoreVal >= 60 ? 'text-emerald-400' : scoreVal >= 30 ? 'text-orange-400' : 'text-rose-400'
+                const scoreColor = scoreVal == null ? 'text-slate-500' : scoreVal >= 60 ? 'text-emerald-700' : scoreVal >= 30 ? 'text-orange-400' : 'text-rose-600'
                 return (
-                  <div key={e.id} className="bg-slate-950/60 border border-slate-800 rounded-sm p-4 flex items-center gap-4">
+                  <div key={e.id} className="bg-white/60 border border-slate-200 rounded-sm p-4 flex items-center gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         {e.modo && (
-                          <span className={`inline-block px-1.5 py-0.5 rounded-sm text-xs sm:text-[10px] font-semibold border ${MODO_COLOR[e.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+                          <span className={`inline-block px-1.5 py-0.5 rounded-sm text-xs sm:text-[10px] font-semibold border ${MODO_COLOR[e.modo] ?? 'bg-slate-100 text-slate-500 border-slate-300'}`}>
                             {MODO_LABEL[e.modo] ?? e.modo}
                           </span>
                         )}
-                        <span className="text-slate-300 text-xs font-medium truncate">{e.marca ?? e.query ?? '—'}</span>
+                        <span className="text-slate-700 text-xs font-medium truncate">{e.marca ?? e.query ?? '—'}</span>
                       </div>
                       {e.query && e.marca && (
-                        <p className="text-slate-400 text-xs sm:text-[10px] truncate">{e.query}</p>
+                        <p className="text-slate-500 text-xs sm:text-[10px] truncate">{e.query}</p>
                       )}
-                      <p className="text-slate-400 text-xs sm:text-[10px] font-mono mt-1">{formatDateShort(e.created_at)}</p>
+                      <p className="text-slate-500 text-xs sm:text-[10px] font-mono mt-1">{formatDateShort(e.created_at)}</p>
                     </div>
                     {scoreVal != null && (
                       <div className="text-right shrink-0">
                         <p className={`text-2xl font-bold font-mono ${scoreColor}`}>{scoreVal}</p>
-                        <p className="text-slate-400 text-xs sm:text-[10px]">score</p>
+                        <p className="text-slate-500 text-xs sm:text-[10px]">score</p>
                       </div>
                     )}
                   </div>
@@ -249,8 +249,8 @@ function MetricsTab() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="py-20 text-center text-slate-400 text-sm font-mono">Cargando métricas...</div>
-  if (error) return <div className="py-20 text-center text-rose-400 text-sm">{error}</div>
+  if (loading) return <div className="py-20 text-center text-slate-500 text-sm font-mono">Cargando métricas...</div>
+  if (error) return <div className="py-20 text-center text-rose-600 text-sm">{error}</div>
   if (!metrics) return null
 
   const modoChartData = Object.entries(metrics.por_modo).map(([modo, count], i) => ({
@@ -269,23 +269,23 @@ function MetricsTab() {
       {/* KPI row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Total leads', value: metrics.total_leads, color: 'text-white' },
-          { label: 'Emails únicos', value: metrics.emails_unicos, color: 'text-indigo-400' },
-          { label: 'Con resultado', value: metrics.con_resultado, color: 'text-emerald-400' },
+          { label: 'Total leads', value: metrics.total_leads, color: 'text-slate-900' },
+          { label: 'Emails únicos', value: metrics.emails_unicos, color: 'text-indigo-600' },
+          { label: 'Con resultado', value: metrics.con_resultado, color: 'text-emerald-700' },
           { label: 'Freemium bloqueados', value: metrics.freemium_bloqueados, color: 'text-orange-400' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-            <p className="text-xs text-slate-400 mb-1">{label}</p>
+          <div key={label} className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+            <p className="text-xs text-slate-500 mb-1">{label}</p>
             <p className={`text-3xl font-bold ${color}`}>{value}</p>
           </div>
         ))}
       </div>
 
       {/* Leads per day */}
-      <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
-        <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Leads por día — últimos 30 días</p>
+      <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+        <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Leads por día — últimos 30 días</p>
         {metrics.por_dia.length === 0 ? (
-          <p className="text-slate-400 text-sm text-center py-8">Sin datos en este período</p>
+          <p className="text-slate-500 text-sm text-center py-8">Sin datos en este período</p>
         ) : (
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={metrics.por_dia} barCategoryGap="30%">
@@ -317,10 +317,10 @@ function MetricsTab() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Por modo */}
-        <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
-          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Distribución por tipo</p>
+        <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Distribución por tipo</p>
           {modoChartData.every(d => d.value === 0) ? (
-            <p className="text-slate-400 text-sm text-center py-8">Sin datos</p>
+            <p className="text-slate-500 text-sm text-center py-8">Sin datos</p>
           ) : (
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
@@ -352,20 +352,20 @@ function MetricsTab() {
         </div>
 
         {/* Cache stats */}
-        <div className="bg-slate-900 border border-slate-800 rounded-sm p-5">
-          <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Estado del caché</p>
+        <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Estado del caché</p>
           <div className="space-y-3 mb-4">
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Total en BD</span>
-              <span className="text-slate-200 font-mono">{metrics.cache_total}</span>
+              <span className="text-slate-500">Total en BD</span>
+              <span className="text-slate-800 font-mono">{metrics.cache_total}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Activo (no expirado)</span>
-              <span className="text-emerald-400 font-mono">{metrics.cache_activo}</span>
+              <span className="text-slate-500">Activo (no expirado)</span>
+              <span className="text-emerald-700 font-mono">{metrics.cache_activo}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Expirado</span>
-              <span className="text-slate-400 font-mono">{metrics.cache_total - metrics.cache_activo}</span>
+              <span className="text-slate-500">Expirado</span>
+              <span className="text-slate-500 font-mono">{metrics.cache_total - metrics.cache_activo}</span>
             </div>
           </div>
           {metrics.cache_total > 0 && (
@@ -479,7 +479,7 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-10">
+    <div className="min-h-screen bg-white px-4 py-10">
       {historialEmail && <HistorialModal email={historialEmail} onClose={() => setHistorialEmail(null)} />}
 
       <div className="max-w-7xl mx-auto">
@@ -487,30 +487,30 @@ export default function AdminPanel() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-1">Panel de control</p>
-            <h1 className="text-2xl font-bold text-white">Ai Visibility</h1>
+            <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-1">Panel de control</p>
+            <h1 className="text-2xl font-bold text-slate-900">Ai Visibility</h1>
           </div>
           <button
             onClick={() => {
               setLoading(true); setError('')
               fetch(`${API}/api/leads`).then(r => r.json()).then(setLeads).catch(e => setError(e.message)).finally(() => setLoading(false))
             }}
-            className="text-xs text-slate-400 hover:text-slate-300 border border-slate-800 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono"
+            className="text-xs text-slate-500 hover:text-slate-700 border border-slate-200 hover:border-slate-600 px-3 py-1.5 rounded-sm transition font-mono"
           >
             ↺ Actualizar
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 border-b border-slate-800">
+        <div className="flex gap-1 mb-6 border-b border-slate-200">
           {([['leads', 'Leads'], ['metricas', 'Métricas']] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setTab(key)}
               className={`px-4 py-2 text-xs font-semibold transition border-b-2 -mb-px ${
                 tab === key
-                  ? 'border-indigo-500 text-indigo-300'
-                  : 'border-transparent text-slate-400 hover:text-slate-300'
+                  ? 'border-indigo-500 text-indigo-600'
+                  : 'border-transparent text-slate-500 hover:text-slate-700'
               }`}
             >
               {label}
@@ -524,18 +524,18 @@ export default function AdminPanel() {
           <>
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              <div className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-                <p className="text-xs text-slate-400 mb-1">Total leads</p>
-                <p className="text-3xl font-bold text-white">{stats.total}</p>
+              <div className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+                <p className="text-xs text-slate-500 mb-1">Total leads</p>
+                <p className="text-3xl font-bold text-slate-900">{stats.total}</p>
               </div>
-              <div className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-                <p className="text-xs text-slate-400 mb-1">Con resultado guardado</p>
-                <p className="text-3xl font-bold text-emerald-400">{stats.conResultado}</p>
+              <div className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+                <p className="text-xs text-slate-500 mb-1">Con resultado guardado</p>
+                <p className="text-3xl font-bold text-emerald-700">{stats.conResultado}</p>
               </div>
               {stats.porModo.slice(0, 2).map(({ modo, count }) => (
-                <div key={modo} className="bg-slate-900 border border-slate-800 rounded-sm p-4">
-                  <p className="text-xs text-slate-400 mb-1">{MODO_LABEL[modo] ?? modo}</p>
-                  <p className="text-3xl font-bold text-slate-200">{count}</p>
+                <div key={modo} className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+                  <p className="text-xs text-slate-500 mb-1">{MODO_LABEL[modo] ?? modo}</p>
+                  <p className="text-3xl font-bold text-slate-800">{count}</p>
                 </div>
               ))}
             </div>
@@ -547,7 +547,7 @@ export default function AdminPanel() {
                 placeholder="Buscar por nombre, correo, marca o consulta..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 px-4 py-2 bg-slate-900 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm"
+                className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm"
               />
               <div className="flex gap-2">
                 {(['all', 'brand', 'url', 'compare', 'cita'] as const).map((m) => (
@@ -556,8 +556,8 @@ export default function AdminPanel() {
                     onClick={() => setFilterModo(m)}
                     className={`px-3 py-1.5 rounded-sm text-xs font-semibold transition border ${
                       filterModo === m
-                        ? 'bg-slate-700 text-slate-100 border-slate-600'
-                        : 'text-slate-400 border-slate-800 hover:text-slate-300'
+                        ? 'bg-slate-700 text-slate-900 border-slate-600'
+                        : 'text-slate-500 border-slate-200 hover:text-slate-700'
                     }`}
                   >
                     {m === 'all' ? 'Todos' : MODO_LABEL[m]}
@@ -567,39 +567,39 @@ export default function AdminPanel() {
             </div>
 
             {/* Tabla */}
-            <div className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
+            <div className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden">
               {loading ? (
-                <div className="py-20 text-center text-slate-400 text-sm font-mono">Cargando...</div>
+                <div className="py-20 text-center text-slate-500 text-sm font-mono">Cargando...</div>
               ) : error ? (
-                <div className="py-20 text-center text-rose-400 text-sm">{error}</div>
+                <div className="py-20 text-center text-rose-600 text-sm">{error}</div>
               ) : filtered.length === 0 ? (
-                <div className="py-20 text-center text-slate-400 text-sm">Sin registros</div>
+                <div className="py-20 text-center text-slate-500 text-sm">Sin registros</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-800 text-left">
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Fecha</th>
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Nombre</th>
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Correo</th>
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Tipo</th>
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Marca / URL</th>
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Consulta</th>
-                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest">Informe</th>
+                    <tr className="border-b border-slate-200 text-left">
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Fecha</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Nombre</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Correo</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Tipo</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Marca / URL</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Consulta</th>
+                      <th className="px-4 py-3 text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">Informe</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {filtered.map((lead) => (
-                      <tr key={lead.id} className="hover:bg-slate-800/30 transition-colors">
-                        <td className="px-4 py-3 text-xs text-slate-400 font-mono whitespace-nowrap">
+                      <tr key={lead.id} className="hover:bg-slate-100/30 transition-colors">
+                        <td className="px-4 py-3 text-xs text-slate-500 font-mono whitespace-nowrap">
                           {formatDate(lead.created_at)}
                         </td>
-                        <td className="px-4 py-3 text-slate-200 font-medium whitespace-nowrap">
+                        <td className="px-4 py-3 text-slate-800 font-medium whitespace-nowrap">
                           {lead.nombre}
                         </td>
-                        <td className="px-4 py-3 text-slate-400 whitespace-nowrap">
+                        <td className="px-4 py-3 text-slate-500 whitespace-nowrap">
                           <button
                             onClick={() => setHistorialEmail(lead.email)}
-                            className="hover:text-indigo-400 transition-colors text-left"
+                            className="hover:text-indigo-600 transition-colors text-left"
                             title="Ver historial de este email"
                           >
                             {lead.email}
@@ -607,19 +607,19 @@ export default function AdminPanel() {
                         </td>
                         <td className="px-4 py-3">
                           {lead.modo ? (
-                            <span className={`inline-block px-2 py-0.5 rounded-sm text-xs sm:text-[10px] font-semibold border ${MODO_COLOR[lead.modo] ?? 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+                            <span className={`inline-block px-2 py-0.5 rounded-sm text-xs sm:text-[10px] font-semibold border ${MODO_COLOR[lead.modo] ?? 'bg-slate-100 text-slate-500 border-slate-300'}`}>
                               {MODO_LABEL[lead.modo] ?? lead.modo}
                             </span>
-                          ) : <span className="text-slate-400">—</span>}
+                          ) : <span className="text-slate-500">—</span>}
                         </td>
-                        <td className="px-4 py-3 text-slate-300 max-w-[180px]">
+                        <td className="px-4 py-3 text-slate-700 max-w-[180px]">
                           {lead.modo === 'url' ? (
-                            <span className="font-mono text-xs text-sky-400 truncate block" title={lead.marca ?? ''}>{lead.marca ?? '—'}</span>
+                            <span className="font-mono text-xs text-sky-600 truncate block" title={lead.marca ?? ''}>{lead.marca ?? '—'}</span>
                           ) : (
                             <span className="truncate block" title={lead.marca ?? ''}>{lead.marca ?? '—'}</span>
                           )}
                         </td>
-                        <td className="px-4 py-3 text-slate-400 max-w-[200px]">
+                        <td className="px-4 py-3 text-slate-500 max-w-[200px]">
                           <span className="truncate block text-xs" title={lead.query ?? ''}>{lead.query ?? '—'}</span>
                         </td>
                         <td className="px-4 py-3">
@@ -627,7 +627,7 @@ export default function AdminPanel() {
                             <button
                               onClick={() => openDetalle(lead)}
                               disabled={detalleLoading === lead.id}
-                              className="inline-flex items-center gap-1.5 text-xs sm:text-[10px] font-mono text-indigo-400 hover:text-indigo-300 disabled:opacity-40 transition-colors"
+                              className="inline-flex items-center gap-1.5 text-xs sm:text-[10px] font-mono text-indigo-600 hover:text-indigo-600 disabled:opacity-40 transition-colors"
                             >
                               {detalleLoading === lead.id ? (
                                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
@@ -637,8 +637,8 @@ export default function AdminPanel() {
                               {detalleLoading === lead.id ? 'cargando...' : 'ver informe'}
                             </button>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-xs sm:text-[10px] text-slate-400 font-mono">
-                              <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
+                            <span className="inline-flex items-center gap-1 text-xs sm:text-[10px] text-slate-500 font-mono">
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-100" />
                               sin datos
                             </span>
                           )}
@@ -651,7 +651,7 @@ export default function AdminPanel() {
             </div>
 
             {!loading && !error && (
-              <p className="text-xs text-slate-400 font-mono mt-3 text-right">
+              <p className="text-xs text-slate-500 font-mono mt-3 text-right">
                 {filtered.length} de {leads.length} registros
               </p>
             )}

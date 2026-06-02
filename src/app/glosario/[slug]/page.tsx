@@ -3,12 +3,12 @@ import { notFound } from 'next/navigation'
 import { terminos, getTermino } from '@/lib/terminos'
 
 const tagColor: Record<string, string> = {
-  Métrica:      'text-indigo-400 bg-indigo-950/60 border-indigo-800/40',
-  Estrategia:   'text-violet-400 bg-violet-950/60 border-violet-800/40',
-  Riesgo:       'text-rose-400 bg-rose-950/40 border-rose-800/40',
-  Arquitectura: 'text-sky-400 bg-sky-950/40 border-sky-800/40',
+  Métrica:      'text-indigo-600 bg-indigo-950/60 border-indigo-800/40',
+  Estrategia:   'text-violet-700 bg-violet-950/60 border-violet-800/40',
+  Riesgo:       'text-rose-600 bg-rose-950/40 border-rose-800/40',
+  Arquitectura: 'text-sky-600 bg-sky-950/40 border-sky-800/40',
   Metodología:  'text-amber-400 bg-amber-950/40 border-amber-800/40',
-  Tecnología:   'text-emerald-400 bg-emerald-950/40 border-emerald-800/40',
+  Tecnología:   'text-emerald-700 bg-emerald-950/40 border-emerald-800/40',
 }
 
 export function generateStaticParams() {
@@ -63,7 +63,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -71,23 +71,23 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
       <main className="max-w-2xl mx-auto py-12 md:py-20 px-4">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
-          <Link href="/" className="hover:text-slate-400 transition-colors">Ai Visibility</Link>
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-500 mb-10">
+          <Link href="/" className="hover:text-slate-500 transition-colors">Ai Visibility</Link>
           <span>/</span>
-          <Link href="/glosario/" className="hover:text-slate-400 transition-colors">Glosario</Link>
+          <Link href="/glosario/" className="hover:text-slate-500 transition-colors">Glosario</Link>
           <span>/</span>
-          <span className="text-slate-400">{t.termino}</span>
+          <span className="text-slate-500">{t.termino}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-10">
-          <span className={`inline-block text-xs sm:text-[10px] font-mono px-2 py-0.5 rounded border mb-4 ${tagColor[t.tag] ?? 'text-slate-400 bg-slate-800 border-slate-700'}`}>
+          <span className={`inline-block text-xs sm:text-[10px] font-mono px-2 py-0.5 rounded border mb-4 ${tagColor[t.tag] ?? 'text-slate-500 bg-slate-100 border-slate-300'}`}>
             {t.tag}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight mb-5">
             {t.termino}
           </h1>
-          <p className="text-slate-300 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
+          <p className="text-slate-700 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
             {t.definicion}
           </p>
         </div>
@@ -95,7 +95,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
         {/* Extended content */}
         <div className="space-y-5 mb-12">
           {t.ampliacion.map((p, i) => (
-            <p key={i} className="text-slate-400 text-sm leading-relaxed">
+            <p key={i} className="text-slate-500 text-sm leading-relaxed">
               {p}
             </p>
           ))}
@@ -103,14 +103,14 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
 
         {/* Related terms */}
         {relacionados.length > 0 && (
-          <div className="border-t border-slate-800 pt-8 mb-12">
-            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Términos relacionados</p>
+          <div className="border-t border-slate-200 pt-8 mb-12">
+            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Términos relacionados</p>
             <div className="flex flex-wrap gap-3">
               {relacionados.map((r) => r && (
                 <Link
                   key={r.id}
                   href={`/glosario/${r.id}/`}
-                  className="px-3 py-1.5 rounded-sm bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-400 hover:text-slate-200 text-xs font-medium transition-colors"
+                  className="px-3 py-1.5 rounded-sm bg-slate-50 border border-slate-200 hover:border-indigo-500/40 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors"
                 >
                   {r.termino}
                 </Link>
@@ -121,17 +121,17 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
 
         {/* Sigue leyendo — enlaces a artículos del blog */}
         {t.lecturas && t.lecturas.length > 0 && (
-          <div className="border-t border-slate-800 pt-8 mb-12">
-            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Sigue leyendo</p>
+          <div className="border-t border-slate-200 pt-8 mb-12">
+            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Sigue leyendo</p>
             <div className="space-y-3">
               {t.lecturas.map((l) => (
                 <Link
                   key={l.slug}
                   href={`/blog/${l.slug}/`}
-                  className="block border border-slate-800 hover:border-indigo-700/60 bg-slate-900/30 rounded-sm p-4 transition-colors group"
+                  className="block border border-slate-200 hover:border-indigo-700/60 bg-slate-50/30 rounded-sm p-4 transition-colors group"
                 >
-                  <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">Blog</span>
-                  <p className="text-sm font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors mt-1.5">
+                  <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest">Blog</span>
+                  <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors mt-1.5">
                     {l.titulo}
                   </p>
                 </Link>
@@ -142,8 +142,8 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
 
         {/* CTA */}
         <div className="border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
-          <p className="text-slate-300 text-sm font-semibold mb-2">¿Tu marca aparece cuando un cliente pregunta sobre tu industria?</p>
-          <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-5">
+          <p className="text-slate-700 text-sm font-semibold mb-2">¿Tu marca aparece cuando un cliente pregunta sobre tu industria?</p>
+          <p className="text-slate-500 text-sm sm:text-xs leading-relaxed mb-5">
             Audita tu Share of Model en ChatGPT gratis — resultado en menos de 60 segundos.
           </p>
           <Link
@@ -155,8 +155,8 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
         </div>
 
         {/* Back */}
-        <div className="mt-10 pt-6 border-t border-slate-800">
-          <Link href="/glosario/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
+        <div className="mt-10 pt-6 border-t border-slate-200">
+          <Link href="/glosario/" className="text-xs font-mono text-slate-500 hover:text-slate-700 transition-colors">
             ← Todos los términos
           </Link>
         </div>

@@ -32,17 +32,17 @@ const jsonLd = {
 }
 
 const tagColor: Record<string, string> = {
-  Métrica:      'text-indigo-400 bg-indigo-950/60 border-indigo-800/40',
-  Estrategia:   'text-violet-400 bg-violet-950/60 border-violet-800/40',
-  Riesgo:       'text-rose-400 bg-rose-950/40 border-rose-800/40',
-  Arquitectura: 'text-sky-400 bg-sky-950/40 border-sky-800/40',
+  Métrica:      'text-indigo-600 bg-indigo-950/60 border-indigo-800/40',
+  Estrategia:   'text-violet-700 bg-violet-950/60 border-violet-800/40',
+  Riesgo:       'text-rose-600 bg-rose-950/40 border-rose-800/40',
+  Arquitectura: 'text-sky-600 bg-sky-950/40 border-sky-800/40',
   Metodología:  'text-amber-400 bg-amber-950/40 border-amber-800/40',
-  Tecnología:   'text-emerald-400 bg-emerald-950/40 border-emerald-800/40',
+  Tecnología:   'text-emerald-700 bg-emerald-950/40 border-emerald-800/40',
 }
 
 export default function GlosarioPage() {
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -51,38 +51,38 @@ export default function GlosarioPage() {
 
         <div className="mb-8 md:mb-14">
           <p className="text-xs sm:text-[10px] font-mono text-indigo-500 uppercase tracking-widest mb-3">Referencia técnica</p>
-          <h1 className="text-xl font-semibold text-slate-100 leading-snug">
+          <h1 className="text-xl font-semibold text-slate-900 leading-snug">
             Glosario de iA &amp; GEO
           </h1>
-          <p className="text-slate-400 text-sm mt-2">
+          <p className="text-slate-500 text-sm mt-2">
             Conceptos fundamentales para entender la visibilidad de marca en motores generativos.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 divide-y-0">
           {terminos.map((item, i) => (
-            <div key={item.id} id={item.id} className="py-7 flex gap-6 border-b border-slate-800/60">
-              <span className="text-xs sm:text-[11px] font-mono text-slate-400 pt-0.5 w-5 shrink-0 select-none">
+            <div key={item.id} id={item.id} className="py-7 flex gap-6 border-b border-slate-200/60">
+              <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-0.5 w-5 shrink-0 select-none">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                   <Link
                     href={`/glosario/${item.id}/`}
-                    className="text-sm font-semibold text-slate-100 hover:text-indigo-300 transition-colors"
+                    className="text-sm font-semibold text-slate-900 hover:text-indigo-600 transition-colors"
                   >
                     {item.termino}
                   </Link>
-                  <span className={`text-xs sm:text-[10px] font-mono px-2 py-0.5 rounded border ${tagColor[item.tag] ?? 'text-slate-400 bg-slate-800 border-slate-700'}`}>
+                  <span className={`text-xs sm:text-[10px] font-mono px-2 py-0.5 rounded border ${tagColor[item.tag] ?? 'text-slate-500 bg-slate-100 border-slate-300'}`}>
                     {item.tag}
                   </span>
                 </div>
-                <p className="text-slate-400 text-[13px] leading-relaxed border-l-2 border-slate-800 pl-4 mb-3">
+                <p className="text-slate-500 text-[13px] leading-relaxed border-l-2 border-slate-200 pl-4 mb-3">
                   {item.definicion}
                 </p>
                 <Link
                   href={`/glosario/${item.id}/`}
-                  className="text-xs sm:text-[11px] font-mono text-indigo-500 hover:text-indigo-300 transition-colors"
+                  className="text-xs sm:text-[11px] font-mono text-indigo-500 hover:text-indigo-600 transition-colors"
                 >
                   Leer más →
                 </Link>
@@ -91,8 +91,8 @@ export default function GlosarioPage() {
           ))}
         </div>
 
-        <div className="mt-12 pt-6 border-t border-slate-800">
-          <Link href="/" className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors">
+        <div className="mt-12 pt-6 border-t border-slate-200">
+          <Link href="/" className="text-xs font-mono text-slate-500 hover:text-slate-700 transition-colors">
             ← Volver a la auditoría
           </Link>
         </div>

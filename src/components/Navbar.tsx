@@ -13,7 +13,7 @@ export default function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-4 h-12 flex items-center justify-between">
 
         {/* Logo */}
@@ -21,7 +21,7 @@ export default function Navbar() {
           <span className="w-5 h-5 rounded-sm bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xs sm:text-[10px] font-bold text-white">
             AI
           </span>
-          <span className="text-slate-200 text-sm font-semibold tracking-tight group-hover:text-white transition-colors">
+          <span className="text-slate-800 text-sm font-semibold tracking-tight group-hover:text-slate-900 transition-colors">
             Ai Visibility
           </span>
         </Link>
@@ -36,8 +36,8 @@ export default function Navbar() {
                 href={href}
                 className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                   active
-                    ? 'bg-slate-800 text-slate-100'
-                    : 'text-slate-400 hover:text-slate-300 hover:bg-slate-900'
+                    ? 'bg-slate-100 text-slate-900'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 {label}

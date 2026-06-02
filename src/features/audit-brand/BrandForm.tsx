@@ -17,7 +17,7 @@ export function BrandForm({ brand, query, loading, loadingPhase, onBrandChange, 
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Marca</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca</label>
           <input
             id="input-brand"
             type="text"
@@ -26,11 +26,11 @@ export function BrandForm({ brand, query, loading, loadingPhase, onBrandChange, 
             maxLength={120}
             onChange={e => onBrandChange(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && onSubmit()}
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+            className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Búsqueda</label>
+          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Búsqueda</label>
           <input
             id="input-query"
             type="text"
@@ -39,7 +39,7 @@ export function BrandForm({ brand, query, loading, loadingPhase, onBrandChange, 
             maxLength={200}
             onChange={e => onQueryChange(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && onSubmit()}
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
+            className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
           />
         </div>
       </div>

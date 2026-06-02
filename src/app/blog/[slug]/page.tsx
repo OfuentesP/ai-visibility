@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="bg-white min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -92,26 +92,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <main className="max-w-2xl mx-auto px-4 py-12 md:py-20">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-400 mb-10">
-          <Link href="/" className="hover:text-slate-300 transition-colors">Ai Visibility</Link>
+        <nav className="flex items-center gap-2 text-xs sm:text-[11px] font-mono text-slate-500 mb-10">
+          <Link href="/" className="hover:text-slate-700 transition-colors">Ai Visibility</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-slate-300 transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-slate-700 transition-colors">Blog</Link>
           <span>/</span>
-          <span className="text-slate-400 truncate max-w-[180px]">{p.categoria}</span>
+          <span className="text-slate-500 truncate max-w-[180px]">{p.categoria}</span>
         </nav>
 
         {/* Header */}
         <header className="mb-12">
-          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest mb-4">
+          <span className="inline-block text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-4">
             {p.categoria}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-6">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight mb-6">
             {p.titulo}
           </h1>
-          <p className="text-slate-300 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
+          <p className="text-slate-700 text-base leading-relaxed border-l-2 border-indigo-500/50 pl-5">
             {p.resumen}
           </p>
-          <div className="flex flex-wrap items-center gap-3 mt-6 text-xs sm:text-[11px] font-mono text-slate-400">
+          <div className="flex flex-wrap items-center gap-3 mt-6 text-xs sm:text-[11px] font-mono text-slate-500">
             <span>{p.autor}</span>
             <span>·</span>
             <time dateTime={p.fecha}>
@@ -127,21 +127,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {p.bloques.map((b, i) => {
             if (b.tipo === 'h2') {
               return (
-                <h2 key={i} className="text-lg font-bold text-white pt-6 pb-3 border-b border-slate-800">
+                <h2 key={i} className="text-lg font-bold text-slate-900 pt-6 pb-3 border-b border-slate-200">
                   {b.texto}
                 </h2>
               )
             }
             if (b.tipo === 'h3') {
               return (
-                <h3 key={i} className="text-base font-semibold text-slate-100 pt-2">
+                <h3 key={i} className="text-base font-semibold text-slate-900 pt-2">
                   {b.texto}
                 </h3>
               )
             }
             if (b.tipo === 'parrafo') {
               return (
-                <p key={i} className="text-slate-400 text-sm leading-relaxed">
+                <p key={i} className="text-slate-500 text-sm leading-relaxed">
                   {b.texto}
                 </p>
               )
@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       <span className="text-indigo-500 font-mono flex-shrink-0 mt-0.5">
                         {String(j + 1).padStart(2, '0')}
                       </span>
-                      <span className="text-slate-300 leading-relaxed">{item}</span>
+                      <span className="text-slate-700 leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -163,9 +163,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             if (b.tipo === 'cita') {
               return (
                 <blockquote key={i} className="border-l-2 border-indigo-500/60 pl-5 py-1">
-                  <p className="text-slate-200 text-sm italic leading-relaxed">"{b.texto}"</p>
+                  <p className="text-slate-800 text-sm italic leading-relaxed">"{b.texto}"</p>
                   {b.fuente && (
-                    <footer className="mt-2 text-xs sm:text-[11px] font-mono text-slate-400">— {b.fuente}</footer>
+                    <footer className="mt-2 text-xs sm:text-[11px] font-mono text-slate-500">— {b.fuente}</footer>
                   )}
                 </blockquote>
               )
@@ -174,7 +174,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               return (
                 <pre
                   key={i}
-                  className="bg-slate-900 border border-slate-800 rounded-sm p-4 overflow-x-auto text-[12px] font-mono text-slate-300 leading-relaxed"
+                  className="bg-slate-50 border border-slate-200 rounded-sm p-4 overflow-x-auto text-[12px] font-mono text-slate-700 leading-relaxed"
                 >
                   <code>{b.codigo}</code>
                 </pre>
@@ -184,7 +184,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               return (
                 <p
                   key={i}
-                  className="text-[12px] text-slate-400 font-mono leading-relaxed border-l-2 border-slate-800 pl-4"
+                  className="text-[12px] text-slate-500 font-mono leading-relaxed border-l-2 border-slate-200 pl-4"
                 >
                   {b.texto}
                 </p>
@@ -197,10 +197,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* CTA */}
         {p.ctaTexto && p.ctaUrl && (
           <div className="my-12 border border-indigo-900/40 bg-indigo-950/20 rounded-sm p-6">
-            <p className="text-slate-300 text-sm font-semibold mb-2">
+            <p className="text-slate-700 text-sm font-semibold mb-2">
               ¿Aparece tu marca cuando tus clientes preguntan en ChatGPT?
             </p>
-            <p className="text-slate-400 text-sm sm:text-xs leading-relaxed mb-5">
+            <p className="text-slate-500 text-sm sm:text-xs leading-relaxed mb-5">
               Audita tu Share of Model gratis. Resultado en menos de 60 segundos.
             </p>
             <Link
@@ -214,12 +214,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Tags */}
         {p.tags.length > 0 && (
-          <div className="mt-10 pt-6 border-t border-slate-800">
+          <div className="mt-10 pt-6 border-t border-slate-200">
             <div className="flex flex-wrap gap-2">
               {p.tags.map((t) => (
                 <span
                   key={t}
-                  className="text-xs sm:text-[10px] font-mono text-slate-400 border border-slate-800 px-2.5 py-1 rounded-sm"
+                  className="text-xs sm:text-[10px] font-mono text-slate-500 border border-slate-200 px-2.5 py-1 rounded-sm"
                 >
                   #{t}
                 </span>
@@ -230,14 +230,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         {/* Conceptos del glosario */}
         {p.glosario && p.glosario.length > 0 && (
-          <div className="mt-10 pt-6 border-t border-slate-800">
-            <p className="text-xs sm:text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-4">Conceptos relacionados</p>
+          <div className="mt-10 pt-6 border-t border-slate-200">
+            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Conceptos relacionados</p>
             <div className="flex flex-wrap gap-3">
               {p.glosario.map((g) => (
                 <Link
                   key={g.slug}
                   href={`/glosario/${g.slug}/`}
-                  className="px-3 py-1.5 rounded-sm bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-400 hover:text-slate-200 text-xs font-medium transition-colors"
+                  className="px-3 py-1.5 rounded-sm bg-slate-50 border border-slate-200 hover:border-indigo-500/40 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors"
                 >
                   {g.termino}
                 </Link>
@@ -249,7 +249,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* Relacionados */}
         {relacionados.length > 0 && (
           <section className="mt-14">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-5">
+            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5">
               Sigue leyendo
             </h2>
             <div className="space-y-3">
@@ -257,12 +257,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <Link
                   key={r.slug}
                   href={`/blog/${r.slug}/`}
-                  className="block border border-slate-800 hover:border-indigo-700/60 bg-slate-900/30 rounded-sm p-4 transition-colors group"
+                  className="block border border-slate-200 hover:border-indigo-700/60 bg-slate-50/30 rounded-sm p-4 transition-colors group"
                 >
-                  <span className="text-xs sm:text-[10px] font-mono text-indigo-400 uppercase tracking-widest">
+                  <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest">
                     {r.categoria}
                   </span>
-                  <p className="text-sm font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors mt-1.5">
+                  <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors mt-1.5">
                     {r.titulo}
                   </p>
                 </Link>
@@ -272,16 +272,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
 
         {/* Footer */}
-        <div className="mt-14 pt-6 border-t border-slate-800 flex justify-between items-center">
+        <div className="mt-14 pt-6 border-t border-slate-200 flex justify-between items-center">
           <Link
             href="/blog"
-            className="text-xs font-mono text-slate-400 hover:text-slate-300 transition-colors"
+            className="text-xs font-mono text-slate-500 hover:text-slate-700 transition-colors"
           >
             ← Todos los posts
           </Link>
           <Link
             href="/auditar/"
-            className="text-xs font-mono text-indigo-500 hover:text-indigo-300 transition-colors"
+            className="text-xs font-mono text-indigo-500 hover:text-indigo-600 transition-colors"
           >
             Auditar mi marca →
           </Link>
