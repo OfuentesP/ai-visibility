@@ -4,10 +4,10 @@
    Design tokens (light theme, per elegant-design skill)
    ============================================================ */
 :root {
-  /* Surfaces */
-  --background: hsl(0 0% 100%);              /* white */
-  --background-subtle: hsl(210 40% 98%);     /* slate-50 */
-  --surface: hsl(0 0% 100%);                 /* white */
+  /* Surfaces — cream / warm editorial */
+  --background: hsl(45 33% 97%);             /* #faf8f3 cream */
+  --background-subtle: hsl(42 28% 94%);      /* #f3efe5 deeper cream for alt sections */
+  --surface: hsl(0 0% 100%);                 /* pure white for cards (pops on cream) */
 
   /* Foreground (text) */
   --foreground: hsl(222.2 84% 4.9%);         /* slate-950 */

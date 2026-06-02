@@ -130,7 +130,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
 
       {/* AI Readiness Score */}
       <motion.div variants={{ hidden: { opacity: 0, y: -12 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="grid md:grid-cols-2 gap-4">
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-6 flex items-center gap-6">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex items-center gap-6">
           <svg width="128" height="128" viewBox="0 0 128 128" className="shrink-0">
             <circle cx={cx} cy={cy} r={r_ring} fill="none" stroke="#1e293b" strokeWidth="10" />
             <circle cx={cx} cy={cy} r={r_ring} fill="none" stroke={strokeColor} strokeWidth="10" strokeDasharray={circ} strokeDashoffset={dash} strokeLinecap="round" transform="rotate(-90 64 64)" style={{ transition: 'stroke-dashoffset 0.8s ease' }} />
@@ -356,7 +356,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             <span className="text-sm text-slate-500 font-medium">Cómo buscan en Google</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
-          <motion.div id="zone-google-trends" variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-sm p-6">
+          <motion.div id="zone-google-trends" variants={fadeUp} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-0.5">Así buscan en Google</h3>
@@ -412,7 +412,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             <span className="text-sm text-slate-500 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
-          <motion.div id="zone-plan-recuperacion" variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden">
+          <motion.div id="zone-plan-recuperacion" variants={fadeUp} className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200">
               <h3 className="text-base font-semibold text-slate-900">Qué hacer ahora</h3>
               {discoveryLoading && <p className="text-slate-500 text-sm mt-0.5">Simulando búsquedas asociadas a &ldquo;{query}&rdquo;…</p>}
@@ -497,7 +497,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
       )}
 
       {/* Herramientas de indexación */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="bg-slate-50 border border-slate-200 rounded-sm p-6">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6">
         <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Herramientas Oficiales Gratuitas</p>
         <h3 className="text-sm font-semibold text-slate-900 mb-4">Fuerza la indexación en LLMs — hazlo tú mismo</h3>
         <div className="grid sm:grid-cols-2 gap-4">

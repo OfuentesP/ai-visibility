@@ -807,7 +807,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Ver si la iA me recupera →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['google-seo-sigue-vivo-busqueda-ia', 'chatgpt-busqueda-web-cambia-geo-2026', '5-hacks-geo-que-google-dice-no-sirven'],
     glosario: [
       { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
@@ -907,7 +907,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Auditar mi Share of Model →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', 'contenido-commodity-vs-experiencia-real-ia', 'jsonld-organization-chile'],
   },
   {
@@ -975,7 +975,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Ver si la iA me cita →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', '5-hacks-geo-que-google-dice-no-sirven', 'chatgpt-busqueda-web-cambia-geo-2026'],
   },
   {
@@ -1038,7 +1038,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Auditar mi contenido →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', '5-hacks-geo-que-google-dice-no-sirven', 'google-seo-sigue-vivo-busqueda-ia'],
   },
   {
@@ -1116,7 +1116,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Auditar mi visibilidad →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', 'jsonld-organization-chile', '5-hacks-geo-que-google-dice-no-sirven'],
   },
   {
@@ -1180,7 +1180,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Ver cómo me describe la iA →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', 'perplexity-vs-chatgpt-citas-2026', 'chatgpt-busqueda-web-cambia-geo-2026'],
   },
   {
@@ -1255,7 +1255,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Auditar mi marca gratis →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['5-hacks-geo-que-google-dice-no-sirven', 'contenido-commodity-vs-experiencia-real-ia', 'checklist-tecnico-google-busqueda-ia'],
   },
   {
@@ -1329,7 +1329,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Auditar mi marca →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['perplexity-vs-chatgpt-citas-2026', 'jsonld-organization-chile'],
   },
   {
@@ -1378,7 +1378,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Ver mi Share of Model →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['chatgpt-busqueda-web-cambia-geo-2026'],
   },
   {
@@ -1443,7 +1443,7 @@ export const posts: Post[] = [
       },
     ],
     ctaTexto: 'Auditar mi JSON-LD →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
     relacionados: ['chatgpt-busqueda-web-cambia-geo-2026'],
   },
 ]

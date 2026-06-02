@@ -140,18 +140,12 @@ export default function LandingPage() {
         <p className="sm:hidden text-slate-700 text-base max-w-xl mb-10 leading-relaxed px-2">
           Mide tu <strong className="text-slate-900">Share of Model</strong> en ChatGPT, Perplexity y Gemini. Descubre quién te está quitando clientes.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center w-full sm:w-auto">
+        <div className="flex justify-center w-full">
           <Link
-            href="/auditar"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors text-center"
+            href="/#planes"
+            className="w-full sm:w-auto px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all text-center"
           >
             Auditar mi marca →
-          </Link>
-          <Link
-            href="/glosario"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-slate-100 hover:bg-slate-100 border border-slate-300 text-slate-700 font-medium text-base transition-colors text-center"
-          >
-            Glosario de GEO
           </Link>
         </div>
 
@@ -200,11 +194,11 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/auditar" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
+              <Link href="/#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
                 Descubrir si mi marca aparece →
               </Link>
             </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+            <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
               <div className="flex items-start gap-3 mb-5">
                 <div className="w-7 h-7 rounded-sm bg-slate-100 border border-slate-300 flex items-center justify-center flex-shrink-0 text-xs">👤</div>
                 <div className="bg-slate-100 rounded-sm px-4 py-3 text-slate-700 text-sm leading-relaxed">
@@ -252,7 +246,7 @@ export default function LandingPage() {
                 { n: '04', icon: <Terminal size={18} className="text-emerald-700" />, title: 'Hoja de ruta de recuperación GEO', desc: 'Pasamos del diagnóstico a la ejecución. Un plan priorizado por ICE que incluye código JSON-LD estructurado listo para que tu equipo de TI lo copie y pegue.', highlight: false },
               ].map((step) => (
                 <div key={step.n} className="relative flex flex-col md:flex-row gap-6 items-start">
-                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-950/40 border-indigo-500/30' : 'bg-slate-50 border-slate-200'}`}>
+                  <div className={`relative z-10 w-[88px] h-[88px] rounded-sm flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-950/40 border-indigo-500/30' : 'bg-white shadow-sm border-slate-200'}`}>
                     {step.icon}
                     <span className={`mt-1.5 font-mono text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-600' : 'text-slate-500'}`}>{step.n}</span>
                   </div>
@@ -277,7 +271,7 @@ export default function LandingPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((f) => (
-              <div key={f.title} className="bg-slate-50 border border-slate-200 rounded-sm p-6 hover:border-indigo-500/30 transition-colors">
+              <div key={f.title} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 hover:border-indigo-500/30 transition-colors">
                 <span className="text-indigo-600 text-xl block mb-3 font-mono">{f.icon}</span>
                 <h3 className="text-sm font-semibold text-slate-900 mb-2">{f.title}</h3>
                 <p className="text-slate-500 text-sm sm:text-xs leading-relaxed">{f.desc}</p>
@@ -285,7 +279,7 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Link href="/auditar" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-colors">
+            <Link href="/#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-colors">
               Obtener mi informe GEO →
             </Link>
           </div>
@@ -329,7 +323,7 @@ export default function LandingPage() {
                 iconColor: 'text-rose-600',
               },
             ].map((card) => (
-              <div key={card.title} className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+              <div key={card.title} className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
                 <div className="flex items-center justify-between mb-4">
                   <span className={`text-xs sm:text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border ${card.badgeColor}`}>{card.badge}</span>
                   <span className={`text-lg font-bold ${card.iconColor}`}>{card.icon}</span>
@@ -365,7 +359,7 @@ export default function LandingPage() {
 
           <div className="border border-slate-200 rounded-sm overflow-hidden">
             {/* Column headers */}
-            <div className="grid grid-cols-2 md:grid-cols-3 border-b border-slate-200 bg-slate-50">
+            <div className="grid grid-cols-2 md:grid-cols-3 border-b border-slate-200 bg-white shadow-sm">
               <div className="p-5 hidden md:block" />
               <div className="p-5 border-b-2 border-indigo-500 bg-indigo-500/5">
                 <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest block mb-1">Plataforma GEO</span>
@@ -433,9 +427,9 @@ export default function LandingPage() {
             ))}
 
             {/* Footer CTA */}
-            <div className="bg-slate-50 px-5 py-4 text-center border-t border-slate-200">
+            <div className="bg-white shadow-sm px-5 py-4 text-center border-t border-slate-200">
               <p className="text-slate-500 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
-              <Link href="/auditar" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
+              <Link href="/#planes" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
                 Auditar mi marca en ChatGPT →
               </Link>
             </div>
@@ -444,7 +438,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── PRICING ───────────────────────────────────────────────── */}
-      <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
+      <section id="planes" className="border-t border-slate-200/60 py-12 sm:py-20 px-4 scroll-mt-16">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Planes</p>
@@ -454,7 +448,7 @@ export default function LandingPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-4">
 
             {/* 1. Diagnóstico */}
-            <div className="bg-slate-50 border-2 border-indigo-500/50 rounded-sm p-6 relative flex flex-col">
+            <div className="bg-white shadow-sm border-2 border-indigo-500/50 rounded-sm p-6 relative flex flex-col">
               <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-xs sm:text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
               <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">US$ 200</p>
@@ -476,13 +470,13 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/auditar" className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
+              <Link href="/auditar/" className="block w-full text-center px-5 py-3 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors">
                 Empezar diagnóstico →
               </Link>
             </div>
 
             {/* 2. Asesoría */}
-            <div className="bg-slate-50 border border-slate-200 rounded-sm p-6 flex flex-col">
+            <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex flex-col">
               <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">02 · Asesoría</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">$290.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · pago único</p>
@@ -514,7 +508,7 @@ export default function LandingPage() {
             </div>
 
             {/* 3. Capacitación */}
-            <div className="bg-slate-50 border border-slate-200 rounded-sm p-6 flex flex-col">
+            <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex flex-col">
               <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">03 · Capacitación</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">$490.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · programa de 3 clases</p>
@@ -546,7 +540,7 @@ export default function LandingPage() {
             </div>
 
             {/* 4. Plan Mensual */}
-            <div className="bg-slate-50 border-2 border-violet-500/50 rounded-sm p-6 relative flex flex-col">
+            <div className="bg-white shadow-sm border-2 border-violet-500/50 rounded-sm p-6 relative flex flex-col">
               <span className="absolute -top-3 left-5 bg-violet-600 text-white text-xs sm:text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Más completo</span>
               <p className="text-xs sm:text-[10px] font-mono text-violet-700 uppercase tracking-widest mb-2">04 · Plan Mensual</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">$690.000</p>
@@ -619,8 +613,8 @@ export default function LandingPage() {
             Cada día que la iA recomienda a otro, es un cliente que no llegó a ti.
           </p>
           <Link
-            href="/auditar"
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base transition-colors"
+            href="/#planes"
+            className="inline-flex items-center gap-2 px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all"
           >
             Auditar mi marca ahora →
           </Link>

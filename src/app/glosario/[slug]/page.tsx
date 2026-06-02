@@ -110,7 +110,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
                 <Link
                   key={r.id}
                   href={`/glosario/${r.id}/`}
-                  className="px-3 py-1.5 rounded-sm bg-slate-50 border border-slate-200 hover:border-indigo-500/40 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors"
+                  className="px-3 py-1.5 rounded-sm bg-white shadow-sm border border-slate-200 hover:border-indigo-500/40 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors"
                 >
                   {r.termino}
                 </Link>
@@ -147,7 +147,7 @@ export default async function TerminoPage({ params }: { params: Promise<{ slug: 
             Audita tu Share of Model en ChatGPT gratis — resultado en menos de 60 segundos.
           </p>
           <Link
-            href="/auditar/"
+            href="/#planes"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors"
           >
             Auditar mi marca →

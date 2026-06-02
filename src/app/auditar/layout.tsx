@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   description: 'Genera tu AI Readiness Score gratis. Analiza tu visibilidad, descubre tu brecha semántica y obtén tácticas de recuperación para dominar los LLMs.',
   robots: { index: true, follow: true },
   alternates: {
-    canonical: 'https://ai-visibility.cl/auditar',
-    languages: { 'es': 'https://ai-visibility.cl/auditar', 'es-CL': 'https://ai-visibility.cl/auditar' },
+    canonical: 'https://ai-visibility.cl/#planes',
+    languages: { 'es': 'https://ai-visibility.cl/#planes', 'es-CL': 'https://ai-visibility.cl/#planes' },
   },
   twitter: {
     card: 'summary_large_image',
@@ -19,7 +19,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Generador de Reportes GEO - Ai Visibility",
-  "url": "https://ai-visibility.cl/auditar",
+  "url": "https://ai-visibility.cl/#planes",
   "description": "Herramienta online para analizar el Share of Model de marcas en modelos fundacionales de inteligencia artificial.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "All",

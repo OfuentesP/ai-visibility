@@ -71,7 +71,7 @@ export default function AuditarPage() {
       {/* ── Freemium modal ──────────────────────────────────────────────────── */}
       {showFreemiumModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-sm p-4" onClick={() => setShowFreemiumModal(false)}>
-          <div className="bg-slate-50 border border-indigo-700/50 rounded-sm max-w-sm w-full p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-white shadow-sm border border-indigo-700/50 rounded-sm max-w-sm w-full p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
             <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Plan gratuito</p>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Alcanzaste el límite de auditorías gratuitas</h3>
             <p className="text-slate-500 text-sm leading-relaxed mb-5">
@@ -119,7 +119,7 @@ export default function AuditarPage() {
           </motion.div>
 
           {/* ── Search form ─────────────────────────────────────────────────── */}
-          <motion.div id="zone-buscador" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-slate-50 border border-slate-200 rounded-sm p-6 mb-8">
+          <motion.div id="zone-buscador" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 mb-8">
 
             {/* User identity */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 pb-5 border-b border-slate-200">
@@ -233,7 +233,7 @@ export default function AuditarPage() {
           {/* ── Citability results ──────────────────────────────────────────── */}
           {mode === 'cita' && cita.citaResult && (
             <motion.div id="zone-cita-resultados" className="space-y-5 mb-8" initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}>
-              <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-slate-50 border border-slate-200 rounded-sm px-6 py-5">
+              <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-white shadow-sm border border-slate-200 rounded-sm px-6 py-5">
                 <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
                   <div className="flex-1">
                     <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Directorio de Citabilidad</p>
@@ -267,7 +267,7 @@ export default function AuditarPage() {
                 }
                 const c = colorMap[t.nivel] ?? colorMap.media
                 return (
-                  <motion.div key={i} variants={{ hidden: { opacity: 0, x: -8 }, visible: { opacity: 1, x: 0 } }} className={`bg-slate-50 border ${c.border} rounded-sm overflow-hidden`}>
+                  <motion.div key={i} variants={{ hidden: { opacity: 0, x: -8 }, visible: { opacity: 1, x: 0 } }} className={`bg-white shadow-sm border ${c.border} rounded-sm overflow-hidden`}>
                     <div className="flex items-stretch">
                       <div className="w-1 shrink-0 bg-slate-100 relative">
                         <div className={`absolute bottom-0 left-0 right-0 ${c.bar} transition-all duration-700`} style={{ height: `${100 - t.dificultad}%` }} />
@@ -307,7 +307,7 @@ export default function AuditarPage() {
           {/* ── Compare results ─────────────────────────────────────────────── */}
           {mode === 'compare' && cmp.compareResult && (
             <motion.div id="zone-compare-resultados" className="space-y-6 mb-8" initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}>
-              <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden">
+              <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
                 <div className="flex items-stretch">
                   <div className={`w-1.5 shrink-0 ${cmp.compareResult.marca_recomendada.toLowerCase().includes(cmp.compareResult.marca_a.toLowerCase()) ? 'bg-sky-500' : 'bg-rose-500'}`} />
                   <div className="flex-1 px-6 py-5">
@@ -343,7 +343,7 @@ export default function AuditarPage() {
                   { marca: cmp.compareResult.marca_a, ventajas: cmp.compareResult.ventajas_marca_a, debilidades: cmp.compareResult.debilidades_marca_a, isWinner: cmp.compareResult.marca_recomendada.toLowerCase().includes(cmp.compareResult.marca_a.toLowerCase()) },
                   { marca: cmp.compareResult.marca_b, ventajas: cmp.compareResult.ventajas_marca_b, debilidades: cmp.compareResult.debilidades_marca_b, isWinner: cmp.compareResult.marca_recomendada.toLowerCase().includes(cmp.compareResult.marca_b.toLowerCase()) },
                 ].map(({ marca, ventajas, debilidades, isWinner }) => (
-                  <div key={marca} className={`border rounded-sm overflow-hidden ${isWinner ? 'border-sky-800/40 bg-sky-950/10' : 'border-slate-200 bg-slate-50'}`}>
+                  <div key={marca} className={`border rounded-sm overflow-hidden ${isWinner ? 'border-sky-800/40 bg-sky-950/10' : 'border-slate-200 bg-white shadow-sm'}`}>
                     <div className={`px-5 py-3 border-b flex items-center justify-between ${isWinner ? 'border-sky-800/30' : 'border-slate-200'}`}>
                       <h3 className={`font-semibold text-sm ${isWinner ? 'text-sky-300' : 'text-slate-700'}`}>{marca}</h3>
                       {isWinner && <span className="text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-600 border border-sky-500/30">iA prefiere</span>}

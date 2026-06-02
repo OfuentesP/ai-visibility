@@ -15,7 +15,7 @@ export default function NotFound() {
       </p>
       <div className="flex gap-3">
         <Link
-          href="/auditar"
+          href="/#planes"
           className="px-5 py-2.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
         >
           Ir a la herramienta

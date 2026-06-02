@@ -192,7 +192,7 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
 
       <motion.div
         variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-        className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden"
+        className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden"
       >
         <div className="px-6 py-4 border-b border-slate-200">
           <h3 className="text-base font-semibold text-slate-900">Qué necesitamos hacer y quién lo ejecuta</h3>

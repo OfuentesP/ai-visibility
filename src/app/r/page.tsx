@@ -20,7 +20,7 @@ function Score({ value, max = 100, label }: { value: number; max?: number; label
   const color = pct >= 60 ? 'bg-emerald-500' : pct >= 30 ? 'bg-orange-500' : 'bg-rose-500'
   const text = pct >= 60 ? 'text-emerald-700' : pct >= 30 ? 'text-orange-400' : 'text-rose-600'
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+    <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
       <p className="text-xs text-slate-500 mb-1">{label}</p>
       <p className={`text-3xl font-bold mb-2 ${text}`}>{value}</p>
       <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -111,7 +111,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
           <div className="flex-1 h-px bg-slate-100/40" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-slate-50 border border-slate-200 rounded-sm p-6 flex items-center gap-6">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex items-center gap-6">
             <svg width="128" height="128" viewBox="0 0 128 128" className="shrink-0">
               <circle cx={cx} cy={cy} r={r54} fill="none" stroke="#1e293b" strokeWidth="10" />
               <circle cx={cx} cy={cy} r={r54} fill="none" stroke={strokeColor} strokeWidth="10"
@@ -134,7 +134,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             )}
           </div>
         </div>
-        <div className={`mt-4 bg-slate-50 border border-slate-300 border-l-4 ${accentBorder} rounded-sm p-5`}>
+        <div className={`mt-4 bg-white shadow-sm border border-slate-300 border-l-4 ${accentBorder} rounded-sm p-5`}>
           <p className="text-slate-900 font-bold text-base leading-snug mb-2">{titulo}</p>
           <p className="text-slate-500 text-sm leading-relaxed">{subtitulo}</p>
           {d.prioridad_ejecutiva && (
@@ -154,7 +154,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la iA?</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 space-y-3">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4 space-y-3">
             {sov.map(([m, freq], i) => {
               const pct = Math.round((freq / maxFreq) * 100)
               const isUser = m.toLowerCase() === (marca ?? '').toLowerCase()
@@ -289,7 +289,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <span className="text-sm text-slate-500 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-200">
               <h3 className="text-base font-semibold text-slate-900">Qué necesitamos hacer y quién lo ejecuta</h3>
               <p className="text-slate-500 text-sm mt-0.5">{allActions.length} acciones priorizadas por impacto</p>
@@ -352,7 +352,7 @@ function CompareView({ r }: { r: any }) {
           { label: r.marca_a, score: r.score_marca_a, color: scoreColorA },
           { label: r.marca_b, score: r.score_marca_b, color: scoreColorB },
         ].map(({ label, score, color }) => (
-          <div key={label} className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+          <div key={label} className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
             <p className="text-xs text-slate-500 mb-1 truncate">{label}</p>
             <p className={`text-3xl font-bold font-mono ${color}`}>{score}</p>
             <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden mt-2">
@@ -366,7 +366,7 @@ function CompareView({ r }: { r: any }) {
       {r.veredicto_ia && (
         <section>
           <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Veredicto de la iA</p>
-          <p className="text-slate-700 text-sm leading-relaxed bg-slate-50 border border-slate-200 rounded-sm p-4">{r.veredicto_ia}</p>
+          <p className="text-slate-700 text-sm leading-relaxed bg-white shadow-sm border border-slate-200 rounded-sm p-4">{r.veredicto_ia}</p>
         </section>
       )}
 
@@ -391,7 +391,7 @@ function CompareView({ r }: { r: any }) {
           <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">{marca}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {ventajas?.length > 0 && (
-              <div className="bg-slate-50 border border-slate-200 rounded-sm p-3">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-3">
                 <p className="text-xs sm:text-[10px] text-emerald-600 uppercase tracking-widest mb-2">Ventajas</p>
                 <ul className="space-y-1">
                   {ventajas.map((v: string) => <li key={v} className="text-slate-700 text-xs flex gap-2"><span className="text-emerald-500 shrink-0">+</span>{v}</li>)}
@@ -399,7 +399,7 @@ function CompareView({ r }: { r: any }) {
               </div>
             )}
             {debilidades?.length > 0 && (
-              <div className="bg-slate-50 border border-slate-200 rounded-sm p-3">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-3">
                 <p className="text-xs sm:text-[10px] text-rose-600 uppercase tracking-widest mb-2">Debilidades</p>
                 <ul className="space-y-1">
                   {debilidades.map((d: string) => <li key={d} className="text-slate-700 text-xs flex gap-2"><span className="text-rose-600 shrink-0">−</span>{d}</li>)}
@@ -429,15 +429,15 @@ function CitaView({ r }: { r: any }) {
     <div className="space-y-6">
       {/* Resumen stats */}
       <section className="grid grid-cols-3 gap-3">
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 text-center">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4 text-center">
           <p className="text-2xl font-bold text-emerald-700">{r.total_bajas ?? 0}</p>
           <p className="text-xs sm:text-[10px] text-slate-500 mt-1">Oportunidades</p>
         </div>
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 text-center">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4 text-center">
           <p className="text-2xl font-bold text-orange-400">{r.total_medias ?? 0}</p>
           <p className="text-xs sm:text-[10px] text-slate-500 mt-1">Competencia media</p>
         </div>
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-4 text-center">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4 text-center">
           <p className="text-2xl font-bold text-rose-600">{r.total_altas ?? 0}</p>
           <p className="text-xs sm:text-[10px] text-slate-500 mt-1">Dominados</p>
         </div>
@@ -447,7 +447,7 @@ function CitaView({ r }: { r: any }) {
       {r.resumen && (
         <section>
           <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Resumen</p>
-          <p className="text-slate-700 text-sm leading-relaxed bg-slate-50 border border-slate-200 rounded-sm p-4">{r.resumen}</p>
+          <p className="text-slate-700 text-sm leading-relaxed bg-white shadow-sm border border-slate-200 rounded-sm p-4">{r.resumen}</p>
         </section>
       )}
 
@@ -457,7 +457,7 @@ function CitaView({ r }: { r: any }) {
           <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Territorios analizados</p>
           <div className="space-y-3">
             {r.territorios.map((t: { query: string; dificultad: number; nivel: string; marcas_mencionadas: string[]; razon: string; recomendacion: string }, i: number) => (
-              <div key={i} className={`border rounded-sm p-4 ${nivelColor[t.nivel] ?? 'bg-slate-50 border-slate-200'}`}>
+              <div key={i} className={`border rounded-sm p-4 ${nivelColor[t.nivel] ?? 'bg-white shadow-sm border-slate-200'}`}>
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <p className="text-slate-800 text-xs font-medium flex-1">{t.query}</p>
                   <span className={`text-xs sm:text-[10px] font-mono shrink-0 ${t.nivel === 'baja' ? 'text-emerald-700' : t.nivel === 'media' ? 'text-orange-400' : 'text-rose-600'}`}>
@@ -542,7 +542,7 @@ function UrlView({ r }: { r: any }) {
           <span className="text-sm text-slate-500 font-medium">Resumen ejecutivo</span>
           <div className="flex-1 h-px bg-slate-100/40" />
         </div>
-        <div className={`bg-slate-50 border border-slate-300 border-l-4 ${accentBorder} rounded-sm overflow-hidden`}>
+        <div className={`bg-white shadow-sm border border-slate-300 border-l-4 ${accentBorder} rounded-sm overflow-hidden`}>
           <div className="px-5 pt-5 pb-4 border-b border-slate-200 flex items-center justify-between gap-4">
             <div>
               <p className="text-xs text-slate-500 mb-0.5">{r.marca} · {r.mercado}</p>
@@ -603,7 +603,7 @@ function UrlView({ r }: { r: any }) {
             <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la iA cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
             <p className="text-slate-500 text-sm mb-4">Estas son las marcas que aparecen cuando un comprador real le pregunta a ChatGPT, Gemini o Perplexity.</p>
             <div className="space-y-3">
               {sovData.map(([marca, freq], i) => {
@@ -771,7 +771,7 @@ function UrlView({ r }: { r: any }) {
           </div>
           <div className="space-y-2">
             {r.resultados.map((res: { arquetipo: string; query: string; mencionada: boolean; posicion?: number; marca_ganadora?: string }, i: number) => (
-              <div key={i} className="bg-slate-50 border border-slate-200 rounded-sm p-3 flex items-center justify-between gap-3">
+              <div key={i} className="bg-white shadow-sm border border-slate-200 rounded-sm p-3 flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="text-slate-700 text-xs font-medium">{res.arquetipo}</p>
                   <p className="text-slate-500 text-xs sm:text-[10px] truncate mt-0.5">{res.query}</p>
@@ -796,7 +796,7 @@ function UrlView({ r }: { r: any }) {
             <span className="text-sm text-slate-500 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden">
+          <div className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-200">
               <h3 className="text-base font-semibold text-slate-900">Qué necesitamos hacer y quién lo ejecuta</h3>
               <p className="text-slate-500 text-sm mt-0.5">Plan de recuperación completa · 30–60 días · {allActions.length} acciones priorizadas</p>
@@ -913,7 +913,7 @@ export default function SharedReportPage() {
         )}
 
         <div className="mt-10 pt-6 border-t border-slate-200 text-center">
-          <a href="/auditar" className="text-xs text-slate-500 hover:text-indigo-600 transition font-mono">
+          <a href="/#planes" className="text-xs text-slate-500 hover:text-indigo-600 transition font-mono">
             Auditar mi propia marca → ai-visibility.cl
           </a>
         </div>

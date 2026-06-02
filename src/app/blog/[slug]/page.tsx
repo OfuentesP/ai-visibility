@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -174,7 +174,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               return (
                 <pre
                   key={i}
-                  className="bg-slate-50 border border-slate-200 rounded-sm p-4 overflow-x-auto text-[12px] font-mono text-slate-700 leading-relaxed"
+                  className="bg-white shadow-sm border border-slate-200 rounded-sm p-4 overflow-x-auto text-[12px] font-mono text-slate-700 leading-relaxed"
                 >
                   <code>{b.codigo}</code>
                 </pre>
@@ -237,7 +237,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <Link
                   key={g.slug}
                   href={`/glosario/${g.slug}/`}
-                  className="px-3 py-1.5 rounded-sm bg-slate-50 border border-slate-200 hover:border-indigo-500/40 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors"
+                  className="px-3 py-1.5 rounded-sm bg-white shadow-sm border border-slate-200 hover:border-indigo-500/40 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors"
                 >
                   {g.termino}
                 </Link>
@@ -280,7 +280,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             ← Todos los posts
           </Link>
           <Link
-            href="/auditar/"
+            href="/#planes"
             className="text-xs font-mono text-indigo-500 hover:text-indigo-600 transition-colors"
           >
             Auditar mi marca →

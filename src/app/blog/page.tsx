@@ -56,7 +56,7 @@ export default function BlogIndexPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

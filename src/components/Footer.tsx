@@ -32,7 +32,7 @@ export default function Footer() {
           <div>
             <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Herramienta</p>
             <ul className="space-y-2">
-              <li><Link href="/auditar/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Auditar mi marca</Link></li>
+              <li><Link href="/#planes" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Auditar mi marca</Link></li>
               <li><Link href="/auditar/saas/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">GEO para SaaS</Link></li>
               <li><Link href="/auditar/retail/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">GEO para Retail</Link></li>
               <li><Link href="/auditar/salud/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">GEO para Salud</Link></li>
@@ -64,7 +64,7 @@ export default function Footer() {
               <li><Link href="/glosario/alucinacion-ia/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Alucinación de iA</Link></li>
               <li><Link href="/glosario/auditoria-arquetipos/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Auditoría por Arquetipos</Link></li>
               <li><Link href="/#faq-geo" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Preguntas Frecuentes</Link></li>
-              <li><Link href="/auditar/" className="text-slate-700 text-sm sm:text-xs hover:text-indigo-600 transition-colors">Empezar diagnóstico →</Link></li>
+              <li><Link href="/#planes" className="text-slate-700 text-sm sm:text-xs hover:text-indigo-600 transition-colors">Empezar diagnóstico →</Link></li>
             </ul>
           </div>
 

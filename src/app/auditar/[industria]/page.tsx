@@ -57,7 +57,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
   }
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -75,7 +75,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
           {ind.descripcion}
         </p>
         <Link
-          href="/auditar/"
+          href="/#planes"
           className="px-8 py-3.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors"
         >
           Auditar mi marca gratis →
@@ -92,7 +92,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
           </h2>
           <div className="space-y-3">
             {ind.queries.map((q) => (
-              <div key={q} className="bg-slate-50 border border-slate-200 rounded-sm px-5 py-4 flex items-start gap-4">
+              <div key={q} className="bg-white shadow-sm border border-slate-200 rounded-sm px-5 py-4 flex items-start gap-4">
                 <div className="w-6 h-6 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-slate-900 text-xs font-bold">iA</span>
                 </div>
@@ -115,7 +115,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
           </h2>
           <div className="space-y-5">
             {ind.dolores.map((d) => (
-              <div key={d.titulo} className="bg-slate-50 border border-slate-200 rounded-sm p-6 flex gap-5">
+              <div key={d.titulo} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex gap-5">
                 <span className="text-rose-600 text-lg flex-shrink-0 mt-0.5">⚠</span>
                 <div>
                   <h3 className="text-sm font-semibold text-slate-900 mb-2">{d.titulo}</h3>
@@ -137,7 +137,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
             Ingresa tu marca y la búsqueda representativa de tu industria. En menos de 60 segundos sabes si la iA te recomienda o le regala tus clientes a la competencia.
           </p>
           <Link
-            href="/auditar/"
+            href="/#planes"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors"
           >
             Auditar mi {ind.nombre} →
@@ -169,7 +169,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
                 <Link
                   key={l.slug}
                   href={`/blog/${l.slug}/`}
-                  className="block bg-slate-50 border border-slate-200 hover:border-indigo-600/60 rounded-sm px-5 py-4 transition-colors group"
+                  className="block bg-white shadow-sm border border-slate-200 hover:border-indigo-600/60 rounded-sm px-5 py-4 transition-colors group"
                 >
                   <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest">Blog</span>
                   <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors mt-1.5 leading-snug">

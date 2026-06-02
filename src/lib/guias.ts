@@ -102,7 +102,7 @@ export const guias: Guia[] = [
       },
     ],
     ctaTexto: 'Auditar mi tienda antes del CyberDay →',
-    ctaUrl: '/auditar/',
+    ctaUrl: '/#planes',
   },
 ]
 

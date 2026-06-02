@@ -37,7 +37,7 @@ function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-4 text-center">Acceso restringido</p>
-        <div className={`bg-slate-50 border rounded-sm p-6 transition-colors ${error ? 'border-rose-700' : 'border-slate-200'}`}>
+        <div className={`bg-white shadow-sm border rounded-sm p-6 transition-colors ${error ? 'border-rose-700' : 'border-slate-200'}`}>
           <label className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wide">Contraseña</label>
           <input
             ref={inputRef}
@@ -179,7 +179,7 @@ function HistorialModal({ email, onClose }: { email: string; onClose: () => void
       onClick={onClose}
     >
       <div
-        className="bg-slate-50 border border-slate-300 rounded-sm w-full max-w-2xl shadow-2xl mb-10"
+        className="bg-white shadow-sm border border-slate-300 rounded-sm w-full max-w-2xl shadow-2xl mb-10"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
@@ -274,7 +274,7 @@ function MetricsTab() {
           { label: 'Con resultado', value: metrics.con_resultado, color: 'text-emerald-700' },
           { label: 'Freemium bloqueados', value: metrics.freemium_bloqueados, color: 'text-orange-400' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+          <div key={label} className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
             <p className="text-xs text-slate-500 mb-1">{label}</p>
             <p className={`text-3xl font-bold ${color}`}>{value}</p>
           </div>
@@ -282,7 +282,7 @@ function MetricsTab() {
       </div>
 
       {/* Leads per day */}
-      <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+      <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
         <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Leads por día — últimos 30 días</p>
         {metrics.por_dia.length === 0 ? (
           <p className="text-slate-500 text-sm text-center py-8">Sin datos en este período</p>
@@ -317,7 +317,7 @@ function MetricsTab() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Por modo */}
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
           <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Distribución por tipo</p>
           {modoChartData.every(d => d.value === 0) ? (
             <p className="text-slate-500 text-sm text-center py-8">Sin datos</p>
@@ -352,7 +352,7 @@ function MetricsTab() {
         </div>
 
         {/* Cache stats */}
-        <div className="bg-slate-50 border border-slate-200 rounded-sm p-5">
+        <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
           <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">Estado del caché</p>
           <div className="space-y-3 mb-4">
             <div className="flex justify-between text-sm">
@@ -524,16 +524,16 @@ export default function AdminPanel() {
           <>
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              <div className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
                 <p className="text-xs text-slate-500 mb-1">Total leads</p>
                 <p className="text-3xl font-bold text-slate-900">{stats.total}</p>
               </div>
-              <div className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+              <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
                 <p className="text-xs text-slate-500 mb-1">Con resultado guardado</p>
                 <p className="text-3xl font-bold text-emerald-700">{stats.conResultado}</p>
               </div>
               {stats.porModo.slice(0, 2).map(({ modo, count }) => (
-                <div key={modo} className="bg-slate-50 border border-slate-200 rounded-sm p-4">
+                <div key={modo} className="bg-white shadow-sm border border-slate-200 rounded-sm p-4">
                   <p className="text-xs text-slate-500 mb-1">{MODO_LABEL[modo] ?? modo}</p>
                   <p className="text-3xl font-bold text-slate-800">{count}</p>
                 </div>
@@ -547,7 +547,7 @@ export default function AdminPanel() {
                 placeholder="Buscar por nombre, correo, marca o consulta..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm"
+                className="flex-1 px-4 py-2 bg-white shadow-sm border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm"
               />
               <div className="flex gap-2">
                 {(['all', 'brand', 'url', 'compare', 'cita'] as const).map((m) => (
@@ -567,7 +567,7 @@ export default function AdminPanel() {
             </div>
 
             {/* Tabla */}
-            <div className="bg-slate-50 border border-slate-200 rounded-sm overflow-hidden">
+            <div className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
               {loading ? (
                 <div className="py-20 text-center text-slate-500 text-sm font-mono">Cargando...</div>
               ) : error ? (
