@@ -263,10 +263,7 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          <p className="text-slate-500 text-xs sm:text-[11px] font-mono text-center mt-8">
-            Auditoría Beta enfocada en ChatGPT · Gemini y Perplexity en la hoja de ruta
-          </p>
-          <div className="mt-6 text-center">
+          <div className="mt-10 text-center">
             <Link href="/#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
               Quiero mi informe →
             </Link>
