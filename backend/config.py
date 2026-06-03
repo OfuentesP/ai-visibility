@@ -4,6 +4,10 @@ import os
 # Override via environment variable: AI_MODEL=gpt-4o
 AI_MODEL = os.getenv("AI_MODEL", "gpt-4o-mini")
 
+# Gemini model used cuando motor='gemini' o 'ambos'.
+# Override: GEMINI_MODEL=gemini-2.5-pro
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+
 # In-memory URL audit cache TTL (seconds). Default: 24 hours.
 URL_CACHE_TTL = int(os.getenv("URL_CACHE_TTL", "86400"))
 

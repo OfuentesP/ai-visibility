@@ -70,6 +70,7 @@ def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) ->
 
 def _persist_usage(
     *,
+    provider: str = "openai",
     model: str,
     prompt_tokens: int,
     completion_tokens: int,
@@ -89,6 +90,7 @@ def _persist_usage(
         row = OpenAIUsage(
             id=str(uuid.uuid4()),
             created_at=datetime.utcnow(),
+            provider=provider,
             model=model,
             endpoint=endpoint,
             modo=modo,

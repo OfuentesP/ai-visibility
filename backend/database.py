@@ -139,6 +139,7 @@ class OpenAIUsage(Base):
 
     id = Column(String, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    provider = Column(String, nullable=False, default="openai", index=True)  # openai | gemini
     model = Column(String, nullable=False, index=True)
     endpoint = Column(String, nullable=True, index=True)  # ej. /api/audit
     modo = Column(String, nullable=True)                  # brand|url|compare|cita

@@ -383,18 +383,51 @@ export default function AuditarPage() {
 
           {/* ── Brand results ────────────────────────────────────────────────── */}
           {mode === 'brand' && brand.result && (
-            <BrandResults
-              result={brand.result}
-              brand={brand.brand}
-              query={brand.query}
-              userEmail={userEmail}
-              userName={userName}
-              discoveryResult={brand.discoveryResult}
-              discoveryLoading={brand.discoveryLoading}
-              trendsResult={brand.trendsResult}
-              trendsLoading={brand.trendsLoading}
-              onDownloadJson={handleDownloadJson}
-            />
+            brand.result.por_motor && (brand.result.por_motor.chatgpt || brand.result.por_motor.gemini) ? (
+              <div className="space-y-10">
+                {(['chatgpt', 'gemini'] as const).map((m) => {
+                  const sub = brand.result?.por_motor?.[m]
+                  if (!sub) return null
+                  const label = m === 'chatgpt' ? 'ChatGPT (OpenAI)' : 'Gemini (Google)'
+                  const dotColor = m === 'chatgpt' ? 'bg-emerald-500' : 'bg-sky-500'
+                  return (
+                    <div key={m}>
+                      <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-6">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm">
+                          <span className={`w-2 h-2 rounded-full ${dotColor}`} />
+                          <span className="text-xs font-semibold text-slate-700">Motor: {label}</span>
+                        </div>
+                      </div>
+                      <BrandResults
+                        result={sub}
+                        brand={brand.brand}
+                        query={brand.query}
+                        userEmail={userEmail}
+                        userName={userName}
+                        discoveryResult={m === 'chatgpt' ? brand.discoveryResult : null}
+                        discoveryLoading={m === 'chatgpt' ? brand.discoveryLoading : false}
+                        trendsResult={m === 'chatgpt' ? brand.trendsResult : null}
+                        trendsLoading={m === 'chatgpt' ? brand.trendsLoading : false}
+                        onDownloadJson={handleDownloadJson}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <BrandResults
+                result={brand.result}
+                brand={brand.brand}
+                query={brand.query}
+                userEmail={userEmail}
+                userName={userName}
+                discoveryResult={brand.discoveryResult}
+                discoveryLoading={brand.discoveryLoading}
+                trendsResult={brand.trendsResult}
+                trendsLoading={brand.trendsLoading}
+                onDownloadJson={handleDownloadJson}
+              />
+            )
           )}
 
           {/* ── Brand footer ─────────────────────────────────────────────────── */}

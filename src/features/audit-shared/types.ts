@@ -74,6 +74,11 @@ export interface ResultadoBusqueda {
   cached_at?: string | null
   prev_score?: number | null
   prev_cached_at?: string | null
+  motor?: 'chatgpt' | 'gemini' | 'ambos'
+  por_motor?: {
+    chatgpt?: ResultadoBusqueda
+    gemini?: ResultadoBusqueda
+  }
 }
 
 export interface OportunidadAuditada {

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict, field_validator
-from typing import Optional, List, Literal
+from typing import Optional, List, Literal, Dict, Any
 from datetime import datetime
 
 
@@ -313,6 +313,14 @@ class ResultadoBusqueda(BaseModel):
     cached_at: Optional[str] = Field(None)
     prev_score: Optional[float] = Field(None, description="Score de la auditoría anterior (antes del último refresh de caché)")
     prev_cached_at: Optional[str] = Field(None, description="Fecha de la auditoría anterior")
+    motor: Optional[str] = Field(
+        default="chatgpt",
+        description="Motor que generó esta respuesta: chatgpt | gemini | ambos"
+    )
+    por_motor: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Cuando motor='ambos', diccionario {chatgpt: ResultadoBusqueda, gemini: ResultadoBusqueda}"
+    )
     timestamp: datetime = Field(
         default_factory=datetime.utcnow,
         description="Timestamp de creación"

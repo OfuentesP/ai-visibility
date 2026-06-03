@@ -18,7 +18,7 @@ export async function auditByBrand(params: {
   const res = await fetch(`${API}/api/audit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: params.query, brand: params.brand, email: params.email }),
+    body: JSON.stringify({ query: params.query, brand: params.brand, email: params.email, motor: 'ambos' }),
   })
   if (res.status === 429) throw new FreemiumError()
   if (!res.ok) { const t = await res.text(); throw new Error(`Error ${res.status}: ${t}`) }

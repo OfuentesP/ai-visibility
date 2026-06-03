@@ -41,8 +41,11 @@ from datetime import datetime, timedelta
 _url_cache: dict = {}
 
 
-def _cache_key(modo: str, marca: str, query: str = "") -> str:
-    raw = f"{modo}|{marca.lower().strip()}|{query.lower().strip()}"
+def _cache_key(modo: str, marca: str, query: str = "", motor: str = "chatgpt") -> str:
+    # No incluir el motor en la key cuando es chatgpt para mantener
+    # backwards-compat con todas las filas existentes en audit_cache.
+    suffix = f"|{motor}" if motor and motor != "chatgpt" else ""
+    raw = f"{modo}|{marca.lower().strip()}|{query.lower().strip()}{suffix}"
     return hashlib.sha256(raw.encode()).hexdigest()
 
 
@@ -317,11 +320,98 @@ class AuditRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=200)
     brand: str = Field(..., min_length=1, max_length=120)
     email: Optional[str] = None
+    motor: Optional[str] = Field(default="ambos", description="chatgpt | gemini | ambos")
 
 
 class DiscoveryRequest(BaseModel):
     brand: str = Field(..., min_length=1, max_length=120)
     topico: str = Field(..., min_length=1, max_length=200)
+
+
+async def _audit_brand_pipeline(
+    *, brand: str, query: str, motor: str, db
+) -> ResultadoBusqueda:
+    """Pipeline de auditoría brand para un único motor (chatgpt|gemini).
+
+    Retorna el ResultadoBusqueda completo, ya con .motor seteado y la fila
+    de audit_cache actualizada (para que el próximo hit sea cache).
+    """
+    from searcher import consultar_motor
+    from judge import extraer_metricas, generar_prioridad_ejecutiva, extraer_conceptos_faltantes, calcular_estado_invisibilidad, generar_plan_accion
+    from discovery import obtener_tendencias_chile, detectar_territorios_desatendidos
+
+    ck = _cache_key("brand", brand, query, motor=motor)
+    cached_row = _get_cache(db, ck)
+    if cached_row:
+        data = cached_row.resultado
+        data["from_cache"] = True
+        data["cached_at"] = cached_row.created_at.isoformat()
+        data["motor"] = motor
+        return ResultadoBusqueda(**data)
+
+    logger.info(f"[Paso 2 / {motor}] Buscando: {query}")
+    texto_busqueda = await consultar_motor(query, motor=motor)
+
+    logger.info(f"[Paso 3 / {motor}] Extrayendo métricas para: {brand}")
+    resultado = await extraer_metricas(texto_busqueda, brand)
+
+    logger.info(f"[Paso 4 / {motor}] Prioridad ejecutiva: {brand}")
+    prioridad = await generar_prioridad_ejecutiva(
+        resultado.posicion_mi_marca, resultado.sentimiento, resultado.marca_ganadora,
+        brand, texto_busqueda, resultado.recomendacion_ia,
+    )
+    resultado.prioridad_ejecutiva = prioridad
+
+    logger.info(f"[Paso 5 / {motor}] Content gap: {brand}")
+    gap_data = await extraer_conceptos_faltantes(texto_busqueda, resultado.marca_ganadora, brand)
+    resultado.percepciones_genericas = gap_data.get("percepciones_genericas", [])
+    resultado.conceptos_faltantes = gap_data.get("diferenciadores_ganador", [])
+
+    estado, score = calcular_estado_invisibilidad(
+        resultado.posicion_mi_marca, resultado.sentimiento,
+        resultado.marcas_mencionadas, brand,
+    )
+    resultado.estado_invisibilidad = estado
+    resultado.invisibilidad_score = score
+
+    logger.info(f"[Paso 7 / {motor}] Plan de rescate: {brand}")
+    plan_accion = await generar_plan_accion(
+        estado, resultado.posicion_mi_marca, resultado.marca_ganadora,
+        brand, resultado.conceptos_faltantes, texto_busqueda, busqueda_usuario=query,
+    )
+    resultado.plan_accion = plan_accion
+
+    try:
+        tendencias = await obtener_tendencias_chile(query)
+        comunicacion_actual = resultado.recomendacion_ia or f"Marca {brand} en mercado de {query}"
+        territorios = await detectar_territorios_desatendidos(query, tendencias, brand, comunicacion_actual)
+        from trends import enriquecer_territorios
+        territorios = enriquecer_territorios(territorios)
+        resultado.territorios_desatendidos = territorios
+    except Exception as e:
+        logger.warning(f"⚠️  territorios desatendidos ({motor}) falló: {e}")
+        resultado.territorios_desatendidos = []
+
+    rival = resultado.competidor_principal or resultado.marca_ganadora
+    if rival and rival.lower() != brand.lower():
+        try:
+            from judge import analyze_competitor_advantage
+            resultado.competitor_advantage = await analyze_competitor_advantage(
+                texto_busqueda, rival, brand,
+            )
+        except Exception as e:
+            logger.warning(f"⚠️  competitor_advantage ({motor}) falló: {e}")
+
+    res = ResultadoBusqueda(
+        prompt_original=query,
+        texto_original_ia=texto_busqueda,
+        resultados=[resultado],
+        motor=motor,
+    )
+    prev_score, prev_cached_at = _set_cache(db, ck, "brand", brand, query, res.model_dump(mode="json"))
+    res.prev_score = prev_score
+    res.prev_cached_at = prev_cached_at
+    return res
 
 
 @app.post("/api/audit", response_model=ResultadoBusqueda)
@@ -334,10 +424,12 @@ async def audit_pipeline(
     db: Session = Depends(get_db),
 ) -> ResultadoBusqueda:
     """
-    Pipeline completo: Paso 2 (Buscar) + Paso 3 (Juzgar) + Paso 4 (Brief) + Paso 5 (Plan PRO) + Paso 6 (Prioridad Ejecutiva)
-    Accepts JSON body {query, brand} or query params for backward compat.
+    Pipeline completo de auditoría brand.
+
+    motor='chatgpt' (default): solo OpenAI — comportamiento histórico.
+    motor='gemini': solo Gemini.
+    motor='ambos': corre los dos en paralelo y devuelve por_motor={chatgpt, gemini}.
     """
-    # Resolve from body or query params
     q = (body.query if body else None) or query
     b = (body.brand if body else None) or brand
     if not q or not b:
@@ -345,128 +437,57 @@ async def audit_pipeline(
     query = q[:200].strip()
     brand = b[:120].strip()
     email = (body.email if body else None)
+    motor = (body.motor if body else None) or "ambos"
+    motor = motor.lower().strip()
+    if motor not in ("chatgpt", "gemini", "ambos"):
+        motor = "ambos"
     try:
-        # ── Freemium check ────────────────────────────────────────────────
         if email and _check_freemium(db, email):
             raise HTTPException(status_code=429, detail="FREEMIUM_LIMIT")
 
-        # Sanitizar inputs antes de procesar
         sanitized = await sanitizar_inputs(brand, query)
         brand = sanitized.marca_normalizada
         query = sanitized.busqueda_corregida
-        logger.info(f"[Sanitized] brand='{brand}' query='{query}'")
+        logger.info(f"[Sanitized] motor={motor} brand='{brand}' query='{query}'")
 
-        # ── Supabase cache check ──────────────────────────────────────────
-        ck = _cache_key("brand", brand, query)
-        cached_row = _get_cache(db, ck)
-        if cached_row:
-            data = cached_row.resultado
-            data["from_cache"] = True
-            data["cached_at"] = cached_row.created_at.isoformat()
-            return ResultadoBusqueda(**data)
-
-        from searcher import consultar_openai
-        from judge import extraer_metricas, generar_prioridad_ejecutiva, extraer_conceptos_faltantes, calcular_estado_invisibilidad, generar_plan_accion
-        from discovery import obtener_tendencias_chile, detectar_territorios_desatendidos
-
-        # Paso 2: Searcher
-        logger.info(f"[Paso 2] Buscando: {query}")
-        texto_busqueda = await consultar_openai(query)
-
-        # Paso 3: Judge
-        logger.info(f"[Paso 3] Extrayendo métricas para: {brand}")
-        resultado = await extraer_metricas(texto_busqueda, brand)
-
-        # Paso 4: Prioridad Ejecutiva (Growth Strategist)
-        logger.info(f"[Paso 4] Generando prioridad ejecutiva para: {brand}")
-        prioridad = await generar_prioridad_ejecutiva(
-            resultado.posicion_mi_marca,
-            resultado.sentimiento,
-            resultado.marca_ganadora,
-            brand,
-            texto_busqueda,
-            resultado.recomendacion_ia
-        )
-        resultado.prioridad_ejecutiva = prioridad
-
-        # Paso 5: Diagnóstico de Vacíos de Contenido (Content Gap Analysis)
-        logger.info(f"[Paso 5] Analizando content gap para: {brand}")
-        gap_data = await extraer_conceptos_faltantes(
-            texto_busqueda,
-            resultado.marca_ganadora,
-            brand
-        )
-        resultado.percepciones_genericas = gap_data.get("percepciones_genericas", [])
-        resultado.conceptos_faltantes = gap_data.get("diferenciadores_ganador", [])
-
-        # Paso 6: Termómetro de Invisibilidad
-        logger.info(f"[Paso 6] Calculando estado de invisibilidad para: {brand}")
-        estado, score = calcular_estado_invisibilidad(
-            resultado.posicion_mi_marca,
-            resultado.sentimiento,
-            resultado.marcas_mencionadas,
-            brand
-        )
-        resultado.estado_invisibilidad = estado
-        resultado.invisibilidad_score = score
-
-        # Paso 7: Plan de Acción (Quick Wins + Estratégico)
-        logger.info(f"[Paso 7] Generando plan de rescate para: {brand}")
-        plan_accion = await generar_plan_accion(
-            estado,
-            resultado.posicion_mi_marca,
-            resultado.marca_ganadora,
-            brand,
-            resultado.conceptos_faltantes,
-            texto_busqueda,
-            busqueda_usuario=query
-        )
-        resultado.plan_accion = plan_accion
-
-        # Paso 8: Detectar Territorios Desatendidos (Gap Analysis)
-        logger.info(f"[Paso 8] Detectando territorios desatendidos para: {brand}")
-        try:
-            tendencias = await obtener_tendencias_chile(query)
-            comunicacion_actual = resultado.recomendacion_ia or f"Marca {brand} en mercado de {query}"
-            territorios = await detectar_territorios_desatendidos(
-                query,
-                tendencias,
-                brand,
-                comunicacion_actual
+        if motor == "ambos":
+            from gemini_tracking import gemini_available
+            if not gemini_available():
+                logger.warning("[ambos] Gemini no disponible — solo se corre chatgpt")
+                return await _audit_brand_pipeline(brand=brand, query=query, motor="chatgpt", db=db)
+            chat_res, gem_res = await asyncio.gather(
+                _audit_brand_pipeline(brand=brand, query=query, motor="chatgpt", db=db),
+                _audit_brand_pipeline(brand=brand, query=query, motor="gemini", db=db),
+                return_exceptions=True,
             )
-            from trends import enriquecer_territorios
-            territorios = enriquecer_territorios(territorios)
-            resultado.territorios_desatendidos = territorios
-            logger.info(f"✅ Detectados {len(territorios)} territorios desatendidos")
-        except Exception as e:
-            logger.warning(f"⚠️  No se pudieron detectar territorios desatendidos: {e}")
-            resultado.territorios_desatendidos = []
+            # Si uno falla, devolvemos el otro
+            if isinstance(chat_res, Exception) and isinstance(gem_res, Exception):
+                raise chat_res
+            if isinstance(chat_res, Exception):
+                gem_res.motor = "gemini"
+                return gem_res
+            if isinstance(gem_res, Exception):
+                chat_res.motor = "chatgpt"
+                return chat_res
+            # Combinar ambos en una respuesta wrapper
+            combined = ResultadoBusqueda(
+                prompt_original=chat_res.prompt_original,
+                texto_original_ia=chat_res.texto_original_ia,
+                resultados=chat_res.resultados + gem_res.resultados,
+                motor="ambos",
+                por_motor={
+                    "chatgpt": chat_res.model_dump(mode="json"),
+                    "gemini": gem_res.model_dump(mode="json"),
+                },
+            )
+            return combined
 
-        # Paso 9: Tabla de Ventajas del Competidor
-        rival = resultado.competidor_principal or resultado.marca_ganadora
-        if rival and rival.lower() != brand.lower():
-            logger.info(f"[Paso 10] Analizando ventajas de '{rival}' vs '{brand}'")
-            try:
-                from judge import analyze_competitor_advantage
-                resultado.competitor_advantage = await analyze_competitor_advantage(
-                    texto_busqueda, rival, brand
-                )
-            except Exception as e:
-                logger.warning(f"⚠️  competitor_advantage falló: {e}")
+        return await _audit_brand_pipeline(brand=brand, query=query, motor=motor, db=db)
 
-        # Retornar ResultadoBusqueda completo
-        res = ResultadoBusqueda(
-            prompt_original=query,
-            texto_original_ia=texto_busqueda,
-            resultados=[resultado]
-        )
-        prev_score, prev_cached_at = _set_cache(db, ck, "brand", brand, query, res.model_dump(mode="json"))
-        res.prev_score = prev_score
-        res.prev_cached_at = prev_cached_at
-        return res
-
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Error en pipeline: {e}")
+        logger.error(f"Error en pipeline brand (motor={motor}): {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
