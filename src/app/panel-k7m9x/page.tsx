@@ -444,6 +444,9 @@ interface OpenAIUpstream {
 }
 
 function fmtUSD(v: number) {
+  if (v === 0) return '$0.00'
+  if (Math.abs(v) < 0.01) return v.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 4, maximumFractionDigits: 6 })
+  if (Math.abs(v) < 1) return v.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 4, maximumFractionDigits: 4 })
   return v.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 function fmtNum(v: number) {
@@ -508,7 +511,7 @@ function OpenAITab() {
           </div>
         </div>
         <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
-          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Reportado por OpenAI (30 días)</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Toda la org OpenAI (30 días)</p>
           {upstream?.costs?.available && upstream?.tokens?.available ? (
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-slate-500">Costo</span><span className="font-mono text-slate-900">{fmtUSD(upstream.costs.total_usd ?? 0)}</span></div>
@@ -516,20 +519,23 @@ function OpenAITab() {
               <div className="border-t border-slate-100 my-2" />
               {reconcileUsd != null && (
                 <div className="flex justify-between text-xs">
-                  <span className="text-slate-500">Δ vs interno</span>
-                  <span className={`font-mono ${Math.abs(reconcileUsd) < 0.5 ? 'text-emerald-700' : 'text-orange-600'}`}>
-                    {reconcileUsd >= 0 ? '+' : ''}{fmtUSD(reconcileUsd)} USD
+                  <span className="text-slate-500">Otros proyectos (USD)</span>
+                  <span className="font-mono text-slate-700">
+                    {fmtUSD(Math.max(0, reconcileUsd))}
                   </span>
                 </div>
               )}
               {reconcileTokens != null && (
                 <div className="flex justify-between text-xs">
-                  <span className="text-slate-500">Δ tokens</span>
-                  <span className={`font-mono ${Math.abs(reconcileTokens) < 1000 ? 'text-emerald-700' : 'text-orange-600'}`}>
-                    {reconcileTokens >= 0 ? '+' : ''}{fmtNum(reconcileTokens)}
+                  <span className="text-slate-500">Otros proyectos (tokens)</span>
+                  <span className="font-mono text-slate-700">
+                    {fmtNum(Math.max(0, reconcileTokens))}
                   </span>
                 </div>
               )}
+              <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">
+                Esta card refleja todo el consumo de tu organización en OpenAI (todas las API keys). El tracking interno solo cuenta lo que pasa por este backend; la diferencia te dice cuánto consumo viene de otros lados.
+              </p>
             </div>
           ) : (
             <div className="text-xs text-slate-500">
@@ -566,8 +572,8 @@ function OpenAITab() {
                 tick={{ fontSize: 10, fill: '#475569', fontFamily: 'monospace' }}
                 axisLine={false}
                 tickLine={false}
-                width={48}
-                tickFormatter={(v) => `$${v.toFixed(2)}`}
+                width={60}
+                tickFormatter={(v) => fmtUSD(Number(v ?? 0))}
               />
               <Tooltip
                 contentStyle={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: 4, fontSize: 11 }}
