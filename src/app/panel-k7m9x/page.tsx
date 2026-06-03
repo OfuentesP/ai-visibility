@@ -428,12 +428,14 @@ interface OpenAIUpstream {
   costs: {
     available: boolean
     error?: string
+    detail?: string
     total_usd?: number
     por_dia?: { fecha: string; usd: number }[]
   }
   tokens: {
     available: boolean
     error?: string
+    detail?: string
     total_in?: number
     total_out?: number
     total_tokens?: number
@@ -535,6 +537,11 @@ function OpenAITab() {
               <p className="font-mono text-[10px] text-rose-600">
                 {upstream?.costs?.error || upstream?.tokens?.error || 'Configura OPENAI_ADMIN_KEY en el backend (sk-admin-...)'}
               </p>
+              {(upstream?.costs?.detail || upstream?.tokens?.detail) && (
+                <pre className="font-mono text-[10px] text-slate-500 mt-2 whitespace-pre-wrap break-all bg-slate-50 border border-slate-200 rounded-sm p-2 max-h-32 overflow-auto">
+                  {upstream?.costs?.detail || upstream?.tokens?.detail}
+                </pre>
+              )}
             </div>
           )}
         </div>

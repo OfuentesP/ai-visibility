@@ -206,11 +206,12 @@ async def fetch_openai_costs(days: int = 30) -> dict:
     end = int(datetime.utcnow().timestamp())
     start = int((datetime.utcnow() - timedelta(days=days)).timestamp())
     headers = {"Authorization": f"Bearer {_ADMIN_KEY}"}
+    # Costs API con bucket_width=1d acepta limit 1..180
     params = {
         "start_time": start,
         "end_time": end,
         "bucket_width": "1d",
-        "limit": days + 5,
+        "limit": min(max(days + 1, 1), 180),
     }
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
@@ -255,11 +256,12 @@ async def fetch_openai_token_usage(days: int = 30) -> dict:
     end = int(datetime.utcnow().timestamp())
     start = int((datetime.utcnow() - timedelta(days=days)).timestamp())
     headers = {"Authorization": f"Bearer {_ADMIN_KEY}"}
+    # Usage API con bucket_width=1d acepta limit 1..31
     params = {
         "start_time": start,
         "end_time": end,
         "bucket_width": "1d",
-        "limit": days + 5,
+        "limit": min(max(days + 1, 1), 31),
     }
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
