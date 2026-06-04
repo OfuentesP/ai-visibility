@@ -2045,6 +2045,693 @@ export const posts: Post[] = [
     ctaUrl: '/#planes',
     relacionados: ['chatgpt-busqueda-web-cambia-geo-2026'],
   },
+  {
+    slug: 'contenido-ia-google-que-permite-castiga-2026',
+    titulo: 'Contenido generado con iA: qué permite Google, qué te marca como spam y la etiqueta TrainedAlgorithmicMedia que casi nadie usa',
+    descripcion:
+      'Google actualizó (marzo 2026) su guía oficial sobre usar IA generativa para crear contenido SEO. Permite, condiciona y castiga — y exige etiquetar las imágenes con metadata IPTC TrainedAlgorithmicMedia y los feeds de producto AI-generated. Te traducimos las reglas y mostramos cómo aplicarlas en una operación chilena de e-commerce o medios.',
+    fecha: '2026-06-04',
+    categoria: 'GEO & AEO',
+    tags: ['Google', 'Contenido iA', 'Spam policy', 'IPTC', 'E-E-A-T', 'Merchant Center'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '9 min',
+    resumen:
+      'Google permite usar IA generativa para escalar contenido si agrega valor — y castiga como spam la generación masiva sin aporte. Exige metadata IPTC TrainedAlgorithmicMedia en imágenes con iA y etiquetar como AI-generated los atributos de producto en Merchant Center. Te mostramos qué cambia para equipos chilenos que ya usan ChatGPT o Gemini para escribir, generar imágenes y mantener feeds.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'El equipo de Google Search actualizó (marzo 2026) la guía oficial sobre cómo se debe usar contenido generado con IA dentro del SEO. El documento ya estaba — desde 2023 Google permitía la IA generativa siempre que "agregara valor" — pero la versión nueva agrega exigencias técnicas concretas que la mayoría de los equipos en Chile todavía no aplican.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El doc se mueve en tres ejes: qué está permitido, qué cuenta como spam, y qué metadata tienes que adjuntar para no parecer que estás escondiendo el origen del contenido. Te traducimos las reglas y mostramos cómo se ven aplicadas en una operación chilena (un e-commerce con catálogo grande, una marca de medios que genera resúmenes, una clínica que mantiene FAQ).',
+      },
+      { tipo: 'h2', texto: 'Lo que Google permite: IA como "andamio", no como "pluma"' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La cita textual del doc actualizado:',
+      },
+      {
+        tipo: 'cita',
+        texto: '"La IA generativa puede ser particularmente útil cuando se investiga un tema y se agrega estructura al contenido original."',
+        fuente: 'developers.google.com — Uso de contenido generado por IA (es-419)',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La frase es chica pero define la postura completa: Google permite usar iA para investigar (resumir fuentes, organizar bullets, validar fechas) y para estructurar (armar el outline, sugerir titulares, generar la tabla de contenidos). Lo que no quiere ver es contenido cuya razón de existir sea la iA — texto producido al por mayor solo porque la iA lo permite, sin que detrás haya investigación, experiencia o aporte real.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En la práctica: un copywriter usando Claude para limpiar redacción es legítimo. Un equipo de SEO generando 500 landings de "mejor X en Y ciudad" con ChatGPT, no.',
+      },
+      { tipo: 'h2', texto: 'Lo que cuenta como spam' },
+      {
+        tipo: 'cita',
+        texto: '"Usar herramientas de IA generativa […] con el objetivo de generar muchas páginas sin agregar valor para los usuarios puede incumplir la política de spam de Google."',
+        fuente: 'developers.google.com — Uso de contenido generado por IA (es-419)',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Tres señales concretas que Google cruza para clasificar contenido iA como spam:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Patrones de generación masiva: cientos o miles de URLs creadas en pocas semanas con la misma plantilla y diferencias mínimas (nombre de ciudad, marca, modelo). Cuando esa explosión coincide con un dropdown en el sitio "Selecciona tu comuna" y genera una landing por cada opción, la huella es obvia.',
+          'Falta de información de origen: no hay autor verificable, no hay fecha de publicación coherente, no hay enlaces a fuentes primarias. La iA suele alucinar fuentes, así que Google revisa si esas citas existen.',
+          'Métricas de calidad pobres: pogo-sticking (usuarios que entran y vuelven al SERP en menos de 5 segundos), tiempo en página casi cero, cero conversión orgánica. Google y los LLM cruzan esto con datos de Chrome y SERP behavior.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Si tu sitio fue parte de una operación masiva con iA antes de 2025 y aún tienes esas páginas vivas, la limpieza es prioritaria. Google empezó a degradar dominios completos por contaminación con contenido iA mal hecho (incluso si parte del sitio es legítima).',
+      },
+      { tipo: 'h2', texto: 'La regla técnica que casi nadie aplica: TrainedAlgorithmicMedia' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Acá está el cambio menos comentado del doc actualizado. Google exige que las imágenes generadas con iA lleven metadata IPTC declarando que son sintéticas. La especificación es la del estándar IPTC Photo Metadata, campo DigitalSourceType con valor TrainedAlgorithmicMedia.',
+      },
+      {
+        tipo: 'codigo',
+        lenguaje: 'xml',
+        codigo: `<!-- Metadata IPTC embebida en JPEG/PNG -->
+<DigitalSourceType>
+  http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia
+</DigitalSourceType>`,
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En Photoshop o Lightroom, la metadata IPTC se edita desde File Info. Con CLI, herramientas como exiftool permiten setearla en batch:',
+      },
+      {
+        tipo: 'codigo',
+        lenguaje: 'bash',
+        codigo: `exiftool -DigitalSourceType="trainedAlgorithmicMedia" \\
+  -overwrite_original *.jpg`,
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Por qué importa: Google Images usa esta metadata para etiquetar visualmente los resultados ("Imagen generada con iA") y para el sistema de Synthetic Content Detection. Una imagen sin la metadata correcta corre el riesgo de quedar mal clasificada — y un sitio que genera imágenes con iA y omite el metadata sistemáticamente puede recibir señal negativa.',
+      },
+      { tipo: 'h2', texto: 'Feeds de producto: el otro requerimiento que se está pasando por alto' },
+      {
+        tipo: 'cita',
+        texto: '"Los datos de productos generados por IA […] deben especificarse por separado y etiquetarse como generados por IA."',
+        fuente: 'developers.google.com — Uso de contenido generado por IA (es-419)',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En Google Merchant Center, los atributos de producto generados con iA (descripción, especificaciones, materiales sugeridos) deben ir marcados como AI-generated en el campo correspondiente del feed. La estructura del XML/JSON tiene un atributo opcional que casi ninguna tienda chilena está poblando.',
+      },
+      {
+        tipo: 'codigo',
+        lenguaje: 'xml',
+        codigo: `<!-- Ejemplo feed Merchant Center -->
+<item>
+  <g:id>SKU-12345</g:id>
+  <title>Zapatilla running mujer talla 38</title>
+  <description ai_generated="true">
+    Diseño ergonómico con tecnología de amortiguación...
+  </description>
+  <g:product_detail>
+    <g:attribute_name ai_generated="true">Material</g:attribute_name>
+    <g:attribute_value>Malla técnica con refuerzo TPU</g:attribute_value>
+  </g:product_detail>
+</item>`,
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En Chile, prácticamente todos los e-commerce grandes (Falabella, Paris, Ripley, Linio antes) usan IA generativa para completar descripciones de SKUs que llegan del proveedor sin texto. Pocos están etiquetando esa columna como AI-generated. Cuando Google active el matching cruzado de calidad iA por categoría, esa omisión va a importar.',
+      },
+      { tipo: 'h2', texto: 'Transparencia: declarar el origen, sin esconderse y sin presumir' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Google recomienda — no exige — que cuando el contenido es predominantemente iA o asistido por iA, se declare al lector. Sin escándalo y sin ocultarlo. Algunas formas que sí funcionan en sitios chilenos:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Pie de artículo con la línea "Borrador inicial asistido por iA. Editado y verificado por [autor humano]". Le dice al lector que hubo iA y a Google que hubo revisión humana.',
+          'En las FAQ que se generan automáticamente a partir del catálogo, agregar un disclaimer global ("Respuestas iniciales generadas automáticamente y validadas por nuestro equipo de soporte").',
+          'En el byline del artículo, ambos nombres: el autor humano que firma y el modelo de iA usado como herramienta (no como autor).',
+        ],
+      },
+      { tipo: 'h2', texto: 'Cómo se ve esto en una operación chilena típica' },
+      {
+        tipo: 'h3', texto: 'E-commerce con catálogo grande',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Descripciones de producto generadas por iA: legítimo, siempre que se etiqueten en el feed y que detrás haya revisión editorial mínima (un revisor humano que vea el 10% al azar).',
+          'Imágenes "lifestyle" hechas con generadores de imagen: metadata IPTC TrainedAlgorithmicMedia obligatorio.',
+          'Landing por categoría con texto SEO al pie generado con iA: legítimo si la categoría existe y vende. Spam si la categoría es inventada solo para capturar long-tail.',
+        ],
+      },
+      { tipo: 'h3', texto: 'Marca de medios o blog corporativo' },
+      {
+        tipo: 'lista',
+        items: [
+          'Resúmenes diarios automáticos a partir de notas humanas: legítimo, con disclaimer.',
+          'Artículos completos escritos por iA y publicados sin revisión: spam según la definición nueva.',
+          'Outlines y estructuras armadas con Claude, escritura humana: el caso ideal según el doc de Google.',
+        ],
+      },
+      { tipo: 'h3', texto: 'Clínica o servicio profesional' },
+      {
+        tipo: 'lista',
+        items: [
+          'FAQ generadas a partir de un input médico verificado: legítimo, con autor profesional firmando.',
+          'Contenido YMYL (Your Money Your Life) escrito 100% con iA: alto riesgo de penalización. Aquí Google es especialmente estricto.',
+          'Sugerencias automáticas de "qué especialista necesitas según tus síntomas": peligroso. Mejor herramienta de chat con disclaimer claro que no es diagnóstico.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Lo que esto implica para Ai Visibility y Share of Model' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Una marca que genera contenido con iA mal etiquetado tiene un problema doble: pierde ranking orgánico (penalización Google) y pierde citas en LLMs (los modelos cruzan la calidad técnica con la confianza del dominio). Mientras tanto, una marca que usa iA con disciplina — etiqueta imágenes, marca feeds, revisa contenido, declara el origen — gana en ambos frentes.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En las auditorías Share of Model, cuando vemos un dominio con bajo score de visibilidad pero buena cobertura de keywords, una de las primeras hipótesis es que el contenido tiene huella iA mal manejada. Es una pregunta concreta que respondemos: ¿tu metadata IPTC está poblada? ¿tu feed Merchant Center etiqueta lo iA? ¿hay revisión humana visible?',
+      },
+      { tipo: 'h2', texto: 'Checklist práctico antes de seguir escalando con iA' },
+      {
+        tipo: 'lista',
+        items: [
+          'Imágenes generadas con iA: agregar IPTC TrainedAlgorithmicMedia en todas las que están vivas en el sitio. Audit en batch con exiftool.',
+          'Feed Merchant Center: agregar atributo ai_generated="true" en descripciones y atributos creados con iA.',
+          'Pie de artículo: incluir el patrón "Asistido por iA, revisado por [humano]" cuando aplique.',
+          'Política de revisión humana: definir un % mínimo que se revisa antes de publicar, con un autor responsable visible.',
+          'Auditoría de contenido legacy: identificar landings masivas generadas pre-2025 sin revisión y deciidr si se mantienen, reescriben o despublican.',
+        ],
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si recién estás partiendo el uso de iA en producción de contenido, hacer estas 5 cosas desde el día uno te ahorra el dolor de hacerlas cuando el sitio ya tiene 5.000 URLs contaminadas y un drop de tráfico que no sabes a qué atribuir.',
+      },
+      {
+        tipo: 'referencias',
+        items: [
+          { label: 'Uso de contenido generado por IA — Google Search Central (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/using-gen-ai-content?hl=es-419' },
+          { label: 'Crear contenido útil — Google Search Central', url: 'https://developers.google.com/search/docs/fundamentals/creating-helpful-content?hl=es-419' },
+          { label: 'IPTC Photo Metadata Standard — DigitalSourceType', url: 'https://cv.iptc.org/newscodes/digitalsourcetype/' },
+          { label: 'Políticas de contenido generado con IA — Merchant Center', url: 'https://support.google.com/merchants/answer/13046728?hl=es-419' },
+          { label: 'exiftool — herramienta de metadata IPTC en batch', url: 'https://exiftool.org/' },
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mi contenido frente a la política de iA →',
+    ctaUrl: '/#planes',
+    relacionados: ['5-hacks-geo-que-google-dice-no-sirven', 'contenido-commodity-vs-experiencia-real-ia', 'guia-google-ia-acciones-marca-chilena', 'checklist-tecnico-google-busqueda-ia'],
+    glosario: [
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'aeo', termino: 'AEO (Answer Engine Optimization)' },
+    ],
+  },
+  {
+    slug: 'escribir-para-ia-8-tecnicas-citacion-2026',
+    titulo: 'Escribir para iA en 2026: 8 técnicas concretas para que ChatGPT, Perplexity y Gemini te citen (y no a tu competencia)',
+    descripcion:
+      'Los LLM eligen pocas fuentes para citar. Cuando ChatGPT, Perplexity o Gemini construyen una respuesta, suelen quedarse con 3-5 dominios — y tu marca compite por estar en ese set. Te entregamos 8 técnicas de escritura accionables (pirámide invertida, FAQ semánticas, listicles, E-E-A-T en cada pieza) traducidas para equipos chilenos.',
+    fecha: '2026-06-04',
+    categoria: 'Tutoriales',
+    tags: ['Escritura iA', 'GEO', 'AEO', 'Content Strategy', 'FAQ', 'E-E-A-T'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '11 min',
+    resumen:
+      'Un playbook práctico de 8 técnicas para que tus artículos sean citados por LLMs: pirámide invertida en cada pieza, respuesta directa antes del contexto, FAQ con preguntas semánticas reales, señales E-E-A-T visibles, autoridad temática site-wide, frescura continua, formato listicle/comparativa, URLs y estructura técnica. Cada técnica viene con un ejemplo aplicable a una marca chilena y una métrica para medir si está funcionando.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'La pregunta cambió. Antes era "¿cómo escribo para rankear en Google?". Ahora es "¿cómo escribo para que ChatGPT, Perplexity o Gemini me elijan como la fuente que citan cuando un cliente pregunta?". Es una diferencia chica en redacción pero enorme en mecánica.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM no muestran 10 resultados — citan 3 a 5. La distribución es brutalmente desigual: la fuente número 1 se lleva la mención completa, el resto aparece como nota al pie. Si tu marca no está en el top 5 de fuentes para una query relevante, prácticamente no existe en la conversación. Este post es el manual de campo para entrar a ese top 5.',
+      },
+      { tipo: 'h2', texto: 'Cómo decide un LLM a quién citar (resumen de 60 segundos)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los modelos modernos usan RAG (Retrieval-Augmented Generation): cuando reciben una pregunta, hacen una búsqueda interna a través de un índice (propio o vía conectores como Bing/Google), recuperan 10-30 documentos relevantes, y eligen los 3-5 que usarán para construir la respuesta. La elección se basa en 5 señales:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Confianza del dominio (validación externa, citas recibidas, presencia en otros índices).',
+          'Relevancia directa (qué tan rápido el documento responde literalmente la pregunta).',
+          'Profundidad temática (¿el dominio cubre el tema en profundidad o es una pieza aislada?).',
+          'Frescura y exactitud (fecha del contenido, datos verificables).',
+          'Patrones de contenido (estructura coherente, tono autoritativo, presencia de citas).',
+        ],
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Las 8 técnicas que siguen impactan estas señales de forma directa. No son "trucos para SEO" — son cambios reales en cómo se redacta, estructura y publica.',
+      },
+      { tipo: 'h2', texto: '1. Pirámide invertida en cada pieza, sin excepción' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La regla periodística clásica vuelve con fuerza: lo más importante arriba, el detalle abajo. Los LLM leen los primeros párrafos primero y, cuando deciden a quién citar, pesan más lo que aparece en el lead.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'En la práctica: la primera oración o párrafo de un post sobre "mejor cuenta corriente PyME en Chile" debería responder literalmente esa pregunta. No "Las cuentas corrientes son fundamentales para una pyme…". Sí: "Las 3 cuentas corrientes PyME mejor evaluadas en Chile a 2026 son Banco de Chile EmpresaCheq, Santander Pyme y BancoEstado Microempresas. Te explicamos por qué."',
+      },
+      {
+        tipo: 'cita',
+        texto: '"La primera oración o párrafo te dice exactamente de qué se trata esta página y por qué importa."',
+        fuente: 'Suso Digital — Writing for Robots',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Métrica para validar: pega tu primer párrafo en Perplexity y pregúntale "¿qué pregunta responde este texto?". Si Perplexity no puede sintetizar la pregunta en una línea, tu lead falla.',
+      },
+      { tipo: 'h2', texto: '2. Responder primero, contextualizar después' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Esto es una variante operativa de la pirámide invertida. Si la query es una pregunta directa ("¿cuánto cuesta arrendar un coworking en Las Condes?"), responder en el primer párrafo con el rango ($350.000-$650.000 CLP/mes) y después contar la metodología, las variables que mueven el precio y los 3 mejores espacios.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM citan a la fuente que les ahorra el trabajo de sintetizar. Si tu contenido obliga al modelo a leer 600 palabras para extraer un número, el modelo prefiere la fuente que da el número en línea 2.',
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Trampa común: el SEO tradicional premiaba "atrapar" al usuario con contexto antes del dato. En GEO eso te castiga. El usuario no llega — el modelo decide. Optimiza para el modelo.',
+      },
+      { tipo: 'h2', texto: '3. FAQ con preguntas semánticas reales (no las que tú quieres)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La sección FAQ al pie de cada post pasó de ser un nice-to-have de SEO a ser el bloque más citado por LLMs. Pero solo funciona si las preguntas son las que la gente realmente hace — no las que tu equipo cree que debería hacer.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Cómo obtener las preguntas reales: combinar Search Console (queries de tu sitio), AlsoAsked.com (sugerencias semánticas), Reddit y Quora (lenguaje natural de la audiencia), y consultar a ChatGPT o Gemini con "¿Qué preguntas comunes hace la gente sobre [tema]?" — los LLM revelan las queries que ya están viendo internamente.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Estructura técnica: cada FAQ marcada con JSON-LD FAQPage (Schema.org), con la pregunta como mainEntity y la respuesta concreta debajo. Mantener las respuestas debajo de 60 palabras — los LLM citan respuestas concisas con más probabilidad que párrafos largos.',
+      },
+      { tipo: 'h2', texto: '4. Señales E-E-A-T visibles en cada pieza (no solo en el About)' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Experiencia, Expertise, Authoritativeness, Trustworthiness. La regla nueva es que cada artículo lleva sus propias señales E-E-A-T, no solo el sitio en general. Concretamente:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Byline con nombre y credencial (Director SEO, Médico cirujano, Abogado tributario, etc.) y link al perfil del autor en LinkedIn o Google Knowledge Panel.',
+          'Sección "Sobre la fuente" al pie del post: 2 líneas sobre el experto, no sobre la empresa.',
+          'Citas a fuentes primarias (papers, datos gubernamentales, declaraciones públicas) — minimo 3 por pieza, idealmente fuera del propio dominio.',
+          'Fecha de publicación visible al lado del título y fecha de última actualización si cambió.',
+          'Editorial trail: indicar quién editó si es distinto del autor (ej. "Editado por [equipo]").',
+        ],
+      },
+      { tipo: 'h2', texto: '5. Autoridad temática site-wide, no por pieza' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM evalúan el dominio completo cuando deciden si una fuente es confiable en un tema. No basta con escribir un buen post — necesitas un cluster de piezas relacionadas que demuestren cobertura profunda. Una pyme escribiendo un artículo brillante sobre IFRS 16 sin ningún otro post sobre tributación o contabilidad va a perder citas contra una contadora chilena con 30 posts sobre temas relacionados, aunque cada pieza sea menos detallada.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Cómo operacionalizarlo: para cada tema central de tu negocio, definir 8-12 piezas que arman cluster. Una pillar page central + 5-7 posts satélite que se enlazan entre sí + 2-3 FAQ pages + 1-2 estudios de caso. Eso es lo que un LLM "ve" como autoridad temática.',
+      },
+      { tipo: 'h2', texto: '6. Frescura continua, no solo "última actualización: hoy"' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Frescura ≠ cambiar la fecha de actualización. Los LLM detectan revisiones reales versus updates cosméticos. Lo que funciona:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Actualizar números, estadísticas y rangos de precio al menos cada 6 meses si son parte del contenido.',
+          'Agregar bloques nuevos (no reescribir párrafos viejos) cuando aparece información nueva relevante.',
+          'Versionado visible: mantener un changelog al pie ("Última revisión sustantiva: junio 2026 — agregamos sección sobre Gemini 2.5") en lugar de solo cambiar fechas.',
+          'Eliminar contenido obsoleto en vez de dejarlo como decoración. Un post de 2022 sobre "el futuro de la búsqueda con iA" que sigue vivo daña tu autoridad.',
+        ],
+      },
+      { tipo: 'h2', texto: '7. Formato listicle y comparativa siguen dominando' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM citan listicles y comparativas más que prosa narrativa. La razón es mecánica: el formato lista es fácil de fragmentar y re-citar en una respuesta sintetizada. Cuando un usuario pregunta "¿cuáles son los mejores CRM para pymes chilenas?", el modelo prefiere una fuente que ya tiene la lista hecha — no una que la sugiere en medio de un ensayo.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Formatos que ganan citas:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Listas numeradas con criterio explícito ("Las 5 mejores X según [variable concreta]").',
+          'Tablas comparativas con columnas claras (precio, característica clave, ideal para).',
+          'How-to step-by-step con pasos enumerados.',
+          'Pros y contras de una decisión.',
+          'Definiciones tipo "X es Y. Funciona así: …" para temas técnicos.',
+        ],
+      },
+      { tipo: 'h2', texto: '8. URLs semánticas + checklist técnico mínimo' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No es solo redacción. El packaging técnico de tu post pesa en la decisión del LLM:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'URL semántica que refleje la query real ("/mejor-cuenta-corriente-pyme-chile" en vez de "/post-12345").',
+          'Title tag y H1 que coincidan literalmente con la pregunta que respondes.',
+          'Meta description que sea un resumen útil — los LLM la usan como snippet candidato.',
+          'Tiempo de carga LCP < 2,5 segundos (los LLM consultan vía bot, y los bots descartan páginas lentas).',
+          'JSON-LD Article + FAQPage donde aplique.',
+          'Estructura HTML semántica (article, h1-h3 jerárquicos, sin h2 huérfanos).',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'El checklist técnico no es opcional, pero tampoco te salva si el contenido es flojo. Es la cuarta parte del trabajo. Las 3 primeras (1-2-3) son las que más mueven la aguja.',
+      },
+      { tipo: 'h2', texto: 'Cómo se mide si tus piezas están funcionando' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Sin dashboard oficial de "citas en LLMs", estas son las 4 señales prácticas que sí puedes monitorear:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Tráfico de referal desde chatgpt.com, perplexity.ai, gemini.google.com y copilot.microsoft.com en Google Analytics 4 — etiquétalos como canal "AI Search" para filtrarlos juntos.',
+          'Picos de tráfico directo después de publicar piezas relevantes (los LLM citan pero muchos usuarios escriben la URL a mano después de ver la cita).',
+          'Volumen de búsqueda brandeada en Search Console: si subes en citas LLM, tu marca empieza a buscarse más.',
+          'Auditoría manual periódica: cada 2-4 semanas, hacer 10 queries relevantes a tu negocio en ChatGPT, Perplexity y Gemini, y registrar quién aparece. Esto es exactamente lo que hace una auditoría Share of Model.',
+        ],
+      },
+      { tipo: 'h2', texto: 'El error más común que vemos en equipos chilenos' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Aplicar 1 o 2 técnicas de la lista y esperar resultados. Las 8 son un sistema: la frescura sin autoridad temática no sirve, la autoridad temática sin pirámide invertida tampoco, las FAQ sin E-E-A-T son ruido. Lo que funciona es elegir un cluster temático prioritario (no más de 2 al inicio) y aplicar las 8 técnicas en cada pieza nueva de ese cluster durante 3-4 meses.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Para un equipo chico (1-2 personas escribiendo), eso significa publicar menos pero mejor. Un post bien construido con las 8 técnicas en cluster temático bate a 10 posts genéricos en cualquier benchmark de citas LLM. La economía de visibilidad cambió.',
+      },
+      {
+        tipo: 'referencias',
+        items: [
+          { label: 'Writing for Robots: Content Writing Best Practices for AI Visibility — Suso Digital', url: 'https://susodigital.com/thoughts/writing-for-robots-content-writing-best-practices-for-ai-visibility/' },
+          { label: 'Guía de Google para optimización con IA (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide?hl=es-419' },
+          { label: 'Search Quality Evaluator Guidelines (E-E-A-T) — Google', url: 'https://services.google.com/fh/files/misc/hsw-sqrg.pdf' },
+          { label: 'Schema.org FAQPage', url: 'https://schema.org/FAQPage' },
+        ],
+      },
+    ],
+    ctaTexto: 'Auditar mis piezas frente al estándar LLM →',
+    ctaUrl: '/#planes',
+    relacionados: ['contenido-commodity-vs-experiencia-real-ia', 'visitante-de-ia-viene-a-comprar', 'que-es-rag-como-decide-citas-ia', 'jsonld-organization-chile'],
+    glosario: [
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'aeo', termino: 'AEO (Answer Engine Optimization)' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+      { slug: 'share-of-model', termino: 'Share of Model' },
+    ],
+  },
+  {
+    slug: 'volvio-pr-digital-rag-cobertura-editorial',
+    titulo: 'Volvió el PR digital: por qué RAG hace que la cobertura editorial valga más que el SEO técnico',
+    descripcion:
+      'Los LLM no muestran 10 resultados — citan 3 a 5 fuentes por respuesta. Y la primera señal que usan para decidir esas pocas fuentes es la validación externa: cobertura editorial, menciones en medios reconocidos, citas en wikis y comunidades. Esto convierte al PR de "nice-to-have" en infraestructura de visibilidad. Te contamos qué medios chilenos pesan, cómo se construye una estrategia de earned media para LLMs y qué métricas mirar.',
+    fecha: '2026-06-04',
+    categoria: 'GEO & AEO',
+    tags: ['PR digital', 'Earned media', 'RAG', 'Medios chilenos', 'Estrategia'],
+    autor: 'Ai Visibility',
+    tiempoLectura: '10 min',
+    resumen:
+      'RAG concentra las citas LLM en 3-5 fuentes por respuesta. La validación externa (cobertura en medios, menciones en wikis, presencia en comunidades reconocidas) es la primera señal que los modelos usan para elegir esas pocas fuentes. Te entregamos un mapa de los medios chilenos que más pesan en LLMs, una estrategia de outreach para earned media GEO-friendly, y las métricas concretas para medir si tu PR está moviendo la aguja en ChatGPT, Perplexity y Gemini.',
+    bloques: [
+      {
+        tipo: 'parrafo',
+        texto:
+          'Durante 15 años el PR digital fue secundario. Los equipos de marketing pusieron presupuesto en SEO, ads y contenido propio, y la cobertura editorial quedó como "lo que pasa cuando el CEO da una entrevista". Eso cambió rápido en los últimos 18 meses, y el cambio no es por una decisión humana — es por cómo funcionan los LLM.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Cuando ChatGPT, Perplexity o Gemini construyen una respuesta sobre tu industria, no muestran 10 resultados como hace Google. Citan entre 3 y 5 fuentes. La pregunta clave es: ¿cómo deciden esas pocas fuentes? Una respuesta corta y disruptiva: por validación externa antes que por contenido propio. Cobertura editorial, citas de terceros, presencia en wikis y comunidades. Es exactamente el dominio del PR.',
+      },
+      {
+        tipo: 'cita',
+        texto: '"La cobertura editorial de terceros es una de las señales más fuertes que un modelo de IA usa para decidir si una fuente vale la pena citar."',
+        fuente: 'Suso Digital — Writing for Robots',
+      },
+      { tipo: 'h2', texto: 'Por qué RAG cambió la ecuación' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'RAG (Retrieval-Augmented Generation) es la técnica que usan los LLM modernos para responder con datos actualizados. El modelo recibe la pregunta, hace una búsqueda interna sobre un índice de millones de documentos, recupera los más relevantes y los usa para construir la respuesta. La búsqueda interna usa muchas señales — pero la confianza del dominio pesa desproporcionadamente cuando hay que elegir 3-5 fuentes de 30.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Y la confianza del dominio se construye, en gran parte, por validación externa. Un dominio que aparece 50 veces citado en La Tercera, Diario Financiero, El Mercurio y Pulso tiene un perfil de confianza distinto a uno que tiene el mismo contenido pero solo se cita a sí mismo. El segundo puede tener mejor SEO técnico — y aún así pierde la cita LLM.',
+      },
+      { tipo: 'h2', texto: 'Lo que ya no funciona' },
+      {
+        tipo: 'lista',
+        items: [
+          'Comprar enlaces de baja calidad en directorios o sitios temáticos sin tráfico. Los LLM cruzan la calidad del dominio que enlaza — un backlink desde un sitio con 0 autoridad genera 0 valor.',
+          'Generar menciones falsas vía bots o granjas de contenido. Los modelos detectan patrones de menciones inauthentic y los descartan.',
+          'PR transaccional (sponsored content disfrazado de nota editorial). Los LLM distinguen el contenido sponsored — declarado o no — y lo pesan menos.',
+          'Cobertura "todo terreno" sin estrategia temática. Aparecer en una nota de tecnología y otra de moda y otra de salud no construye autoridad en ninguna. La autoridad es temática.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Qué medios chilenos pesan en LLMs' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los LLM no publican una lista oficial — pero hay patrones consistentes que se ven al hacer auditorías Share of Model. Por categoría:',
+      },
+      {
+        tipo: 'h3', texto: 'Negocios y economía' },
+      {
+        tipo: 'lista',
+        items: [
+          'Diario Financiero — peso alto en queries sobre empresas, M&A, estrategia.',
+          'Pulso (La Tercera) — peso alto en queries de mercados, inversiones, fintech.',
+          'La Tercera Negocios — peso medio-alto en queries generales de negocio.',
+          'El Mercurio Inversiones — peso alto en queries de inversión retail y mercados.',
+          'Emol Economía — peso medio en queries generales.',
+        ],
+      },
+      {
+        tipo: 'h3', texto: 'Tecnología y startups' },
+      {
+        tipo: 'lista',
+        items: [
+          'Pisapapeles / Fayerwayer (anglo-chileno) — peso alto en gadgets y reviews.',
+          'TrendTIC — peso medio-alto en queries B2B tech.',
+          'BiobíoChile Tecnología — peso medio en queries generales.',
+          'Diario Financiero Innovación — peso alto en queries de innovación corporativa.',
+        ],
+      },
+      {
+        tipo: 'h3', texto: 'Salud, derecho, ámbitos especializados' },
+      {
+        tipo: 'lista',
+        items: [
+          'Medwave (académico) — peso muy alto en queries médicas (revista indexada).',
+          'Estado Diario — peso medio-alto en queries legales y regulatorias.',
+          'Diario Constitucional — peso alto en queries constitucionales y derecho público.',
+          'Revistas universitarias indexadas (Scielo) — peso alto en queries técnicos.',
+        ],
+      },
+      {
+        tipo: 'h3', texto: 'General y consumo' },
+      {
+        tipo: 'lista',
+        items: [
+          'La Tercera — peso alto transversal.',
+          'El Mercurio — peso alto transversal.',
+          'Cooperativa.cl — peso medio-alto en queries de actualidad.',
+          'BiobíoChile — peso medio en queries regionales y de consumo masivo.',
+        ],
+      },
+      {
+        tipo: 'nota',
+        texto:
+          'Este ranking se mueve. La autoridad LLM no es estable — un medio que pesaba mucho hace 2 años puede haber bajado y al revés. Auditarlo cada 3-6 meses con queries reales de tu industria es la única forma de mantenerlo actualizado.',
+      },
+      { tipo: 'h2', texto: 'Estrategia de earned media GEO-friendly' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'No es el PR tradicional. La estrategia que funciona para construir autoridad LLM tiene 4 pilares:',
+      },
+      { tipo: 'h3', texto: '1. Data propietaria como ancla' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Los medios chilenos publican lo que les sirve a su audiencia, y lo que más les sirve son datos exclusivos. Hacer un estudio anual de tu industria (ej. "Estado del e-commerce chileno 2026", "Cómo invierten las pymes en marketing", "Tendencias de salud digital en LATAM") te genera 6-12 menciones por publicación durante 8-10 semanas. Es la unidad básica de cobertura LLM-friendly.',
+      },
+      { tipo: 'h3', texto: '2. Experto vocero con perfil indexable' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El medio chileno cita a personas con nombre, no a marcas anónimas. Necesitas 1-2 voceros con autoridad real en tu equipo (CEO o C-level de área) con perfil LinkedIn completo, Google Knowledge Panel armado (cuando aplique), y disponibilidad para entrevistas. Sin vocero, el medio cita a tu competidor que sí tiene uno.',
+      },
+      { tipo: 'h3', texto: '3. Ritmo predecible, no campañas aisladas' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'La autoridad LLM se construye con repetición. Un equipo de PR que consigue 2 menciones al mes consistentemente durante 12 meses construye más autoridad que 30 menciones explosivas en un trimestre y silencio el resto del año. Los LLM dan más peso a fuentes que aparecen con regularidad en el medio.',
+      },
+      { tipo: 'h3', texto: '4. Wikipedia y comunidades especializadas' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'ChatGPT cita mucho a Wikipedia. Perplexity cita mucho a Reddit y comunidades. Gemini cita mucho a sitios oficiales y .gob. Esto significa que la estrategia de "menciones" no es solo prensa — incluye:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Crear o mejorar la página Wikipedia de tu marca/sector si calificas para los criterios de notabilidad (no fácil, pero alto valor cuando se logra).',
+          'Participar de forma genuina en subreddits relevantes (r/chile, r/empresas, r/CL_chile, r/programacionchile, r/SaaSChile, etc.) sin spam y aportando valor.',
+          'Responder en Quora preguntas relevantes a tu industria con tu nombre y credencial.',
+          'Presencia en directorios oficiales y certificaciones del rubro (ej. ProChile, Cámara Comercio, asociaciones gremiales).',
+          'Datos publicados en sitios .gob (INE, Banco Central, Estadísticas SII) cuando el contenido permite ser fuente.',
+        ],
+      },
+      { tipo: 'h2', texto: 'Métricas concretas para medir si funciona' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El PR tradicional medía con métricas tipo "AVE" (Advertising Value Equivalent). Eso ya no sirve. Para PR LLM-friendly las métricas concretas son:',
+      },
+      {
+        tipo: 'lista',
+        items: [
+          'Citas en LLMs: número de queries en ChatGPT/Perplexity/Gemini donde tu marca aparece como fuente citada. Auditoría manual periódica o herramienta como Share of Model.',
+          'Posición de mención: cuando apareces citado, ¿eres la fuente principal o nota al pie? La fuente principal vale 4-5x más.',
+          'Cobertura por medio TOP: número de menciones en los 10 medios chilenos que más pesan en LLMs para tu vertical, por trimestre.',
+          'Diversidad de medios: ratio entre medios distintos y total de menciones — alto = autoridad distribuida = mejor para LLMs.',
+          'Tráfico orgánico de marca: búsquedas brand-name en Search Console — sube cuando tu marca empieza a ser citada por LLMs (los usuarios buscan el nombre después de verlo).',
+        ],
+      },
+      { tipo: 'h2', texto: 'El presupuesto se reparte distinto' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si en 2020 una distribución típica era 50% performance, 30% SEO/contenido, 20% PR, el patrón que vemos en marcas chilenas que ganan citas LLM en 2026 es más cercano a 35% performance, 25% SEO/contenido propio, 25% PR/earned media, 15% data/estudios propios. No porque PR sea más barato — es porque la unidad de visibilidad en el ecosistema LLM responde más al earned media que al owned content.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Esto no significa abandonar el SEO. Significa reconocer que el SEO técnico solo, sin validación externa, ya no es suficiente para entrar al top 5 de fuentes citadas. Y que la inversión que mueve la aguja en 2026 es la combinación: contenido propio impecable + cobertura editorial constante + data propietaria publicable.',
+      },
+      { tipo: 'h2', texto: 'Cómo se ve esto en una operación chilena' },
+      {
+        tipo: 'h3', texto: 'PyME (1-50 empleados)' },
+      {
+        tipo: 'lista',
+        items: [
+          'Vocero único (fundador) con LinkedIn fuerte.',
+          '1 estudio anual de tu industria publicado bajo tu marca.',
+          'Outreach activo a 3-5 medios verticales del rubro (no a todos).',
+          'Presencia activa en 1-2 comunidades online relevantes.',
+          'Meta realista: 8-12 menciones reales al año en medios que pesan en tu vertical.',
+        ],
+      },
+      { tipo: 'h3', texto: 'Empresa mediana (50-300 empleados)' },
+      {
+        tipo: 'lista',
+        items: [
+          '2 voceros (C-level + experto técnico).',
+          '2 estudios anuales + reportes mensuales con data agregada.',
+          'Agencia PR boutique con foco vertical (no de todo).',
+          'Programa de speakers en conferencias del sector.',
+          'Meta realista: 30-50 menciones al año, presencia en 3-4 wikis/directorios especializados.',
+        ],
+      },
+      { tipo: 'h3', texto: 'Corporación (300+ empleados)' },
+      {
+        tipo: 'lista',
+        items: [
+          'Equipo PR in-house + agencia.',
+          'Calendario editorial trimestral con anclas de data propietaria.',
+          'Programa de Op-Eds con voceros C-level firmando en medios TOP.',
+          'Página Wikipedia activa y mantenida.',
+          'Meta realista: 100+ menciones anuales y aparición regular en top 5 de citas LLM en queries de la industria.',
+        ],
+      },
+      { tipo: 'h2', texto: 'El cambio mental que falta' },
+      {
+        tipo: 'parrafo',
+        texto:
+          'El SEO se medía contra tu sitio: trafico orgánico, ranking de keywords, conversiones desde búsqueda. El GEO se mide contra la conversación: ¿apareces cuando se habla de tu categoría? ¿eres la primera fuente o la séptima? ¿la respuesta del modelo te incluye o te ignora?',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Esa diferencia hace que el PR — que durante años fue criticado por ser "difícil de medir" — vuelva a ser estratégico. Hoy es perfectamente medible: la métrica es tu Share of Model en queries relevantes. Y la forma de moverla no es publicar más en tu blog. Es lograr que terceros relevantes hablen de ti con la frecuencia y profundidad suficientes para que los modelos de iA te elijan como fuente confiable.',
+      },
+      {
+        tipo: 'referencias',
+        items: [
+          { label: 'Writing for Robots: Content Writing Best Practices for AI Visibility — Suso Digital', url: 'https://susodigital.com/thoughts/writing-for-robots-content-writing-best-practices-for-ai-visibility/' },
+          { label: 'Guía de Google para optimización con IA (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide?hl=es-419' },
+          { label: 'Wikipedia: Notabilidad de empresas (es)', url: 'https://es.wikipedia.org/wiki/Wikipedia:Notabilidad/Empresas' },
+          { label: 'Search Console: medir búsquedas brandeadas', url: 'https://support.google.com/webmasters/answer/9128668?hl=es-419' },
+        ],
+      },
+    ],
+    ctaTexto: 'Medir mi Share of Model y autoridad LLM →',
+    ctaUrl: '/#planes',
+    relacionados: ['que-es-rag-como-decide-citas-ia', 'guia-google-ia-acciones-marca-chilena', 'ecommerce-chileno-busqueda-ia-cyberday-2026', 'jsonld-organization-chile'],
+    glosario: [
+      { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
+      { slug: 'share-of-model', termino: 'Share of Model' },
+      { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
+      { slug: 'aeo', termino: 'AEO (Answer Engine Optimization)' },
+    ],
+  },
 ]
 
 export function getPost(slug: string): Post | undefined {
