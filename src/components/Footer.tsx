@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
               <span className="w-5 h-5 rounded-sm bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xs sm:text-[10px] font-bold text-white shrink-0">
-                AI
+                iA
               </span>
               <span className="text-slate-800 text-sm font-semibold">Ai Visibility</span>
             </div>

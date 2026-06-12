@@ -37,7 +37,7 @@ export const posts: Post[] = [
     categoria: 'Tutoriales',
     tags: ['Google', 'Agentes iA', 'Accesibilidad', 'WCAG', 'Tailwind', 'Semantic HTML'],
     autor: 'Ai Visibility',
-    tiempoLectura: '8 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google publicó en web.dev (abril 2026) 8 reglas técnicas para hacer tu sitio apto para agentes de iA: HTML semántico, cursor: pointer, labels asociadas, layout estable, sin overlays fantasma, elementos > 8 px². Cada regla es una pauta WCAG existente. Si ya inviertes en accesibilidad, tu sitio ya es agent-friendly. Y al revés.',
     bloques: [
@@ -50,6 +50,11 @@ export const posts: Post[] = [
         tipo: 'parrafo',
         texto:
           'Para una marca chilena que tiene la accesibilidad en "lista de pendientes" desde hace tres años, la noticia es buena: el ROI dejó de ser solo ético — ahora también es comercial. Una sola auditoría, dos audiencias recuperadas.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si tienes prisa, esto se reduce a tres cambios concretos que puedes hacer esta semana: (1) arreglar el cursor de tus botones, (2) auditar tus 5 páginas críticas y (3) ordenar la semántica de tus formularios. Abajo está el contexto y, al final, el detalle accionable de cada uno.',
       },
       { tipo: 'h2', texto: 'Cómo "ven" los agentes tu sitio' },
       {
@@ -132,15 +137,13 @@ export const posts: Post[] = [
         texto:
           'Dato curioso: las búsquedas de "web accessibility" en Google Trends se mantuvieron planas entre 2021 y 2024, y se cuadruplicaron en 2025-2026 — cuando la cobertura de agentes de iA empezó a alinearse con accesibilidad. La presión de proveedores movió la aguja más que la regulación de la European Accessibility Act (vigente desde junio 2025).',
       },
-      { tipo: 'h2', texto: 'Lo accionable esta semana' },
+      { tipo: 'h2', texto: 'Los 3 cambios concretos que puedes hacer esta semana' },
       {
         tipo: 'lista',
         items: [
-          'Identifica tus 5 páginas con más tráfico (homepage, formularios de captura, página de producto principal, checkout, login).',
-          'Pásales un Lighthouse en categoría Accessibility y un escaneo con axe DevTools o WAVE. Cada uno es gratis y se corre en 30 segundos.',
-          'Si usas Tailwind v4, aplica el fix del cursor en tu globals.css. Se hace una vez y queda.',
-          'Audita los formularios: ¿cada <input> tiene su <label for="...">? ¿Los mensajes de error son legibles por máquinas, no solo iconos rojos?',
-          'Revisa el contraste de los botones primarios. WCAG AA pide 4.5:1 para texto normal. La iA usa el mismo criterio para detectar si un botón "se ve clickeable".',
+          'Cambio 1 — Arregla el cursor (5 minutos). Si usas Tailwind v4, pega el snippet de cursor: pointer en tu globals.css. Recuperas la regla 6 de un golpe en todos los botones del sitio, sin tocar componente por componente.',
+          'Cambio 2 — Audita tus 5 páginas críticas (30 minutos). Homepage, formulario de captura, página de producto principal, checkout y login: pásales un Lighthouse en categoría Accessibility más un escaneo con axe DevTools o WAVE (los dos gratis). Anota cada error de "name/role" y cada botón primario con contraste bajo 4.5:1 — la iA usa ese mismo criterio para decidir si algo "se ve clickeable".',
+          'Cambio 3 — Ordena la semántica de tus formularios (1 a 2 horas). Cada <input> con su <label for="...">, cada botón como <button> nativo (no un <div onclick>), y los mensajes de error en texto legible por máquinas, no solo iconos rojos. Con este paso cubres las reglas 1, 4, 7 y 8 a la vez.',
         ],
       },
       {
@@ -177,7 +180,7 @@ export const posts: Post[] = [
     categoria: 'Casos & Datos',
     tags: ['AI Mode', 'Google', 'Multimodal', 'Search Behavior', 'Planning'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google publicó (mayo 2026) los datos del primer año de AI Mode: 1.000 millones de usuarios mensuales, queries 3x más largas que la búsqueda tradicional, planning queries crecen 80% más rápido que el promedio, y 1 de cada 6 búsquedas ya usa voz o imágenes. La conducta de búsqueda cambió en serio.',
     bloques: [
@@ -235,7 +238,7 @@ export const posts: Post[] = [
         texto:
           'Si tu marca no aparece en esa fase exploratoria — que dura minutos, no segundos — ni siquiera entras al shortlist. Y como cubrimos en nuestro post anterior, cuando finalmente el visitante hace click, viene a ejecutar, no a que lo convenzas.',
       },
-      { tipo: 'h2', texto: 'Lo accionable esta semana, para una marca chilena' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos que puedes hacer esta semana' },
       {
         tipo: 'lista',
         items: [
@@ -278,7 +281,7 @@ export const posts: Post[] = [
     categoria: 'Noticias iA',
     tags: ['Google I/O', 'Generative UI', 'Schema', 'MCP', 'Gemini'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google I/O 2026 confirmó la Generative UI en Search: Google compone una interfaz por consulta con tus datos, dentro de su layout y con su CTA al lado. La unidad de medida pasa de page views a "tus datos fueron los que se renderizaron". Schema.org deja de ser opcional para entrar al render.',
     bloques: [
@@ -346,7 +349,7 @@ export const posts: Post[] = [
         texto:
           'En paralelo, Google publicó en enero de 2026 una patente sobre landings generadas por iA — interfaces creadas automáticamente a partir del feed de tus productos. El destino, literalmente, se vuelve generativo.',
       },
-      { tipo: 'h2', texto: 'Qué hacer hoy: audit de render-eligibility' },
+      { tipo: 'h2', texto: 'Los 3 chequeos concretos que puedes hacer hoy (15 minutos)' },
       {
         tipo: 'parrafo',
         texto:
@@ -399,7 +402,7 @@ export const posts: Post[] = [
     categoria: 'Casos & Datos',
     tags: ['AI Mode', 'Conversión', 'Adobe', 'Google', 'Landing'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'El tráfico desde iA convierte 42% más que el orgánico clásico (Adobe Q2 2026) porque el visitante ya hizo la investigación dentro de ChatGPT o AI Mode. Llega a completar una tarea — no a leer tu propuesta de valor. La mayoría de las landings chilenas le pelean al visitante con un funnel "awareness → decisión" que él ya recorrió.',
     bloques: [
@@ -477,7 +480,7 @@ export const posts: Post[] = [
         texto:
           'Las landings que ya están optimizadas para el visitante de iA son también las que el agente puede procesar más rápido. Las que requieren persuasión multi-scroll son las que el agente abandona. La inversión que hagas hoy en simplificar el camino a la acción rinde por dos vías.',
       },
-      { tipo: 'h2', texto: 'Lo accionable esta semana, para una marca chilena' },
+      { tipo: 'h2', texto: 'Los 4 cambios concretos que puedes hacer esta semana' },
       {
         tipo: 'lista',
         items: [
@@ -511,7 +514,7 @@ export const posts: Post[] = [
     categoria: 'Noticias iA',
     tags: ['Lighthouse', 'LLMS.txt', 'WebMCP', 'Agentic Browsing', 'Chrome'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Lighthouse 13.3 incluye un audit experimental de "navegación con iA": chequea árbol de accesibilidad, CLS, llms.txt y tres métricas de WebMCP. Pasarlo es fácil — pero Google ya dijo en mayo 2026 que llms.txt no mueve visibilidad en su búsqueda con iA. El audit mide parseabilidad, no utilidad.',
     bloques: [
@@ -602,7 +605,7 @@ export const posts: Post[] = [
         texto:
           'Te devuelve un reporte HTML con el detalle de cada métrica. Si falla por "missing links" en llms.txt, convertir descripciones de texto plano a sintaxis markdown ([texto](url)) toma menos de 5 minutos.',
       },
-      { tipo: 'h2', texto: 'Tres pasos prácticos para una marca chilena' },
+      { tipo: 'h2', texto: 'Los 3 cambios concretos para una marca chilena' },
       {
         tipo: 'lista',
         items: [
@@ -635,7 +638,7 @@ export const posts: Post[] = [
     categoria: 'Casos & Datos',
     tags: ['LATAM', 'E-commerce', 'GEO', 'Brasil', 'México', 'Colombia', 'Perú', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '10 min',
+    tiempoLectura: '5 min',
     resumen:
       'El e-commerce LATAM proyectado en USD 1,78 billones en 2026, con Brasil (45%) y México (26%) concentrando >70% del volumen. Pero la velocidad de adopción de iA en búsqueda y la saturación de GEO varían por país — y eso cambia dónde conviene invertir primero si operas en varios mercados.',
     bloques: [
@@ -727,11 +730,11 @@ export const posts: Post[] = [
           'La ventaja competitiva en 2026 no está en acceder a herramientas de iA — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
         fuente: 'Tendencias e-Commerce LATAM 2026',
       },
-      { tipo: 'h2', texto: 'Cómo estructurar una estrategia GEO multi-país en LATAM' },
+      { tipo: 'h2', texto: 'Los 6 cambios concretos para una estrategia GEO multi-país en LATAM' },
       {
         tipo: 'parrafo',
         texto:
-          'Si operas en varios mercados, intentar lanzar GEO simultáneo en todos es la receta para no mover la aguja en ninguno. Recomendación práctica para marketers regionales:',
+          'Si operas en varios mercados, intentar lanzar GEO simultáneo en todos es la receta para no mover la aguja en ninguno. Estos son los pasos concretos para marketers regionales:',
       },
       {
         tipo: 'lista',
@@ -768,7 +771,7 @@ export const posts: Post[] = [
     categoria: 'Casos & Datos',
     tags: ['Chile', 'E-commerce', 'CyberDay', 'ChatGPT', 'Cyber AI', 'Latam-GPT'],
     autor: 'Ai Visibility',
-    tiempoLectura: '9 min',
+    tiempoLectura: '5 min',
     destacado: true,
     resumen:
       'El tráfico desde iA generativa al retail creció +4.700% en 2025 y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 (1-3 junio) incorpora "Cyber AI" oficial y ya opera Latam-GPT. Para una pyme local, optimizar para iA antes de junio es la ventana más rentable del año.',
@@ -848,7 +851,7 @@ export const posts: Post[] = [
           'Sincroniza políticas de devolución y despacho con lo que muestra tu sitio. Inconsistencia = pérdida de confianza para el agente.',
         ],
       },
-      { tipo: 'h2', texto: 'Checklist para llegar al CyberDay con tu marca visible' },
+      { tipo: 'h2', texto: 'Los 6 cambios concretos para llegar al CyberDay con tu marca visible' },
       {
         tipo: 'lista',
         items: [
@@ -884,7 +887,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['SaaS', 'B2B', 'ChatGPT', 'GEO', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'El comprador B2B ya armó su shortlist con ChatGPT antes de tu primera llamada. Para un SaaS chileno o LATAM, pelear contra Salesforce o HubSpot en queries genéricas es perdido — ganar las queries de especificidad ("alternativa local con integración al SII") es posible y barato.',
     bloques: [
@@ -941,7 +944,7 @@ export const posts: Post[] = [
           'En enterprise B2B con múltiples stakeholders, cada evaluador hace sus propias consultas a la iA. Aparecer en cada una de esas consultas equivale a tener un SDR trabajando 24/7 en cada cuenta — sin payroll.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Checklist GEO para un SaaS chileno' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos GEO para un SaaS chileno' },
       {
         tipo: 'lista',
         items: [
@@ -971,7 +974,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Retail', 'Local SEO', 'LocalBusiness', 'GEO', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Las queries del tipo "mejor [categoría] en [comuna]" están creciendo más rápido que las genéricas en ChatGPT. Un retail con tiendas físicas necesita JSON-LD LocalBusiness por sucursal, Google Business Profile actualizado y reseñas frescas por local — no solo a nivel marca.',
     bloques: [
@@ -1015,7 +1018,7 @@ export const posts: Post[] = [
           'En retail físico, el JSON-LD LocalBusiness por sucursal + GBP completo + reseñas por dirección es la trinidad técnica. Sin esos tres, eres invisible en queries locales — el segmento donde más fácil ganas.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Checklist GEO para retail físico chileno' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos GEO para retail físico chileno' },
       {
         tipo: 'lista',
         items: [
@@ -1044,7 +1047,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Salud', 'Clínicas', 'JSON-LD', 'Alucinación iA', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'Una alucinación de iA sobre tu clínica —especialidad inventada, médico mal atribuido, cobertura equivocada— es riesgo clínico, no solo de marketing. La defensa es JSON-LD MedicalClinic/Physician preciso y consistencia entre tu sitio, GBP, redes y portales de salud.',
     bloques: [
@@ -1101,7 +1104,7 @@ export const posts: Post[] = [
           'No omitas información negativa o limitaciones reales: la iA premia la transparencia, y un paciente que llega informado de verdad es un paciente que vuelve.',
         ],
       },
-      { tipo: 'h2', texto: 'Checklist GEO para una clínica o centro médico chileno' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos GEO para una clínica o centro médico chileno' },
       {
         tipo: 'lista',
         items: [
@@ -1131,7 +1134,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Banca', 'Fintech', 'CMF', 'Comparativas', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'ChatGPT ya hace comparativas de productos financieros chilenos antes de que el cliente entre al comparador. La señal más subestimada para aparecer: declarar tu regulación CMF en JSON-LD. Sin eso, la iA puede omitirte como opción "no validada" frente a alternativas más conocidas.',
     bloques: [
@@ -1175,7 +1178,7 @@ export const posts: Post[] = [
           'La regulación CMF declarada de forma estructurada y un par de menciones recientes en medios financieros pesan más en el ranking del LLM que diez años de presencia de marca sin esa señal.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Checklist GEO para banca y fintech chilena' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos GEO para banca y fintech chilena' },
       {
         tipo: 'lista',
         items: [
@@ -1205,7 +1208,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Pyme', 'Emprendimiento', 'Especialización', 'GEO', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Una pyme chilena no le va a ganar a Falabella en queries genéricas. Pero sí puede dominar consultas específicas de nicho ("ferretería con despacho en Ñuñoa con atención personalizada") con JSON-LD bien estructurado y 5 reseñas frescas. El GEO escala con esfuerzo, no con plata.',
     bloques: [
@@ -1237,7 +1240,7 @@ export const posts: Post[] = [
         texto:
           'Identificar tus queries ganadoras es un ejercicio concreto: combina tu ubicación geográfica (comuna o región), tu nicho de especialización y un atributo diferenciador. Tres dimensiones. La intersección de las tres define un terreno donde casi nadie compite. Ejemplos: "estudio de yoga en Ñuñoa con clases de embarazadas", "veterinaria de exóticos en Providencia", "carpintero a domicilio en Maipú con experiencia en muebles a medida".',
       },
-      { tipo: 'h2', texto: 'El plan de 14 días para una pyme' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos: tu plan de 14 días para una pyme' },
       {
         tipo: 'lista',
         items: [
@@ -1272,7 +1275,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Inmobiliaria', 'Propiedades', 'RealEstate', 'GEO', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'La decisión inmobiliaria se cocina por meses en ChatGPT antes del primer contacto con un corredor. Para una inmobiliaria o corredor chileno, aparecer en esa fase exploratoria —preguntas sobre comunas, valores y proyectos— es la palanca de captación más subestimada hoy.',
     bloques: [
@@ -1311,7 +1314,7 @@ export const posts: Post[] = [
           'En inmobiliario, no estás compitiendo por aparecer cuando el cliente busca un corredor. Estás compitiendo por aparecer cinco meses antes, cuando todavía decide en qué comuna mirar. Esa fase la define ChatGPT, y la inmobiliaria que lo entienda primero captura el ciclo entero.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Checklist GEO para una inmobiliaria o corredor chileno' },
+      { tipo: 'h2', texto: 'Los 6 cambios concretos GEO para una inmobiliaria o corredor chileno' },
       {
         tipo: 'lista',
         items: [
@@ -1342,7 +1345,7 @@ export const posts: Post[] = [
     categoria: 'Análisis LLM',
     tags: ['RAG', 'LLM', 'ChatGPT', 'Perplexity', 'GEO'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'RAG (Retrieval-Augmented Generation) es la arquitectura donde un LLM recupera documentos de internet y luego genera la respuesta a partir de ellos. Si tu contenido no está en ese paso de recuperación, la iA no puede citarte — por más bueno que seas.',
     bloques: [
@@ -1388,7 +1391,7 @@ export const posts: Post[] = [
           'En la era RAG, no compites por estar en la memoria del modelo. Compites por estar entre los documentos que recupera en el momento exacto en que tu cliente pregunta.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Qué hacer para que RAG te recupere' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos para que RAG te recupere' },
       {
         tipo: 'lista',
         items: [
@@ -1423,7 +1426,7 @@ export const posts: Post[] = [
     categoria: 'Análisis LLM',
     tags: ['Google', 'GEO', 'AEO', 'SEO', 'LLMS.txt'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'En su guía oficial, Google desmiente 5 hacks de GEO: LLMS.txt, fragmentar contenido, reescribir para iA, buscar menciones falsas y sobre-optimizar structured data. La conclusión: los fundamentos de SEO siguen mandando.',
     bloques: [
@@ -1488,7 +1491,7 @@ export const posts: Post[] = [
         texto:
           'Nuestra lectura: usa structured data como higiene de datos, no como hack de ranking. Es barato, evita malentendidos costosos de la iA, pero no reemplaza tener buen contenido y reputación real.',
       },
-      { tipo: 'h2', texto: 'Qué hacer en su lugar' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos que sí mueven la aguja' },
       {
         tipo: 'lista',
         items: [
@@ -1518,7 +1521,7 @@ export const posts: Post[] = [
     categoria: 'Noticias iA',
     tags: ['Google', 'SEO', 'RAG', 'Búsqueda iA'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google confirma que sus sistemas de ranking siguen siendo la base de la búsqueda con iA. RAG y sub-query generation usan el mismo índice de siempre: si no rankeas, la iA no te cita.',
     bloques: [
@@ -1572,6 +1575,15 @@ export const posts: Post[] = [
           'En el buscador de Google, GEO es básicamente SEO bien hecho. Fuera de Google, en ChatGPT o Perplexity, las reglas del juego cambian — y ahí es donde medir tu Share of Model deja de ser opcional.',
         fuente: 'Análisis Ai Visibility',
       },
+      { tipo: 'h2', texto: 'Los 3 cambios concretos que puedes hacer hoy' },
+      {
+        tipo: 'lista',
+        items: [
+          'Revisa los fundamentos de SEO de tu sitio (indexación, velocidad, HTML semántico): es la base que Google sigue usando para citarte en su búsqueda con iA.',
+          'Corre tus queries clave en ChatGPT y Perplexity, no solo en Google. Fuera del índice de Google las reglas cambian y necesitas saber si ahí te citan.',
+          'Implementa JSON-LD de Organization para precisión de entidad, así la iA no te confunde con otra marca al sintetizar la respuesta.',
+        ],
+      },
     ],
     ctaTexto: 'Ver si la iA me cita →',
     ctaUrl: '/#planes',
@@ -1586,7 +1598,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Google', 'Contenido', 'E-E-A-T', 'GEO'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google premia contenido con perspectiva propia y experiencia real, no el genérico que ya existe mil veces. Para una pyme, esto es una ventaja: tu experiencia de nicho es lo que los grandes no pueden replicar.',
     bloques: [
@@ -1635,6 +1647,15 @@ export const posts: Post[] = [
         texto:
           'Google no prohíbe usar iA generativa para crear contenido, pero sí advierte: el valor lo aporta tu experiencia y criterio, no el texto autogenerado. Usa la iA como herramienta de redacción, no como reemplazo de tu conocimiento. Contenido autogenerado en masa, sin aporte real, cae justo en la categoría commodity que la iA ignora.',
       },
+      { tipo: 'h2', texto: 'Los 3 cambios concretos que puedes hacer hoy' },
+      {
+        tipo: 'lista',
+        items: [
+          'Toma tu pieza más genérica ("5 tips de…") y reescríbela con un dato, caso o resultado real que solo tú puedes contar. Eso la saca de la categoría commodity.',
+          'Agrega señales de experiencia visibles: autor con credenciales, fecha de actualización real y ejemplos propios. La iA premia E-E-A-T, no volumen.',
+          'Audita si tienes landings autogeneradas en masa sin aporte real y decide reescribirlas o despublicarlas antes de que arrastren tu autoridad.',
+        ],
+      },
     ],
     ctaTexto: 'Auditar mi contenido →',
     ctaUrl: '/#planes',
@@ -1649,7 +1670,7 @@ export const posts: Post[] = [
     categoria: 'Tutoriales',
     tags: ['Google', 'SEO técnico', 'Crawlability', 'HTML semántico'],
     autor: 'Ai Visibility',
-    tiempoLectura: '7 min',
+    tiempoLectura: '5 min',
     resumen:
       'Antes de optimizar contenido, tu sitio debe ser técnicamente apto. Checklist de Google: rastreable, indexable, HTML semántico, JS bien manejado, rápido y sin duplicados.',
     bloques: [
@@ -1727,7 +1748,7 @@ export const posts: Post[] = [
     categoria: 'Noticias iA',
     tags: ['Agentes iA', 'UCP', 'E-commerce', 'Comercio conversacional'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google describe agentes de iA que ejecutan tareas (reservar, comparar, comprar) y protocolos como UCP. Para el e-commerce, el nuevo cliente puede ser un agente, no una persona navegando.',
     bloques: [
@@ -1767,7 +1788,7 @@ export const posts: Post[] = [
           'Cuando un agente compra por el usuario, la decisión se toma sobre datos, no sobre branding. La marca que tenga su información estructurada, actualizada y consistente gana la transacción.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Cómo prepararte sin sobre-reaccionar' },
+      { tipo: 'h2', texto: 'Los 4 cambios concretos para prepararte sin sobre-reaccionar' },
       {
         tipo: 'lista',
         items: [
@@ -1791,7 +1812,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Google', 'GEO', 'AEO', 'Guía', 'Chile'],
     autor: 'Ai Visibility',
-    tiempoLectura: '9 min',
+    tiempoLectura: '5 min',
     resumen:
       'La guía de Google se resume en cuatro acciones: prioriza los fundamentos de SEO, crea contenido con experiencia real, ignora los hacks de GEO y vigila los agentes de iA. Aquí, aterrizada a una marca chilena.',
     bloques: [
@@ -1841,7 +1862,7 @@ export const posts: Post[] = [
           'Los fundamentos de Google son la base. Pero tu Share of Model en ChatGPT y Perplexity es un dato aparte que Google no te va a dar — y que cada vez decide más compras.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Tu plan en una semana' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos: tu plan en una semana' },
       {
         tipo: 'lista',
         items: [
@@ -1866,7 +1887,7 @@ export const posts: Post[] = [
     categoria: 'Noticias iA',
     tags: ['ChatGPT', 'GEO', 'Search', 'OpenAI'],
     autor: 'Ai Visibility',
-    tiempoLectura: '6 min',
+    tiempoLectura: '5 min',
     resumen:
       'Desde mayo 2026, ChatGPT consulta la web en la mayoría de respuestas. Las marcas con JSON-LD y reseñas recientes ganan posición; las que dependen del modelo entrenado retroceden.',
     bloques: [
@@ -1916,7 +1937,7 @@ export const posts: Post[] = [
         texto:
           'Si tu última cobertura de prensa es de 2024, tu marca aparece "congelada" para los modelos con búsqueda web. La frescura ahora es una señal de ranking, no un nice-to-have.',
       },
-      { tipo: 'h2', texto: 'Qué hacer esta semana' },
+      { tipo: 'h2', texto: 'Los 4 cambios concretos que puedes hacer esta semana' },
       {
         tipo: 'lista',
         items: [
@@ -1940,7 +1961,7 @@ export const posts: Post[] = [
     categoria: 'Análisis LLM',
     tags: ['Perplexity', 'ChatGPT', 'Citas', 'GEO'],
     autor: 'Ai Visibility',
-    tiempoLectura: '8 min',
+    tiempoLectura: '5 min',
     resumen:
       'Perplexity cita 4,2 fuentes por respuesta promedio; ChatGPT cita 2,1. Pero la conversión a tráfico es distinta: Perplexity envía clicks, ChatGPT envía decisión sin click.',
     bloques: [
@@ -1974,6 +1995,15 @@ export const posts: Post[] = [
         texto:
           'Estar en Perplexity te trae usuarios investigando. Estar en ChatGPT te trae usuarios decidiendo. El segundo grupo es más pequeño pero convierte 3x más en B2B.',
         fuente: 'Análisis Ai Visibility, abril 2026',
+      },
+      { tipo: 'h2', texto: 'Los 3 cambios concretos que puedes hacer hoy' },
+      {
+        tipo: 'lista',
+        items: [
+          'Corre las mismas 3 queries de tu categoría en Perplexity y en ChatGPT, y anota en cuál te citan y en cuál no. Ese gap te dice dónde priorizar.',
+          'Para ganar en Perplexity: refuerza páginas citables (datos propios, comparativas, FAQ) y consigue menciones en fuentes que el motor indexa. Es recuperación en vivo, premia frescura y claridad.',
+          'Para ganar en ChatGPT: trabaja consistencia de entidad (JSON-LD Organization con sameAs) y presencia en fuentes de autoridad de tu nicho. Pesa más el modelo que el link del momento.',
+        ],
       },
     ],
     ctaTexto: 'Ver mi Share of Model →',
@@ -2054,7 +2084,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['Google', 'Contenido iA', 'Spam policy', 'IPTC', 'E-E-A-T', 'Merchant Center'],
     autor: 'Ai Visibility',
-    tiempoLectura: '9 min',
+    tiempoLectura: '5 min',
     resumen:
       'Google permite usar IA generativa para escalar contenido si agrega valor — y castiga como spam la generación masiva sin aporte. Exige metadata IPTC TrainedAlgorithmicMedia en imágenes con iA y etiquetar como AI-generated los atributos de producto en Merchant Center. Te mostramos qué cambia para equipos chilenos que ya usan ChatGPT o Gemini para escribir, generar imágenes y mantener feeds.',
     bloques: [
@@ -2230,7 +2260,7 @@ export const posts: Post[] = [
         texto:
           'En las auditorías Share of Model, cuando vemos un dominio con bajo score de visibilidad pero buena cobertura de keywords, una de las primeras hipótesis es que el contenido tiene huella iA mal manejada. Es una pregunta concreta que respondemos: ¿tu metadata IPTC está poblada? ¿tu feed Merchant Center etiqueta lo iA? ¿hay revisión humana visible?',
       },
-      { tipo: 'h2', texto: 'Checklist práctico antes de seguir escalando con iA' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos antes de seguir escalando con iA' },
       {
         tipo: 'lista',
         items: [
@@ -2238,7 +2268,7 @@ export const posts: Post[] = [
           'Feed Merchant Center: agregar atributo ai_generated="true" en descripciones y atributos creados con iA.',
           'Pie de artículo: incluir el patrón "Asistido por iA, revisado por [humano]" cuando aplique.',
           'Política de revisión humana: definir un % mínimo que se revisa antes de publicar, con un autor responsable visible.',
-          'Auditoría de contenido legacy: identificar landings masivas generadas pre-2025 sin revisión y deciidr si se mantienen, reescriben o despublican.',
+          'Auditoría de contenido legacy: identificar landings masivas generadas pre-2025 sin revisión y decidir si se mantienen, reescriben o despublican.',
         ],
       },
       {
@@ -2275,7 +2305,7 @@ export const posts: Post[] = [
     categoria: 'Tutoriales',
     tags: ['Escritura iA', 'GEO', 'AEO', 'Content Strategy', 'FAQ', 'E-E-A-T'],
     autor: 'Ai Visibility',
-    tiempoLectura: '11 min',
+    tiempoLectura: '5 min',
     resumen:
       'Un playbook práctico de 8 técnicas para que tus artículos sean citados por LLMs: pirámide invertida en cada pieza, respuesta directa antes del contexto, FAQ con preguntas semánticas reales, señales E-E-A-T visibles, autoridad temática site-wide, frescura continua, formato listicle/comparativa, URLs y estructura técnica. Cada técnica viene con un ejemplo aplicable a una marca chilena y una métrica para medir si está funcionando.',
     bloques: [
@@ -2503,7 +2533,7 @@ export const posts: Post[] = [
     categoria: 'GEO & AEO',
     tags: ['PR digital', 'Earned media', 'RAG', 'Medios chilenos', 'Estrategia'],
     autor: 'Ai Visibility',
-    tiempoLectura: '10 min',
+    tiempoLectura: '5 min',
     resumen:
       'RAG concentra las citas LLM en 3-5 fuentes por respuesta. La validación externa (cobertura en medios, menciones en wikis, presencia en comunidades reconocidas) es la primera señal que los modelos usan para elegir esas pocas fuentes. Te entregamos un mapa de los medios chilenos que más pesan en LLMs, una estrategia de outreach para earned media GEO-friendly, y las métricas concretas para medir si tu PR está moviendo la aguja en ChatGPT, Perplexity y Gemini.',
     bloques: [
@@ -2599,11 +2629,11 @@ export const posts: Post[] = [
         texto:
           'Este ranking se mueve. La autoridad LLM no es estable — un medio que pesaba mucho hace 2 años puede haber bajado y al revés. Auditarlo cada 3-6 meses con queries reales de tu industria es la única forma de mantenerlo actualizado.',
       },
-      { tipo: 'h2', texto: 'Estrategia de earned media GEO-friendly' },
+      { tipo: 'h2', texto: 'Los 4 cambios concretos para construir autoridad en LLMs (earned media)' },
       {
         tipo: 'parrafo',
         texto:
-          'No es el PR tradicional. La estrategia que funciona para construir autoridad LLM tiene 4 pilares:',
+          'No es el PR tradicional. La estrategia que funciona para construir autoridad LLM tiene 4 pilares concretos:',
       },
       { tipo: 'h3', texto: '1. Data propietaria como ancla' },
       {

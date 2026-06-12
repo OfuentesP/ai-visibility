@@ -156,19 +156,6 @@ export default function BlogIndexPage() {
             </Link>
           ))}
         </div>
-
-        {/* RSS hint */}
-        <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-xs font-mono text-slate-500">
-            ¿Quieres recibir las novedades en tu lector? Suscríbete al feed RSS.
-          </p>
-          <a
-            href="/blog/rss.xml"
-            className="text-xs font-mono text-indigo-600 hover:text-indigo-600 transition-colors"
-          >
-            /blog/rss.xml →
-          </a>
-        </div>
       </main>
     </div>
   )

@@ -215,23 +215,34 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           })}
         </article>
 
-        {/* CTA */}
-        {p.ctaTexto && p.ctaUrl && (
-          <div className="my-12 border border-indigo-200 bg-indigo-50 rounded-sm p-6">
-            <p className="text-slate-700 text-sm font-semibold mb-2">
-              ¿Aparece tu marca cuando tus clientes preguntan en ChatGPT?
-            </p>
-            <p className="text-slate-500 text-sm sm:text-xs leading-relaxed mb-5">
-              Audita tu Share of Model gratis. Resultado en menos de 60 segundos.
-            </p>
+        {/* CTA comercial — idéntico en todos los posts */}
+        <aside className="my-12 border border-indigo-200 bg-gradient-to-br from-indigo-50 to-white rounded-md p-6 sm:p-8">
+          <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-3">
+            Ai Visibility
+          </p>
+          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug mb-3">
+            ¿ChatGPT y Gemini te recomiendan, o le están pasando tus clientes a la competencia?
+          </h2>
+          <p className="text-slate-600 text-sm leading-relaxed mb-6">
+            En Ai Visibility medimos tu Share of Model en ChatGPT y Gemini, te mostramos quién te
+            está ganando la recomendación y armamos contigo el plan para que la iA empiece a citarte
+            a ti. Partimos con un diagnóstico y, si quieres, seguimos mes a mes con tu equipo.
+          </p>
+          <div className="flex flex-wrap gap-3">
             <Link
-              href={p.ctaUrl}
+              href="/#planes"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors"
             >
-              {p.ctaTexto}
+              Quiero auditar mi marca →
+            </Link>
+            <Link
+              href="/#planes"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-slate-300 hover:border-indigo-400 text-slate-800 font-semibold text-sm transition-colors"
+            >
+              Ver planes y precios
             </Link>
           </div>
-        )}
+        </aside>
 
         {/* Tags */}
         {p.tags.length > 0 && (
