@@ -965,12 +965,14 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
                     mercado=context.mercado,
                     diferenciadores=context.diferenciadores,
                     resultados=resultados,
+                    motor=motor_key,
                 ),
                 generar_inteligencia_competitiva(
                     marca=context.marca,
                     categoria=context.categoria,
                     mercado=context.mercado,
                     resultados=resultados,
+                    motor=motor_key,
                 ),
             )
             return AuditFromUrlResponse(

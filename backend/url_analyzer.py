@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from openai_tracking import TrackingAsyncOpenAI as AsyncOpenAI
 from pydantic import BaseModel, HttpUrl
-from config import AI_MODEL
+from config import AI_MODEL, GEMINI_MODEL
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -28,6 +28,39 @@ _openai = AsyncOpenAI(
     api_key=_api_key,
     timeout=httpx.Timeout(30.0, connect=10.0)
 ) if _api_key else None
+
+
+async def _llm_json(
+    *, system: str, user: str, motor: str = "chatgpt",
+    temperature: float = 0.4, max_tokens: int = 1500,
+) -> str:
+    """Llamada LLM en modo JSON, despachada por motor. Devuelve el JSON crudo.
+
+    chatgpt→OpenAI json_object; gemini→google-genai json mime. Permite que el
+    informe por URL (plan de acción e inteligencia competitiva) se genere con el
+    mismo motor que detectó las menciones, no siempre con OpenAI.
+    """
+    if motor == "gemini":
+        from gemini_tracking import generate_text
+        return await generate_text(
+            model=GEMINI_MODEL,
+            prompt=user,
+            system_instruction=system,
+            max_output_tokens=max_tokens,
+            temperature=temperature,
+            json_mode=True,
+        )
+    response = await _openai.chat.completions.create(
+        model=AI_MODEL,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+    )
+    return response.choices[0].message.content
 
 
 # ─── Modelos ────────────────────────────────────────────────────────────────
@@ -226,13 +259,14 @@ async def generar_plan_url(
     mercado: str,
     diferenciadores: list[str],
     resultados: list[dict],
+    motor: str = "chatgpt",
 ) -> dict:
     """
     Genera un plan de acción AEO con ICE scoring para la marca auditada.
     Basado en qué arquetipos no encontraron la marca y qué competidores ganaron.
     Devuelve estructura compatible con plan_accion de judge.py (vehiculos + roi_estimado).
     """
-    if not _openai:
+    if motor != "gemini" and not _openai:
         return {"vehiculos": [], "roi_estimado": ""}
 
     # Armar contexto de resultados para el prompt
@@ -333,24 +367,21 @@ Devuelve SOLO JSON:
 }}"""
 
     try:
-        response = await _openai.chat.completions.create(
-            model=AI_MODEL,
+        raw = await _llm_json(
+            system=(
+                f"Generas planes de acción de marketing digital para equipos no técnicos. "
+                f"Plan específico para {marca} en {categoria}. "
+                "Devuelve SOLO JSON válido. 3 acciones ordenadas por ice_score desc. "
+                "Usa nombres EXACTOS de tácticas del catálogo. "
+                f"NUNCA uses 'la competencia': menciona a {', '.join(competidores_ganadores[:2]) if competidores_ganadores else 'el competidor'} por nombre. "
+                "Sin jargon técnico ni de consultoría. Lenguaje directo de negocio."
+            ),
+            user=prompt,
+            motor=motor,
             temperature=0.4,
-            response_format={"type": "json_object"},
-            messages=[
-                {"role": "system", "content": (
-                    f"Generas planes de acción de marketing digital para equipos no técnicos. "
-                    f"Plan específico para {marca} en {categoria}. "
-                    "Devuelve SOLO JSON válido. 3 acciones ordenadas por ice_score desc. "
-                    "Usa nombres EXACTOS de tácticas del catálogo. "
-                    f"NUNCA uses 'la competencia': menciona a {', '.join(competidores_ganadores[:2]) if competidores_ganadores else 'el competidor'} por nombre. "
-                    "Sin jargon técnico ni de consultoría. Lenguaje directo de negocio."
-                )},
-                {"role": "user", "content": prompt},
-            ],
         )
-        data = json.loads(response.choices[0].message.content)
-        logger.info(f"[url_analyzer] ✅ Plan generado: {len(data.get('vehiculos', []))} vehículos")
+        data = json.loads(raw)
+        logger.info(f"[url_analyzer/{motor}] ✅ Plan generado: {len(data.get('vehiculos', []))} vehículos")
         return data
     except Exception as e:
         logger.warning(f"[url_analyzer] Error generando plan: {e}")
@@ -364,13 +395,14 @@ async def generar_inteligencia_competitiva(
     categoria: str,
     mercado: str,
     resultados: list[dict],
+    motor: str = "chatgpt",
 ) -> dict:
     """
     Genera dos bloques de inteligencia estratégica:
     - competitive_deep_dive: por qué la IA prefiere al competidor ganador
     - untapped_territories: 3 nichos de baja competencia en IA
     """
-    if not _openai:
+    if motor != "gemini" and not _openai:
         return {"competitive_deep_dive": {}, "untapped_territories": []}
 
     # Determinar competidor ganador — primero desde marca_ganadora
@@ -477,25 +509,19 @@ Devuelve SOLO JSON válido con este esquema exacto:
 }}"""
 
     try:
-        response = await _openai.chat.completions.create(
-            model=AI_MODEL,
+        raw = await _llm_json(
+            system=(
+                f"Generas diagnósticos de negocio para directores y gerentes generales. "
+                f"Contexto: {marca} vs {competidor} en {categoria}. "
+                "Devuelve SOLO JSON válido. "
+                "Lenguaje: oraciones cortas, sin jargon, habla de clientes y ventas concretas, nunca de 'validación social', 'credibilidad', 'autoridad digital' ni términos de consultoría."
+            ),
+            user=prompt,
+            motor=motor,
             temperature=0.5,
-            response_format={"type": "json_object"},
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        f"Generas diagnósticos de negocio para directores y gerentes generales. "
-                        f"Contexto: {marca} vs {competidor} en {categoria}. "
-                        "Devuelve SOLO JSON válido. "
-                        "Lenguaje: oraciones cortas, sin jargon, habla de clientes y ventas concretas, nunca de 'validación social', 'credibilidad', 'autoridad digital' ni términos de consultoría."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
         )
-        data = json.loads(response.choices[0].message.content)
-        logger.info(f"[url_analyzer] ✅ Inteligencia competitiva vs {competidor} generada")
+        data = json.loads(raw)
+        logger.info(f"[url_analyzer/{motor}] ✅ Inteligencia competitiva vs {competidor} generada")
         return {
             "competitive_deep_dive": data.get("competitive_deep_dive", {}),
             "untapped_territories": data.get("untapped_territories", [])[:3],
