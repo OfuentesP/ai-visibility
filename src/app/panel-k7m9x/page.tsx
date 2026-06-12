@@ -421,6 +421,7 @@ interface OpenAIUsageResponse {
   por_dia: { fecha: string; tokens: number; usd: number; calls: number }[]
   por_modelo: { model: string; tokens: number; usd: number; calls: number }[]
   por_endpoint: { endpoint: string; tokens: number; usd: number; calls: number }[]
+  por_proveedor?: { provider: string; tokens: number; usd: number; calls: number }[]
 }
 
 interface OpenAIUpstream {
@@ -587,6 +588,30 @@ function OpenAITab() {
           </ResponsiveContainer>
         )}
       </div>
+
+      {/* Breakdown por proveedor (OpenAI vs Gemini) */}
+      {usage.por_proveedor && usage.por_proveedor.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {usage.por_proveedor.map(p => {
+            const isGemini = p.provider === 'gemini'
+            const label = isGemini ? 'Gemini (Google)' : 'OpenAI (ChatGPT)'
+            const dot = isGemini ? 'bg-sky-500' : 'bg-emerald-500'
+            return (
+              <div key={p.provider} className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`w-2 h-2 rounded-full ${dot}`} />
+                  <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest">{label}</p>
+                </div>
+                <p className="text-2xl font-bold text-slate-900">{fmtUSD(p.usd)}</p>
+                <div className="flex gap-4 mt-2 text-xs font-mono text-slate-500">
+                  <span>{fmtNum(p.tokens)} tokens</span>
+                  <span>{p.calls} llamadas</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       {/* Breakdown por modelo y endpoint */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

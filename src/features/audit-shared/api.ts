@@ -33,7 +33,7 @@ export async function auditByUrl(params: {
   const res = await fetch(`${API}/api/audit/from-url`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: params.url, pais: params.pais ?? 'Chile', email: params.email }),
+    body: JSON.stringify({ url: params.url, pais: params.pais ?? 'Chile', email: params.email, motor: 'ambos' }),
   })
   if (res.status === 429) throw new FreemiumError()
   if (!res.ok) {
@@ -57,7 +57,7 @@ export async function auditCompare(params: {
   const res = await fetch(`${API}/api/audit/comparison`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...params, mercado: params.mercado ?? 'Chile' }),
+    body: JSON.stringify({ ...params, mercado: params.mercado ?? 'Chile', motor: 'ambos' }),
   })
   if (!res.ok) throw new Error(`Error ${res.status}`)
   return res.json()
@@ -77,6 +77,7 @@ export async function auditCitability(params: {
       categoria: params.categoria,
       mercado: params.mercado ?? 'Chile',
       num_territorios: params.num_territorios ?? 12,
+      motor: 'ambos',
     }),
   })
   if (!res.ok) throw new Error(`Error ${res.status}`)
@@ -89,7 +90,7 @@ export async function fetchDiscovery(brand: string, topico: string): Promise<Dis
   const res = await fetch(`${API}/api/discovery`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ brand, topico }),
+    body: JSON.stringify({ brand, topico, motor: 'ambos' }),
   })
   if (!res.ok) throw new Error(`Discovery ${res.status}`)
   const d: DiscoveryResponse = await res.json()

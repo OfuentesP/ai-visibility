@@ -23,7 +23,7 @@ from openai_tracking import (
 )
 import httpx
 from pydantic import BaseModel, Field
-from config import AI_MODEL, URL_CACHE_TTL, AUDIT_CACHE_TTL_DAYS
+from config import AI_MODEL, GEMINI_MODEL, URL_CACHE_TTL, AUDIT_CACHE_TTL_DAYS
 from models import ResultadoBusqueda, AnalisisMarca, OportunidadAuditada, DiscoveryResponse, MarketingBriefRequest, OmnichannelBrief
 from database import get_db, test_connection, Lead, AuditCache, SharedReport, OpenAIUsage
 
@@ -326,6 +326,97 @@ class AuditRequest(BaseModel):
 class DiscoveryRequest(BaseModel):
     brand: str = Field(..., min_length=1, max_length=120)
     topico: str = Field(..., min_length=1, max_length=200)
+    motor: Optional[str] = Field(default="ambos", description="chatgpt | gemini | ambos")
+
+
+# ── Helpers de motor dual (compartidos por todos los endpoints) ──────────────
+
+def _norm_motor(value: Optional[str]) -> str:
+    """Normaliza el parámetro motor a chatgpt|gemini|ambos (default ambos)."""
+    m = (value or "ambos").lower().strip()
+    return m if m in ("chatgpt", "gemini", "ambos") else "ambos"
+
+
+async def _gather_dual(factory, motor: str) -> list[tuple[str, object]]:
+    """Ejecuta `factory(motor)` para uno o ambos motores.
+
+    `factory(motor_key)` debe devolver una coroutine que produce el response model
+    de un solo motor. Retorna lista de (motor_key, resultado) de los motores que
+    respondieron OK. Si motor='ambos' y Gemini no está disponible, corre solo chatgpt.
+    Si ambos fallan, relanza la excepción del primero.
+    """
+    if motor != "ambos":
+        return [(motor, await factory(motor))]
+
+    from gemini_tracking import gemini_available
+    if not gemini_available():
+        logger.warning("[ambos] Gemini no disponible — solo se corre chatgpt")
+        return [("chatgpt", await factory("chatgpt"))]
+
+    chat_res, gem_res = await asyncio.gather(
+        factory("chatgpt"), factory("gemini"), return_exceptions=True
+    )
+    pares: list[tuple[str, object]] = []
+    if not isinstance(chat_res, Exception):
+        pares.append(("chatgpt", chat_res))
+    else:
+        logger.warning(f"[ambos] chatgpt falló: {chat_res}")
+    if not isinstance(gem_res, Exception):
+        pares.append(("gemini", gem_res))
+    else:
+        logger.warning(f"[ambos] gemini falló: {gem_res}")
+    if not pares:
+        raise chat_res if isinstance(chat_res, Exception) else gem_res
+    return pares
+
+
+def _wrap_dual(pares: list[tuple[str, object]]):
+    """Toma la salida de _gather_dual y devuelve un único response model.
+
+    - 1 motor: devuelve ese resultado con .motor seteado.
+    - 2 motores: usa el primero como base y adjunta .por_motor={k: dump} y .motor='ambos'.
+    Requiere que el response model tenga los campos `motor` y `por_motor`.
+    """
+    base = pares[0][1]
+    if len(pares) == 1:
+        base.motor = pares[0][0]
+        return base
+    base.motor = "ambos"
+    base.por_motor = {k: r.model_dump(mode="json") for k, r in pares}
+    return base
+
+
+async def _llm_json(
+    *, system: str, user: str, motor: str, max_tokens: int = 700, temperature: float = 0.3
+) -> str:
+    """Llamada LLM en modo JSON, despachada por motor. Devuelve el texto JSON crudo.
+
+    Usado por endpoints donde el LLM actúa como motor pero responde JSON estructurado
+    (comparison, citability). chatgpt→OpenAI json_object; gemini→google-genai json mime.
+    """
+    if motor == "gemini":
+        from gemini_tracking import generate_text
+        return await generate_text(
+            model=GEMINI_MODEL,
+            prompt=user,
+            system_instruction=system,
+            max_output_tokens=max_tokens,
+            temperature=temperature,
+            json_mode=True,
+        )
+    if not _openai_client:
+        raise HTTPException(status_code=503, detail="OpenAI API key no configurada")
+    response = await _openai_client.chat.completions.create(
+        model=AI_MODEL,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+    )
+    return response.choices[0].message.content
 
 
 async def _audit_brand_pipeline(
@@ -509,9 +600,10 @@ async def discovery_masivo(
         raise HTTPException(status_code=422, detail="brand and topico are required")
     brand = b[:120].strip()
     topico = t[:200].strip()
+    motor = _norm_motor(body.motor if body else None)
     try:
         from discovery import obtener_tendencias_chile, generar_escenarios_ia
-        from searcher import consultar_openai
+        from searcher import consultar_motor
         from judge import (
             extraer_metricas,
             extraer_conceptos_faltantes,
@@ -520,26 +612,23 @@ async def discovery_masivo(
             justificar_eleccion_arquetipo,
         )
 
-        logger.info(f"🚀 [Discovery] topico='{topico}' brand='{brand}'")
+        logger.info(f"🚀 [Discovery] topico='{topico}' brand='{brand}' motor={motor}")
 
-        # ── 1. Tendencias + escenarios ──────────────────────────────────────
+        # ── 1. Tendencias + escenarios (una sola vez, compartidos por motores) ─
         tendencias = await obtener_tendencias_chile(topico)
         escenarios = await generar_escenarios_ia(topico, tendencias)
         logger.info(f"✅ {len(escenarios)} escenarios generados")
 
-        # ── 1b. Base audit: posición real de mi_marca en el tópico ──────────
-        texto_base = await consultar_openai(topico)
-        resultado_base = await extraer_metricas(texto_base, brand)
-        base_pos_mi_marca = resultado_base.posicion_mi_marca
-
-        # ── 2. Auditoría individual (con timeout) ───────────────────────────
-        async def auditar_uno(escenario: dict) -> OportunidadAuditada:
+        # ── 2. Auditoría individual (con timeout) — parametrizada por motor ──
+        async def auditar_uno(
+            escenario: dict, motor_key: str, texto_base: str, base_pos_mi_marca: int
+        ) -> OportunidadAuditada:
             perfil   = escenario.get("perfil_base", "")
             pregunta = escenario.get("prompt_ia", "")
 
             try:
                 async def _pipeline():
-                    texto = await consultar_openai(pregunta)
+                    texto = await consultar_motor(pregunta, motor=motor_key)
                     resultado = await extraer_metricas(texto, brand)
 
                     # content gap analysis
@@ -666,41 +755,50 @@ async def discovery_masivo(
                     error=str(exc),
                 )
 
-        # ── 3. gather concurrente ───────────────────────────────────────────
-        logger.info(f"⚡ Lanzando {len(escenarios)} auditorías en paralelo...")
-        oportunidades: list[OportunidadAuditada] = list(
-            await asyncio.gather(*[auditar_uno(esc) for esc in escenarios])
-        )
+        # ── 3. Pipeline completo para UN motor (base audit + gather) ────────
+        async def _run_motor(motor_key: str) -> DiscoveryResponse:
+            # Base audit: posición real de mi_marca en el tópico, según este motor
+            texto_base = await consultar_motor(topico, motor=motor_key)
+            resultado_base = await extraer_metricas(texto_base, brand)
+            base_pos_mi_marca = resultado_base.posicion_mi_marca
 
-        # ── 3b. GUARD C: Anti-Eco (diversidad) ─────────────────────────────
-        ops_ok = [op for op in oportunidades if not op.error and op.marca_elegida]
-        if len(ops_ok) >= 2:
-            elegidas = [op.marca_elegida.lower() for op in ops_ok]
-            if len(set(elegidas)) == 1:
-                logger.warning(f"⚠️ EFECTO_ECO: Todos los arquetipos eligieron '{ops_ok[0].marca_elegida}'")
+            logger.info(f"⚡ [{motor_key}] Lanzando {len(escenarios)} auditorías en paralelo...")
+            oportunidades: list[OportunidadAuditada] = list(
+                await asyncio.gather(
+                    *[auditar_uno(esc, motor_key, texto_base, base_pos_mi_marca) for esc in escenarios]
+                )
+            )
 
-        # ── 4. Amenaza principal ────────────────────────────────────────────
-        ganadoras = [
-            op.resultado_auditoria.marca_ganadora
-            for op in oportunidades
-            if not op.error and op.resultado_auditoria.marca_ganadora
-        ]
-        amenaza = Counter(ganadoras).most_common(1)[0][0] if ganadoras else None
-        errores = sum(1 for op in oportunidades if op.error)
+            # GUARD C: Anti-Eco (diversidad)
+            ops_ok = [op for op in oportunidades if not op.error and op.marca_elegida]
+            if len(ops_ok) >= 2:
+                elegidas = [op.marca_elegida.lower() for op in ops_ok]
+                if len(set(elegidas)) == 1:
+                    logger.warning(f"⚠️ [{motor_key}] EFECTO_ECO: Todos eligieron '{ops_ok[0].marca_elegida}'")
 
-        logger.info(
-            f"✅ [Discovery] completado | auditados={len(oportunidades)} "
-            f"errores={errores} amenaza='{amenaza}'"
-        )
+            # Amenaza principal
+            ganadoras = [
+                op.resultado_auditoria.marca_ganadora
+                for op in oportunidades
+                if not op.error and op.resultado_auditoria.marca_ganadora
+            ]
+            amenaza = Counter(ganadoras).most_common(1)[0][0] if ganadoras else None
+            errores = sum(1 for op in oportunidades if op.error)
+            logger.info(
+                f"✅ [Discovery/{motor_key}] auditados={len(oportunidades)} "
+                f"errores={errores} amenaza='{amenaza}'"
+            )
+            return DiscoveryResponse(
+                marca_analizada=brand,
+                topico=topico,
+                oportunidades_auditadas=oportunidades,
+                amenaza_principal=amenaza,
+                total_auditados=len(oportunidades) - errores,
+                total_errores=errores,
+            )
 
-        return DiscoveryResponse(
-            marca_analizada=brand,
-            topico=topico,
-            oportunidades_auditadas=oportunidades,
-            amenaza_principal=amenaza,
-            total_auditados=len(oportunidades) - errores,
-            total_errores=errores,
-        )
+        pares = await _gather_dual(_run_motor, motor)
+        return _wrap_dual(pares)
 
     except Exception as e:
         logger.error(f"❌ Error en /api/discovery: {e}")
@@ -713,6 +811,7 @@ class AuditFromUrlRequest(BaseModel):
     url: str = Field(..., description="URL del sitio web del cliente a auditar")
     pais: str = Field(default="Chile", description="País de referencia para las queries")
     email: Optional[str] = None
+    motor: Optional[str] = Field(default="ambos", description="chatgpt | gemini | ambos")
 
 
 class AuditFromUrlResponse(BaseModel):
@@ -734,6 +833,8 @@ class AuditFromUrlResponse(BaseModel):
     cached_at: Optional[str] = None
     prev_score: Optional[float] = None
     prev_cached_at: Optional[str] = None
+    motor: Optional[str] = None              # chatgpt | gemini | ambos
+    por_motor: Optional[dict] = None         # {chatgpt: AuditFromUrlResponse, gemini: ...}
 
 
 @app.post("/api/audit/from-url", response_model=AuditFromUrlResponse)
@@ -750,7 +851,7 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
     """
     from url_analyzer import analizar_url
     from discovery import generar_escenarios_ia
-    from searcher import consultar_openai
+    from searcher import consultar_motor
     from judge import extraer_metricas
 
     # Validar URL básica
@@ -758,12 +859,14 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
     if not url.startswith(("http://", "https://")):
         raise HTTPException(status_code=422, detail="La URL debe comenzar con http:// o https://")
 
+    motor = _norm_motor(body.motor)
+
     # ── Freemium check ────────────────────────────────────────────────────
     if body.email and _check_freemium(db, body.email):
         raise HTTPException(status_code=429, detail="FREEMIUM_LIMIT")
 
     # ── Supabase cache check ──────────────────────────────────────────────
-    url_ck = _cache_key("url", url)
+    url_ck = _cache_key("url", url, motor=motor)
     cached_row = _get_cache(db, url_ck)
     if cached_row:
         data = cached_row.resultado
@@ -772,7 +875,7 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
         return AuditFromUrlResponse(**data)
 
     # ── In-memory fallback cache ──────────────────────────────────────────
-    mem_key = f"{url}|{body.pais or ''}"
+    mem_key = f"{url}|{body.pais or ''}|{motor}"
     cached = _url_cache.get(mem_key)
     if cached:
         ts, result = cached
@@ -788,7 +891,7 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
         context = await analizar_url(url, pais_hint=body.pais)
         logger.info(f"[from-url] marca='{context.marca}' arquetipos={len(context.arquetipos)}")
 
-        # ── 2. Cada arquetipo genera su query específica ─────────────────
+        # ── 2. Cada arquetipo genera su query específica (una sola vez) ──
         # generar_escenarios_ia acepta arquetipos dinámicos via parámetro 'personas'
         escenarios = await generar_escenarios_ia(
             topico=context.categoria,
@@ -797,11 +900,17 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
         )
         logger.info(f"[from-url] {len(escenarios)} escenarios generados por arquetipos")
 
-        # ── 3. Auditoría concurrente: 1 query por arquetipo ──────────────
-        async def auditar_escenario(escenario: dict) -> dict:
+        # ── 2b. Tendencia de mercado (Google Trends, no depende del motor) ─
+        from trends import get_keyword_trend_direction
+        from url_analyzer import generar_plan_url, generar_inteligencia_competitiva
+        keyword_trend = await asyncio.to_thread(get_keyword_trend_direction, context.categoria)
+        logger.info(f"[from-url] Trend '{context.categoria}': {keyword_trend}")
+
+        # ── 3. Auditoría concurrente: 1 query por arquetipo, por motor ───
+        async def auditar_escenario(escenario: dict, motor_key: str) -> dict:
             query = escenario.get("prompt_ia", "")
             try:
-                texto_ia = await asyncio.wait_for(consultar_openai(query), timeout=30.0)
+                texto_ia = await asyncio.wait_for(consultar_motor(query, motor=motor_key), timeout=30.0)
                 analisis = await extraer_metricas(texto_ia, context.marca)
                 mencionada = analisis.posicion_mi_marca > 0
                 return {
@@ -838,59 +947,51 @@ async def audit_from_url(request: Request, body: AuditFromUrlRequest, db: Sessio
                     "sentimiento": "neutral", "snippet": "", "error": str(exc),
                 }
 
-        logger.info(f"[from-url] Auditando {len(escenarios)} escenarios en paralelo...")
-        resultados: list[dict] = list(
-            await asyncio.gather(*[auditar_escenario(e) for e in escenarios])
-        )
+        # ── 4. Pipeline por motor: audita escenarios + plan + intel ──────
+        async def _run_motor(motor_key: str) -> AuditFromUrlResponse:
+            logger.info(f"[from-url/{motor_key}] Auditando {len(escenarios)} escenarios...")
+            resultados: list[dict] = list(
+                await asyncio.gather(*[auditar_escenario(e, motor_key) for e in escenarios])
+            )
+            total = len(resultados)
+            con_mencion = sum(1 for r in resultados if r.get("mencionada"))
+            visibilidad_pct = round(con_mencion / total * 100, 1) if total > 0 else 0.0
+            logger.info(f"[from-url/{motor_key}] ✅ visibilidad={visibilidad_pct}% ({con_mencion}/{total})")
 
-        # ── 4. Métricas globales ─────────────────────────────────────────
-        total = len(resultados)
-        con_mencion = sum(1 for r in resultados if r.get("mencionada"))
-        visibilidad_pct = round(con_mencion / total * 100, 1) if total > 0 else 0.0
-
-        logger.info(f"[from-url] ✅ visibilidad={visibilidad_pct}% ({con_mencion}/{total})")
-
-        # ── 4b. Tendencia de mercado via Google Trends ───────────────────
-        from trends import get_keyword_trend_direction
-        keyword_trend = await asyncio.to_thread(get_keyword_trend_direction, context.categoria)
-        logger.info(f"[from-url] Trend '{context.categoria}': {keyword_trend}")
-
-        # ── 5. Plan de acción AEO ────────────────────────────────────────
-        from url_analyzer import generar_plan_url, generar_inteligencia_competitiva
-        plan, intel = await asyncio.gather(
-            generar_plan_url(
+            plan, intel = await asyncio.gather(
+                generar_plan_url(
+                    marca=context.marca,
+                    categoria=context.categoria,
+                    mercado=context.mercado,
+                    diferenciadores=context.diferenciadores,
+                    resultados=resultados,
+                ),
+                generar_inteligencia_competitiva(
+                    marca=context.marca,
+                    categoria=context.categoria,
+                    mercado=context.mercado,
+                    resultados=resultados,
+                ),
+            )
+            return AuditFromUrlResponse(
                 marca=context.marca,
                 categoria=context.categoria,
                 mercado=context.mercado,
                 diferenciadores=context.diferenciadores,
+                resumen_pagina=context.resumen_pagina,
+                arquetipos=context.arquetipos,
                 resultados=resultados,
-            ),
-            generar_inteligencia_competitiva(
-                marca=context.marca,
-                categoria=context.categoria,
-                mercado=context.mercado,
-                resultados=resultados,
-            ),
-        )
-        logger.info(f"[from-url] Plan: {len(plan.get('vehiculos', []))} vehículos")
-        logger.info(f"[from-url] Intel competitiva: competidor={intel.get('competitive_deep_dive', {}).get('competidor', 'N/A')}")
+                queries_con_mencion=con_mencion,
+                total_queries=total,
+                visibilidad_pct=visibilidad_pct,
+                plan_accion=plan,
+                keyword_trend=keyword_trend,
+                competitive_deep_dive=intel.get("competitive_deep_dive", {}),
+                untapped_territories=intel.get("untapped_territories", []),
+            )
 
-        result = AuditFromUrlResponse(
-            marca=context.marca,
-            categoria=context.categoria,
-            mercado=context.mercado,
-            diferenciadores=context.diferenciadores,
-            resumen_pagina=context.resumen_pagina,
-            arquetipos=context.arquetipos,
-            resultados=resultados,
-            queries_con_mencion=con_mencion,
-            total_queries=total,
-            visibilidad_pct=visibilidad_pct,
-            plan_accion=plan,
-            keyword_trend=keyword_trend,
-            competitive_deep_dive=intel.get("competitive_deep_dive", {}),
-            untapped_territories=intel.get("untapped_territories", []),
-        )
+        pares = await _gather_dual(_run_motor, motor)
+        result = _wrap_dual(pares)
         _url_cache[mem_key] = (_time.time(), result)
         prev_score, prev_cached_at = _set_cache(db, url_ck, "url", url, "", result.model_dump(mode="json"))
         result.prev_score = prev_score
@@ -931,6 +1032,7 @@ class ComparisonRequest(BaseModel):
     marca_b: str = Field(..., description="Segunda marca a comparar (el rival)")
     categoria: str = Field(..., description="Categoría o rubro del mercado (ej: 'jeans de mujer')")
     mercado: str = Field(default="Chile", description="País de referencia")
+    motor: Optional[str] = Field(default="ambos", description="chatgpt | gemini | ambos")
 
 
 class ComparisonResponse(BaseModel):
@@ -946,6 +1048,8 @@ class ComparisonResponse(BaseModel):
     razon_recomendacion: str
     score_marca_a: int   # 0-100 según percepción IA
     score_marca_b: int
+    motor: Optional[str] = None              # chatgpt | gemini | ambos
+    por_motor: Optional[dict] = None         # {chatgpt: ComparisonResponse, gemini: ...}
 
 
 @app.post("/api/audit/comparison", response_model=ComparisonResponse)
@@ -955,8 +1059,7 @@ async def audit_comparison(request: Request, body: ComparisonRequest) -> Compari
     Compara dos marcas en una categoría desde la perspectiva de la IA.
     Devuelve ventajas, debilidades y veredicto estructurado.
     """
-    if not _openai_client:
-        raise HTTPException(status_code=503, detail="OpenAI API key no configurada")
+    motor = _norm_motor(body.motor)
 
     prompt = f"""Eres un motor de búsqueda con IA (como ChatGPT o Perplexity) en {body.mercado}.
 Un usuario pregunta: "¿Cuál es mejor entre {body.marca_a} y {body.marca_b} para {body.categoria}?"
@@ -983,26 +1086,14 @@ REGLAS:
 - No inventes datos específicos (precios, fechas exactas)
 - Las ventajas/debilidades deben ser específicas para {body.categoria}, no genéricas"""
 
-    try:
-        response = await _openai_client.chat.completions.create(
-            model=AI_MODEL,
-            max_tokens=700,
-            temperature=0.3,
-            response_format={"type": "json_object"},
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        f"Eres un motor de IA analizando marcas en {body.mercado}. "
-                        "Devuelve SOLO JSON válido. Sé específico y directo."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
-        )
+    system = (
+        f"Eres un motor de IA analizando marcas en {body.mercado}. "
+        "Devuelve SOLO JSON válido. Sé específico y directo."
+    )
 
-        data = json.loads(response.choices[0].message.content)
-
+    async def _run_motor(motor_key: str) -> ComparisonResponse:
+        raw = await _llm_json(system=system, user=prompt, motor=motor_key, max_tokens=700, temperature=0.3)
+        data = json.loads(raw)
         return ComparisonResponse(
             marca_a=body.marca_a,
             marca_b=body.marca_b,
@@ -1017,6 +1108,10 @@ REGLAS:
             score_marca_a=int(data.get("score_marca_a", 50)),
             score_marca_b=int(data.get("score_marca_b", 50)),
         )
+
+    try:
+        pares = await _gather_dual(_run_motor, motor)
+        return _wrap_dual(pares)
 
     except Exception as e:
         logger.error(f"[comparison] Error: {e}")
@@ -1175,6 +1270,7 @@ class CitabilityRequest(BaseModel):
     categoria: str = Field(..., description="Categoría de producto (ej: 'jeans de mujer Chile')")
     mercado: str = Field(default="Chile", description="País de referencia")
     num_territorios: int = Field(default=12, ge=6, le=20)
+    motor: Optional[str] = Field(default="ambos", description="chatgpt | gemini | ambos")
 
 
 class CitabilityTerritory(BaseModel):
@@ -1194,6 +1290,8 @@ class CitabilityResponse(BaseModel):
     total_bajas: int
     total_medias: int
     total_altas: int
+    motor: Optional[str] = None              # chatgpt | gemini | ambos
+    por_motor: Optional[dict] = None         # {chatgpt: CitabilityResponse, gemini: ...}
 
 
 @app.post("/api/audit/citability", response_model=CitabilityResponse)
@@ -1203,6 +1301,7 @@ async def audit_citability(request: Request, body: CitabilityRequest) -> Citabil
     Gap Analysis de Territorios: encuentra queries donde la IA no tiene respuesta
     favorita clara y la marca podría posicionarse fácilmente.
     """
+    motor = _norm_motor(body.motor)
     if not _openai_client:
         raise HTTPException(status_code=503, detail="OpenAI API key no configurada")
 
@@ -1239,8 +1338,8 @@ Devuelve SOLO JSON:
     if not queries:
         raise HTTPException(status_code=500, detail="No se generaron queries")
 
-    # ── Paso 2: Mini-auditoría paralela ─────────────────────────────────────
-    async def audit_one(query: str) -> CitabilityTerritory:
+    # ── Paso 2: Mini-auditoría paralela (por motor) ─────────────────────────
+    async def audit_one(query: str, motor_key: str) -> CitabilityTerritory:
         audit_prompt = f"""Eres ChatGPT/Perplexity respondiendo en {body.mercado}.
 Un usuario pregunta: "{query}"
 
@@ -1253,18 +1352,17 @@ Responde como lo harías normalmente. Luego devuelve SOLO JSON con:
 Si no mencionarías ninguna marca específica, devuelve marcas_mencionadas como lista vacía o con fuentes genéricas como ["blogs de moda", "guías generales"]."""
 
         try:
-            resp = await _openai_client.chat.completions.create(
-                model=AI_MODEL,
-                max_tokens=300,
-                temperature=0.2,
-                response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": "Motor de búsqueda IA. Devuelve SOLO JSON."},
-                    {"role": "user", "content": audit_prompt},
-                ],
-                timeout=12,
+            raw = await asyncio.wait_for(
+                _llm_json(
+                    system="Motor de búsqueda IA. Devuelve SOLO JSON.",
+                    user=audit_prompt,
+                    motor=motor_key,
+                    max_tokens=300,
+                    temperature=0.2,
+                ),
+                timeout=20,
             )
-            data = json.loads(resp.choices[0].message.content)
+            data = json.loads(raw)
             marcas = data.get("marcas_mencionadas", [])
             recomendacion_key = f"recomendacion_para_{body.marca.replace(' ', '_')}"
             recomendacion = data.get(recomendacion_key) or data.get("recomendacion", "Crear contenido específico sobre este tema.")
@@ -1284,30 +1382,31 @@ Si no mencionarías ninguna marca específica, devuelve marcas_mencionadas como 
             recomendacion=recomendacion,
         )
 
-    territorios = await asyncio.gather(*[audit_one(q) for q in queries])
+    # ── Paso 3: pipeline por motor (audita los mismos territorios) ──────────
+    async def _run_motor(motor_key: str) -> CitabilityResponse:
+        territorios = await asyncio.gather(*[audit_one(q, motor_key) for q in queries])
+        # Ordenar por dificultad ASC (mejores oportunidades primero)
+        territorios_sorted = sorted(territorios, key=lambda t: t.dificultad)
+        bajas = [t for t in territorios_sorted if t.nivel == "baja"]
+        medias = [t for t in territorios_sorted if t.nivel == "media"]
+        altas = [t for t in territorios_sorted if t.nivel == "alta"]
+        resumen = (
+            f"Se encontraron {len(bajas)} territorios de oportunidad inmediata, "
+            f"{len(medias)} de dificultad media y {len(altas)} ya dominados por marcas líderes. "
+            f"Prioriza los territorios en verde: publica un artículo o landing page esta semana."
+        )
+        return CitabilityResponse(
+            marca=body.marca,
+            categoria=body.categoria,
+            territorios=list(territorios_sorted),
+            resumen=resumen,
+            total_bajas=len(bajas),
+            total_medias=len(medias),
+            total_altas=len(altas),
+        )
 
-    # ── Paso 3: Ordenar por dificultad ASC (mejores oportunidades primero) ──
-    territorios_sorted = sorted(territorios, key=lambda t: t.dificultad)
-
-    bajas = [t for t in territorios_sorted if t.nivel == "baja"]
-    medias = [t for t in territorios_sorted if t.nivel == "media"]
-    altas = [t for t in territorios_sorted if t.nivel == "alta"]
-
-    resumen = (
-        f"Se encontraron {len(bajas)} territorios de oportunidad inmediata, "
-        f"{len(medias)} de dificultad media y {len(altas)} ya dominados por marcas líderes. "
-        f"Prioriza los territorios en verde: publica un artículo o landing page esta semana."
-    )
-
-    return CitabilityResponse(
-        marca=body.marca,
-        categoria=body.categoria,
-        territorios=list(territorios_sorted),
-        resumen=resumen,
-        total_bajas=len(bajas),
-        total_medias=len(medias),
-        total_altas=len(altas),
-    )
+    pares = await _gather_dual(_run_motor, motor)
+    return _wrap_dual(pares)
 
 
 # ──────────────────────────────────────────────────────────────
@@ -1603,6 +1702,24 @@ async def admin_openai_usage(days: int = 30, db: Session = Depends(get_db)):
             for r in por_endpoint_q
         ]
 
+        # Breakdown por proveedor (OpenAI vs Gemini) en el rango de N días
+        por_proveedor_q = (
+            db.query(
+                OpenAIUsage.provider,
+                func.coalesce(func.sum(OpenAIUsage.total_tokens), 0),
+                func.coalesce(func.sum(OpenAIUsage.cost_usd), 0.0),
+                func.count(OpenAIUsage.id),
+            )
+            .filter(OpenAIUsage.created_at >= desde)
+            .group_by(OpenAIUsage.provider)
+            .order_by(func.sum(OpenAIUsage.cost_usd).desc())
+            .all()
+        )
+        por_proveedor = [
+            {"provider": r[0] or "openai", "tokens": int(r[1]), "usd": round(float(r[2]), 4), "calls": int(r[3])}
+            for r in por_proveedor_q
+        ]
+
         return {
             "rango_dias": days,
             "hoy": hoy_b,
@@ -1612,6 +1729,7 @@ async def admin_openai_usage(days: int = 30, db: Session = Depends(get_db)):
             "por_dia": por_dia,
             "por_modelo": por_modelo,
             "por_endpoint": por_endpoint,
+            "por_proveedor": por_proveedor,
         }
     except Exception as e:
         logger.error(f"Error en admin/openai/usage: {e}")
@@ -1777,6 +1895,80 @@ def _section_header(num: str, title: str) -> str:
         f'<span style="color:#94a3b8;font-size:12px;font-weight:600;margin-left:10px;">{_esc(title)}</span>'
         f'</td></tr></table>'
     )
+
+
+# Etiquetas y colores por motor (espejo del dashboard auditar/page.tsx).
+_MOTOR_LABELS = {"chatgpt": "ChatGPT (OpenAI)", "gemini": "Gemini (Google)"}
+_MOTOR_COLORS = {"chatgpt": "#10b981", "gemini": "#0ea5e9"}
+
+
+def _engine_banner(motor_key: str, d: dict, right_text: Optional[str] = None) -> str:
+    """Banner que separa el bloque de cada motor en el informe 'ambos'.
+
+    `right_text` permite sobreescribir la métrica de la derecha (ej. para URL,
+    donde la métrica es visibilidad % y no posición/score).
+    """
+    label = _MOTOR_LABELS.get(motor_key, motor_key)
+    color = _MOTOR_COLORS.get(motor_key, "#94a3b8")
+    if right_text is None:
+        score_v = round(d.get("invisibilidad_score") or 0)
+        pos = d.get("posicion_mi_marca") or 0
+        pos_txt = f"Posición #{pos}" if pos else "Sin aparición"
+        right_text = f"{pos_txt} · Score {score_v}/100"
+    return (
+        f'<table width="100%" cellpadding="0" cellspacing="0" style="padding:8px 32px 14px 32px;"><tr>'
+        f'<td style="background:#020617;border:1px solid #1e293b;border-left:3px solid {color};border-radius:4px;padding:12px 16px;">'
+        f'<table cellpadding="0" cellspacing="0" width="100%"><tr>'
+        f'<td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{color};margin-right:8px;"></span>'
+        f'<span style="color:#e2e8f0;font-size:13px;font-weight:600;">Motor: {_esc(label)}</span></td>'
+        f'<td align="right"><span style="color:#64748b;font-size:11px;font-family:monospace;">{_esc(right_text)}</span></td>'
+        f'</tr></table></td></tr></table>'
+    )
+
+
+def _brand_sections(d: dict, marca: str, header: bool = True) -> str:
+    """Construye las secciones del informe para el resultado de UN motor."""
+    out = ""
+    if header:
+        out += _section_header("01", "Resumen ejecutivo")
+    out += _executive_summary_brand(d, marca)
+    out += _share_of_voice(d.get("marcas_mencionadas") or [], marca)
+    rival = d.get("competidor_principal") or d.get("marca_ganadora") or "la competencia"
+    ca = d.get("competitor_advantage") or {}
+    out += _competitive_diagnosis(
+        d.get("percepciones_genericas") or [],
+        d.get("conceptos_faltantes") or [],
+        rival,
+        ca.get("filas") or [],
+    )
+    out += _action_plan(d.get("plan_accion") or {})
+    out += _territories(d.get("territorios_desatendidos") or [], "brand")
+    return out
+
+
+def _url_sections(r: dict, marca: str, header: bool = True) -> str:
+    """Construye las secciones del informe URL para el resultado de UN motor."""
+    out = ""
+    if header:
+        out += _section_header("01", "Resumen ejecutivo")
+    out += _executive_summary_url(r, marca)
+    # share-of-voice por conteo de marcas_ganadoras a través de los arquetipos
+    counts: dict = {}
+    for x in r.get("resultados") or []:
+        for m in x.get("marcas_mencionadas") or []:
+            counts[m] = counts.get(m, 0) + 1
+    sov_marcas = [m for m, _ in sorted(counts.items(), key=lambda kv: kv[1], reverse=True)]
+    out += _share_of_voice(sov_marcas, marca)
+    cdd = r.get("competitive_deep_dive") or {}
+    if cdd:
+        perc = [s.strip() + "." for s in (cdd.get("percepcion_nuestra_marca") or "").split(". ") if len(s.strip()) > 8][:3]
+        mens = [s.strip() + "." for s in (cdd.get("mensaje_competidor") or "").split(". ") if len(s.strip()) > 8][:3]
+        out += _competitive_diagnosis(
+            perc, mens, cdd.get("competidor") or "la competencia", cdd.get("tabla_atributos") or []
+        )
+    out += _action_plan(r.get("plan_accion") or {})
+    out += _territories(r.get("untapped_territories") or [], "url")
+    return out
 
 
 def _executive_summary_brand(d: dict, marca: str) -> str:
@@ -2046,41 +2238,43 @@ async def send_report(payload: SendReportRequest):
     r = payload.resultado or {}
     sections_html = ""
     if payload.modo == "brand":
-        d = (r.get("resultados") or [{}])[0] if isinstance(r.get("resultados"), list) else {}
-        if d:
-            sections_html += _section_header("01", "Resumen ejecutivo")
-            sections_html += _executive_summary_brand(d, payload.marca)
-            sections_html += _share_of_voice(d.get("marcas_mencionadas") or [], payload.marca)
-            rival = d.get("competidor_principal") or d.get("marca_ganadora") or "la competencia"
-            ca = d.get("competitor_advantage") or {}
-            sections_html += _competitive_diagnosis(
-                d.get("percepciones_genericas") or [],
-                d.get("conceptos_faltantes") or [],
-                rival,
-                ca.get("filas") or [],
-            )
-            sections_html += _action_plan(d.get("plan_accion") or {})
-            sections_html += _territories(d.get("territorios_desatendidos") or [], "brand")
+        por_motor = r.get("por_motor") if isinstance(r.get("por_motor"), dict) else None
+        motores_presentes = [
+            (k, por_motor.get(k)) for k in ("chatgpt", "gemini")
+            if por_motor and isinstance(por_motor.get(k), dict)
+        ] if por_motor else []
+
+        if motores_presentes:
+            # Informe multimotor: un bloque por cada motor (ChatGPT, Gemini).
+            for motor_key, sub in motores_presentes:
+                d = (sub.get("resultados") or [{}])[0] if isinstance(sub.get("resultados"), list) else {}
+                if not d:
+                    continue
+                sections_html += _engine_banner(motor_key, d)
+                sections_html += _brand_sections(d, payload.marca, header=False)
+        else:
+            d = (r.get("resultados") or [{}])[0] if isinstance(r.get("resultados"), list) else {}
+            if d:
+                sections_html += _brand_sections(d, payload.marca)
     elif payload.modo == "url":
-        if r:
-            sections_html += _section_header("01", "Resumen ejecutivo")
-            sections_html += _executive_summary_url(r, payload.marca)
-            # build share-of-voice por conteo de marcas_ganadoras
-            counts: dict = {}
-            for x in r.get("resultados") or []:
-                for m in x.get("marcas_mencionadas") or []:
-                    counts[m] = counts.get(m, 0) + 1
-            sov_marcas = [m for m, _ in sorted(counts.items(), key=lambda kv: kv[1], reverse=True)]
-            sections_html += _share_of_voice(sov_marcas, payload.marca)
-            cdd = r.get("competitive_deep_dive") or {}
-            if cdd:
-                perc = [s.strip() + "." for s in (cdd.get("percepcion_nuestra_marca") or "").split(". ") if len(s.strip()) > 8][:3]
-                mens = [s.strip() + "." for s in (cdd.get("mensaje_competidor") or "").split(". ") if len(s.strip()) > 8][:3]
-                sections_html += _competitive_diagnosis(
-                    perc, mens, cdd.get("competidor") or "la competencia", cdd.get("tabla_atributos") or []
+        por_motor = r.get("por_motor") if isinstance(r.get("por_motor"), dict) else None
+        motores_presentes = [
+            (k, por_motor.get(k)) for k in ("chatgpt", "gemini")
+            if por_motor and isinstance(por_motor.get(k), dict)
+        ] if por_motor else []
+        if motores_presentes:
+            for motor_key, sub in motores_presentes:
+                if not sub:
+                    continue
+                vis = sub.get("visibilidad_pct") or 0
+                con = sub.get("queries_con_mencion") or 0
+                tot = sub.get("total_queries") or 0
+                sections_html += _engine_banner(
+                    motor_key, {}, right_text=f"Visibilidad {vis}% · {con}/{tot} queries"
                 )
-            sections_html += _action_plan(r.get("plan_accion") or {})
-            sections_html += _territories(r.get("untapped_territories") or [], "url")
+                sections_html += _url_sections(sub, payload.marca, header=False)
+        elif r:
+            sections_html += _url_sections(r, payload.marca)
 
     html = f"""<!DOCTYPE html>
 <html lang="es">

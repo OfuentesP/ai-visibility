@@ -88,7 +88,7 @@ Ingresa tu marca y una consulta de mercado. En segundos obtienes:
 - **Backend:** Python / FastAPI — robusto, escalable, listo para producción
 - **Frontend:** Next.js 16 / React 19 / Tailwind CSS — interfaz moderna y rápida
 - **Base de datos:** PostgreSQL en Supabase — histórico de auditorías, multi-tenant
-- **IA:** OpenAI GPT-4o con salidas estructuradas + validación Pydantic — resultados confiables y auditables
+- **IA:** Motor dual — OpenAI GPT-4o-mini y Google Gemini 2.5-flash. La auditoría de marca corre ambos en paralelo (`motor=ambos`) y compara cómo posiciona cada uno. Salidas estructuradas + validación Pydantic — resultados confiables y auditables
 - **Arquitectura:** 4 capas con defensa determinística — la IA extrae, Python decide (sin alucinaciones en métricas)
 
 ---
@@ -100,6 +100,7 @@ Ingresa tu marca y una consulta de mercado. En segundos obtienes:
 - Python 3.9+
 - PostgreSQL gratis (Supabase)
 - OpenAI API key
+- Gemini API key (Google AI Studio) — opcional; sin ella `motor=ambos` cae a solo ChatGPT
 
 ### Setup
 
@@ -135,7 +136,7 @@ python main.py
 | Paso | Nombre | Estado | Detalles |
 |------|--------|--------|----------|
 | 1 | Scaffolding Fullstack | ✅ | Next.js + FastAPI, CORS, middleware |
-| 2 | Motor de Búsqueda | ✅ | OpenAI async, Anthropic, 8 ejemplos |
+| 2 | Motor de Búsqueda | ✅ | Dual: OpenAI + Gemini async (`consultar_motor`) |
 | 3 | Base de Datos | ✅ | SQLAlchemy ORM, 5 tablas, 21 endpoints |
 
 ### ⏳ PRÓXIMOS - Pasos 4-6
@@ -194,7 +195,9 @@ ai-visibility/
 │   ├── database.py              # ✅ SQLAlchemy ORM
 │   ├── crud.py                  # ✅ 15+ operaciones
 │   ├── models.py                # Pydantic models
-│   ├── ai_clients.py            # OpenAI/Anthropic
+│   ├── searcher.py              # Dispatcher motor dual (OpenAI/Gemini)
+│   ├── openai_tracking.py       # Wrapper OpenAI + tracking de uso
+│   ├── gemini_tracking.py       # Wrapper Gemini + tracking de uso
 │   ├── requirements.txt
 │   ├── .env.local               # Variables (GIT IGNORED)
 │   └── README.md
@@ -379,8 +382,8 @@ Ver [PASO_3_SETUP.md](PASO_3_SETUP.md) para instrucciones detalladas.
 | | SQLAlchemy | 2.0.23 | ORM |
 | **Database** | PostgreSQL | 15+ | Storage |
 | | Supabase | FREE | Hosted DB |
-| **AI** | OpenAI | - | Análisis |
-| | Anthropic | - | Claude |
+| **AI** | OpenAI GPT-4o-mini | - | Motor + juez/extractor |
+| | Google Gemini 2.5-flash | - | Motor de búsqueda dual |
 
 ---
 

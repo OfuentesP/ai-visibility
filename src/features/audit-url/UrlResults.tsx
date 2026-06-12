@@ -30,9 +30,10 @@ interface Props {
   urlInput: string
   userEmail: string
   userName: string
+  hideExport?: boolean
 }
 
-export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) {
+export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExport }: Props) {
   const reportRef = useRef<HTMLDivElement>(null)
   const [showPerfilesDetalle, setShowPerfilesDetalle] = useState(false)
   const [showUrlSnippet, setShowUrlSnippet] = useState<Record<number, boolean>>({})
@@ -405,18 +406,20 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName }: Props) 
       </motion.div>
 
       {/* Export */}
-      <ExportBar
-        userEmail={userEmail}
-        userName={userName}
-        marca={urlInput}
-        score={urlResult.visibilidad_pct}
-        modo="url"
-        resultado={urlResult}
-        getShareUrl={async () => {
-          const code = await shareReport({ modo: 'url', marca: urlInput, resultado: urlResult })
-          return `${window.location.origin}/r/?c=${code}`
-        }}
-      />
+      {!hideExport && (
+        <ExportBar
+          userEmail={userEmail}
+          userName={userName}
+          marca={urlInput}
+          score={urlResult.visibilidad_pct}
+          modo="url"
+          resultado={urlResult}
+          getShareUrl={async () => {
+            const code = await shareReport({ modo: 'url', marca: urlInput, resultado: urlResult })
+            return `${window.location.origin}/r/?c=${code}`
+          }}
+        />
+      )}
 
     </motion.div>
   )

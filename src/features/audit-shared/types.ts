@@ -98,6 +98,8 @@ export interface DiscoveryResponse {
   amenaza_principal: string | null
   total_auditados: number
   total_errores: number
+  motor?: 'chatgpt' | 'gemini' | 'ambos'
+  por_motor?: { chatgpt?: DiscoveryResponse; gemini?: DiscoveryResponse }
 }
 
 // ─── URL audit specific types ────────────────────────────────────────────────
@@ -150,6 +152,8 @@ export interface UrlAuditResult {
   cached_at?: string | null
   prev_score?: number | null
   prev_cached_at?: string | null
+  motor?: 'chatgpt' | 'gemini' | 'ambos'
+  por_motor?: { chatgpt?: UrlAuditResult; gemini?: UrlAuditResult }
 }
 
 // ─── Compare audit specific types ────────────────────────────────────────────
@@ -167,6 +171,8 @@ export interface CompareResult {
   razon_recomendacion: string
   score_marca_a: number
   score_marca_b: number
+  motor?: 'chatgpt' | 'gemini' | 'ambos'
+  por_motor?: { chatgpt?: CompareResult; gemini?: CompareResult }
 }
 
 // ─── Cita (citability) audit specific types ──────────────────────────────────
@@ -188,6 +194,8 @@ export interface CitaResult {
   total_medias: number
   total_altas: number
   territorios: CitaTerritorio[]
+  motor?: 'chatgpt' | 'gemini' | 'ambos'
+  por_motor?: { chatgpt?: CitaResult; gemini?: CitaResult }
 }
 
 // ─── Shared UI types ─────────────────────────────────────────────────────────

@@ -360,6 +360,8 @@ class DiscoveryResponse(BaseModel):
     amenaza_principal: Optional[str] = None
     total_auditados: int = 0
     total_errores: int = 0
+    motor: Optional[str] = None              # chatgpt | gemini | ambos
+    por_motor: Optional[dict] = None         # {chatgpt: DiscoveryResponse, gemini: DiscoveryResponse}
 
 
 class OmnichannelBrief(BaseModel):

@@ -15,7 +15,9 @@ import { UrlForm } from '@/features/audit-url/UrlForm'
 import { UrlResults } from '@/features/audit-url/UrlResults'
 import { CompareForm } from '@/features/audit-compare/CompareForm'
 import { CitaForm } from '@/features/audit-cita/CitaForm'
-import { fetchQuota } from '@/features/audit-shared/api'
+import { fetchQuota, shareReport } from '@/features/audit-shared/api'
+import { ExportBar } from '@/features/audit-shared/components/ExportBar'
+import { EngineBanner } from '@/features/audit-shared/components/EngineBanner'
 
 import type { AuditMode, QuotaInfo } from '@/features/audit-shared/types'
 
@@ -373,12 +375,54 @@ export default function AuditarPage() {
 
           {/* ── URL results ─────────────────────────────────────────────────── */}
           {mode === 'url' && url.urlResult && (
-            <UrlResults
-              urlResult={url.urlResult}
-              urlInput={url.urlInput}
-              userEmail={userEmail}
-              userName={userName}
-            />
+            url.urlResult.por_motor && (url.urlResult.por_motor.chatgpt || url.urlResult.por_motor.gemini) ? (
+              <div className="space-y-10">
+                {(['chatgpt', 'gemini'] as const).map((m) => {
+                  const sub = url.urlResult?.por_motor?.[m]
+                  if (!sub) return null
+                  return (
+                    <div key={m}>
+                      <EngineBanner motor={m} />
+                      <UrlResults
+                        urlResult={sub}
+                        urlInput={url.urlInput}
+                        userEmail={userEmail}
+                        userName={userName}
+                        hideExport
+                      />
+                    </div>
+                  )
+                })}
+                {/* Un único informe combinado (ChatGPT + Gemini) */}
+                <div className="max-w-5xl mx-auto px-4 sm:px-8">
+                  <ExportBar
+                    userEmail={userEmail}
+                    userName={userName}
+                    marca={url.urlInput}
+                    score={(() => {
+                      const pm = url.urlResult?.por_motor
+                      const scores = (['chatgpt', 'gemini'] as const)
+                        .map((k) => pm?.[k]?.visibilidad_pct)
+                        .filter((s): s is number => typeof s === 'number')
+                      return scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0
+                    })()}
+                    modo="url"
+                    resultado={url.urlResult}
+                    getShareUrl={async () => {
+                      const code = await shareReport({ modo: 'url', marca: url.urlInput, resultado: url.urlResult })
+                      return `${window.location.origin}/r/?c=${code}`
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              <UrlResults
+                urlResult={url.urlResult}
+                urlInput={url.urlInput}
+                userEmail={userEmail}
+                userName={userName}
+              />
+            )
           )}
 
           {/* ── Brand results ────────────────────────────────────────────────── */}
@@ -404,15 +448,38 @@ export default function AuditarPage() {
                         query={brand.query}
                         userEmail={userEmail}
                         userName={userName}
-                        discoveryResult={m === 'chatgpt' ? brand.discoveryResult : null}
-                        discoveryLoading={m === 'chatgpt' ? brand.discoveryLoading : false}
+                        discoveryResult={brand.discoveryResult?.por_motor?.[m] ?? (m === 'chatgpt' ? brand.discoveryResult : null)}
+                        discoveryLoading={brand.discoveryLoading}
                         trendsResult={m === 'chatgpt' ? brand.trendsResult : null}
                         trendsLoading={m === 'chatgpt' ? brand.trendsLoading : false}
                         onDownloadJson={handleDownloadJson}
+                        hideExport
                       />
                     </div>
                   )
                 })}
+                {/* Un único informe combinado (ChatGPT + Gemini) */}
+                <div className="max-w-5xl mx-auto px-4 sm:px-8">
+                  <ExportBar
+                    userEmail={userEmail}
+                    userName={userName}
+                    marca={brand.brand}
+                    query={brand.query}
+                    score={(() => {
+                      const pm = brand.result?.por_motor
+                      const scores = (['chatgpt', 'gemini'] as const)
+                        .map((k) => pm?.[k]?.resultados?.[0]?.invisibilidad_score)
+                        .filter((s): s is number => typeof s === 'number')
+                      return scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0
+                    })()}
+                    modo="brand"
+                    resultado={brand.result}
+                    getShareUrl={async () => {
+                      const code = await shareReport({ modo: 'brand', marca: brand.brand, query: brand.query, resultado: brand.result })
+                      return `${window.location.origin}/r/?c=${code}`
+                    }}
+                  />
+                </div>
               </div>
             ) : (
               <BrandResults

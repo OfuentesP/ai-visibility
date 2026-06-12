@@ -35,7 +35,7 @@ const jsonLd = {
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web browser",
       "publisher": { "@id": "https://ai-visibility.cl/#organization" },
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CLP" }
     },
     {
       "@type": "FAQPage",
@@ -124,7 +124,7 @@ export default function LandingPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────── */}
       <section className="flex flex-col items-center justify-center text-center px-4 pt-16 sm:pt-24 pb-12 sm:pb-20">
-        <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-5">
+        <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-5">
           Generative Engine Optimization · Share of Model
         </p>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight max-w-3xl mb-6">
@@ -142,7 +142,7 @@ export default function LandingPage() {
         </p>
         <div className="flex justify-center w-full">
           <Link
-            href="/#planes"
+            href="#planes"
             className="w-full sm:w-auto px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all text-center"
           >
             Auditar mi marca →
@@ -150,7 +150,7 @@ export default function LandingPage() {
         </div>
 
         {/* Social proof strip */}
-        <div className="mt-14 flex flex-wrap items-center justify-center gap-6 text-slate-500 text-xs font-mono">
+        <div className="mt-14 flex flex-wrap items-center justify-center gap-6 text-slate-500 text-xs">
           <span>ChatGPT · GPT-4o</span>
           <span className="text-slate-800">·</span>
           <span>Perplexity AI</span>
@@ -166,19 +166,19 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
-              <p className="text-xs sm:text-[11px] font-mono text-rose-600 uppercase tracking-widest mb-4">El punto ciego de tu estrategia</p>
+              <p className="text-xs sm:text-[11px] text-rose-600 uppercase tracking-widest mb-4">El punto ciego de tu estrategia</p>
               <h2 className="hidden sm:block text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-5">
-                Mientras pules tu landing,{' '}
-                <span className="text-slate-700 font-normal">ChatGPT ya le recomendó otra marca a tu cliente.</span>
+                Mientras mejoras tu landing,{' '}
+                <span className="text-slate-700 font-normal">ChatGPT y Gemini ya le recomendaron otra marca a tu cliente.</span>
               </h2>
               <h2 className="sm:hidden text-2xl font-extrabold text-slate-900 leading-tight mb-5">
-                ChatGPT ya le recomendó otra marca a tu cliente.
+                ChatGPT y Gemini ya le recomendaron otra marca a tu cliente.
               </h2>
               <p className="text-slate-700 text-base leading-relaxed mb-8">
                 La iA sintetiza <strong className="text-slate-900">una sola respuesta</strong>. Si tu marca no está en esa síntesis, no entras al proceso de decisión — ni siquiera para perderlo.
               </p>
-              <Link href="/#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
-                Ver cómo me cita ChatGPT →
+              <Link href="#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
+                Ver cómo me cita ChatGPT y Gemini →
               </Link>
             </div>
             <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
@@ -215,7 +215,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Cómo trabajamos</p>
+            <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-3">Cómo trabajamos</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4">No es magia. Es ingeniería inversa.</h2>
             <p className="hidden sm:block text-slate-600 text-base max-w-xl mx-auto leading-relaxed">4 pasos auditables para ir del diagnóstico al código que la iA lee.</p>
             <p className="sm:hidden text-slate-600 text-base max-w-xl mx-auto leading-relaxed">4 pasos del diagnóstico al código.</p>
@@ -232,7 +232,7 @@ export default function LandingPage() {
                 <div key={step.n} className="relative flex flex-col md:flex-row gap-5 md:gap-6 items-start">
                   <div className={`relative z-10 w-[88px] h-[88px] rounded-md flex flex-col items-center justify-center shrink-0 border ${step.highlight ? 'bg-indigo-50 border-indigo-300' : 'bg-white shadow-sm border-slate-200'}`}>
                     {step.icon}
-                    <span className={`mt-1.5 font-mono text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-700' : 'text-slate-500'}`}>{step.n}</span>
+                    <span className={`mt-1.5 text-xs sm:text-[10px] font-bold tracking-widest ${step.highlight ? 'text-indigo-700' : 'text-slate-500'}`}>{step.n}</span>
                   </div>
                   <div className={`flex-1 p-6 rounded-md border transition-all ${step.highlight ? 'bg-indigo-50 border-indigo-200 shadow-sm' : 'bg-white shadow-sm border-slate-200 hover:shadow-md'}`}>
                     {step.highlight && <span className="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs sm:text-[10px] font-bold uppercase tracking-wider rounded mb-2">Nuestro core</span>}
@@ -250,21 +250,21 @@ export default function LandingPage() {
       <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Qué te llevas</p>
+            <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-3">Qué te llevas</p>
             <h2 className="hidden sm:block text-2xl sm:text-3xl font-extrabold text-slate-900">Un informe que tu equipo puede ejecutar mañana</h2>
             <h2 className="sm:hidden text-2xl font-extrabold text-slate-900">Un informe que se ejecuta</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((f) => (
               <div key={f.title} className="bg-white shadow-sm border border-slate-200 rounded-md p-6 hover:shadow-md transition-shadow">
-                <span className="text-indigo-600 text-2xl block mb-4 font-mono leading-none">{f.icon}</span>
+                <span className="text-indigo-600 text-2xl block mb-4 leading-none">{f.icon}</span>
                 <h3 className="text-sm font-semibold text-slate-900 mb-2 leading-snug">{f.title}</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Link href="/#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
+            <Link href="#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
               Quiero mi informe →
             </Link>
           </div>
@@ -275,7 +275,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Ejemplo de diagnóstico real</p>
+            <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-3">Ejemplo de diagnóstico real</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4">Lo que tu informe revela — con precisión quirúrgica</h2>
             <p className="text-slate-500 text-base max-w-2xl mx-auto leading-relaxed">
               No decimos "mejora tu presencia digital". Te decimos exactamente qué fuente de datos le falta a la iA para recomendarte.
@@ -310,7 +310,7 @@ export default function LandingPage() {
             ].map((card) => (
               <div key={card.title} className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-xs sm:text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border ${card.badgeColor}`}>{card.badge}</span>
+                  <span className={`text-xs sm:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm border ${card.badgeColor}`}>{card.badge}</span>
                   <span className={`text-lg font-bold ${card.iconColor}`}>{card.icon}</span>
                 </div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-2">{card.title}</h3>
@@ -321,7 +321,7 @@ export default function LandingPage() {
           {/* Metadata bar */}
           <div className="border border-slate-200 rounded-sm bg-slate-50/50 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 justify-center">
             {['14 fuentes analizadas', '3 arquetipos de comprador simulados', 'Tiempo de análisis: 47s', 'Motor: ChatGPT GPT-4o'].map((m) => (
-              <span key={m} className="text-slate-500 text-xs sm:text-[11px] font-mono">{m}</span>
+              <span key={m} className="text-slate-500 text-xs sm:text-[11px]">{m}</span>
             ))}
           </div>
         </div>
@@ -331,7 +331,7 @@ export default function LandingPage() {
       <section className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">GEO vs SEO</p>
+            <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-3">GEO vs SEO</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4">
               ¿Por qué el SEO tradicional ya no es suficiente?
             </h2>
@@ -347,11 +347,11 @@ export default function LandingPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 border-b border-slate-200 bg-white shadow-sm">
               <div className="p-5 hidden md:block" />
               <div className="p-5 border-b-2 border-indigo-500 bg-indigo-500/5">
-                <span className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest block mb-1">Plataforma GEO</span>
+                <span className="text-xs sm:text-[10px] text-indigo-600 uppercase tracking-widest block mb-1">Plataforma GEO</span>
                 <p className="text-slate-900 font-bold text-sm">Ai Visibility</p>
               </div>
               <div className="p-5 opacity-60">
-                <span className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest block mb-1">Marketing tradicional</span>
+                <span className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest block mb-1">Marketing tradicional</span>
                 <p className="text-slate-700 font-bold text-sm">Agencia SEO</p>
               </div>
             </div>
@@ -414,7 +414,7 @@ export default function LandingPage() {
             {/* Footer CTA */}
             <div className="bg-white shadow-sm px-5 py-4 text-center border-t border-slate-200">
               <p className="text-slate-500 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
-              <Link href="/#planes" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
+              <Link href="#planes" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
                 Auditar mi marca en ChatGPT →
               </Link>
             </div>
@@ -426,7 +426,7 @@ export default function LandingPage() {
       <section id="planes" className="border-t border-slate-200/60 py-12 sm:py-20 px-4 scroll-mt-16">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Planes</p>
+            <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-3">Planes</p>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4">Cuatro formas de trabajar con Ai Visibility</h2>
             <p className="text-slate-500 text-base max-w-xl mx-auto">Desde un diagnóstico puntual hasta la creación y medición mes a mes. Empieza por donde lo necesites.</p>
           </div>
@@ -435,9 +435,9 @@ export default function LandingPage() {
             {/* 1. Diagnóstico */}
             <div className="bg-white shadow-sm border-2 border-indigo-500/50 rounded-sm p-6 relative flex flex-col">
               <span className="absolute -top-3 left-5 bg-indigo-600 text-white text-xs sm:text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Disponible ahora</span>
-              <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
-              <p className="text-3xl font-extrabold text-slate-900 mb-1">US$ 200</p>
-              <p className="text-slate-500 text-xs mb-5">pago único</p>
+              <p className="text-xs sm:text-[10px] text-indigo-600 uppercase tracking-widest mb-2">01 · Diagnóstico</p>
+              <p className="text-3xl font-extrabold text-slate-900 mb-1">$190.000</p>
+              <p className="text-slate-500 text-xs mb-5">CLP · pago único</p>
               <p className="text-slate-700 text-sm mb-5 leading-relaxed">
                 La radiografía de cómo te ve la iA hoy frente a tu competencia. Punto de partida con datos, no opiniones.
               </p>
@@ -467,7 +467,7 @@ export default function LandingPage() {
 
             {/* 2. Asesoría */}
             <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex flex-col">
-              <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">02 · Asesoría</p>
+              <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest mb-2">02 · Asesoría</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">$290.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · pago único</p>
               <p className="text-slate-700 text-sm mb-5 leading-relaxed">
@@ -499,7 +499,7 @@ export default function LandingPage() {
 
             {/* 3. Capacitación */}
             <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-6 flex flex-col">
-              <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">03 · Capacitación</p>
+              <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest mb-2">03 · Capacitación</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">$490.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · programa de 3 clases</p>
               <p className="text-slate-700 text-sm mb-5 leading-relaxed">
@@ -532,7 +532,7 @@ export default function LandingPage() {
             {/* 4. Plan Mensual */}
             <div className="bg-white shadow-sm border-2 border-violet-500/50 rounded-sm p-6 relative flex flex-col">
               <span className="absolute -top-3 left-5 bg-violet-600 text-white text-xs sm:text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm">Más completo</span>
-              <p className="text-xs sm:text-[10px] font-mono text-violet-700 uppercase tracking-widest mb-2">04 · Plan Mensual</p>
+              <p className="text-xs sm:text-[10px] text-violet-700 uppercase tracking-widest mb-2">04 · Plan Mensual</p>
               <p className="text-3xl font-extrabold text-slate-900 mb-1">$690.000</p>
               <p className="text-slate-500 text-xs mb-5">CLP · por mes</p>
               <p className="text-slate-700 text-sm mb-5 leading-relaxed">
@@ -563,8 +563,8 @@ export default function LandingPage() {
             </div>
 
           </div>
-          <p className="text-slate-500 text-xs sm:text-[11px] font-mono text-center mt-8">
-            Valores referenciales · USD en el diagnóstico · CLP en servicios locales
+          <p className="text-slate-500 text-xs sm:text-[11px] text-center mt-8">
+            Valores referenciales en CLP
           </p>
         </div>
       </section>
@@ -573,16 +573,16 @@ export default function LandingPage() {
       <section id="faq-geo" className="border-t border-slate-200/60 py-12 sm:py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
+            <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-3">Preguntas Frecuentes</p>
             <h2 className="text-2xl font-bold text-slate-900">Todo lo que necesitas saber sobre GEO</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             <div>
-              <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">Conceptos clave</p>
+              <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest mb-5">Conceptos clave</p>
               <FaqAccordionServer items={faqConceptos} />
             </div>
             <div>
-              <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">Estrategia y resultados</p>
+              <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest mb-5">Estrategia y resultados</p>
               <FaqAccordionServer items={faqEstrategia} />
             </div>
           </div>
@@ -592,7 +592,7 @@ export default function LandingPage() {
       {/* ── CTA CIERRE ────────────────────────────────────────────── */}
       <section className="border-t border-slate-200/60 py-16 sm:py-24 px-4 text-center">
         <div className="max-w-2xl mx-auto">
-          <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-5">Última llamada</p>
+          <p className="text-xs sm:text-[11px] text-indigo-600 uppercase tracking-widest mb-5">Última llamada</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-5">
             Tu competencia ya está optimizando para la iA.
           </h2>
@@ -603,12 +603,12 @@ export default function LandingPage() {
             Cada día que la iA recomienda a otro, es un cliente que no llegó a ti.
           </p>
           <Link
-            href="/#planes"
+            href="#planes"
             className="inline-flex items-center gap-2 px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all"
           >
             Auditar mi marca ahora →
           </Link>
-          <p className="text-slate-500 text-sm sm:text-xs font-mono mt-5">Diagnóstico US$ 200 · Resultado en menos de 60 segundos</p>
+          <p className="text-slate-500 text-sm sm:text-xs mt-5">Diagnóstico $190.000 CLP · Resultado en menos de 60 segundos</p>
         </div>
       </section>
 

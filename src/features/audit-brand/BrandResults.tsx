@@ -25,6 +25,7 @@ interface Props {
   trendsResult: Array<{ query: string; value: number; fuente: string }> | null
   trendsLoading: boolean
   onDownloadJson: () => void
+  hideExport?: boolean
 }
 
 function getScoreTextColor(estado: string) {
@@ -38,7 +39,7 @@ function getScoreBarColor(estado: string) {
   return 'bg-rose-100'
 }
 
-export function BrandResults({ result, brand, query, userEmail, userName, discoveryResult, discoveryLoading, trendsResult, trendsLoading, onDownloadJson }: Props) {
+export function BrandResults({ result, brand, query, userEmail, userName, discoveryResult, discoveryLoading, trendsResult, trendsLoading, onDownloadJson, hideExport }: Props) {
   const reportRef = useRef<HTMLDivElement>(null)
   const [showRawOutput, setShowRawOutput] = useState(false)
   const [promptCopied, setPromptCopied] = useState(false)
@@ -539,19 +540,21 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
       </motion.div>
 
       {/* Export */}
-      <ExportBar
-        userEmail={userEmail}
-        userName={userName}
-        marca={brand}
-        query={query}
-        score={d.invisibilidad_score ?? 0}
-        modo="brand"
-        resultado={result}
-        getShareUrl={async () => {
-          const code = await shareReport({ modo: 'brand', marca: brand, query, resultado: result })
-          return `${window.location.origin}/r/?c=${code}`
-        }}
-      />
+      {!hideExport && (
+        <ExportBar
+          userEmail={userEmail}
+          userName={userName}
+          marca={brand}
+          query={query}
+          score={d.invisibilidad_score ?? 0}
+          modo="brand"
+          resultado={result}
+          getShareUrl={async () => {
+            const code = await shareReport({ modo: 'brand', marca: brand, query, resultado: result })
+            return `${window.location.origin}/r/?c=${code}`
+          }}
+        />
+      )}
 
     </motion.div>
   )

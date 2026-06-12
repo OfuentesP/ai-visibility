@@ -34,6 +34,30 @@ function Pill({ text }: { text: string }) {
   return <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-700 text-xs sm:text-[10px] rounded-sm">{text}</span>
 }
 
+// Wrapper: si el informe trae por_motor (auditoría 'ambos'), renderiza un
+// BrandView por cada motor con su etiqueta; si no, cae al render de un solo motor.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function BrandReport({ r, marca }: { r: any; marca: string | null }) {
+  const pm = r?.por_motor
+  const motores = (['chatgpt', 'gemini'] as const).filter((k) => pm?.[k])
+  if (!motores.length) return <BrandView r={r} marca={marca} />
+  const LABEL = { chatgpt: 'ChatGPT (OpenAI)', gemini: 'Gemini (Google)' } as const
+  const DOT = { chatgpt: 'bg-emerald-500', gemini: 'bg-sky-500' } as const
+  return (
+    <div className="space-y-10">
+      {motores.map((k) => (
+        <div key={k}>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-4 rounded-full bg-white border border-slate-200 shadow-sm">
+            <span className={`w-2 h-2 rounded-full ${DOT[k]}`} />
+            <span className="text-xs font-semibold text-slate-700">Motor: {LABEL[k]}</span>
+          </div>
+          <BrandView r={pm[k]} marca={marca} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function BrandView({ r, marca }: { r: any; marca: string | null }) {
   const d = r?.resultados?.[0]
@@ -484,6 +508,30 @@ function CitaView({ r }: { r: any }) {
   )
 }
 
+// Wrapper: si el informe URL trae por_motor (auditoría 'ambos'), renderiza un
+// UrlView por cada motor con su etiqueta; si no, cae al render de un solo motor.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function UrlReport({ r }: { r: any }) {
+  const pm = r?.por_motor
+  const motores = (['chatgpt', 'gemini'] as const).filter((k) => pm?.[k])
+  if (!motores.length) return <UrlView r={r} />
+  const LABEL = { chatgpt: 'ChatGPT (OpenAI)', gemini: 'Gemini (Google)' } as const
+  const DOT = { chatgpt: 'bg-emerald-500', gemini: 'bg-sky-500' } as const
+  return (
+    <div className="space-y-10">
+      {motores.map((k) => (
+        <div key={k}>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-4 rounded-full bg-white border border-slate-200 shadow-sm">
+            <span className={`w-2 h-2 rounded-full ${DOT[k]}`} />
+            <span className="text-xs font-semibold text-slate-700">Motor: {LABEL[k]}</span>
+          </div>
+          <UrlView r={pm[k]} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function UrlView({ r }: { r: any }) {
   const score = Math.round(r.visibilidad_pct ?? 0)
@@ -905,8 +953,8 @@ export default function SharedReportPage() {
 
         {data && (
           <div>
-            {data.modo === 'brand' && <BrandView r={data.resultado} marca={data.marca} />}
-            {data.modo === 'url' && <UrlView r={data.resultado} />}
+            {data.modo === 'brand' && <BrandReport r={data.resultado} marca={data.marca} />}
+            {data.modo === 'url' && <UrlReport r={data.resultado} />}
             {data.modo === 'compare' && <CompareView r={data.resultado} />}
             {data.modo === 'cita' && <CitaView r={data.resultado} />}
           </div>
