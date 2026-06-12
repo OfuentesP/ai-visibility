@@ -1530,6 +1530,11 @@ export const posts: Post[] = [
         texto:
           'Cada pocos meses alguien declara muerto al SEO. La guía oficial de Google para búsqueda con Ai pone las cosas en su lugar: los sistemas de ranking centrales siguen siendo la base. La Ai no reemplaza al índice de búsqueda — se apoya en él.',
       },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si tienes prisa, esto se reduce a tres cambios concretos: (1) reforzar los fundamentos de SEO que abren la puerta, (2) probar tus queries también en ChatGPT y Perplexity, y (3) implementar JSON-LD de Organization para precisión de entidad. Abajo está el porqué y, al final, el detalle accionable de cada uno.',
+      },
       { tipo: 'h2', texto: 'Cómo genera respuestas la Ai de Google' },
       {
         tipo: 'parrafo',
@@ -1579,9 +1584,9 @@ export const posts: Post[] = [
       {
         tipo: 'lista',
         items: [
-          'Revisa los fundamentos de SEO de tu sitio (indexación, velocidad, HTML semántico): es la base que Google sigue usando para citarte en su búsqueda con Ai.',
-          'Corre tus queries clave en ChatGPT y Perplexity, no solo en Google. Fuera del índice de Google las reglas cambian y necesitas saber si ahí te citan.',
-          'Implementa JSON-LD de Organization para precisión de entidad, así la Ai no te confunde con otra marca al sintetizar la respuesta.',
+          'Cambio 1 — Refuerza los fundamentos de SEO (1 a 2 horas de revisión). Corre un Lighthouse y verifica en Search Console que tus páginas clave estén indexadas, carguen rápido y usen HTML semántico (<h1>, <main>, <article>). Es la puerta de entrada: si no rankeas, RAG no te recupera y la Ai no te puede citar.',
+          'Cambio 2 — Prueba tus queries fuera de Google (20 minutos). Toma las 5 preguntas que hace tu cliente cuando está por decidir y córrelas en ChatGPT y en Perplexity, no solo en Google. Anota si te citan, a quién citan en tu lugar y con qué fuente. Ese gap es tu lista de trabajo GEO.',
+          'Cambio 3 — Implementa JSON-LD de Organization (30 minutos, una sola vez). Declara nombre, logo, descripción y sameAs hacia tus perfiles oficiales. Le da a la Ai precisión de entidad para no confundirte con otra marca al sintetizar la respuesta. Es código que tu equipo pega hoy y queda.',
         ],
       },
     ],
@@ -1606,6 +1611,11 @@ export const posts: Post[] = [
         tipo: 'parrafo',
         texto:
           'Si hay una sola idea que rescatar de la guía de Google sobre búsqueda con Ai, es esta: el contenido commodity ya no sirve. La Ai tiene infinito acceso a información genérica. Lo que necesita —y premia— es perspectiva que no encuentre en otra parte.',
+      },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si tienes prisa, esto se reduce a tres cambios concretos: (1) reescribir tu pieza más genérica con experiencia real, (2) hacer visibles tus señales de autoría y E-E-A-T, y (3) auditar el contenido autogenerado en masa. Abajo el porqué y, al final, el detalle de cada uno.',
       },
       { tipo: 'h2', texto: 'Qué es contenido "commodity"' },
       {
@@ -1651,9 +1661,9 @@ export const posts: Post[] = [
       {
         tipo: 'lista',
         items: [
-          'Toma tu pieza más genérica ("5 tips de…") y reescríbela con un dato, caso o resultado real que solo tú puedes contar. Eso la saca de la categoría commodity.',
-          'Agrega señales de experiencia visibles: autor con credenciales, fecha de actualización real y ejemplos propios. La Ai premia E-E-A-T, no volumen.',
-          'Audita si tienes landings autogeneradas en masa sin aporte real y decide reescribirlas o despublicarlas antes de que arrastren tu autoridad.',
+          'Cambio 1 — Reescribe tu pieza más genérica (2 a 3 horas). Toma tu artículo tipo "5 tips de…" con más tráfico y súmale lo que solo tú puedes aportar: un dato propio, un caso real de un cliente, un resultado medido o el error que aprendiste cocinando el producto. Ese aporte único es lo que la saca de la categoría commodity y la vuelve citable.',
+          'Cambio 2 — Haz visibles tus señales de experiencia (1 hora). Agrega autor con cargo y credenciales, fecha de actualización real, y ejemplos o fotos propias (no de stock). Son las señales E-E-A-T que Google nombra explícitamente; la Ai premia experiencia demostrable, no volumen.',
+          'Cambio 3 — Audita tu contenido autogenerado en masa (30 minutos de revisión). Identifica las landings que se generaron sin aporte real y decide caso a caso: reescribir las que tienen tráfico, despublicar las que no. Mejor pocas páginas con experiencia real que cientos genéricas arrastrando tu autoridad.',
         ],
       },
     ],
@@ -1970,6 +1980,11 @@ export const posts: Post[] = [
         texto:
           'Pasamos 1.200 consultas en español por ambos motores durante abril 2026, en seis verticales (e-commerce, SaaS, salud, banca, retail e inmobiliaria). El patrón que emergió no es el que esperábamos.',
       },
+      {
+        tipo: 'parrafo',
+        texto:
+          'Si tienes prisa, esto se reduce a tres cambios concretos: (1) medir el gap corriendo tus queries en ambos motores, (2) optimizar para Perplexity si vives de tráfico de descubrimiento, y (3) optimizar para ChatGPT si vives de cierre de decisión. Abajo los datos y, al final, el detalle de cada uno.',
+      },
       { tipo: 'h2', texto: 'Citas: cantidad vs calidad' },
       {
         tipo: 'lista',
@@ -2000,9 +2015,9 @@ export const posts: Post[] = [
       {
         tipo: 'lista',
         items: [
-          'Corre las mismas 3 queries de tu categoría en Perplexity y en ChatGPT, y anota en cuál te citan y en cuál no. Ese gap te dice dónde priorizar.',
-          'Para ganar en Perplexity: refuerza páginas citables (datos propios, comparativas, FAQ) y consigue menciones en fuentes que el motor indexa. Es recuperación en vivo, premia frescura y claridad.',
-          'Para ganar en ChatGPT: trabaja consistencia de entidad (JSON-LD Organization con sameAs) y presencia en fuentes de autoridad de tu nicho. Pesa más el modelo que el link del momento.',
+          'Cambio 1 — Mide tu gap entre motores (20 minutos). Corre las mismas 3 queries de decisión de tu categoría en Perplexity y en ChatGPT, y anota en cuál te citan, en cuál no y a qué competidor citan en tu lugar. Solo 31% de las fuentes se solapan entre ambos: ganar en uno no significa ganar en el otro.',
+          'Cambio 2 — Si vives de descubrimiento, optimiza para Perplexity (semana 1). Refuerza páginas citables —datos propios, comparativas, FAQ con preguntas reales— y consigue menciones en fuentes que el motor indexa. Es recuperación en vivo: premia frescura, claridad y enlaces, y te devuelve clicks con intención investigativa.',
+          'Cambio 3 — Si vives de cierre, optimiza para ChatGPT (continuo). Trabaja consistencia de entidad (JSON-LD Organization con sameAs) y presencia en las fuentes de autoridad de tu nicho. Pesa más el modelo entrenado que el link del momento, y su recomendación cierra la compra: menos tráfico, pero 3x más conversión en B2B.',
         ],
       },
     ],
