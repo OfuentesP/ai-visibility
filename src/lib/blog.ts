@@ -14,7 +14,7 @@ export type Post = {
   descripcion: string
   fecha: string
   fechaActualizacion?: string
-  categoria: 'Noticias iA' | 'Análisis LLM' | 'GEO & AEO' | 'Casos & Datos' | 'Tutoriales'
+  categoria: 'Noticias Ai' | 'Análisis LLM' | 'GEO & AEO' | 'Casos & Datos' | 'Tutoriales'
   tags: string[]
   autor: string
   tiempoLectura: string
@@ -32,19 +32,19 @@ export const posts: Post[] = [
     slug: '8-reglas-google-sitios-aptos-agentes',
     titulo: 'Google publicó 8 reglas para que tu sitio sea apto para agentes — y son las mismas 8 reglas de accesibilidad que llevas posponiendo',
     descripcion:
-      'Google publicó en web.dev una guía oficial para hacer sitios apto para agentes de iA: 8 reglas técnicas concretas. El detalle interesante: cada una es una pauta de accesibilidad WCAG existente, solo que dirigida a otra audiencia. Una sola inversión, dos audiencias recuperadas.',
+      'Google publicó en web.dev una guía oficial para hacer sitios apto para agentes de Ai: 8 reglas técnicas concretas. El detalle interesante: cada una es una pauta de accesibilidad WCAG existente, solo que dirigida a otra audiencia. Una sola inversión, dos audiencias recuperadas.',
     fecha: '2026-06-02',
     categoria: 'Tutoriales',
-    tags: ['Google', 'Agentes iA', 'Accesibilidad', 'WCAG', 'Tailwind', 'Semantic HTML'],
+    tags: ['Google', 'Agentes Ai', 'Accesibilidad', 'WCAG', 'Tailwind', 'Semantic HTML'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'Google publicó en web.dev (abril 2026) 8 reglas técnicas para hacer tu sitio apto para agentes de iA: HTML semántico, cursor: pointer, labels asociadas, layout estable, sin overlays fantasma, elementos > 8 px². Cada regla es una pauta WCAG existente. Si ya inviertes en accesibilidad, tu sitio ya es agent-friendly. Y al revés.',
+      'Google publicó en web.dev (abril 2026) 8 reglas técnicas para hacer tu sitio apto para agentes de Ai: HTML semántico, cursor: pointer, labels asociadas, layout estable, sin overlays fantasma, elementos > 8 px². Cada regla es una pauta WCAG existente. Si ya inviertes en accesibilidad, tu sitio ya es agent-friendly. Y al revés.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'El 1 de abril de 2026, Google publicó en web.dev una guía oficial para hacer sitios apto para agentes de iA. Son 8 reglas técnicas, escritas por el equipo de Chrome para developers. La novedad no es que existan — es lo que se ve cuando las miras al lado de la guía WCAG: son exactamente las mismas reglas que llevamos años pidiendo para usuarios con tecnología asistiva.',
+          'El 1 de abril de 2026, Google publicó en web.dev una guía oficial para hacer sitios apto para agentes de Ai. Son 8 reglas técnicas, escritas por el equipo de Chrome para developers. La novedad no es que existan — es lo que se ve cuando las miras al lado de la guía WCAG: son exactamente las mismas reglas que llevamos años pidiendo para usuarios con tecnología asistiva.',
       },
       {
         tipo: 'parrafo',
@@ -60,7 +60,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Antes de las reglas, conviene entender el qué. Un agente de iA (Chrome auto-browse, Gemini Spark, ChatGPT con navegación) no consume tu sitio como humano. Lo procesa con 3 modalidades:',
+          'Antes de las reglas, conviene entender el qué. Un agente de Ai (Chrome auto-browse, Gemini Spark, ChatGPT con navegación) no consume tu sitio como humano. Lo procesa con 3 modalidades:',
       },
       {
         tipo: 'lista',
@@ -119,12 +119,12 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'La mayoría de los equipos de producto chilenos tratan accesibilidad y "preparación para iA" como dos workstreams distintos. Distintos planes, distintos presupuestos, distintos plazos. Es desperdicio.',
+          'La mayoría de los equipos de producto chilenos tratan accesibilidad y "preparación para Ai" como dos workstreams distintos. Distintos planes, distintos presupuestos, distintos plazos. Es desperdicio.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Las 8 reglas de Google son la misma auditoría que pasa una persona con lector de pantalla. La empresa que se toma WCAG en serio ya tiene 80% del trabajo hecho para Chrome auto-browse, Gemini Spark y los agentes que vienen. La empresa que lo posterga paga dos veces: en clientes con discapacidad que no pueden completar la compra, y en agentes de iA que mandan al cliente a la competencia.',
+          'Las 8 reglas de Google son la misma auditoría que pasa una persona con lector de pantalla. La empresa que se toma WCAG en serio ya tiene 80% del trabajo hecho para Chrome auto-browse, Gemini Spark y los agentes que vienen. La empresa que lo posterga paga dos veces: en clientes con discapacidad que no pueden completar la compra, y en agentes de Ai que mandan al cliente a la competencia.',
       },
       {
         tipo: 'cita',
@@ -135,14 +135,14 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'Dato curioso: las búsquedas de "web accessibility" en Google Trends se mantuvieron planas entre 2021 y 2024, y se cuadruplicaron en 2025-2026 — cuando la cobertura de agentes de iA empezó a alinearse con accesibilidad. La presión de proveedores movió la aguja más que la regulación de la European Accessibility Act (vigente desde junio 2025).',
+          'Dato curioso: las búsquedas de "web accessibility" en Google Trends se mantuvieron planas entre 2021 y 2024, y se cuadruplicaron en 2025-2026 — cuando la cobertura de agentes de Ai empezó a alinearse con accesibilidad. La presión de proveedores movió la aguja más que la regulación de la European Accessibility Act (vigente desde junio 2025).',
       },
       { tipo: 'h2', texto: 'Los 3 cambios concretos que puedes hacer esta semana' },
       {
         tipo: 'lista',
         items: [
           'Cambio 1 — Arregla el cursor (5 minutos). Si usas Tailwind v4, pega el snippet de cursor: pointer en tu globals.css. Recuperas la regla 6 de un golpe en todos los botones del sitio, sin tocar componente por componente.',
-          'Cambio 2 — Audita tus 5 páginas críticas (30 minutos). Homepage, formulario de captura, página de producto principal, checkout y login: pásales un Lighthouse en categoría Accessibility más un escaneo con axe DevTools o WAVE (los dos gratis). Anota cada error de "name/role" y cada botón primario con contraste bajo 4.5:1 — la iA usa ese mismo criterio para decidir si algo "se ve clickeable".',
+          'Cambio 2 — Audita tus 5 páginas críticas (30 minutos). Homepage, formulario de captura, página de producto principal, checkout y login: pásales un Lighthouse en categoría Accessibility más un escaneo con axe DevTools o WAVE (los dos gratis). Anota cada error de "name/role" y cada botón primario con contraste bajo 4.5:1 — la Ai usa ese mismo criterio para decidir si algo "se ve clickeable".',
           'Cambio 3 — Ordena la semántica de tus formularios (1 a 2 horas). Cada <input> con su <label for="...">, cada botón como <button> nativo (no un <div onclick>), y los mensajes de error en texto legible por máquinas, no solo iconos rojos. Con este paso cubres las reglas 1, 4, 7 y 8 a la vez.',
         ],
       },
@@ -162,7 +162,7 @@ export const posts: Post[] = [
         ],
       },
     ],
-    ctaTexto: 'Auditar mi sitio para agentes de iA →',
+    ctaTexto: 'Auditar mi sitio para agentes de Ai →',
     ctaUrl: '/#planes',
     relacionados: ['lighthouse-mide-navegacion-con-ia', 'fin-de-la-pagina-como-destino', 'visitante-de-ia-viene-a-comprar', '5-hacks-geo-que-google-dice-no-sirven'],
     glosario: [
@@ -192,7 +192,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'El titular es contundente: las nuevas funciones de iA son la razón principal por la que Google ve un máximo histórico de búsquedas. La gente no busca menos por la iA — busca más, y busca distinto.',
+          'El titular es contundente: las nuevas funciones de Ai son la razón principal por la que Google ve un máximo histórico de búsquedas. La gente no busca menos por la Ai — busca más, y busca distinto.',
       },
       { tipo: 'h2', texto: 'Los 5 datos que conviene memorizar' },
       {
@@ -214,7 +214,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Para tu sitio, la implicancia es directa: el contenido que solo responde a la query corta queda corto. El que responde con la profundidad de la query larga — incluyendo casos, comparaciones, contexto y restricciones — es el que la iA usa para componer la respuesta. Y la gente que llega ya tomó la decisión basada en esa síntesis.',
+          'Para tu sitio, la implicancia es directa: el contenido que solo responde a la query corta queda corto. El que responde con la profundidad de la query larga — incluyendo casos, comparaciones, contexto y restricciones — es el que la Ai usa para componer la respuesta. Y la gente que llega ya tomó la decisión basada en esa síntesis.',
       },
       { tipo: 'h2', texto: '1 de cada 6 búsquedas ya es multimodal' },
       {
@@ -225,7 +225,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Lo que tienes que asegurar: imágenes de producto reales (no stock), alt text descriptivo en español, structured data de Product con imágenes declaradas, y nombre del producto consistente entre sitio, Google Business Profile y Merchant Center. La iA cruza las tres fuentes para identificar la entidad.',
+          'Lo que tienes que asegurar: imágenes de producto reales (no stock), alt text descriptivo en español, structured data de Product con imágenes declaradas, y nombre del producto consistente entre sitio, Google Business Profile y Merchant Center. La Ai cruza las tres fuentes para identificar la entidad.',
       },
       { tipo: 'h2', texto: 'Planning + brainstorming: la decisión se cocina antes del click' },
       {
@@ -252,7 +252,7 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'El cambio no es solo en cómo busca la gente — es en qué espera encontrar. Una landing genérica con "Somos la mejor solución" pierde frente a una página con datos concretos, comparativas reales y casos. La iA premia precisión informativa, no persuasión.',
+          'El cambio no es solo en cómo busca la gente — es en qué espera encontrar. Una landing genérica con "Somos la mejor solución" pierde frente a una página con datos concretos, comparativas reales y casos. La Ai premia precisión informativa, no persuasión.',
       },
       {
         tipo: 'referencias',
@@ -278,7 +278,7 @@ export const posts: Post[] = [
     descripcion:
       'En Google I/O 2026 se confirmó la Generative UI en Search: Google compone una interfaz por consulta usando datos indexados de tu sitio. Tu data renderiza dentro de Google, no en tu landing. Qué significa eso, por qué cambia la métrica y qué tienes que hacer ahora.',
     fecha: '2026-06-01',
-    categoria: 'Noticias iA',
+    categoria: 'Noticias Ai',
     tags: ['Google I/O', 'Generative UI', 'Schema', 'MCP', 'Gemini'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
@@ -322,7 +322,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Hace unas semanas Google publicó su guía de optimización para búsqueda con iA y dijo que el structured data no es obligatorio para aparecer. Lo cubrimos en nuestro post sobre los 5 hacks que Google descartó. Esa afirmación sigue siendo cierta — pero solo para aparecer como link en respuestas tradicionales.',
+          'Hace unas semanas Google publicó su guía de optimización para búsqueda con Ai y dijo que el structured data no es obligatorio para aparecer. Lo cubrimos en nuestro post sobre los 5 hacks que Google descartó. Esa afirmación sigue siendo cierta — pero solo para aparecer como link en respuestas tradicionales.',
       },
       {
         tipo: 'parrafo',
@@ -347,7 +347,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'En paralelo, Google publicó en enero de 2026 una patente sobre landings generadas por iA — interfaces creadas automáticamente a partir del feed de tus productos. El destino, literalmente, se vuelve generativo.',
+          'En paralelo, Google publicó en enero de 2026 una patente sobre landings generadas por Ai — interfaces creadas automáticamente a partir del feed de tus productos. El destino, literalmente, se vuelve generativo.',
       },
       { tipo: 'h2', texto: 'Los 3 chequeos concretos que puedes hacer hoy (15 minutos)' },
       {
@@ -374,7 +374,7 @@ export const posts: Post[] = [
         items: [
           'Implementa JSON-LD de Organization, Product, LocalBusiness o el tipo que corresponda — con datos reales y consistentes.',
           'Asegura que cada dato crítico (precio, stock, despacho, horario) esté declarado en structured data, no solo en HTML visible.',
-          'Audita tu Share of Model para saber cuándo tu marca es la fuente que la iA usa hoy, y dónde es la competencia.',
+          'Audita tu Share of Model para saber cuándo tu marca es la fuente que la Ai usa hoy, y dónde es la competencia.',
           'Prepara formularios y flujos para visitantes-software: labels claros, validación predecible, mensajes de error legibles para máquinas. Es la misma higiene que pide MCP — y que va a usar Gemini Spark.',
         ],
       },
@@ -384,7 +384,7 @@ export const posts: Post[] = [
           'La métrica vieja era "cuántas visitas trajo Google a mi sitio". La nueva es "cuántas veces mi marca fue la fuente que Google usó al componer la respuesta". Tu equipo de analytics todavía no la mide. Tu auditoría de Share of Model sí.',
       },
     ],
-    ctaTexto: 'Auditar qué datos míos renderiza la iA →',
+    ctaTexto: 'Auditar qué datos míos renderiza la Ai →',
     ctaUrl: '/#planes',
     relacionados: ['visitante-de-ia-viene-a-comprar', 'lighthouse-mide-navegacion-con-ia', '5-hacks-geo-que-google-dice-no-sirven', 'comercio-conversacional-agentes-ucp'],
     glosario: [
@@ -395,32 +395,32 @@ export const posts: Post[] = [
   },
   {
     slug: 'visitante-de-ia-viene-a-comprar',
-    titulo: 'El visitante que llega desde la iA viene a comprar — y tu landing está optimizada para convencerlo',
+    titulo: 'El visitante que llega desde la Ai viene a comprar — y tu landing está optimizada para convencerlo',
     descripcion:
-      'Google AI Mode llegó a 1.000 millones de usuarios activos al mes y el tráfico de iA convierte 42% más que el orgánico clásico. La razón es contra-intuitiva: el visitante ya hizo la investigación dentro de la iA. Llega a completar una tarea, no a que lo convenzas — y tu landing está peleando contra eso.',
+      'Google AI Mode llegó a 1.000 millones de usuarios activos al mes y el tráfico de Ai convierte 42% más que el orgánico clásico. La razón es contra-intuitiva: el visitante ya hizo la investigación dentro de la Ai. Llega a completar una tarea, no a que lo convenzas — y tu landing está peleando contra eso.',
     fecha: '2026-06-01',
     categoria: 'Casos & Datos',
     tags: ['AI Mode', 'Conversión', 'Adobe', 'Google', 'Landing'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'El tráfico desde iA convierte 42% más que el orgánico clásico (Adobe Q2 2026) porque el visitante ya hizo la investigación dentro de ChatGPT o AI Mode. Llega a completar una tarea — no a leer tu propuesta de valor. La mayoría de las landings chilenas le pelean al visitante con un funnel "awareness → decisión" que él ya recorrió.',
+      'El tráfico desde Ai convierte 42% más que el orgánico clásico (Adobe Q2 2026) porque el visitante ya hizo la investigación dentro de ChatGPT o AI Mode. Llega a completar una tarea — no a leer tu propuesta de valor. La mayoría de las landings chilenas le pelean al visitante con un funnel "awareness → decisión" que él ya recorrió.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Google reportó en mayo de 2026 que su AI Mode alcanzó 1.000 millones de usuarios activos al mes. Adobe, en su Q2 2026 AI Traffic Report, midió algo que cambia la conversación: el tráfico desde iA convierte 42% más que el orgánico clásico. El dato es real. La conclusión que la mayoría saca de él, no.',
+          'Google reportó en mayo de 2026 que su AI Mode alcanzó 1.000 millones de usuarios activos al mes. Adobe, en su Q2 2026 AI Traffic Report, midió algo que cambia la conversación: el tráfico desde Ai convierte 42% más que el orgánico clásico. El dato es real. La conclusión que la mayoría saca de él, no.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'La lectura fácil es "necesito más tráfico de iA". La lectura correcta es que el visitante que llega desde la iA es otra persona — con otra intención, otro nivel de información y otras necesidades — y la mayoría de las landings chilenas están preparadas para el visitante orgánico de hace 5 años.',
+          'La lectura fácil es "necesito más tráfico de Ai". La lectura correcta es que el visitante que llega desde la Ai es otra persona — con otra intención, otro nivel de información y otras necesidades — y la mayoría de las landings chilenas están preparadas para el visitante orgánico de hace 5 años.',
       },
-      { tipo: 'h2', texto: 'Por qué el visitante de iA es otra cosa' },
+      { tipo: 'h2', texto: 'Por qué el visitante de Ai es otra cosa' },
       {
         tipo: 'parrafo',
         texto:
-          'Tres datos lo definen. Primero: las queries dentro de AI Mode son aproximadamente 3 veces más largas que las búsquedas tradicionales. El usuario no escribe "mejor CRM Chile"; escribe "cuál CRM con integración al SII y soporte en español me sirve para una pyme de servicios de 8 personas que ya tiene HubSpot pero le sale caro". Segundo: las queries de "planning" crecen 80% más rápido que el promedio. Tercero: el visitante refina su pregunta dentro de la iA varias veces antes de hacer click.',
+          'Tres datos lo definen. Primero: las queries dentro de AI Mode son aproximadamente 3 veces más largas que las búsquedas tradicionales. El usuario no escribe "mejor CRM Chile"; escribe "cuál CRM con integración al SII y soporte en español me sirve para una pyme de servicios de 8 personas que ya tiene HubSpot pero le sale caro". Segundo: las queries de "planning" crecen 80% más rápido que el promedio. Tercero: el visitante refina su pregunta dentro de la Ai varias veces antes de hacer click.',
       },
       {
         tipo: 'parrafo',
@@ -442,19 +442,19 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Pero para el visitante que llega desde la iA, esa estructura es un obstáculo. Él no necesita que le expliques quién eres — la iA ya se lo dijo. No necesita social proof — la iA ya le dijo si confiar o no. No necesita beneficios — la iA ya los listó. Lo que necesita es ejecutar: ver el precio exacto, agendar la reunión, llenar el formulario corto, completar la compra.',
+          'Pero para el visitante que llega desde la Ai, esa estructura es un obstáculo. Él no necesita que le expliques quién eres — la Ai ya se lo dijo. No necesita social proof — la Ai ya le dijo si confiar o no. No necesita beneficios — la Ai ya los listó. Lo que necesita es ejecutar: ver el precio exacto, agendar la reunión, llenar el formulario corto, completar la compra.',
       },
       {
         tipo: 'nota',
         texto:
-          'En la práctica, cada scroll que le pides al visitante de iA antes de la acción es fricción gratuita. El bounce rate de esa cohorte es alto no porque el visitante no estaba calificado — al revés, era el más calificado del día y lo perdiste haciéndolo leer.',
+          'En la práctica, cada scroll que le pides al visitante de Ai antes de la acción es fricción gratuita. El bounce rate de esa cohorte es alto no porque el visitante no estaba calificado — al revés, era el más calificado del día y lo perdiste haciéndolo leer.',
       },
       { tipo: 'h2', texto: 'Tres cambios concretos en tu landing' },
       {
         tipo: 'lista',
         items: [
           'Mueve la acción principal arriba. El formulario, el precio, el botón "agendar / comprar / empezar". Que estén en el primer scroll, sin scroll inicial obligatorio.',
-          'Datos críticos visibles antes del fold: precio real (no "consultar"), tiempo de despacho, política de devolución, plazos. La iA ya respondió al "qué". El visitante valida el "cuándo y cuánto".',
+          'Datos críticos visibles antes del fold: precio real (no "consultar"), tiempo de despacho, política de devolución, plazos. La Ai ya respondió al "qué". El visitante valida el "cuándo y cuánto".',
           'Elimina o relega la sección "por qué confiar en nosotros" abajo del fold de acción. Esa información ya fue procesada antes del click. Repetirla retrasa la conversión.',
         ],
       },
@@ -462,12 +462,12 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'No tienes que rehacer todo el sitio. Auditas tus 10 landings que más tráfico de iA reciben (segmenta GA4 por referrers de chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com) y aplicas un solo criterio: ¿puede este visitante completar la tarea por la que vino en los primeros 30 segundos?',
+          'No tienes que rehacer todo el sitio. Auditas tus 10 landings que más tráfico de Ai reciben (segmenta GA4 por referrers de chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com) y aplicas un solo criterio: ¿puede este visitante completar la tarea por la que vino en los primeros 30 segundos?',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Si la respuesta es "sí pero hay que scrollear" o "sí pero hay que buscar el formulario en el menú", esa landing está dejando dinero arriba de la mesa. La iA te trajo al cliente listo. Tu trabajo es no entorpecerlo.',
+          'Si la respuesta es "sí pero hay que scrollear" o "sí pero hay que buscar el formulario en el menú", esa landing está dejando dinero arriba de la mesa. La Ai te trajo al cliente listo. Tu trabajo es no entorpecerlo.',
       },
       { tipo: 'h2', texto: 'Lo que viene: el visitante no clickeará' },
       {
@@ -478,25 +478,25 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Las landings que ya están optimizadas para el visitante de iA son también las que el agente puede procesar más rápido. Las que requieren persuasión multi-scroll son las que el agente abandona. La inversión que hagas hoy en simplificar el camino a la acción rinde por dos vías.',
+          'Las landings que ya están optimizadas para el visitante de Ai son también las que el agente puede procesar más rápido. Las que requieren persuasión multi-scroll son las que el agente abandona. La inversión que hagas hoy en simplificar el camino a la acción rinde por dos vías.',
       },
       { tipo: 'h2', texto: 'Los 4 cambios concretos que puedes hacer esta semana' },
       {
         tipo: 'lista',
         items: [
-          'Segmenta tu tráfico en GA4 por referrer de iA. Sabes exactamente qué landings ya están recibiendo este perfil.',
-          'En las top 3 más visitadas desde iA, mueve el CTA principal y los datos transaccionales al primer scroll. Mide una semana.',
+          'Segmenta tu tráfico en GA4 por referrer de Ai. Sabes exactamente qué landings ya están recibiendo este perfil.',
+          'En las top 3 más visitadas desde Ai, mueve el CTA principal y los datos transaccionales al primer scroll. Mide una semana.',
           'Compara conversión antes y después. Si replicas el patrón Adobe (+42%), tienes el caso de negocio para extender el cambio al resto del sitio.',
-          'Audita tu Share of Model en paralelo: aparecer en la iA y convertir bien al visitante de iA son dos palancas distintas. La primera sin la segunda es tráfico que rebota.',
+          'Audita tu Share of Model en paralelo: aparecer en la Ai y convertir bien al visitante de Ai son dos palancas distintas. La primera sin la segunda es tráfico que rebota.',
         ],
       },
       {
         tipo: 'nota',
         texto:
-          'El dato de Adobe (+42% de conversión) es promedio. Las marcas con landings optimizadas para tráfico de iA están bien arriba de esa cifra. Las que dejaron su funnel intacto, bien abajo. El número agregado esconde la verdadera dispersión — y es exactamente ahí donde se decide si la iA es un canal de ganancia o de pérdida silenciosa.',
+          'El dato de Adobe (+42% de conversión) es promedio. Las marcas con landings optimizadas para tráfico de Ai están bien arriba de esa cifra. Las que dejaron su funnel intacto, bien abajo. El número agregado esconde la verdadera dispersión — y es exactamente ahí donde se decide si la Ai es un canal de ganancia o de pérdida silenciosa.',
       },
     ],
-    ctaTexto: 'Auditar cómo me cita la iA →',
+    ctaTexto: 'Auditar cómo me cita la Ai →',
     ctaUrl: '/#planes',
     relacionados: ['ecommerce-chileno-busqueda-ia-cyberday-2026', 'chatgpt-busqueda-web-cambia-geo-2026', 'comercio-conversacional-agentes-ucp', 'lighthouse-mide-navegacion-con-ia'],
     glosario: [
@@ -507,21 +507,21 @@ export const posts: Post[] = [
   },
   {
     slug: 'lighthouse-mide-navegacion-con-ia',
-    titulo: 'Chrome agregó un audit de "navegación con iA" a Lighthouse: lo que mide y por qué pasar el test no significa que la iA te entienda',
+    titulo: 'Chrome agregó un audit de "navegación con Ai" a Lighthouse: lo que mide y por qué pasar el test no significa que la Ai te entienda',
     descripcion:
-      'Lighthouse 13.3 incorpora una categoría experimental de "Agentic Browsing" que audita llms.txt y WebMCP. Te explicamos qué mide, por qué Google ya dijo que llms.txt no mueve visibilidad y qué señales sí importan para que la iA entienda tu marca.',
+      'Lighthouse 13.3 incorpora una categoría experimental de "Agentic Browsing" que audita llms.txt y WebMCP. Te explicamos qué mide, por qué Google ya dijo que llms.txt no mueve visibilidad y qué señales sí importan para que la Ai entienda tu marca.',
     fecha: '2026-06-01',
-    categoria: 'Noticias iA',
+    categoria: 'Noticias Ai',
     tags: ['Lighthouse', 'LLMS.txt', 'WebMCP', 'Agentic Browsing', 'Chrome'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'Lighthouse 13.3 incluye un audit experimental de "navegación con iA": chequea árbol de accesibilidad, CLS, llms.txt y tres métricas de WebMCP. Pasarlo es fácil — pero Google ya dijo en mayo 2026 que llms.txt no mueve visibilidad en su búsqueda con iA. El audit mide parseabilidad, no utilidad.',
+      'Lighthouse 13.3 incluye un audit experimental de "navegación con Ai": chequea árbol de accesibilidad, CLS, llms.txt y tres métricas de WebMCP. Pasarlo es fácil — pero Google ya dijo en mayo 2026 que llms.txt no mueve visibilidad en su búsqueda con Ai. El audit mide parseabilidad, no utilidad.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Chrome publicó Lighthouse 13.3.0 con algo que vale la pena notar: una categoría experimental nueva llamada "Agentic Browsing". Es la primera vez que herramientas mainstream de auditoría web reconocen explícitamente la navegación con iA como un eje a medir junto a Performance, SEO y Accessibility.',
+          'Chrome publicó Lighthouse 13.3.0 con algo que vale la pena notar: una categoría experimental nueva llamada "Agentic Browsing". Es la primera vez que herramientas mainstream de auditoría web reconocen explícitamente la navegación con Ai como un eje a medir junto a Performance, SEO y Accessibility.',
       },
       {
         tipo: 'parrafo',
@@ -549,7 +549,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Aquí está el matiz que casi nadie explica. El audit no evalúa si tu sitio es útil para un agente de iA. Evalúa si tus archivos son legibles por máquinas. Es una distinción crítica.',
+          'Aquí está el matiz que casi nadie explica. El audit no evalúa si tu sitio es útil para un agente de Ai. Evalúa si tus archivos son legibles por máquinas. Es una distinción crítica.',
       },
       {
         tipo: 'parrafo',
@@ -565,13 +565,13 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Traducción para tu equipo: "Lighthouse Agentic Browsing 1.0" es un buen check de higiene técnica, no una garantía de que la iA va a recomendar tu marca.',
+          'Traducción para tu equipo: "Lighthouse Agentic Browsing 1.0" es un buen check de higiene técnica, no una garantía de que la Ai va a recomendar tu marca.',
       },
       { tipo: 'h2', texto: 'WebMCP — lo interesante de verdad' },
       {
         tipo: 'parrafo',
         texto:
-          'Las tres métricas de WebMCP son las que apuntan al futuro real. WebMCP es la versión web del Model Context Protocol: una forma estandarizada de que un agente de iA descubra qué acciones puede ejecutar en tu sitio (reservar, comprar, comparar) sin necesidad de "ver" la página como un humano.',
+          'Las tres métricas de WebMCP son las que apuntan al futuro real. WebMCP es la versión web del Model Context Protocol: una forma estandarizada de que un agente de Ai descubra qué acciones puede ejecutar en tu sitio (reservar, comprar, comparar) sin necesidad de "ver" la página como un humano.',
       },
       {
         tipo: 'parrafo',
@@ -582,7 +582,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'En mayo de 2026, Google Search Central confirmó explícitamente que los archivos llms.txt no influyen en la visibilidad de tu marca en su búsqueda con iA. Que Lighthouse ahora lo audite no cambia esa realidad — son herramientas distintas con objetivos distintos.',
+          'En mayo de 2026, Google Search Central confirmó explícitamente que los archivos llms.txt no influyen en la visibilidad de tu marca en su búsqueda con Ai. Que Lighthouse ahora lo audite no cambia esa realidad — son herramientas distintas con objetivos distintos.',
       },
       {
         tipo: 'nota',
@@ -610,14 +610,14 @@ export const posts: Post[] = [
         tipo: 'lista',
         items: [
           'Corre el audit. Te da higiene técnica gratis y un punto de partida medible.',
-          'No confundas el resultado con visibilidad real en iA. Pasa el audit como hygiene, no como estrategia. Para saber si ChatGPT te cita en tu categoría, audita tu Share of Model — que es otra cosa.',
-          'Empieza a trabajar Schema.org con seriedad. Es la base de WebMCP, de los rich results de Google con iA, y de la precisión de entidad que evita que la iA te confunda con otra marca.',
+          'No confundas el resultado con visibilidad real en Ai. Pasa el audit como hygiene, no como estrategia. Para saber si ChatGPT te cita en tu categoría, audita tu Share of Model — que es otra cosa.',
+          'Empieza a trabajar Schema.org con seriedad. Es la base de WebMCP, de los rich results de Google con Ai, y de la precisión de entidad que evita que la Ai te confunda con otra marca.',
         ],
       },
       {
         tipo: 'nota',
         texto:
-          'La noticia es que Chrome reconoce la "navegación con iA" como categoría. El matiz es que medir parseabilidad no equivale a vender más. La capa que sí mueve la aguja sigue siendo la misma: contenido con experiencia real, structured data correcto, presencia en fuentes que los LLM consideran autoridad para tu industria.',
+          'La noticia es que Chrome reconoce la "navegación con Ai" como categoría. El matiz es que medir parseabilidad no equivale a vender más. La capa que sí mueve la aguja sigue siendo la misma: contenido con experiencia real, structured data correcto, presencia en fuentes que los LLM consideran autoridad para tu industria.',
       },
     ],
     ctaTexto: 'Ver mi diagnóstico real →',
@@ -633,19 +633,19 @@ export const posts: Post[] = [
     slug: 'ecommerce-latam-cambio-modelo-busqueda-2026',
     titulo: 'El e-commerce LATAM frente al cambio del modelo de búsqueda: cómo se mueve cada país',
     descripcion:
-      'Brasil, México, Colombia, Chile y Perú no están entrando a la era de la búsqueda con iA al mismo ritmo. Mapa comparativo 2026 con tamaños de mercado, velocidad de adopción y dónde priorizar el esfuerzo GEO si operas en varios países de la región.',
+      'Brasil, México, Colombia, Chile y Perú no están entrando a la era de la búsqueda con Ai al mismo ritmo. Mapa comparativo 2026 con tamaños de mercado, velocidad de adopción y dónde priorizar el esfuerzo GEO si operas en varios países de la región.',
     fecha: '2026-05-29',
     categoria: 'Casos & Datos',
     tags: ['LATAM', 'E-commerce', 'GEO', 'Brasil', 'México', 'Colombia', 'Perú', 'Chile'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'El e-commerce LATAM proyectado en USD 1,78 billones en 2026, con Brasil (45%) y México (26%) concentrando >70% del volumen. Pero la velocidad de adopción de iA en búsqueda y la saturación de GEO varían por país — y eso cambia dónde conviene invertir primero si operas en varios mercados.',
+      'El e-commerce LATAM proyectado en USD 1,78 billones en 2026, con Brasil (45%) y México (26%) concentrando >70% del volumen. Pero la velocidad de adopción de Ai en búsqueda y la saturación de GEO varían por país — y eso cambia dónde conviene invertir primero si operas en varios mercados.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Si manejas marketing para una marca que opera en varios países de LATAM, la pregunta no es "¿hay que hacer GEO?". Es "¿en qué mercado empezar?". La respuesta no se contesta solo con tamaño de mercado — porque en algunos países el espacio en respuestas de iA ya empieza a saturarse, y en otros está completamente abierto.',
+          'Si manejas marketing para una marca que opera en varios países de LATAM, la pregunta no es "¿hay que hacer GEO?". Es "¿en qué mercado empezar?". La respuesta no se contesta solo con tamaño de mercado — porque en algunos países el espacio en respuestas de Ai ya empieza a saturarse, y en otros está completamente abierto.',
       },
       {
         tipo: 'parrafo',
@@ -665,15 +665,15 @@ export const posts: Post[] = [
           'México: ~26% del volumen. Puerta hacia Norteamérica, en plena expansión acelerada.',
           'Colombia: 186,4 millones de transacciones e-commerce solo en Q1 2026 (+22,2% YoY).',
           'Perú: proyección de +35% en ventas online para 2026. 7 de cada 10 peruanos ya compran en línea.',
-          'Chile: ~USD 9 mil millones proyectados a fin de 2026, 15% de penetración. Mercado pequeño pero maduro y con primer agente oficial de iA (Cyber AI).',
+          'Chile: ~USD 9 mil millones proyectados a fin de 2026, 15% de penetración. Mercado pequeño pero maduro y con primer agente oficial de Ai (Cyber AI).',
         ],
       },
       {
         tipo: 'nota',
         texto:
-          'Lectura estratégica: priorizar solo por volumen te lleva a Brasil y México. Priorizar por velocidad de cambio y baja saturación competitiva en iA te lleva a Chile, Colombia y Perú primero. La decisión correcta depende de tu producto y tu capacidad operativa por país.',
+          'Lectura estratégica: priorizar solo por volumen te lleva a Brasil y México. Priorizar por velocidad de cambio y baja saturación competitiva en Ai te lleva a Chile, Colombia y Perú primero. La decisión correcta depende de tu producto y tu capacidad operativa por país.',
       },
-      { tipo: 'h2', texto: 'Cómo se mueve cada país en iA + e-commerce' },
+      { tipo: 'h2', texto: 'Cómo se mueve cada país en Ai + e-commerce' },
       { tipo: 'h3', texto: 'Brasil — gran volumen, capa de idioma propia' },
       {
         tipo: 'parrafo',
@@ -684,24 +684,24 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'La AMVO documentó en 2026 que los compradores mexicanos ya usan iA como "asistente de ventas" — comparan productos, validan ofertas y resuelven dudas antes de llegar al checkout. La cita más reveladora: en una búsqueda tradicional un retailer muestra cientos de productos; un agente de iA propone cinco. Tu marca está en esos cinco, o no existe.',
+          'La AMVO documentó en 2026 que los compradores mexicanos ya usan Ai como "asistente de ventas" — comparan productos, validan ofertas y resuelven dudas antes de llegar al checkout. La cita más reveladora: en una búsqueda tradicional un retailer muestra cientos de productos; un agente de Ai propone cinco. Tu marca está en esos cinco, o no existe.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Un estudio mexicano reciente encontró que publicar contenido con datos objetivos (estadísticas, comparativas) mejora la visibilidad en iA en ~33%. Implicancia directa para marcas con presencia regional: el contenido tipo "informe", "estudio" o "comparativa" rinde fuerte en el mercado mexicano.',
+          'Un estudio mexicano reciente encontró que publicar contenido con datos objetivos (estadísticas, comparativas) mejora la visibilidad en Ai en ~33%. Implicancia directa para marcas con presencia regional: el contenido tipo "informe", "estudio" o "comparativa" rinde fuerte en el mercado mexicano.',
       },
-      { tipo: 'h3', texto: 'Colombia — crecimiento sostenido, momento de adopción iA' },
+      { tipo: 'h3', texto: 'Colombia — crecimiento sostenido, momento de adopción Ai' },
       {
         tipo: 'parrafo',
         texto:
-          'Con +22% interanual en transacciones e-commerce el primer trimestre de 2026, Colombia está en una fase de crecimiento sostenido que coincide con el inicio masivo de la conversación sobre iA en el sector. El eCommerce Day Colombia 2026 puso la iA al centro junto con pagos digitales — señal de que el ecosistema apenas empieza a moverse. Ventana abierta para quien se posicione primero.',
+          'Con +22% interanual en transacciones e-commerce el primer trimestre de 2026, Colombia está en una fase de crecimiento sostenido que coincide con el inicio masivo de la conversación sobre Ai en el sector. El eCommerce Day Colombia 2026 puso la Ai al centro junto con pagos digitales — señal de que el ecosistema apenas empieza a moverse. Ventana abierta para quien se posicione primero.',
       },
       { tipo: 'h3', texto: 'Perú — agentic commerce como tesis central' },
       {
         tipo: 'parrafo',
         texto:
-          'Los reportes peruanos para 2026 son explícitos: la tesis es agentic commerce. Agentes de iA que median entre el consumidor y la marca, ejecutando búsqueda, comparación y compra. Para un mercado con +35% de crecimiento proyectado, es la combinación más interesante de la región — volumen creciendo y un consenso emergente sobre hacia dónde va el modelo.',
+          'Los reportes peruanos para 2026 son explícitos: la tesis es agentic commerce. Agentes de Ai que median entre el consumidor y la marca, ejecutando búsqueda, comparación y compra. Para un mercado con +35% de crecimiento proyectado, es la combinación más interesante de la región — volumen creciendo y un consenso emergente sobre hacia dónde va el modelo.',
       },
       { tipo: 'h3', texto: 'Chile — primer agente oficial dentro del evento (Cyber AI)' },
       {
@@ -727,7 +727,7 @@ export const posts: Post[] = [
       {
         tipo: 'cita',
         texto:
-          'La ventaja competitiva en 2026 no está en acceder a herramientas de iA — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
+          'La ventaja competitiva en 2026 no está en acceder a herramientas de Ai — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
         fuente: 'Tendencias e-Commerce LATAM 2026',
       },
       { tipo: 'h2', texto: 'Los 6 cambios concretos para una estrategia GEO multi-país en LATAM' },
@@ -750,7 +750,7 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'El error más común en marcas regionales: copiar el JSON-LD de su sitio global y servirlo igual en todos los países. Una Organization sin areaServed específico y sin sameAs hacia perfiles locales hace que la iA no pueda ubicarte en el mercado correcto — y por defecto recomiende a competencia local que sí tiene esa señal.',
+          'El error más común en marcas regionales: copiar el JSON-LD de su sitio global y servirlo igual en todos los países. Una Organization sin areaServed específico y sin sameAs hacia perfiles locales hace que la Ai no pueda ubicarte en el mercado correcto — y por defecto recomiende a competencia local que sí tiene esa señal.',
       },
     ],
     ctaTexto: 'Auditar mi marca por país →',
@@ -764,9 +764,9 @@ export const posts: Post[] = [
   },
   {
     slug: 'ecommerce-chileno-busqueda-ia-cyberday-2026',
-    titulo: 'El e-commerce chileno frente a la búsqueda con iA: lo que ya cambió y qué hacer antes del CyberDay 2026',
+    titulo: 'El e-commerce chileno frente a la búsqueda con Ai: lo que ya cambió y qué hacer antes del CyberDay 2026',
     descripcion:
-      'En 2025-2026 el tráfico desde iA generativa al retail creció +4.700% y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 incorpora "Cyber AI" oficial y Latam-GPT empieza a operar. Guía aterrizada para una pyme chilena que quiere llegar al evento siendo recomendada por ChatGPT, no ignorada.',
+      'En 2025-2026 el tráfico desde Ai generativa al retail creció +4.700% y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 incorpora "Cyber AI" oficial y Latam-GPT empieza a operar. Guía aterrizada para una pyme chilena que quiere llegar al evento siendo recomendada por ChatGPT, no ignorada.',
     fecha: '2026-05-29',
     categoria: 'Casos & Datos',
     tags: ['Chile', 'E-commerce', 'CyberDay', 'ChatGPT', 'Cyber AI', 'Latam-GPT'],
@@ -774,23 +774,23 @@ export const posts: Post[] = [
     tiempoLectura: '5 min',
     destacado: true,
     resumen:
-      'El tráfico desde iA generativa al retail creció +4.700% en 2025 y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 (1-3 junio) incorpora "Cyber AI" oficial y ya opera Latam-GPT. Para una pyme local, optimizar para iA antes de junio es la ventana más rentable del año.',
+      'El tráfico desde Ai generativa al retail creció +4.700% en 2025 y convierte hasta 5x más que el orgánico clásico. En Chile, el CyberDay 2026 (1-3 junio) incorpora "Cyber AI" oficial y ya opera Latam-GPT. Para una pyme local, optimizar para Ai antes de junio es la ventana más rentable del año.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'El cliente chileno que va a comprar en el CyberDay 2026 ya no abre primero Google. Abre ChatGPT y pregunta si tu tienda es confiable, si tus precios son reales, o cuál opción de tu categoría conviene más. Esa conversación ocurre antes de que tu landing exista en su mente — y, si la iA no te conoce, ya perdiste la venta.',
+          'El cliente chileno que va a comprar en el CyberDay 2026 ya no abre primero Google. Abre ChatGPT y pregunta si tu tienda es confiable, si tus precios son reales, o cuál opción de tu categoría conviene más. Esa conversación ocurre antes de que tu landing exista en su mente — y, si la Ai no te conoce, ya perdiste la venta.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'No es una predicción. Los datos de 2025-2026 muestran que el cambio ya pasó. En Chile, además, el CyberDay 2026 incorpora un agente conversacional oficial llamado "Cyber AI" y al mismo tiempo opera Latam-GPT, el primer modelo de iA pensado para nuestra región. La ventana para entrar al mapa con ventaja se cuenta en semanas, no meses.',
+          'No es una predicción. Los datos de 2025-2026 muestran que el cambio ya pasó. En Chile, además, el CyberDay 2026 incorpora un agente conversacional oficial llamado "Cyber AI" y al mismo tiempo opera Latam-GPT, el primer modelo de Ai pensado para nuestra región. La ventana para entrar al mapa con ventaja se cuenta en semanas, no meses.',
       },
       { tipo: 'h2', texto: 'Los números que cambiaron el juego en 2025-2026' },
       {
         tipo: 'lista',
         items: [
-          'El tráfico desde iA generativa al retail creció +4.700% interanual en 2025 (Adobe). Cyber Monday por sí solo subió +670%.',
+          'El tráfico desde Ai generativa al retail creció +4.700% interanual en 2025 (Adobe). Cyber Monday por sí solo subió +670%.',
           'Las visitas que llegan desde ChatGPT, Perplexity y AI Overviews convierten entre 4x y 5x más que el orgánico clásico — múltiples estudios independientes 2025-2026 lo confirman.',
           'El tráfico de ChatGPT específicamente convierte +31% sobre el no-branded organic (Visibility Labs, 94 tiendas analizadas).',
           'Perplexity cita el 4,2% de las páginas optimizadas; Google AI Overviews solo el 2,1%. Diferencia material a la hora de elegir dónde poner el esfuerzo.',
@@ -799,7 +799,7 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'Traducción para una pyme chilena: cada visita que llega desde iA vale como 4 o 5 visitas de Google. No estás eligiendo entre canales que pesan igual — estás eligiendo entre el canal viejo y el que multiplica conversión.',
+          'Traducción para una pyme chilena: cada visita que llega desde Ai vale como 4 o 5 visitas de Google. No estás eligiendo entre canales que pesan igual — estás eligiendo entre el canal viejo y el que multiplica conversión.',
       },
       { tipo: 'h2', texto: 'Lo que ya cambió en Chile' },
       { tipo: 'h3', texto: 'CyberDay 2026 con "Cyber AI" oficial' },
@@ -823,7 +823,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Adobe documentó en 2026 algo incómodo: el tráfico desde iA crece, pero los sitios de retail no son legibles para máquinas. Falta JSON-LD, los datos de producto son inconsistentes, y las plataformas estándar (Tiendanube, Shopify) no agregan structured data por defecto. Esa brecha es uniforme en LATAM — y en Chile la viven incluso retailers grandes.',
+          'Adobe documentó en 2026 algo incómodo: el tráfico desde Ai crece, pero los sitios de retail no son legibles para máquinas. Falta JSON-LD, los datos de producto son inconsistentes, y las plataformas estándar (Tiendanube, Shopify) no agregan structured data por defecto. Esa brecha es uniforme en LATAM — y en Chile la viven incluso retailers grandes.',
       },
       {
         tipo: 'parrafo',
@@ -833,7 +833,7 @@ export const posts: Post[] = [
       {
         tipo: 'cita',
         texto:
-          'La ventaja competitiva ya no está en acceder a herramientas de iA — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
+          'La ventaja competitiva ya no está en acceder a herramientas de Ai — está en qué tan organizada y estructurada está la información de tu negocio para que esas IAs la entiendan y la usen.',
         fuente: 'Tendencias e-Commerce LATAM 2026',
       },
       { tipo: 'h2', texto: 'Por qué Google Shopping sigue siendo palanca (sí, en serio)' },
@@ -846,7 +846,7 @@ export const posts: Post[] = [
         tipo: 'lista',
         items: [
           'Revisa que tu feed de Merchant Center esté activo, sin errores, con precios y stock actualizados.',
-          'Completa los atributos opcionales (GTIN, marca, condición, despacho) — son los que la iA usa para decidir.',
+          'Completa los atributos opcionales (GTIN, marca, condición, despacho) — son los que la Ai usa para decidir.',
           'Asegúrate de que las imágenes sean de tu catálogo real, no stock genérico.',
           'Sincroniza políticas de devolución y despacho con lo que muestra tu sitio. Inconsistencia = pérdida de confianza para el agente.',
         ],
@@ -860,7 +860,7 @@ export const posts: Post[] = [
           'Pide 5 reseñas nuevas en Google Reviews esta semana. Frescura es señal de ranking en el paso de recuperación.',
           'Limpia tu feed de Merchant Center — es lo que alimenta el carrusel de ChatGPT Shopping.',
           'Publica una pieza propia con datos o experiencia real (no contenido genérico) que medios de nicho o blogs chilenos puedan citar.',
-          'Verifica consistencia entre tu sitio, Google Business Profile y feeds. La iA cruza fuentes — si discrepan, te penaliza.',
+          'Verifica consistencia entre tu sitio, Google Business Profile y feeds. La Ai cruza fuentes — si discrepan, te penaliza.',
         ],
       },
       {
@@ -882,7 +882,7 @@ export const posts: Post[] = [
     slug: 'geo-saas-chile-aparecer-chatgpt-salesforce-hubspot',
     titulo: 'GEO para SaaS en Chile: cómo aparecer en ChatGPT cuando comparan tu producto con Salesforce o HubSpot',
     descripcion:
-      'El 67% de los compradores B2B ya consulta a la iA antes de su primera llamada con ventas. Cómo posicionar un SaaS chileno o latinoamericano en ChatGPT y Perplexity cuando los evaluadores buscan alternativas a software internacional.',
+      'El 67% de los compradores B2B ya consulta a la Ai antes de su primera llamada con ventas. Cómo posicionar un SaaS chileno o latinoamericano en ChatGPT y Perplexity cuando los evaluadores buscan alternativas a software internacional.',
     fecha: '2026-05-29',
     categoria: 'GEO & AEO',
     tags: ['SaaS', 'B2B', 'ChatGPT', 'GEO', 'Chile'],
@@ -905,7 +905,7 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'La consecuencia operativa es directa: las leads que llegan a tu CRM hoy son solo los que ChatGPT ya validó. Los que la iA descartó ni se contactan. Tu pipeline está siendo filtrado antes de que existas para él.',
+          'La consecuencia operativa es directa: las leads que llegan a tu CRM hoy son solo los que ChatGPT ya validó. Los que la Ai descartó ni se contactan. Tu pipeline está siendo filtrado antes de que existas para él.',
       },
       { tipo: 'h2', texto: 'Por qué pelear contra Salesforce en queries genéricas es la trampa' },
       {
@@ -931,24 +931,24 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Perplexity y ChatGPT con búsqueda web tratan las plataformas de reseñas B2B como fuentes de alta confianza. Un perfil de G2 con menos de 10 reseñas en el último año es señal de inactividad — la iA prefiere recomendar un producto con menor calificación pero más reseñas recientes que uno con 5 estrellas y silencio prolongado.',
+          'Perplexity y ChatGPT con búsqueda web tratan las plataformas de reseñas B2B como fuentes de alta confianza. Un perfil de G2 con menos de 10 reseñas en el último año es señal de inactividad — la Ai prefiere recomendar un producto con menor calificación pero más reseñas recientes que uno con 5 estrellas y silencio prolongado.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Para un SaaS chileno, lo accionable es invertir en perfil de G2 y Capterra, pedir reseñas a clientes activos cada trimestre, y responder públicamente las negativas. Es donde la iA mira primero cuando alguien le pregunta por tu categoría.',
+          'Para un SaaS chileno, lo accionable es invertir en perfil de G2 y Capterra, pedir reseñas a clientes activos cada trimestre, y responder públicamente las negativas. Es donde la Ai mira primero cuando alguien le pregunta por tu categoría.',
       },
       {
         tipo: 'cita',
         texto:
-          'En enterprise B2B con múltiples stakeholders, cada evaluador hace sus propias consultas a la iA. Aparecer en cada una de esas consultas equivale a tener un SDR trabajando 24/7 en cada cuenta — sin payroll.',
+          'En enterprise B2B con múltiples stakeholders, cada evaluador hace sus propias consultas a la Ai. Aparecer en cada una de esas consultas equivale a tener un SDR trabajando 24/7 en cada cuenta — sin payroll.',
         fuente: 'Análisis Ai Visibility',
       },
       { tipo: 'h2', texto: 'Los 5 cambios concretos GEO para un SaaS chileno' },
       {
         tipo: 'lista',
         items: [
-          'Implementa JSON-LD de tipo SoftwareApplication con featureList, applicationCategory y precio. Es lo que la iA usa para clasificarte.',
+          'Implementa JSON-LD de tipo SoftwareApplication con featureList, applicationCategory y precio. Es lo que la Ai usa para clasificarte.',
           'Construye un perfil sólido en G2 y Capterra con reseñas recientes. Mide cantidad y frescura, no solo rating.',
           'Identifica 3-5 queries de alternativa-a-X o integración específica que sí puedes ganar. Crea contenido propio que las responda con experiencia real.',
           'Trabaja Digital PR en medios tech de LATAM (FayerWayer, Pisapapeles, blogs de startups) — no necesitas TechCrunch.',
@@ -969,7 +969,7 @@ export const posts: Post[] = [
     slug: 'geo-retail-chile-tiendas-fisicas-chatgpt',
     titulo: 'GEO para retail en Chile: por qué tus tiendas físicas también necesitan aparecer en ChatGPT',
     descripcion:
-      'Las consultas locales a iA ("mejor tienda de [categoría] en [comuna]") crecen más rápido que las genéricas. Cómo estructurar un retail con presencia física para aparecer en ChatGPT, Perplexity y AI Overviews cuando un cliente busca cerca.',
+      'Las consultas locales a Ai ("mejor tienda de [categoría] en [comuna]") crecen más rápido que las genéricas. Cómo estructurar un retail con presencia física para aparecer en ChatGPT, Perplexity y AI Overviews cuando un cliente busca cerca.',
     fecha: '2026-05-29',
     categoria: 'GEO & AEO',
     tags: ['Retail', 'Local SEO', 'LocalBusiness', 'GEO', 'Chile'],
@@ -981,21 +981,21 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Todo el discurso de "GEO para retail" termina hablando de e-commerce. Pero el retail con tiendas físicas en Chile tiene una oportunidad propia, y la mayoría la está dejando pasar: las consultas locales a iA son el segmento que más crece, y el más fácil de ganar.',
+          'Todo el discurso de "GEO para retail" termina hablando de e-commerce. Pero el retail con tiendas físicas en Chile tiene una oportunidad propia, y la mayoría la está dejando pasar: las consultas locales a Ai son el segmento que más crece, y el más fácil de ganar.',
       },
       { tipo: 'h2', texto: 'La consulta local es el segmento de mayor crecimiento' },
       {
         tipo: 'parrafo',
         texto:
-          'Cuando alguien le pregunta a ChatGPT "mejor tienda de muebles en Providencia" o "ferretería con despacho mismo día en Ñuñoa", la iA responde con marcas específicas — y en esas respuestas, la ventaja no es del retailer con más facturación, sino del que tiene su información local estructurada.',
+          'Cuando alguien le pregunta a ChatGPT "mejor tienda de muebles en Providencia" o "ferretería con despacho mismo día en Ñuñoa", la Ai responde con marcas específicas — y en esas respuestas, la ventaja no es del retailer con más facturación, sino del que tiene su información local estructurada.',
       },
       { tipo: 'h2', texto: 'LocalBusiness, no Organization' },
       {
         tipo: 'parrafo',
         texto:
-          'El error técnico más común en retail multi-sucursal: tener un único JSON-LD de Organization a nivel marca. Para queries locales, eso no sirve. La iA necesita un nodo LocalBusiness (o subtipo más específico: HomeAndConstructionBusiness, ClothingStore, Pharmacy) por cada sucursal, con su dirección, horarios, teléfono y enlace al GBP correspondiente.',
+          'El error técnico más común en retail multi-sucursal: tener un único JSON-LD de Organization a nivel marca. Para queries locales, eso no sirve. La Ai necesita un nodo LocalBusiness (o subtipo más específico: HomeAndConstructionBusiness, ClothingStore, Pharmacy) por cada sucursal, con su dirección, horarios, teléfono y enlace al GBP correspondiente.',
       },
-      { tipo: 'h2', texto: 'Google Business Profile sigue mandando (sí, en la era de la iA)' },
+      { tipo: 'h2', texto: 'Google Business Profile sigue mandando (sí, en la era de la Ai)' },
       {
         tipo: 'parrafo',
         texto:
@@ -1004,13 +1004,13 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'Verifica además que cada sucursal tenga su GBP propio (no uno solo a nivel marca). Esto es lo que permite a la iA responder por comuna y no por nombre comercial.',
+          'Verifica además que cada sucursal tenga su GBP propio (no uno solo a nivel marca). Esto es lo que permite a la Ai responder por comuna y no por nombre comercial.',
       },
       { tipo: 'h2', texto: 'Reseñas por sucursal, no por marca' },
       {
         tipo: 'parrafo',
         texto:
-          'Una tienda con 4,8 estrellas globales pero con sucursales sin reseñas individuales pierde en queries locales. La iA prefiere recomendar una sucursal con 4,3 y reseñas recientes específicas a esa dirección que una marca con buen promedio pero datos genéricos. Pídeles reseñas a tus clientes mencionando la sucursal.',
+          'Una tienda con 4,8 estrellas globales pero con sucursales sin reseñas individuales pierde en queries locales. La Ai prefiere recomendar una sucursal con 4,3 y reseñas recientes específicas a esa dirección que una marca con buen promedio pero datos genéricos. Pídeles reseñas a tus clientes mencionando la sucursal.',
       },
       {
         tipo: 'cita',
@@ -1042,21 +1042,21 @@ export const posts: Post[] = [
     slug: 'geo-clinicas-chile-evitar-alucinacion-ia',
     titulo: 'GEO para clínicas en Chile: cómo evitar que ChatGPT desinforme sobre tu centro médico',
     descripcion:
-      'Las alucinaciones de iA en salud son riesgo clínico, no solo reputacional. Cómo estructurar la información pública de una clínica chilena para que los LLM respondan con precisión sobre especialidades, médicos y coberturas — y no inventen datos.',
+      'Las alucinaciones de Ai en salud son riesgo clínico, no solo reputacional. Cómo estructurar la información pública de una clínica chilena para que los LLM respondan con precisión sobre especialidades, médicos y coberturas — y no inventen datos.',
     fecha: '2026-05-29',
     categoria: 'GEO & AEO',
-    tags: ['Salud', 'Clínicas', 'JSON-LD', 'Alucinación iA', 'Chile'],
+    tags: ['Salud', 'Clínicas', 'JSON-LD', 'Alucinación Ai', 'Chile'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'Una alucinación de iA sobre tu clínica —especialidad inventada, médico mal atribuido, cobertura equivocada— es riesgo clínico, no solo de marketing. La defensa es JSON-LD MedicalClinic/Physician preciso y consistencia entre tu sitio, GBP, redes y portales de salud.',
+      'Una alucinación de Ai sobre tu clínica —especialidad inventada, médico mal atribuido, cobertura equivocada— es riesgo clínico, no solo de marketing. La defensa es JSON-LD MedicalClinic/Physician preciso y consistencia entre tu sitio, GBP, redes y portales de salud.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'En cualquier industria, una alucinación de iA sobre tu marca es un problema. En salud, es algo más serio: un paciente que llega a la consulta con la convicción de que tu clínica tiene una especialidad que no tiene, o que cubre un seguro que no cubre, ya tomó una decisión basada en información incorrecta. La responsabilidad de prevenir eso es de la clínica, no del LLM.',
+          'En cualquier industria, una alucinación de Ai sobre tu marca es un problema. En salud, es algo más serio: un paciente que llega a la consulta con la convicción de que tu clínica tiene una especialidad que no tiene, o que cubre un seguro que no cubre, ya tomó una decisión basada en información incorrecta. La responsabilidad de prevenir eso es de la clínica, no del LLM.',
       },
-      { tipo: 'h2', texto: 'Cómo se ve una alucinación de iA sobre una clínica' },
+      { tipo: 'h2', texto: 'Cómo se ve una alucinación de Ai sobre una clínica' },
       {
         tipo: 'parrafo',
         texto:
@@ -1066,13 +1066,13 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Las alucinaciones no son errores aleatorios. Ocurren cuando el modelo no tiene suficiente información de alta calidad sobre una entidad y "rellena" con datos plausibles. Si tu sitio no declara qué especialidades ofreces, qué isapres cubres y qué médicos integran tu staff de forma estructurada, la iA infiere. Y a veces, mal.',
+          'Las alucinaciones no son errores aleatorios. Ocurren cuando el modelo no tiene suficiente información de alta calidad sobre una entidad y "rellena" con datos plausibles. Si tu sitio no declara qué especialidades ofreces, qué isapres cubres y qué médicos integran tu staff de forma estructurada, la Ai infiere. Y a veces, mal.',
       },
       { tipo: 'h2', texto: 'Schema.org tiene tipos médicos que casi nadie usa' },
       {
         tipo: 'parrafo',
         texto:
-          'La mayoría de las clínicas chilenas declara como mucho un Organization genérico. Schema.org tiene tipos específicos diseñados para reducir ambigüedad: MedicalClinic, Hospital, Physician, MedicalSpecialty, MedicalProcedure, HealthInsurancePlan. Cada uno tiene campos pensados para que la iA lea sin inferir.',
+          'La mayoría de las clínicas chilenas declara como mucho un Organization genérico. Schema.org tiene tipos específicos diseñados para reducir ambigüedad: MedicalClinic, Hospital, Physician, MedicalSpecialty, MedicalProcedure, HealthInsurancePlan. Cada uno tiene campos pensados para que la Ai lea sin inferir.',
       },
       {
         tipo: 'lista',
@@ -1087,12 +1087,12 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Los LLM cruzan tu sitio con Google Business Profile, portales como Doctoralia o Examedi y redes sociales. Si tu sitio dice una cosa y tu GBP otra, la iA elige cualquiera de las dos versiones, y a veces inventa una tercera. Auditoría de consistencia es tan importante como agregar más datos.',
+          'Los LLM cruzan tu sitio con Google Business Profile, portales como Doctoralia o Examedi y redes sociales. Si tu sitio dice una cosa y tu GBP otra, la Ai elige cualquiera de las dos versiones, y a veces inventa una tercera. Auditoría de consistencia es tan importante como agregar más datos.',
       },
       {
         tipo: 'cita',
         texto:
-          'En salud, el problema no es que la iA te omita. Es que te describa con datos plausibles pero erróneos. Tu defensa no es contenido más persuasivo — es información estructurada y consistente que cierre el espacio donde la iA podría inferir.',
+          'En salud, el problema no es que la Ai te omita. Es que te describa con datos plausibles pero erróneos. Tu defensa no es contenido más persuasivo — es información estructurada y consistente que cierre el espacio donde la Ai podría inferir.',
         fuente: 'Análisis Ai Visibility',
       },
       { tipo: 'h2', texto: 'Lo que NO recomendamos hacer en salud' },
@@ -1100,8 +1100,8 @@ export const posts: Post[] = [
         tipo: 'lista',
         items: [
           'No infles aggregateRating ni inventes reseñas: los LLM cruzan con fuentes externas y te penalizan más de lo que ganarías.',
-          'No uses iA generativa para contenido médico sin revisión profesional. El riesgo regulatorio y clínico no compensa el ahorro de tiempo.',
-          'No omitas información negativa o limitaciones reales: la iA premia la transparencia, y un paciente que llega informado de verdad es un paciente que vuelve.',
+          'No uses Ai generativa para contenido médico sin revisión profesional. El riesgo regulatorio y clínico no compensa el ahorro de tiempo.',
+          'No omitas información negativa o limitaciones reales: la Ai premia la transparencia, y un paciente que llega informado de verdad es un paciente que vuelve.',
         ],
       },
       { tipo: 'h2', texto: 'Los 5 cambios concretos GEO para una clínica o centro médico chileno' },
@@ -1120,7 +1120,7 @@ export const posts: Post[] = [
     ctaUrl: '/auditar/salud/',
     relacionados: ['guia-google-ia-acciones-marca-chilena', 'jsonld-organization-chile', '5-hacks-geo-que-google-dice-no-sirven'],
     glosario: [
-      { slug: 'alucinacion-ia', termino: 'Alucinación de iA' },
+      { slug: 'alucinacion-ia', termino: 'Alucinación de Ai' },
       { slug: 'share-of-model', termino: 'Share of Model' },
       { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
     ],
@@ -1136,7 +1136,7 @@ export const posts: Post[] = [
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'ChatGPT ya hace comparativas de productos financieros chilenos antes de que el cliente entre al comparador. La señal más subestimada para aparecer: declarar tu regulación CMF en JSON-LD. Sin eso, la iA puede omitirte como opción "no validada" frente a alternativas más conocidas.',
+      'ChatGPT ya hace comparativas de productos financieros chilenos antes de que el cliente entre al comparador. La señal más subestimada para aparecer: declarar tu regulación CMF en JSON-LD. Sin eso, la Ai puede omitirte como opción "no validada" frente a alternativas más conocidas.',
     bloques: [
       {
         tipo: 'parrafo',
@@ -1147,7 +1147,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Cuando un usuario pregunta "compara cuenta corriente empresarial entre BCI y Banco Estado", el LLM no recupera un comparador prearmado: sintetiza datos públicos (tasas referenciales, comisiones, requisitos) que encuentra en los sitios de las propias instituciones, en medios financieros y en foros. Si esos datos no están legibles en tu sitio, la iA usa los del competidor — y arma la comparativa sin ti.',
+          'Cuando un usuario pregunta "compara cuenta corriente empresarial entre BCI y Banco Estado", el LLM no recupera un comparador prearmado: sintetiza datos públicos (tasas referenciales, comisiones, requisitos) que encuentra en los sitios de las propias instituciones, en medios financieros y en foros. Si esos datos no están legibles en tu sitio, la Ai usa los del competidor — y arma la comparativa sin ti.',
       },
       { tipo: 'h2', texto: 'Por qué declarar regulación CMF cambia tu visibilidad' },
       {
@@ -1288,13 +1288,13 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'La búsqueda inmobiliaria tiene una característica única: el comprador investiga por mucho tiempo y le hace preguntas amplias a la iA. "¿Conviene comprar en Ñuñoa o Maipú?", "¿qué pasa con las tasas hipotecarias?", "¿es buena inversión un departamento de un dormitorio en Estación Central?". En ninguna de esas queries el usuario está pidiendo un corredor — pero cada respuesta de ChatGPT está moldeando a quién contactará cuando esté listo.',
+          'La búsqueda inmobiliaria tiene una característica única: el comprador investiga por mucho tiempo y le hace preguntas amplias a la Ai. "¿Conviene comprar en Ñuñoa o Maipú?", "¿qué pasa con las tasas hipotecarias?", "¿es buena inversión un departamento de un dormitorio en Estación Central?". En ninguna de esas queries el usuario está pidiendo un corredor — pero cada respuesta de ChatGPT está moldeando a quién contactará cuando esté listo.',
       },
-      { tipo: 'h2', texto: 'La iA opina sobre comunas con o sin ti' },
+      { tipo: 'h2', texto: 'La Ai opina sobre comunas con o sin ti' },
       {
         tipo: 'parrafo',
         texto:
-          'ChatGPT responde con confianza sobre qué comunas están en alza, cuáles tienen mejor proyección y qué barrios conviene evitar. Esos contenidos los toma de medios, foros y portales. Si tu inmobiliaria publica análisis de mercado fundamentados (datos reales de tu cartera, observaciones de campo, comparativas con cifras) en tu blog o en medios chilenos, te conviertes en una de las fuentes que la iA cita cuando alguien pregunta. Si no publicas nada, la iA cita a tu competencia.',
+          'ChatGPT responde con confianza sobre qué comunas están en alza, cuáles tienen mejor proyección y qué barrios conviene evitar. Esos contenidos los toma de medios, foros y portales. Si tu inmobiliaria publica análisis de mercado fundamentados (datos reales de tu cartera, observaciones de campo, comparativas con cifras) en tu blog o en medios chilenos, te conviertes en una de las fuentes que la Ai cita cuando alguien pregunta. Si no publicas nada, la Ai cita a tu competencia.',
       },
       { tipo: 'h2', texto: 'RealEstateListing: la ventana técnica para proyectos en preventa' },
       {
@@ -1318,7 +1318,7 @@ export const posts: Post[] = [
       {
         tipo: 'lista',
         items: [
-          'Publica análisis de mercado con datos propios (variación de precios por comuna, demanda observada, tipologías más buscadas). Esto te convierte en fuente para la iA.',
+          'Publica análisis de mercado con datos propios (variación de precios por comuna, demanda observada, tipologías más buscadas). Esto te convierte en fuente para la Ai.',
           'JSON-LD RealEstateOrganization o RealEstateAgent con areaServed por comuna y especialización por tipo de propiedad.',
           'RealEstateListing para cada proyecto en preventa, con datos completos y consistentes.',
           'Pide reseñas a clientes recientes en Google Reviews y portales como Mercado Libre Propiedades. Tres reseñas positivas por trimestre mantienen la frescura.',
@@ -1333,26 +1333,26 @@ export const posts: Post[] = [
     glosario: [
       { slug: 'share-of-model', termino: 'Share of Model' },
       { slug: 'geo', termino: 'Generative Engine Optimization (GEO)' },
-      { slug: 'alucinacion-ia', termino: 'Alucinación de iA' },
+      { slug: 'alucinacion-ia', termino: 'Alucinación de Ai' },
     ],
   },
   {
     slug: 'que-es-rag-como-decide-citas-ia',
-    titulo: '¿Qué es RAG (Retrieval-Augmented Generation) y cómo decide qué marcas cita la iA?',
+    titulo: '¿Qué es RAG (Retrieval-Augmented Generation) y cómo decide qué marcas cita la Ai?',
     descripcion:
-      'RAG es la arquitectura que permite a ChatGPT y Perplexity buscar en internet antes de responder. Explicamos en simple qué es, cómo funciona paso a paso y por qué determina si la iA recomienda tu marca o la de tu competencia.',
+      'RAG es la arquitectura que permite a ChatGPT y Perplexity buscar en internet antes de responder. Explicamos en simple qué es, cómo funciona paso a paso y por qué determina si la Ai recomienda tu marca o la de tu competencia.',
     fecha: '2026-05-27',
     categoria: 'Análisis LLM',
     tags: ['RAG', 'LLM', 'ChatGPT', 'Perplexity', 'GEO'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'RAG (Retrieval-Augmented Generation) es la arquitectura donde un LLM recupera documentos de internet y luego genera la respuesta a partir de ellos. Si tu contenido no está en ese paso de recuperación, la iA no puede citarte — por más bueno que seas.',
+      'RAG (Retrieval-Augmented Generation) es la arquitectura donde un LLM recupera documentos de internet y luego genera la respuesta a partir de ellos. Si tu contenido no está en ese paso de recuperación, la Ai no puede citarte — por más bueno que seas.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Si te preguntas por qué ChatGPT recomienda a tu competencia y no a ti, la respuesta casi siempre pasa por entender RAG. Es la arquitectura que hoy decide qué marcas entran en una respuesta de iA y cuáles quedan fuera. Y la buena noticia es que se puede influir.',
+          'Si te preguntas por qué ChatGPT recomienda a tu competencia y no a ti, la respuesta casi siempre pasa por entender RAG. Es la arquitectura que hoy decide qué marcas entran en una respuesta de Ai y cuáles quedan fuera. Y la buena noticia es que se puede influir.',
       },
       { tipo: 'h2', texto: 'Qué significa RAG, en simple' },
       {
@@ -1379,11 +1379,11 @@ export const posts: Post[] = [
         texto:
           'La consecuencia clave: si tu marca no aparece en el paso de recuperación, no existe para la respuesta final. No importa cuán buena sea tu oferta — si no te recuperan, no te citan.',
       },
-      { tipo: 'h2', texto: 'Por qué RAG decide si la iA cita tu marca' },
+      { tipo: 'h2', texto: 'Por qué RAG decide si la Ai cita tu marca' },
       {
         tipo: 'parrafo',
         texto:
-          'El paso de recuperación funciona parecido a un buscador: prioriza fuentes accesibles, con autoridad y alineadas con la consulta. Por eso una marca puede tener un gran producto y aun así ser invisible para la iA: si su contenido no es rastreable, no responde preguntas concretas o no aparece en fuentes que el sistema considera confiables, simplemente no entra al material que el modelo usa para responder.',
+          'El paso de recuperación funciona parecido a un buscador: prioriza fuentes accesibles, con autoridad y alineadas con la consulta. Por eso una marca puede tener un gran producto y aun así ser invisible para la Ai: si su contenido no es rastreable, no responde preguntas concretas o no aparece en fuentes que el sistema considera confiables, simplemente no entra al material que el modelo usa para responder.',
       },
       {
         tipo: 'cita',
@@ -1397,7 +1397,7 @@ export const posts: Post[] = [
         items: [
           'Asegura que tu sitio sea rastreable e indexable — es la puerta de entrada al paso de recuperación.',
           'Crea contenido que responda preguntas concretas de tu categoría, no textos genéricos.',
-          'Usa JSON-LD para que la iA lea tu identidad de marca sin equivocarse de entidad.',
+          'Usa JSON-LD para que la Ai lea tu identidad de marca sin equivocarse de entidad.',
           'Construye presencia en fuentes que los sistemas RAG consideran autoritativas para tu industria (reseñas, medios de nicho, foros).',
           'Mide tu Share of Model para saber si, hoy, te están recuperando o no.',
         ],
@@ -1405,63 +1405,63 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'RAG no es magia ni una caja negra inaccesible. Es un proceso de recuperación que premia el contenido accesible, claro y confiable. La marca que entiende esto deja de rogar por aparecer y empieza a construir las señales que hacen que la iA la elija.',
+          'RAG no es magia ni una caja negra inaccesible. Es un proceso de recuperación que premia el contenido accesible, claro y confiable. La marca que entiende esto deja de rogar por aparecer y empieza a construir las señales que hacen que la Ai la elija.',
       },
     ],
-    ctaTexto: 'Ver si la iA me recupera →',
+    ctaTexto: 'Ver si la Ai me recupera →',
     ctaUrl: '/#planes',
     relacionados: ['google-seo-sigue-vivo-busqueda-ia', 'chatgpt-busqueda-web-cambia-geo-2026', '5-hacks-geo-que-google-dice-no-sirven'],
     glosario: [
       { slug: 'rag', termino: 'RAG (Retrieval-Augmented Generation)' },
       { slug: 'llm', termino: 'LLM' },
-      { slug: 'alucinacion-ia', termino: 'Alucinación de iA' },
+      { slug: 'alucinacion-ia', termino: 'Alucinación de Ai' },
     ],
   },
   {
     slug: '5-hacks-geo-que-google-dice-no-sirven',
     titulo: 'Los 5 hacks de GEO que Google dice que NO sirven (y qué hacer en su lugar)',
     descripcion:
-      'Google publicó su guía oficial de optimización para búsqueda con iA y desmiente cinco tácticas de GEO populares: LLMS.txt, fragmentar contenido, reescribir para la iA, buscar menciones artificiales y sobre-optimizar structured data. Analizamos qué es ruido y qué sigue importando.',
+      'Google publicó su guía oficial de optimización para búsqueda con Ai y desmiente cinco tácticas de GEO populares: LLMS.txt, fragmentar contenido, reescribir para la Ai, buscar menciones artificiales y sobre-optimizar structured data. Analizamos qué es ruido y qué sigue importando.',
     fecha: '2026-05-27',
     categoria: 'Análisis LLM',
     tags: ['Google', 'GEO', 'AEO', 'SEO', 'LLMS.txt'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'En su guía oficial, Google desmiente 5 hacks de GEO: LLMS.txt, fragmentar contenido, reescribir para iA, buscar menciones falsas y sobre-optimizar structured data. La conclusión: los fundamentos de SEO siguen mandando.',
+      'En su guía oficial, Google desmiente 5 hacks de GEO: LLMS.txt, fragmentar contenido, reescribir para Ai, buscar menciones falsas y sobre-optimizar structured data. La conclusión: los fundamentos de SEO siguen mandando.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Google publicó su guía oficial de optimización para búsqueda potenciada por iA, y el mensaje incomoda a buena parte de la industria del "GEO": la mayoría de los trucos que se venden como secretos para aparecer en respuestas de iA no mueven la aguja. Lo que importa, según Google, son los fundamentos de siempre.',
+          'Google publicó su guía oficial de optimización para búsqueda potenciada por Ai, y el mensaje incomoda a buena parte de la industria del "GEO": la mayoría de los trucos que se venden como secretos para aparecer en respuestas de Ai no mueven la aguja. Lo que importa, según Google, son los fundamentos de siempre.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Repasamos los cinco "hacks" que el documento descarta explícitamente, qué tan ciertos son, y dónde Google deja una rendija que conviene entender si tu marca depende de ser citada por la iA.',
+          'Repasamos los cinco "hacks" que el documento descarta explícitamente, qué tan ciertos son, y dónde Google deja una rendija que conviene entender si tu marca depende de ser citada por la Ai.',
       },
       { tipo: 'h2', texto: '1. Archivos LLMS.txt' },
       {
         tipo: 'parrafo',
         texto:
-          'La idea de un archivo tipo robots.txt pero para LLM se viralizó en 2025. Google es claro: no necesitas un archivo legible por máquina especial para que la iA entienda tu sitio. Los sistemas usan el mismo contenido HTML que ya rastrean para búsqueda.',
+          'La idea de un archivo tipo robots.txt pero para LLM se viralizó en 2025. Google es claro: no necesitas un archivo legible por máquina especial para que la Ai entienda tu sitio. Los sistemas usan el mismo contenido HTML que ya rastrean para búsqueda.',
       },
       {
         tipo: 'nota',
         texto:
-          'Matiz importante: Google habla de SU buscador con iA. Algunos crawlers de terceros sí leen LLMS.txt, pero como señal marginal. No es donde está tu retorno — un buen contenido indexable rinde mucho más.',
+          'Matiz importante: Google habla de SU buscador con Ai. Algunos crawlers de terceros sí leen LLMS.txt, pero como señal marginal. No es donde está tu retorno — un buen contenido indexable rinde mucho más.',
       },
       { tipo: 'h2', texto: '2. Fragmentar el contenido en bloques pequeños' },
       {
         tipo: 'parrafo',
         texto:
-          'Se popularizó la idea de partir artículos en "chunks" cortos porque supuestamente así los RAG los digieren mejor. Google lo descarta: no necesitas trocear tu contenido para que funcione en búsqueda con iA. Escribe páginas completas y bien estructuradas.',
+          'Se popularizó la idea de partir artículos en "chunks" cortos porque supuestamente así los RAG los digieren mejor. Google lo descarta: no necesitas trocear tu contenido para que funcione en búsqueda con Ai. Escribe páginas completas y bien estructuradas.',
       },
-      { tipo: 'h2', texto: '3. Reescribir todo para que lo entienda la iA' },
+      { tipo: 'h2', texto: '3. Reescribir todo para que lo entienda la Ai' },
       {
         tipo: 'parrafo',
         texto:
-          'No hay un "lenguaje para iA". Google recomienda escribir de forma natural para personas. El contenido claro y bien organizado que sirve a un humano es exactamente el que la iA procesa mejor.',
+          'No hay un "lenguaje para Ai". Google recomienda escribir de forma natural para personas. El contenido claro y bien organizado que sirve a un humano es exactamente el que la Ai procesa mejor.',
       },
       { tipo: 'h2', texto: '4. Conseguir menciones de forma artificial' },
       {
@@ -1478,25 +1478,25 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'El más polémico para quienes vendemos GEO: Google dice que el structured data NO es obligatorio para aparecer en respuestas generadas por iA. No es la palanca mágica que muchos pintan.',
+          'El más polémico para quienes vendemos GEO: Google dice que el structured data NO es obligatorio para aparecer en respuestas generadas por Ai. No es la palanca mágica que muchos pintan.',
       },
       {
         tipo: 'cita',
         texto:
-          'Que no sea obligatorio no significa que sea inútil. El JSON-LD no te hace rankear más alto en iA, pero reduce los errores de entidad: evita que ChatGPT te confunda con otra marca, te ubique en el país equivocado o invente tu antigüedad.',
+          'Que no sea obligatorio no significa que sea inútil. El JSON-LD no te hace rankear más alto en Ai, pero reduce los errores de entidad: evita que ChatGPT te confunda con otra marca, te ubique en el país equivocado o invente tu antigüedad.',
         fuente: 'Análisis Ai Visibility',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Nuestra lectura: usa structured data como higiene de datos, no como hack de ranking. Es barato, evita malentendidos costosos de la iA, pero no reemplaza tener buen contenido y reputación real.',
+          'Nuestra lectura: usa structured data como higiene de datos, no como hack de ranking. Es barato, evita malentendidos costosos de la Ai, pero no reemplaza tener buen contenido y reputación real.',
       },
       { tipo: 'h2', texto: 'Los 5 cambios concretos que sí mueven la aguja' },
       {
         tipo: 'lista',
         items: [
           'Aplica los fundamentos de SEO: que tu sitio sea rastreable, indexable y rápido.',
-          'Crea contenido con perspectiva propia, no genérico. La iA premia la experiencia real, no el refrito.',
+          'Crea contenido con perspectiva propia, no genérico. La Ai premia la experiencia real, no el refrito.',
           'Consigue menciones orgánicas en fuentes con autoridad de tu nicho.',
           'Usa JSON-LD para precisión de entidad, no esperando que te suba en el ranking.',
           'Mide tu Share of Model para saber si todo esto está funcionando en ChatGPT y Perplexity, no solo en Google.',
@@ -1505,7 +1505,7 @@ export const posts: Post[] = [
       {
         tipo: 'nota',
         texto:
-          'Recuerda: esta guía es de Google sobre su propio buscador con iA. ChatGPT y Perplexity tienen mecánicas distintas. Lo que Google minimiza (structured data, menciones) puede pesar diferente en otros motores. Por eso conviene auditar cada uno por separado.',
+          'Recuerda: esta guía es de Google sobre su propio buscador con Ai. ChatGPT y Perplexity tienen mecánicas distintas. Lo que Google minimiza (structured data, menciones) puede pesar diferente en otros motores. Por eso conviene auditar cada uno por separado.',
       },
     ],
     ctaTexto: 'Auditar mi Share of Model →',
@@ -1514,23 +1514,23 @@ export const posts: Post[] = [
   },
   {
     slug: 'google-seo-sigue-vivo-busqueda-ia',
-    titulo: 'Google confirmó que el SEO sigue vivo en la era de la búsqueda con iA',
+    titulo: 'Google confirmó que el SEO sigue vivo en la era de la búsqueda con Ai',
     descripcion:
-      'La guía oficial de Google despeja el pánico del "SEO murió": los sistemas de ranking siguen siendo la base, incluso cuando la respuesta la genera una iA. Explicamos en simple cómo funcionan RAG y sub-query generation, y qué significa para tu marca.',
+      'La guía oficial de Google despeja el pánico del "SEO murió": los sistemas de ranking siguen siendo la base, incluso cuando la respuesta la genera una Ai. Explicamos en simple cómo funcionan RAG y sub-query generation, y qué significa para tu marca.',
     fecha: '2026-05-23',
-    categoria: 'Noticias iA',
-    tags: ['Google', 'SEO', 'RAG', 'Búsqueda iA'],
+    categoria: 'Noticias Ai',
+    tags: ['Google', 'SEO', 'RAG', 'Búsqueda Ai'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'Google confirma que sus sistemas de ranking siguen siendo la base de la búsqueda con iA. RAG y sub-query generation usan el mismo índice de siempre: si no rankeas, la iA no te cita.',
+      'Google confirma que sus sistemas de ranking siguen siendo la base de la búsqueda con Ai. RAG y sub-query generation usan el mismo índice de siempre: si no rankeas, la Ai no te cita.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Cada pocos meses alguien declara muerto al SEO. La guía oficial de Google para búsqueda con iA pone las cosas en su lugar: los sistemas de ranking centrales siguen siendo la base. La iA no reemplaza al índice de búsqueda — se apoya en él.',
+          'Cada pocos meses alguien declara muerto al SEO. La guía oficial de Google para búsqueda con Ai pone las cosas en su lugar: los sistemas de ranking centrales siguen siendo la base. La Ai no reemplaza al índice de búsqueda — se apoya en él.',
       },
-      { tipo: 'h2', texto: 'Cómo genera respuestas la iA de Google' },
+      { tipo: 'h2', texto: 'Cómo genera respuestas la Ai de Google' },
       {
         tipo: 'parrafo',
         texto:
@@ -1540,13 +1540,13 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'La iA no responde solo de memoria. Primero recupera documentos relevantes del índice de búsqueda y luego genera la respuesta a partir de ellos. Traducción: si tu página no está indexada o no rankea para la consulta, no entra en el material que la iA usa para responder.',
+          'La Ai no responde solo de memoria. Primero recupera documentos relevantes del índice de búsqueda y luego genera la respuesta a partir de ellos. Traducción: si tu página no está indexada o no rankea para la consulta, no entra en el material que la Ai usa para responder.',
       },
       { tipo: 'h3', texto: 'Sub-query generation' },
       {
         tipo: 'parrafo',
         texto:
-          'Ante una pregunta compleja, la iA la descompone en varias búsquedas más pequeñas, recupera resultados para cada una y los sintetiza. Esto multiplica las oportunidades de aparecer: una página puede ser citada por responder muy bien una sub-pregunta específica, aunque no sea la mejor para la consulta general.',
+          'Ante una pregunta compleja, la Ai la descompone en varias búsquedas más pequeñas, recupera resultados para cada una y los sintetiza. Esto multiplica las oportunidades de aparecer: una página puede ser citada por responder muy bien una sub-pregunta específica, aunque no sea la mejor para la consulta general.',
       },
       {
         tipo: 'nota',
@@ -1567,7 +1567,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Google básicamente dice que no hay una disciplina nueva mágica: buen SEO es lo que te hace visible en su búsqueda con iA. Dicho eso, en Ai Visibility creemos que sí hay una capa adicional cuando hablas de ChatGPT o Perplexity, motores que no usan el índice de Google. Ahí el SEO clásico es necesario pero no suficiente.',
+          'Google básicamente dice que no hay una disciplina nueva mágica: buen SEO es lo que te hace visible en su búsqueda con Ai. Dicho eso, en Ai Visibility creemos que sí hay una capa adicional cuando hablas de ChatGPT o Perplexity, motores que no usan el índice de Google. Ahí el SEO clásico es necesario pero no suficiente.',
       },
       {
         tipo: 'cita',
@@ -1579,21 +1579,21 @@ export const posts: Post[] = [
       {
         tipo: 'lista',
         items: [
-          'Revisa los fundamentos de SEO de tu sitio (indexación, velocidad, HTML semántico): es la base que Google sigue usando para citarte en su búsqueda con iA.',
+          'Revisa los fundamentos de SEO de tu sitio (indexación, velocidad, HTML semántico): es la base que Google sigue usando para citarte en su búsqueda con Ai.',
           'Corre tus queries clave en ChatGPT y Perplexity, no solo en Google. Fuera del índice de Google las reglas cambian y necesitas saber si ahí te citan.',
-          'Implementa JSON-LD de Organization para precisión de entidad, así la iA no te confunde con otra marca al sintetizar la respuesta.',
+          'Implementa JSON-LD de Organization para precisión de entidad, así la Ai no te confunde con otra marca al sintetizar la respuesta.',
         ],
       },
     ],
-    ctaTexto: 'Ver si la iA me cita →',
+    ctaTexto: 'Ver si la Ai me cita →',
     ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', '5-hacks-geo-que-google-dice-no-sirven', 'chatgpt-busqueda-web-cambia-geo-2026'],
   },
   {
     slug: 'contenido-commodity-vs-experiencia-real-ia',
-    titulo: 'Contenido "commodity" vs. experiencia real: qué premia la iA según Google',
+    titulo: 'Contenido "commodity" vs. experiencia real: qué premia la Ai según Google',
     descripcion:
-      'El corazón de la guía de Google es uno: la iA no necesita más contenido genérico, necesita perspectiva real. Qué es el contenido commodity, por qué la iA lo ignora, y cómo una pyme puede ganar con experiencia que los grandes no tienen.',
+      'El corazón de la guía de Google es uno: la Ai no necesita más contenido genérico, necesita perspectiva real. Qué es el contenido commodity, por qué la Ai lo ignora, y cómo una pyme puede ganar con experiencia que los grandes no tienen.',
     fecha: '2026-05-24',
     categoria: 'GEO & AEO',
     tags: ['Google', 'Contenido', 'E-E-A-T', 'GEO'],
@@ -1605,18 +1605,18 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Si hay una sola idea que rescatar de la guía de Google sobre búsqueda con iA, es esta: el contenido commodity ya no sirve. La iA tiene infinito acceso a información genérica. Lo que necesita —y premia— es perspectiva que no encuentre en otra parte.',
+          'Si hay una sola idea que rescatar de la guía de Google sobre búsqueda con Ai, es esta: el contenido commodity ya no sirve. La Ai tiene infinito acceso a información genérica. Lo que necesita —y premia— es perspectiva que no encuentre en otra parte.',
       },
       { tipo: 'h2', texto: 'Qué es contenido "commodity"' },
       {
         tipo: 'parrafo',
         texto:
-          'Es el contenido que repite lo que cualquiera ya sabe: "5 tips para elegir zapatillas", "qué considerar al comprar un notebook". Información correcta, pero sin nada que la diferencie de las otras mil páginas iguales. Para la iA, ese contenido es intercambiable — y por eso prescindible.',
+          'Es el contenido que repite lo que cualquiera ya sabe: "5 tips para elegir zapatillas", "qué considerar al comprar un notebook". Información correcta, pero sin nada que la diferencie de las otras mil páginas iguales. Para la Ai, ese contenido es intercambiable — y por eso prescindible.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Google contrapone el ejemplo: en vez de tips genéricos de compra, una reseña basada en uso real, con detalles que solo tiene quien probó el producto de verdad. Eso es lo que la iA cita.',
+          'Google contrapone el ejemplo: en vez de tips genéricos de compra, una reseña basada en uso real, con detalles que solo tiene quien probó el producto de verdad. Eso es lo que la Ai cita.',
       },
       { tipo: 'h2', texto: 'Las señales que Google nombra' },
       {
@@ -1638,21 +1638,21 @@ export const posts: Post[] = [
       {
         tipo: 'cita',
         texto:
-          'No vas a ganarle a un retailer gigante en cobertura. Pero sí puedes dominar la consulta específica donde tu experiencia real es insuperable. La iA busca exactamente eso.',
+          'No vas a ganarle a un retailer gigante en cobertura. Pero sí puedes dominar la consulta específica donde tu experiencia real es insuperable. La Ai busca exactamente eso.',
         fuente: 'Análisis Ai Visibility',
       },
-      { tipo: 'h2', texto: 'Sobre usar iA para escribir tu contenido' },
+      { tipo: 'h2', texto: 'Sobre usar Ai para escribir tu contenido' },
       {
         tipo: 'parrafo',
         texto:
-          'Google no prohíbe usar iA generativa para crear contenido, pero sí advierte: el valor lo aporta tu experiencia y criterio, no el texto autogenerado. Usa la iA como herramienta de redacción, no como reemplazo de tu conocimiento. Contenido autogenerado en masa, sin aporte real, cae justo en la categoría commodity que la iA ignora.',
+          'Google no prohíbe usar Ai generativa para crear contenido, pero sí advierte: el valor lo aporta tu experiencia y criterio, no el texto autogenerado. Usa la Ai como herramienta de redacción, no como reemplazo de tu conocimiento. Contenido autogenerado en masa, sin aporte real, cae justo en la categoría commodity que la Ai ignora.',
       },
       { tipo: 'h2', texto: 'Los 3 cambios concretos que puedes hacer hoy' },
       {
         tipo: 'lista',
         items: [
           'Toma tu pieza más genérica ("5 tips de…") y reescríbela con un dato, caso o resultado real que solo tú puedes contar. Eso la saca de la categoría commodity.',
-          'Agrega señales de experiencia visibles: autor con credenciales, fecha de actualización real y ejemplos propios. La iA premia E-E-A-T, no volumen.',
+          'Agrega señales de experiencia visibles: autor con credenciales, fecha de actualización real y ejemplos propios. La Ai premia E-E-A-T, no volumen.',
           'Audita si tienes landings autogeneradas en masa sin aporte real y decide reescribirlas o despublicarlas antes de que arrastren tu autoridad.',
         ],
       },
@@ -1663,9 +1663,9 @@ export const posts: Post[] = [
   },
   {
     slug: 'checklist-tecnico-google-busqueda-ia',
-    titulo: 'Checklist técnico de Google para aparecer en la búsqueda con iA',
+    titulo: 'Checklist técnico de Google para aparecer en la búsqueda con Ai',
     descripcion:
-      'La base técnica que Google exige para que tu sitio entre en sus respuestas con iA: rastreabilidad, HTML semántico, JavaScript, page experience y manejo de contenido duplicado. Checklist accionable para revisar hoy.',
+      'La base técnica que Google exige para que tu sitio entre en sus respuestas con Ai: rastreabilidad, HTML semántico, JavaScript, page experience y manejo de contenido duplicado. Checklist accionable para revisar hoy.',
     fecha: '2026-05-25',
     categoria: 'Tutoriales',
     tags: ['Google', 'SEO técnico', 'Crawlability', 'HTML semántico'],
@@ -1677,7 +1677,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Puedes tener el mejor contenido del mundo, pero si la iA de Google no puede rastrear ni entender tu sitio, no existes para ella. La guía oficial deja claro que la estructura técnica es el cimiento. Aquí está el checklist, traducido a acciones.',
+          'Puedes tener el mejor contenido del mundo, pero si la Ai de Google no puede rastrear ni entender tu sitio, no existes para ella. La guía oficial deja claro que la estructura técnica es el cimiento. Aquí está el checklist, traducido a acciones.',
       },
       { tipo: 'h2', texto: '1. Rastreabilidad e indexación' },
       {
@@ -1692,7 +1692,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Usa las etiquetas por lo que significan, no solo por cómo se ven. Un h1 para el título, h2/h3 para la jerarquía, listas reales para enumeraciones. La iA usa esa estructura para entender de qué trata cada sección.',
+          'Usa las etiquetas por lo que significan, no solo por cómo se ven. Un h1 para el título, h2/h3 para la jerarquía, listas reales para enumeraciones. La Ai usa esa estructura para entender de qué trata cada sección.',
       },
       {
         tipo: 'codigo',
@@ -1727,7 +1727,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'URLs duplicadas diluyen tu señal y confunden a la iA sobre cuál versión citar. Usa etiquetas canonical para indicar la versión principal y consolida las variantes.',
+          'URLs duplicadas diluyen tu señal y confunden a la Ai sobre cuál versión citar. Usa etiquetas canonical para indicar la versión principal y consolida las variantes.',
       },
       {
         tipo: 'nota',
@@ -1743,19 +1743,19 @@ export const posts: Post[] = [
     slug: 'comercio-conversacional-agentes-ucp',
     titulo: 'Comercio conversacional y agentes de compra: qué es UCP y por qué importa',
     descripcion:
-      'Google adelanta el siguiente capítulo: agentes de iA que reservan, comparan y compran por el usuario, y protocolos como Universal Commerce Protocol (UCP). Qué significa para tu e-commerce y cómo prepararte sin volverte loco.',
+      'Google adelanta el siguiente capítulo: agentes de Ai que reservan, comparan y compran por el usuario, y protocolos como Universal Commerce Protocol (UCP). Qué significa para tu e-commerce y cómo prepararte sin volverte loco.',
     fecha: '2026-05-26',
-    categoria: 'Noticias iA',
-    tags: ['Agentes iA', 'UCP', 'E-commerce', 'Comercio conversacional'],
+    categoria: 'Noticias Ai',
+    tags: ['Agentes Ai', 'UCP', 'E-commerce', 'Comercio conversacional'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'Google describe agentes de iA que ejecutan tareas (reservar, comparar, comprar) y protocolos como UCP. Para el e-commerce, el nuevo cliente puede ser un agente, no una persona navegando.',
+      'Google describe agentes de Ai que ejecutan tareas (reservar, comparar, comprar) y protocolos como UCP. Para el e-commerce, el nuevo cliente puede ser un agente, no una persona navegando.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'La parte más futurista de la guía de Google es también la más estratégica: las experiencias agénticas. No hablamos de un chatbot que responde, sino de agentes de iA que ejecutan tareas por el usuario — reservar una mesa, comparar productos, completar una compra.',
+          'La parte más futurista de la guía de Google es también la más estratégica: las experiencias agénticas. No hablamos de un chatbot que responde, sino de agentes de Ai que ejecutan tareas por el usuario — reservar una mesa, comparar productos, completar una compra.',
       },
       { tipo: 'h2', texto: 'Dos tipos de agentes que ya existen' },
       {
@@ -1795,37 +1795,37 @@ export const posts: Post[] = [
           'Mantén tu Google Business Profile y feeds de Merchant Center actualizados y correctos.',
           'Asegura consistencia: el precio y stock que muestra tu web debe coincidir con lo que ven los agregadores.',
           'Declara con claridad despacho, garantías y condiciones — son los datos que un agente compara.',
-          'Monitorea cómo te describe la iA hoy: si ya te malinterpreta como fuente de información, te malinterpretará como opción de compra.',
+          'Monitorea cómo te describe la Ai hoy: si ya te malinterpreta como fuente de información, te malinterpretará como opción de compra.',
         ],
       },
     ],
-    ctaTexto: 'Ver cómo me describe la iA →',
+    ctaTexto: 'Ver cómo me describe la Ai →',
     ctaUrl: '/#planes',
     relacionados: ['guia-google-ia-acciones-marca-chilena', 'perplexity-vs-chatgpt-citas-2026', 'chatgpt-busqueda-web-cambia-geo-2026'],
   },
   {
     slug: 'guia-google-ia-acciones-marca-chilena',
-    titulo: 'La guía de Google para búsqueda con iA, traducida a acciones para una marca chilena',
+    titulo: 'La guía de Google para búsqueda con Ai, traducida a acciones para una marca chilena',
     descripcion:
-      'Resumen completo y accionable de la guía oficial de Google sobre optimización para búsqueda con iA: qué priorizar, qué ignorar y qué vigilar. Todo aterrizado al contexto de una marca o pyme en Chile.',
+      'Resumen completo y accionable de la guía oficial de Google sobre optimización para búsqueda con Ai: qué priorizar, qué ignorar y qué vigilar. Todo aterrizado al contexto de una marca o pyme en Chile.',
     fecha: '2026-05-27',
     categoria: 'GEO & AEO',
     tags: ['Google', 'GEO', 'AEO', 'Guía', 'Chile'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'La guía de Google se resume en cuatro acciones: prioriza los fundamentos de SEO, crea contenido con experiencia real, ignora los hacks de GEO y vigila los agentes de iA. Aquí, aterrizada a una marca chilena.',
+      'La guía de Google se resume en cuatro acciones: prioriza los fundamentos de SEO, crea contenido con experiencia real, ignora los hacks de GEO y vigila los agentes de Ai. Aquí, aterrizada a una marca chilena.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'Google publicó su guía oficial de optimización para búsqueda con iA y, en vez de revelar trucos nuevos, hace lo contrario: ordena el ruido. Este es el resumen completo, traducido a lo que realmente debe hacer una marca o pyme en Chile. Es el post pilar — al final tienes los enlaces a cada tema en profundidad.',
+          'Google publicó su guía oficial de optimización para búsqueda con Ai y, en vez de revelar trucos nuevos, hace lo contrario: ordena el ruido. Este es el resumen completo, traducido a lo que realmente debe hacer una marca o pyme en Chile. Es el post pilar — al final tienes los enlaces a cada tema en profundidad.',
       },
       { tipo: 'h2', texto: '1. Prioriza los fundamentos de SEO' },
       {
         tipo: 'parrafo',
         texto:
-          'La búsqueda con iA se apoya en los sistemas de ranking de siempre, vía RAG y sub-query generation. Si no estás indexado y no rankeas, la iA no tiene de dónde citarte. Lo técnico no es opcional: rastreabilidad, HTML semántico, velocidad y cero duplicados.',
+          'La búsqueda con Ai se apoya en los sistemas de ranking de siempre, vía RAG y sub-query generation. Si no estás indexado y no rankeas, la Ai no tiene de dónde citarte. Lo técnico no es opcional: rastreabilidad, HTML semántico, velocidad y cero duplicados.',
       },
       {
         tipo: 'nota',
@@ -1836,15 +1836,15 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'La iA tiene infinito contenido genérico. Premia la perspectiva única, la autoría clara y la experiencia que no se puede copiar. Para una pyme chilena, tu conocimiento profundo de nicho es la ventaja que ningún retailer grande puede replicar a escala.',
+          'La Ai tiene infinito contenido genérico. Premia la perspectiva única, la autoría clara y la experiencia que no se puede copiar. Para una pyme chilena, tu conocimiento profundo de nicho es la ventaja que ningún retailer grande puede replicar a escala.',
       },
       { tipo: 'h2', texto: '3. Ignora los hacks de GEO' },
       {
         tipo: 'parrafo',
         texto:
-          'Google descarta cinco tácticas populares: LLMS.txt, fragmentar contenido, reescribir para la iA, sembrar menciones artificiales y sobre-optimizar structured data. No gastes energía ahí. El structured data sigue siendo útil para precisión de entidad, pero no es una palanca de ranking.',
+          'Google descarta cinco tácticas populares: LLMS.txt, fragmentar contenido, reescribir para la Ai, sembrar menciones artificiales y sobre-optimizar structured data. No gastes energía ahí. El structured data sigue siendo útil para precisión de entidad, pero no es una palanca de ranking.',
       },
-      { tipo: 'h2', texto: '4. Vigila los agentes de iA' },
+      { tipo: 'h2', texto: '4. Vigila los agentes de Ai' },
       {
         tipo: 'parrafo',
         texto:
@@ -1854,7 +1854,7 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Toda esta guía es de Google sobre SU buscador con iA. Pero tus clientes también preguntan en ChatGPT, Perplexity y Gemini — motores que no usan el índice de Google y pesan distinto las señales. Seguir solo a Google te optimiza para una parte del mapa, no para todo.',
+          'Toda esta guía es de Google sobre SU buscador con Ai. Pero tus clientes también preguntan en ChatGPT, Perplexity y Gemini — motores que no usan el índice de Google y pesan distinto las señales. Seguir solo a Google te optimiza para una parte del mapa, no para todo.',
       },
       {
         tipo: 'cita',
@@ -1870,7 +1870,7 @@ export const posts: Post[] = [
           'Día 2: revisa el checklist técnico — indexación, velocidad, duplicados.',
           'Día 3-4: identifica una pieza de contenido commodity y reescríbela con experiencia real.',
           'Día 5: actualiza tu Google Business Profile y JSON-LD de Organization para precisión de entidad.',
-          'Continuo: publica con regularidad y vuelve a medir cómo te cita la iA.',
+          'Continuo: publica con regularidad y vuelve a medir cómo te cita la Ai.',
         ],
       },
     ],
@@ -1884,7 +1884,7 @@ export const posts: Post[] = [
     descripcion:
       'OpenAI activó búsqueda web nativa en todas las consultas de ChatGPT. Qué significa para el GEO de tu marca, qué señales pesan más ahora y cómo prepararte sin tocar tu presupuesto de SEO.',
     fecha: '2026-05-22',
-    categoria: 'Noticias iA',
+    categoria: 'Noticias Ai',
     tags: ['ChatGPT', 'GEO', 'Search', 'OpenAI'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
@@ -2060,7 +2060,7 @@ export const posts: Post[] = [
         tipo: 'lista',
         items: [
           'foundingDate: los LLM lo usan como señal de antigüedad. Marcas con >5 años se citan más en consultas de "confiable".',
-          'sameAs: conecta tu entidad con perfiles externos. Sin esto, la iA no puede confirmar que tu marca es real.',
+          'sameAs: conecta tu entidad con perfiles externos. Sin esto, la Ai no puede confirmar que tu marca es real.',
           'areaServed: evita que ChatGPT te recomiende a clientes en México o España cuando solo despachas en Chile.',
           'aggregateRating: si tienes reseñas reales en Google, declararlas en JSON-LD acelera la indexación de la señal.',
         ],
@@ -2077,28 +2077,28 @@ export const posts: Post[] = [
   },
   {
     slug: 'contenido-ia-google-que-permite-castiga-2026',
-    titulo: 'Contenido generado con iA: qué permite Google, qué te marca como spam y la etiqueta TrainedAlgorithmicMedia que casi nadie usa',
+    titulo: 'Contenido generado con Ai: qué permite Google, qué te marca como spam y la etiqueta TrainedAlgorithmicMedia que casi nadie usa',
     descripcion:
-      'Google actualizó (marzo 2026) su guía oficial sobre usar IA generativa para crear contenido SEO. Permite, condiciona y castiga — y exige etiquetar las imágenes con metadata IPTC TrainedAlgorithmicMedia y los feeds de producto AI-generated. Te traducimos las reglas y mostramos cómo aplicarlas en una operación chilena de e-commerce o medios.',
+      'Google actualizó (marzo 2026) su guía oficial sobre usar Ai generativa para crear contenido SEO. Permite, condiciona y castiga — y exige etiquetar las imágenes con metadata IPTC TrainedAlgorithmicMedia y los feeds de producto AI-generated. Te traducimos las reglas y mostramos cómo aplicarlas en una operación chilena de e-commerce o medios.',
     fecha: '2026-06-04',
     categoria: 'GEO & AEO',
-    tags: ['Google', 'Contenido iA', 'Spam policy', 'IPTC', 'E-E-A-T', 'Merchant Center'],
+    tags: ['Google', 'Contenido Ai', 'Spam policy', 'IPTC', 'E-E-A-T', 'Merchant Center'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
-      'Google permite usar IA generativa para escalar contenido si agrega valor — y castiga como spam la generación masiva sin aporte. Exige metadata IPTC TrainedAlgorithmicMedia en imágenes con iA y etiquetar como AI-generated los atributos de producto en Merchant Center. Te mostramos qué cambia para equipos chilenos que ya usan ChatGPT o Gemini para escribir, generar imágenes y mantener feeds.',
+      'Google permite usar Ai generativa para escalar contenido si agrega valor — y castiga como spam la generación masiva sin aporte. Exige metadata IPTC TrainedAlgorithmicMedia en imágenes con Ai y etiquetar como AI-generated los atributos de producto en Merchant Center. Te mostramos qué cambia para equipos chilenos que ya usan ChatGPT o Gemini para escribir, generar imágenes y mantener feeds.',
     bloques: [
       {
         tipo: 'parrafo',
         texto:
-          'El equipo de Google Search actualizó (marzo 2026) la guía oficial sobre cómo se debe usar contenido generado con IA dentro del SEO. El documento ya estaba — desde 2023 Google permitía la IA generativa siempre que "agregara valor" — pero la versión nueva agrega exigencias técnicas concretas que la mayoría de los equipos en Chile todavía no aplican.',
+          'El equipo de Google Search actualizó (marzo 2026) la guía oficial sobre cómo se debe usar contenido generado con Ai dentro del SEO. El documento ya estaba — desde 2023 Google permitía la Ai generativa siempre que "agregara valor" — pero la versión nueva agrega exigencias técnicas concretas que la mayoría de los equipos en Chile todavía no aplican.',
       },
       {
         tipo: 'parrafo',
         texto:
           'El doc se mueve en tres ejes: qué está permitido, qué cuenta como spam, y qué metadata tienes que adjuntar para no parecer que estás escondiendo el origen del contenido. Te traducimos las reglas y mostramos cómo se ven aplicadas en una operación chilena (un e-commerce con catálogo grande, una marca de medios que genera resúmenes, una clínica que mantiene FAQ).',
       },
-      { tipo: 'h2', texto: 'Lo que Google permite: IA como "andamio", no como "pluma"' },
+      { tipo: 'h2', texto: 'Lo que Google permite: Ai como "andamio", no como "pluma"' },
       {
         tipo: 'parrafo',
         texto:
@@ -2106,13 +2106,13 @@ export const posts: Post[] = [
       },
       {
         tipo: 'cita',
-        texto: '"La IA generativa puede ser particularmente útil cuando se investiga un tema y se agrega estructura al contenido original."',
-        fuente: 'developers.google.com — Uso de contenido generado por IA (es-419)',
+        texto: '"La Ai generativa puede ser particularmente útil cuando se investiga un tema y se agrega estructura al contenido original."',
+        fuente: 'developers.google.com — Uso de contenido generado por Ai (es-419)',
       },
       {
         tipo: 'parrafo',
         texto:
-          'La frase es chica pero define la postura completa: Google permite usar iA para investigar (resumir fuentes, organizar bullets, validar fechas) y para estructurar (armar el outline, sugerir titulares, generar la tabla de contenidos). Lo que no quiere ver es contenido cuya razón de existir sea la iA — texto producido al por mayor solo porque la iA lo permite, sin que detrás haya investigación, experiencia o aporte real.',
+          'La frase es chica pero define la postura completa: Google permite usar Ai para investigar (resumir fuentes, organizar bullets, validar fechas) y para estructurar (armar el outline, sugerir titulares, generar la tabla de contenidos). Lo que no quiere ver es contenido cuya razón de existir sea la Ai — texto producido al por mayor solo porque la Ai lo permite, sin que detrás haya investigación, experiencia o aporte real.',
       },
       {
         tipo: 'parrafo',
@@ -2122,32 +2122,32 @@ export const posts: Post[] = [
       { tipo: 'h2', texto: 'Lo que cuenta como spam' },
       {
         tipo: 'cita',
-        texto: '"Usar herramientas de IA generativa […] con el objetivo de generar muchas páginas sin agregar valor para los usuarios puede incumplir la política de spam de Google."',
-        fuente: 'developers.google.com — Uso de contenido generado por IA (es-419)',
+        texto: '"Usar herramientas de Ai generativa […] con el objetivo de generar muchas páginas sin agregar valor para los usuarios puede incumplir la política de spam de Google."',
+        fuente: 'developers.google.com — Uso de contenido generado por Ai (es-419)',
       },
       {
         tipo: 'parrafo',
         texto:
-          'Tres señales concretas que Google cruza para clasificar contenido iA como spam:',
+          'Tres señales concretas que Google cruza para clasificar contenido Ai como spam:',
       },
       {
         tipo: 'lista',
         items: [
           'Patrones de generación masiva: cientos o miles de URLs creadas en pocas semanas con la misma plantilla y diferencias mínimas (nombre de ciudad, marca, modelo). Cuando esa explosión coincide con un dropdown en el sitio "Selecciona tu comuna" y genera una landing por cada opción, la huella es obvia.',
-          'Falta de información de origen: no hay autor verificable, no hay fecha de publicación coherente, no hay enlaces a fuentes primarias. La iA suele alucinar fuentes, así que Google revisa si esas citas existen.',
+          'Falta de información de origen: no hay autor verificable, no hay fecha de publicación coherente, no hay enlaces a fuentes primarias. La Ai suele alucinar fuentes, así que Google revisa si esas citas existen.',
           'Métricas de calidad pobres: pogo-sticking (usuarios que entran y vuelven al SERP en menos de 5 segundos), tiempo en página casi cero, cero conversión orgánica. Google y los LLM cruzan esto con datos de Chrome y SERP behavior.',
         ],
       },
       {
         tipo: 'nota',
         texto:
-          'Si tu sitio fue parte de una operación masiva con iA antes de 2025 y aún tienes esas páginas vivas, la limpieza es prioritaria. Google empezó a degradar dominios completos por contaminación con contenido iA mal hecho (incluso si parte del sitio es legítima).',
+          'Si tu sitio fue parte de una operación masiva con Ai antes de 2025 y aún tienes esas páginas vivas, la limpieza es prioritaria. Google empezó a degradar dominios completos por contaminación con contenido Ai mal hecho (incluso si parte del sitio es legítima).',
       },
       { tipo: 'h2', texto: 'La regla técnica que casi nadie aplica: TrainedAlgorithmicMedia' },
       {
         tipo: 'parrafo',
         texto:
-          'Acá está el cambio menos comentado del doc actualizado. Google exige que las imágenes generadas con iA lleven metadata IPTC declarando que son sintéticas. La especificación es la del estándar IPTC Photo Metadata, campo DigitalSourceType con valor TrainedAlgorithmicMedia.',
+          'Acá está el cambio menos comentado del doc actualizado. Google exige que las imágenes generadas con Ai lleven metadata IPTC declarando que son sintéticas. La especificación es la del estándar IPTC Photo Metadata, campo DigitalSourceType con valor TrainedAlgorithmicMedia.',
       },
       {
         tipo: 'codigo',
@@ -2171,18 +2171,18 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Por qué importa: Google Images usa esta metadata para etiquetar visualmente los resultados ("Imagen generada con iA") y para el sistema de Synthetic Content Detection. Una imagen sin la metadata correcta corre el riesgo de quedar mal clasificada — y un sitio que genera imágenes con iA y omite el metadata sistemáticamente puede recibir señal negativa.',
+          'Por qué importa: Google Images usa esta metadata para etiquetar visualmente los resultados ("Imagen generada con Ai") y para el sistema de Synthetic Content Detection. Una imagen sin la metadata correcta corre el riesgo de quedar mal clasificada — y un sitio que genera imágenes con Ai y omite el metadata sistemáticamente puede recibir señal negativa.',
       },
       { tipo: 'h2', texto: 'Feeds de producto: el otro requerimiento que se está pasando por alto' },
       {
         tipo: 'cita',
-        texto: '"Los datos de productos generados por IA […] deben especificarse por separado y etiquetarse como generados por IA."',
-        fuente: 'developers.google.com — Uso de contenido generado por IA (es-419)',
+        texto: '"Los datos de productos generados por Ai […] deben especificarse por separado y etiquetarse como generados por Ai."',
+        fuente: 'developers.google.com — Uso de contenido generado por Ai (es-419)',
       },
       {
         tipo: 'parrafo',
         texto:
-          'En Google Merchant Center, los atributos de producto generados con iA (descripción, especificaciones, materiales sugeridos) deben ir marcados como AI-generated en el campo correspondiente del feed. La estructura del XML/JSON tiene un atributo opcional que casi ninguna tienda chilena está poblando.',
+          'En Google Merchant Center, los atributos de producto generados con Ai (descripción, especificaciones, materiales sugeridos) deben ir marcados como AI-generated en el campo correspondiente del feed. La estructura del XML/JSON tiene un atributo opcional que casi ninguna tienda chilena está poblando.',
       },
       {
         tipo: 'codigo',
@@ -2203,20 +2203,20 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'En Chile, prácticamente todos los e-commerce grandes (Falabella, Paris, Ripley, Linio antes) usan IA generativa para completar descripciones de SKUs que llegan del proveedor sin texto. Pocos están etiquetando esa columna como AI-generated. Cuando Google active el matching cruzado de calidad iA por categoría, esa omisión va a importar.',
+          'En Chile, prácticamente todos los e-commerce grandes (Falabella, Paris, Ripley, Linio antes) usan Ai generativa para completar descripciones de SKUs que llegan del proveedor sin texto. Pocos están etiquetando esa columna como AI-generated. Cuando Google active el matching cruzado de calidad Ai por categoría, esa omisión va a importar.',
       },
       { tipo: 'h2', texto: 'Transparencia: declarar el origen, sin esconderse y sin presumir' },
       {
         tipo: 'parrafo',
         texto:
-          'Google recomienda — no exige — que cuando el contenido es predominantemente iA o asistido por iA, se declare al lector. Sin escándalo y sin ocultarlo. Algunas formas que sí funcionan en sitios chilenos:',
+          'Google recomienda — no exige — que cuando el contenido es predominantemente Ai o asistido por Ai, se declare al lector. Sin escándalo y sin ocultarlo. Algunas formas que sí funcionan en sitios chilenos:',
       },
       {
         tipo: 'lista',
         items: [
-          'Pie de artículo con la línea "Borrador inicial asistido por iA. Editado y verificado por [autor humano]". Le dice al lector que hubo iA y a Google que hubo revisión humana.',
+          'Pie de artículo con la línea "Borrador inicial asistido por Ai. Editado y verificado por [autor humano]". Le dice al lector que hubo Ai y a Google que hubo revisión humana.',
           'En las FAQ que se generan automáticamente a partir del catálogo, agregar un disclaimer global ("Respuestas iniciales generadas automáticamente y validadas por nuestro equipo de soporte").',
-          'En el byline del artículo, ambos nombres: el autor humano que firma y el modelo de iA usado como herramienta (no como autor).',
+          'En el byline del artículo, ambos nombres: el autor humano que firma y el modelo de Ai usado como herramienta (no como autor).',
         ],
       },
       { tipo: 'h2', texto: 'Cómo se ve esto en una operación chilena típica' },
@@ -2226,9 +2226,9 @@ export const posts: Post[] = [
       {
         tipo: 'lista',
         items: [
-          'Descripciones de producto generadas por iA: legítimo, siempre que se etiqueten en el feed y que detrás haya revisión editorial mínima (un revisor humano que vea el 10% al azar).',
+          'Descripciones de producto generadas por Ai: legítimo, siempre que se etiqueten en el feed y que detrás haya revisión editorial mínima (un revisor humano que vea el 10% al azar).',
           'Imágenes "lifestyle" hechas con generadores de imagen: metadata IPTC TrainedAlgorithmicMedia obligatorio.',
-          'Landing por categoría con texto SEO al pie generado con iA: legítimo si la categoría existe y vende. Spam si la categoría es inventada solo para capturar long-tail.',
+          'Landing por categoría con texto SEO al pie generado con Ai: legítimo si la categoría existe y vende. Spam si la categoría es inventada solo para capturar long-tail.',
         ],
       },
       { tipo: 'h3', texto: 'Marca de medios o blog corporativo' },
@@ -2236,7 +2236,7 @@ export const posts: Post[] = [
         tipo: 'lista',
         items: [
           'Resúmenes diarios automáticos a partir de notas humanas: legítimo, con disclaimer.',
-          'Artículos completos escritos por iA y publicados sin revisión: spam según la definición nueva.',
+          'Artículos completos escritos por Ai y publicados sin revisión: spam según la definición nueva.',
           'Outlines y estructuras armadas con Claude, escritura humana: el caso ideal según el doc de Google.',
         ],
       },
@@ -2245,7 +2245,7 @@ export const posts: Post[] = [
         tipo: 'lista',
         items: [
           'FAQ generadas a partir de un input médico verificado: legítimo, con autor profesional firmando.',
-          'Contenido YMYL (Your Money Your Life) escrito 100% con iA: alto riesgo de penalización. Aquí Google es especialmente estricto.',
+          'Contenido YMYL (Your Money Your Life) escrito 100% con Ai: alto riesgo de penalización. Aquí Google es especialmente estricto.',
           'Sugerencias automáticas de "qué especialista necesitas según tus síntomas": peligroso. Mejor herramienta de chat con disclaimer claro que no es diagnóstico.',
         ],
       },
@@ -2253,20 +2253,20 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Una marca que genera contenido con iA mal etiquetado tiene un problema doble: pierde ranking orgánico (penalización Google) y pierde citas en LLMs (los modelos cruzan la calidad técnica con la confianza del dominio). Mientras tanto, una marca que usa iA con disciplina — etiqueta imágenes, marca feeds, revisa contenido, declara el origen — gana en ambos frentes.',
+          'Una marca que genera contenido con Ai mal etiquetado tiene un problema doble: pierde ranking orgánico (penalización Google) y pierde citas en LLMs (los modelos cruzan la calidad técnica con la confianza del dominio). Mientras tanto, una marca que usa Ai con disciplina — etiqueta imágenes, marca feeds, revisa contenido, declara el origen — gana en ambos frentes.',
       },
       {
         tipo: 'parrafo',
         texto:
-          'En las auditorías Share of Model, cuando vemos un dominio con bajo score de visibilidad pero buena cobertura de keywords, una de las primeras hipótesis es que el contenido tiene huella iA mal manejada. Es una pregunta concreta que respondemos: ¿tu metadata IPTC está poblada? ¿tu feed Merchant Center etiqueta lo iA? ¿hay revisión humana visible?',
+          'En las auditorías Share of Model, cuando vemos un dominio con bajo score de visibilidad pero buena cobertura de keywords, una de las primeras hipótesis es que el contenido tiene huella Ai mal manejada. Es una pregunta concreta que respondemos: ¿tu metadata IPTC está poblada? ¿tu feed Merchant Center etiqueta lo Ai? ¿hay revisión humana visible?',
       },
-      { tipo: 'h2', texto: 'Los 5 cambios concretos antes de seguir escalando con iA' },
+      { tipo: 'h2', texto: 'Los 5 cambios concretos antes de seguir escalando con Ai' },
       {
         tipo: 'lista',
         items: [
-          'Imágenes generadas con iA: agregar IPTC TrainedAlgorithmicMedia en todas las que están vivas en el sitio. Audit en batch con exiftool.',
-          'Feed Merchant Center: agregar atributo ai_generated="true" en descripciones y atributos creados con iA.',
-          'Pie de artículo: incluir el patrón "Asistido por iA, revisado por [humano]" cuando aplique.',
+          'Imágenes generadas con Ai: agregar IPTC TrainedAlgorithmicMedia en todas las que están vivas en el sitio. Audit en batch con exiftool.',
+          'Feed Merchant Center: agregar atributo ai_generated="true" en descripciones y atributos creados con Ai.',
+          'Pie de artículo: incluir el patrón "Asistido por Ai, revisado por [humano]" cuando aplique.',
           'Política de revisión humana: definir un % mínimo que se revisa antes de publicar, con un autor responsable visible.',
           'Auditoría de contenido legacy: identificar landings masivas generadas pre-2025 sin revisión y decidir si se mantienen, reescriben o despublican.',
         ],
@@ -2274,20 +2274,20 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Si recién estás partiendo el uso de iA en producción de contenido, hacer estas 5 cosas desde el día uno te ahorra el dolor de hacerlas cuando el sitio ya tiene 5.000 URLs contaminadas y un drop de tráfico que no sabes a qué atribuir.',
+          'Si recién estás partiendo el uso de Ai en producción de contenido, hacer estas 5 cosas desde el día uno te ahorra el dolor de hacerlas cuando el sitio ya tiene 5.000 URLs contaminadas y un drop de tráfico que no sabes a qué atribuir.',
       },
       {
         tipo: 'referencias',
         items: [
-          { label: 'Uso de contenido generado por IA — Google Search Central (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/using-gen-ai-content?hl=es-419' },
+          { label: 'Uso de contenido generado por Ai — Google Search Central (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/using-gen-ai-content?hl=es-419' },
           { label: 'Crear contenido útil — Google Search Central', url: 'https://developers.google.com/search/docs/fundamentals/creating-helpful-content?hl=es-419' },
           { label: 'IPTC Photo Metadata Standard — DigitalSourceType', url: 'https://cv.iptc.org/newscodes/digitalsourcetype/' },
-          { label: 'Políticas de contenido generado con IA — Merchant Center', url: 'https://support.google.com/merchants/answer/13046728?hl=es-419' },
+          { label: 'Políticas de contenido generado con Ai — Merchant Center', url: 'https://support.google.com/merchants/answer/13046728?hl=es-419' },
           { label: 'exiftool — herramienta de metadata IPTC en batch', url: 'https://exiftool.org/' },
         ],
       },
     ],
-    ctaTexto: 'Auditar mi contenido frente a la política de iA →',
+    ctaTexto: 'Auditar mi contenido frente a la política de Ai →',
     ctaUrl: '/#planes',
     relacionados: ['5-hacks-geo-que-google-dice-no-sirven', 'contenido-commodity-vs-experiencia-real-ia', 'guia-google-ia-acciones-marca-chilena', 'checklist-tecnico-google-busqueda-ia'],
     glosario: [
@@ -2298,12 +2298,12 @@ export const posts: Post[] = [
   },
   {
     slug: 'escribir-para-ia-8-tecnicas-citacion-2026',
-    titulo: 'Escribir para iA en 2026: 8 técnicas concretas para que ChatGPT, Perplexity y Gemini te citen (y no a tu competencia)',
+    titulo: 'Escribir para Ai en 2026: 8 técnicas concretas para que ChatGPT, Perplexity y Gemini te citen (y no a tu competencia)',
     descripcion:
       'Los LLM eligen pocas fuentes para citar. Cuando ChatGPT, Perplexity o Gemini construyen una respuesta, suelen quedarse con 3-5 dominios — y tu marca compite por estar en ese set. Te entregamos 8 técnicas de escritura accionables (pirámide invertida, FAQ semánticas, listicles, E-E-A-T en cada pieza) traducidas para equipos chilenos.',
     fecha: '2026-06-04',
     categoria: 'Tutoriales',
-    tags: ['Escritura iA', 'GEO', 'AEO', 'Content Strategy', 'FAQ', 'E-E-A-T'],
+    tags: ['Escritura Ai', 'GEO', 'AEO', 'Content Strategy', 'FAQ', 'E-E-A-T'],
     autor: 'Ai Visibility',
     tiempoLectura: '5 min',
     resumen:
@@ -2432,7 +2432,7 @@ export const posts: Post[] = [
           'Actualizar números, estadísticas y rangos de precio al menos cada 6 meses si son parte del contenido.',
           'Agregar bloques nuevos (no reescribir párrafos viejos) cuando aparece información nueva relevante.',
           'Versionado visible: mantener un changelog al pie ("Última revisión sustantiva: junio 2026 — agregamos sección sobre Gemini 2.5") en lugar de solo cambiar fechas.',
-          'Eliminar contenido obsoleto en vez de dejarlo como decoración. Un post de 2022 sobre "el futuro de la búsqueda con iA" que sigue vivo daña tu autoridad.',
+          'Eliminar contenido obsoleto en vez de dejarlo como decoración. Un post de 2022 sobre "el futuro de la búsqueda con Ai" que sigue vivo daña tu autoridad.',
         ],
       },
       { tipo: 'h2', texto: '7. Formato listicle y comparativa siguen dominando' },
@@ -2508,7 +2508,7 @@ export const posts: Post[] = [
         tipo: 'referencias',
         items: [
           { label: 'Writing for Robots: Content Writing Best Practices for AI Visibility — Suso Digital', url: 'https://susodigital.com/thoughts/writing-for-robots-content-writing-best-practices-for-ai-visibility/' },
-          { label: 'Guía de Google para optimización con IA (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide?hl=es-419' },
+          { label: 'Guía de Google para optimización con Ai (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide?hl=es-419' },
           { label: 'Search Quality Evaluator Guidelines (E-E-A-T) — Google', url: 'https://services.google.com/fh/files/misc/hsw-sqrg.pdf' },
           { label: 'Schema.org FAQPage', url: 'https://schema.org/FAQPage' },
         ],
@@ -2549,7 +2549,7 @@ export const posts: Post[] = [
       },
       {
         tipo: 'cita',
-        texto: '"La cobertura editorial de terceros es una de las señales más fuertes que un modelo de IA usa para decidir si una fuente vale la pena citar."',
+        texto: '"La cobertura editorial de terceros es una de las señales más fuertes que un modelo de Ai usa para decidir si una fuente vale la pena citar."',
         fuente: 'Suso Digital — Writing for Robots',
       },
       { tipo: 'h2', texto: 'Por qué RAG cambió la ecuación' },
@@ -2740,13 +2740,13 @@ export const posts: Post[] = [
       {
         tipo: 'parrafo',
         texto:
-          'Esa diferencia hace que el PR — que durante años fue criticado por ser "difícil de medir" — vuelva a ser estratégico. Hoy es perfectamente medible: la métrica es tu Share of Model en queries relevantes. Y la forma de moverla no es publicar más en tu blog. Es lograr que terceros relevantes hablen de ti con la frecuencia y profundidad suficientes para que los modelos de iA te elijan como fuente confiable.',
+          'Esa diferencia hace que el PR — que durante años fue criticado por ser "difícil de medir" — vuelva a ser estratégico. Hoy es perfectamente medible: la métrica es tu Share of Model en queries relevantes. Y la forma de moverla no es publicar más en tu blog. Es lograr que terceros relevantes hablen de ti con la frecuencia y profundidad suficientes para que los modelos de Ai te elijan como fuente confiable.',
       },
       {
         tipo: 'referencias',
         items: [
           { label: 'Writing for Robots: Content Writing Best Practices for AI Visibility — Suso Digital', url: 'https://susodigital.com/thoughts/writing-for-robots-content-writing-best-practices-for-ai-visibility/' },
-          { label: 'Guía de Google para optimización con IA (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide?hl=es-419' },
+          { label: 'Guía de Google para optimización con Ai (es-419)', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide?hl=es-419' },
           { label: 'Wikipedia: Notabilidad de empresas (es)', url: 'https://es.wikipedia.org/wiki/Wikipedia:Notabilidad/Empresas' },
           { label: 'Search Console: medir búsquedas brandeadas', url: 'https://support.google.com/webmasters/answer/9128668?hl=es-419' },
         ],

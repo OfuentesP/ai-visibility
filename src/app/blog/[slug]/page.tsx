@@ -225,7 +225,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </h2>
           <p className="text-slate-600 text-sm leading-relaxed mb-6">
             En Ai Visibility medimos tu Share of Model en ChatGPT y Gemini, te mostramos quién te
-            está ganando la recomendación y armamos contigo el plan para que la iA empiece a citarte
+            está ganando la recomendación y armamos contigo el plan para que la Ai empiece a citarte
             a ti. Partimos con un diagnóstico y, si quieres, seguimos mes a mes con tu equipo.
           </p>
           <div className="flex flex-wrap gap-3">
@@ -284,7 +284,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="mb-8">
               <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-2">Sigue leyendo</p>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">
-                Más sobre cómo la iA recomienda marcas
+                Más sobre cómo la Ai recomienda marcas
               </h2>
             </div>
             <div className="grid sm:grid-cols-2 gap-5">

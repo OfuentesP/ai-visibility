@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
               <span className="w-5 h-5 rounded-sm bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xs sm:text-[10px] font-bold text-white shrink-0">
-                iA
+                Ai
               </span>
               <span className="text-slate-800 text-sm font-semibold">Ai Visibility</span>
             </div>
@@ -61,7 +61,7 @@ export default function Footer() {
             <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Guías</p>
             <ul className="space-y-2">
               <li><Link href="/guias/cyberday-2026-chatgpt/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">CyberDay 2026 y ChatGPT</Link></li>
-              <li><Link href="/glosario/alucinacion-ia/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Alucinación de iA</Link></li>
+              <li><Link href="/glosario/alucinacion-ia/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Alucinación de Ai</Link></li>
               <li><Link href="/glosario/auditoria-arquetipos/" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Auditoría por Arquetipos</Link></li>
               <li><Link href="/#faq-geo" className="text-slate-700 text-sm sm:text-xs hover:text-slate-900 transition-colors">Preguntas Frecuentes</Link></li>
               <li><Link href="/#planes" className="text-slate-700 text-sm sm:text-xs hover:text-indigo-600 transition-colors">Empezar diagnóstico →</Link></li>

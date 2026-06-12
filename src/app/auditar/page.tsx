@@ -110,7 +110,7 @@ export default function AuditarPage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Ai Visibility<span className="text-sky-600">.</span></h1>
-                <p className="text-slate-500 text-xs font-light tracking-wide">Auditoría de posicionamiento en motores de búsqueda con iA</p>
+                <p className="text-slate-500 text-xs font-light tracking-wide">Auditoría de posicionamiento en motores de búsqueda con Ai</p>
                 {brand.result && (
                   <p className="text-xs sm:text-[10px] font-mono text-slate-500 mt-1.5">
                     {new Date().toLocaleDateString('es-CL')} · {new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
@@ -329,7 +329,7 @@ export default function AuditarPage() {
                         })}
                       </div>
                       <div className="flex-1">
-                        <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Veredicto de la iA</p>
+                        <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Veredicto de la Ai</p>
                         <p className="text-slate-800 text-sm leading-relaxed">{cmp.compareResult.veredicto_ia}</p>
                         <p className="text-slate-500 text-xs mt-2">
                           <span className="font-semibold text-sky-600">{cmp.compareResult.marca_recomendada}</span>
@@ -348,7 +348,7 @@ export default function AuditarPage() {
                   <div key={marca} className={`border rounded-sm overflow-hidden ${isWinner ? 'border-sky-300 bg-sky-50' : 'border-slate-200 bg-white shadow-sm'}`}>
                     <div className={`px-5 py-3 border-b flex items-center justify-between ${isWinner ? 'border-sky-300' : 'border-slate-200'}`}>
                       <h3 className={`font-semibold text-sm ${isWinner ? 'text-sky-700' : 'text-slate-700'}`}>{marca}</h3>
-                      {isWinner && <span className="text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-600 border border-sky-500/30">iA prefiere</span>}
+                      {isWinner && <span className="text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-600 border border-sky-500/30">Ai prefiere</span>}
                     </div>
                     <div className="px-5 py-4 space-y-3">
                       {ventajas.length > 0 && (
@@ -509,7 +509,7 @@ export default function AuditarPage() {
                   </div>
                   <div>
                     <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">Fuentes de Verdad</p>
-                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones iA</p>
+                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones Ai</p>
                   </div>
                   <div>
                     <p className="text-slate-500 text-xs sm:text-[10px] font-semibold uppercase tracking-wide mb-2">Metodología</p>
@@ -520,7 +520,7 @@ export default function AuditarPage() {
               </div>
               <div className="border-t border-slate-900 mt-8 pt-6">
                 <p className="text-slate-800 text-xs sm:text-[10px] leading-relaxed max-w-3xl">
-                  Ai Visibility es una plataforma especializada en Generative Engine Optimization (GEO). Nuestra tecnología permite a las empresas auditar su Share of Model (SoM), una métrica crítica que mide el porcentaje de menciones de una marca en las respuestas de modelos de lenguaje de gran escala (LLM). A diferencia del SEO de Google, Ai Visibility se enfoca en la arquitectura de recuperación de información (RAG) y en cómo los agentes de iA sintetizan la reputación corporativa en entornos conversacionales.
+                  Ai Visibility es una plataforma especializada en Generative Engine Optimization (GEO). Nuestra tecnología permite a las empresas auditar su Share of Model (SoM), una métrica crítica que mide el porcentaje de menciones de una marca en las respuestas de modelos de lenguaje de gran escala (LLM). A diferencia del SEO de Google, Ai Visibility se enfoca en la arquitectura de recuperación de información (RAG) y en cómo los agentes de Ai sintetizan la reputación corporativa en entornos conversacionales.
                 </p>
               </div>
             </motion.div>

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 const links = [
   { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
-  { href: '/glosario', label: 'Glosario iA' },
+  { href: '/glosario', label: 'Glosario Ai' },
 ]
 
 export default function Navbar() {
@@ -19,7 +19,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <span className="w-5 h-5 rounded-sm bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xs sm:text-[10px] font-bold text-white">
-            iA
+            Ai
           </span>
           <span className="text-slate-800 text-sm font-semibold tracking-tight group-hover:text-slate-900 transition-colors">
             Ai Visibility

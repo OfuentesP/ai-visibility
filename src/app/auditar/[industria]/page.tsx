@@ -94,7 +94,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
             {ind.queries.map((q) => (
               <div key={q} className="bg-white shadow-sm border border-slate-200 rounded-sm px-5 py-4 flex items-start gap-4">
                 <div className="w-6 h-6 rounded-sm bg-indigo-600 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-slate-900 text-xs font-bold">iA</span>
+                  <span className="text-slate-900 text-xs font-bold">Ai</span>
                 </div>
                 <p className="text-slate-700 text-sm font-mono leading-relaxed">{q}</p>
               </div>
@@ -111,7 +111,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
         <div className="max-w-3xl mx-auto">
           <p className="text-xs sm:text-[11px] font-mono text-indigo-600 uppercase tracking-widest mb-3 text-center">El problema real</p>
           <h2 className="text-2xl font-extrabold text-slate-900 text-center mb-10">
-            Por qué el {ind.nombre} pierde clientes en la era de la iA
+            Por qué el {ind.nombre} pierde clientes en la era de la Ai
           </h2>
           <div className="space-y-5">
             {ind.dolores.map((d) => (
@@ -134,7 +134,7 @@ export default async function IndustriaPage({ params }: { params: Promise<{ indu
             Descubre tu Share of Model en ChatGPT — gratis
           </h2>
           <p className="text-slate-500 text-sm leading-relaxed mb-8">
-            Ingresa tu marca y la búsqueda representativa de tu industria. En menos de 60 segundos sabes si la iA te recomienda o le regala tus clientes a la competencia.
+            Ingresa tu marca y la búsqueda representativa de tu industria. En menos de 60 segundos sabes si la Ai te recomienda o le regala tus clientes a la competencia.
           </p>
           <Link
             href="/#planes"

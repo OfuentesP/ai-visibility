@@ -28,7 +28,7 @@ export function UrlForm({ urlInput, urlLoading, loadingPhase, onUrlChange, onSub
           className="w-full px-4 py-2 bg-white border border-slate-200 rounded-sm text-slate-900 placeholder-slate-600 focus:outline-none focus:border-slate-600 text-sm transition"
         />
         <p className="text-slate-500 text-xs mt-1.5">
-          Analizamos tu página, generamos 3 perfiles de clientes reales y auditamos si la iA te menciona cuando ellos buscan.
+          Analizamos tu página, generamos 3 perfiles de clientes reales y auditamos si la Ai te menciona cuando ellos buscan.
         </p>
       </div>
       <button

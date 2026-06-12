@@ -60,7 +60,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
         className="w-full px-6 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-slate-50 font-medium rounded-sm transition flex items-center justify-center gap-2 text-sm"
       >
         <Search className="w-4 h-4" />
-        {compareLoading ? 'Comparando con iA…' : 'Comparar marcas'}
+        {compareLoading ? 'Comparando con Ai…' : 'Comparar marcas'}
       </button>
     </>
   )

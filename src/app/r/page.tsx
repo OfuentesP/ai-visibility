@@ -89,16 +89,16 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
   let titulo = '', subtitulo = ''
   if (pos === 0 || rawScore < 10) {
     titulo = 'Riesgo Crítico de Invisibilidad Digital'
-    subtitulo = `Sus clientes potenciales están siendo derivados activamente a ${rivales} porque la iA no encuentra fuentes de confianza que validen su propuesta de valor.`
+    subtitulo = `Sus clientes potenciales están siendo derivados activamente a ${rivales} porque la Ai no encuentra fuentes de confianza que validen su propuesta de valor.`
   } else if (pos > 5 || rawScore < 30) {
     titulo = `${marca ?? 'Tu marca'} está perdiendo demanda activa`
     subtitulo = `${rivales} captura la intención de compra de sus clientes antes de que lleguen a usted.`
   } else if (pos === 1) {
     titulo = `${marca ?? 'Tu marca'} lidera — proteja esa posición`
-    subtitulo = `La iA lo recomienda primero, pero ${ganador} está invirtiendo para desplazarle.`
+    subtitulo = `La Ai lo recomienda primero, pero ${ganador} está invirtiendo para desplazarle.`
   } else {
     titulo = `${marca ?? 'Tu marca'} aparece, pero ${ganador} se lleva la decisión`
-    subtitulo = `Está en posición #${pos}. Los compradores que llegan a la iA ven primero a ${ganador}.`
+    subtitulo = `Está en posición #${pos}. Los compradores que llegan a la Ai ven primero a ${ganador}.`
   }
 
   // share of voice
@@ -147,11 +147,11 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
             <div>
               <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">AI Readiness Score</p>
               <p className="text-lg font-semibold" style={{ color: strokeColor }}>{label}</p>
-              <p className="text-slate-500 text-xs mt-2 leading-relaxed">Posición #{pos} en el radar de la iA</p>
+              <p className="text-slate-500 text-xs mt-2 leading-relaxed">Posición #{pos} en el radar de la Ai</p>
             </div>
           </div>
           <div className={`border rounded-sm p-6 ${sentBg}`}>
-            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la iA</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la Ai</p>
             <span className={`text-xs font-semibold px-2.5 py-1 rounded border ${sentBg} ${sentColor} mb-3 inline-block`}>{sentLabel}</span>
             {d.recomendacion_ia && (
               <p className="text-slate-700 text-sm leading-relaxed mt-2">{d.recomendacion_ia}</p>
@@ -175,7 +175,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
         <section>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xs font-mono text-slate-500">02</span>
-            <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la iA?</span>
+            <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la Ai?</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
           <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-4 space-y-3">
@@ -253,7 +253,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
         <section>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xs font-mono text-slate-500">04</span>
-            <span className="text-sm text-slate-500 font-medium">Temas donde la iA no tiene un ganador claro</span>
+            <span className="text-sm text-slate-500 font-medium">Temas donde la Ai no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
           <div className="bg-white border border-emerald-200 rounded-sm overflow-hidden">
@@ -294,7 +294,7 @@ function BrandView({ r, marca }: { r: any; marca: string | null }) {
         <section>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xs font-mono text-slate-500">05</span>
-            <span className="text-sm text-slate-500 font-medium">Conceptos que la iA no asocia a tu marca</span>
+            <span className="text-sm text-slate-500 font-medium">Conceptos que la Ai no asocia a tu marca</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -389,7 +389,7 @@ function CompareView({ r }: { r: any }) {
       {/* Veredicto */}
       {r.veredicto_ia && (
         <section>
-          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Veredicto de la iA</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">Veredicto de la Ai</p>
           <p className="text-slate-700 text-sm leading-relaxed bg-white shadow-sm border border-slate-200 rounded-sm p-4">{r.veredicto_ia}</p>
         </section>
       )}
@@ -399,7 +399,7 @@ function CompareView({ r }: { r: any }) {
         <div className="flex items-center gap-3 bg-emerald-100 border border-emerald-300 rounded-sm p-4">
           <span className="text-emerald-700 text-lg">✓</span>
           <div>
-            <p className="text-xs sm:text-[10px] text-emerald-600 uppercase tracking-widest mb-0.5">Recomendada por la iA</p>
+            <p className="text-xs sm:text-[10px] text-emerald-600 uppercase tracking-widest mb-0.5">Recomendada por la Ai</p>
             <p className="text-emerald-700 font-bold">{r.marca_recomendada}</p>
             {r.razon_recomendacion && <p className="text-slate-500 text-xs mt-1">{r.razon_recomendacion}</p>}
           </div>
@@ -598,7 +598,7 @@ function UrlView({ r }: { r: any }) {
             </div>
             <div className="text-right shrink-0">
               <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
-              <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en iA</p>
+              <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en Ai</p>
             </div>
           </div>
           <div className="divide-y divide-slate-800/60">
@@ -606,7 +606,7 @@ function UrlView({ r }: { r: any }) {
               <span className="text-rose-600 text-base font-bold leading-none mt-0.5 shrink-0">①</span>
               <div>
                 <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">
-                  {invisible === 0 ? 'Apareces en todas las búsquedas de iA' : invisible === r.total_queries ? 'La iA no te menciona en ninguna búsqueda' : `De ${r.total_queries} búsquedas con iA, ${invisible} no te incluyen`}
+                  {invisible === 0 ? 'Apareces en todas las búsquedas de Ai' : invisible === r.total_queries ? 'La Ai no te menciona en ninguna búsqueda' : `De ${r.total_queries} búsquedas con Ai, ${invisible} no te incluyen`}
                 </p>
                 <p className="text-sm text-slate-500">{invisible === 0 ? 'Mantén y expande tu posición.' : `Esas consultas las gana ${topCompetitor}.`}</p>
               </div>
@@ -614,8 +614,8 @@ function UrlView({ r }: { r: any }) {
             <div className="px-5 py-4 flex gap-3 items-start">
               <span className="text-amber-400 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
               <div>
-                <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">La iA elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas</p>
-                <p className="text-sm text-slate-500">Tiene más presencia en las fuentes que la iA consulta.</p>
+                <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">La Ai elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas</p>
+                <p className="text-sm text-slate-500">Tiene más presencia en las fuentes que la Ai consulta.</p>
               </div>
             </div>
             <div className="px-5 py-4 flex gap-3 items-start">
@@ -632,7 +632,7 @@ function UrlView({ r }: { r: any }) {
           </div>
           {r.diferenciadores?.length > 0 && (
             <div className="border-t border-slate-200/60 px-5 py-3">
-              <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-2">Diferenciadores que la iA no menciona</p>
+              <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-2">Diferenciadores que la Ai no menciona</p>
               <div className="flex flex-wrap gap-2">
                 {r.diferenciadores.slice(0, 4).map((d: string) => (
                   <span key={d} className="text-xs text-slate-500 bg-slate-100/50 border border-slate-300/60 rounded px-2.5 py-1">{d}</span>
@@ -648,7 +648,7 @@ function UrlView({ r }: { r: any }) {
         <section>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xs font-mono text-slate-500">02</span>
-            <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la iA cuando tu cliente busca?</span>
+            <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la Ai cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
           <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
@@ -773,7 +773,7 @@ function UrlView({ r }: { r: any }) {
         <section>
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xs font-mono text-slate-500">04</span>
-            <span className="text-sm text-slate-500 font-medium">Temas donde la iA no tiene un ganador claro</span>
+            <span className="text-sm text-slate-500 font-medium">Temas donde la Ai no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/40" />
           </div>
           <div className="bg-white border border-emerald-200 rounded-sm overflow-hidden">
@@ -781,7 +781,7 @@ function UrlView({ r }: { r: any }) {
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-emerald-500 to-teal-600 shrink-0" />
               <div>
                 <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-700 font-semibold mb-1">Contenido sin dueño</p>
-                <h3 className="text-base font-semibold text-slate-900">Temas donde la iA no tiene un ganador claro</h3>
+                <h3 className="text-base font-semibold text-slate-900">Temas donde la Ai no tiene un ganador claro</h3>
                 <p className="text-slate-500 text-sm mt-1">Ningún competidor tiene contenido de autoridad en estas búsquedas. La marca que publique primero se queda con esas respuestas.</p>
               </div>
             </div>
