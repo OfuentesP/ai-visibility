@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Check, X, Minus, Search, Users, PieChart, Terminal } from 'lucide-react'
 import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 
@@ -141,12 +140,12 @@ export default function LandingPage() {
           Mide tu <strong className="text-slate-900">Share of Model</strong> en ChatGPT, Perplexity y Gemini. Descubre quién te está quitando clientes.
         </p>
         <div className="flex justify-center w-full">
-          <Link
+          <a
             href="#planes"
             className="w-full sm:w-auto px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all text-center"
           >
             Auditar mi marca →
-          </Link>
+          </a>
         </div>
 
         {/* Social proof strip */}
@@ -177,9 +176,9 @@ export default function LandingPage() {
               <p className="text-slate-700 text-base leading-relaxed mb-8">
                 La iA sintetiza <strong className="text-slate-900">una sola respuesta</strong>. Si tu marca no está en esa síntesis, no entras al proceso de decisión — ni siquiera para perderlo.
               </p>
-              <Link href="#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
+              <a href="#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
                 Ver cómo me cita ChatGPT y Gemini →
-              </Link>
+              </a>
             </div>
             <div className="bg-white shadow-sm border border-slate-200 rounded-sm p-5">
               <div className="flex items-start gap-3 mb-5">
@@ -264,9 +263,9 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="mt-10 text-center">
-            <Link href="#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
+            <a href="#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
               Quiero mi informe →
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -285,15 +284,15 @@ export default function LandingPage() {
             {[
               {
                 badge: 'Foros y comunidades',
-                badgeColor: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+                badgeColor: 'text-rose-700 bg-rose-50 border-rose-200',
                 title: 'Sin menciones en Reddit Chile ni Reclamos.cl',
                 desc: 'Perplexity valida la confianza de una marca usando foros y reviews de usuarios reales. Sin menciones en estas fuentes, la iA no tiene evidencia social para recomendarte.',
                 icon: '⚠',
-                iconColor: 'text-amber-400',
+                iconColor: 'text-rose-600',
               },
               {
                 badge: 'Datos estructurados',
-                badgeColor: 'text-rose-600 bg-rose-400/10 border-rose-400/20',
+                badgeColor: 'text-rose-700 bg-rose-50 border-rose-200',
                 title: 'Sin Schema JSON-LD en tu homepage',
                 desc: 'ChatGPT extrae datos estructurados de tu sitio para describir tu negocio. Sin JSON-LD, la iA infiere quién eres desde fuentes de terceros — y puede equivocarse.',
                 icon: '✗',
@@ -301,7 +300,7 @@ export default function LandingPage() {
               },
               {
                 badge: 'Autoridad en medios',
-                badgeColor: 'text-rose-600 bg-rose-400/10 border-rose-400/20',
+                badgeColor: 'text-rose-700 bg-rose-50 border-rose-200',
                 title: '0 menciones en medios indexados (90 días)',
                 desc: 'Tu competencia aparece citada en La Tercera, Emol y Pulso. La iA usa esas citas como señal de autoridad. Quien no aparece en medios que la iA indexa, no existe para ella.',
                 icon: '✗',
@@ -350,9 +349,9 @@ export default function LandingPage() {
                 <span className="text-xs sm:text-[10px] text-indigo-600 uppercase tracking-widest block mb-1">Plataforma GEO</span>
                 <p className="text-slate-900 font-bold text-sm">Ai Visibility</p>
               </div>
-              <div className="p-5 opacity-60">
-                <span className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest block mb-1">Marketing tradicional</span>
-                <p className="text-slate-700 font-bold text-sm">Agencia SEO</p>
+              <div className="p-5">
+                <span className="text-xs sm:text-[10px] text-slate-600 uppercase tracking-widest block mb-1">Marketing tradicional</span>
+                <p className="text-slate-900 font-bold text-sm">Agencia SEO</p>
               </div>
             </div>
 
@@ -399,14 +398,14 @@ export default function LandingPage() {
                   </div>
                   <span className="text-slate-900 text-sm font-medium">{row.ai}</span>
                 </div>
-                <div className="p-4 md:p-5 flex items-center gap-3 opacity-60">
-                  <div className="w-5 h-5 rounded-sm bg-slate-100 flex items-center justify-center flex-shrink-0">
+                <div className="p-4 md:p-5 flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-sm bg-slate-200 flex items-center justify-center flex-shrink-0">
                     {row.xType === 'x'
-                      ? <X size={12} className="text-slate-500" />
-                      : <Minus size={12} className="text-slate-500" />
+                      ? <X size={12} className="text-slate-700" />
+                      : <Minus size={12} className="text-slate-700" />
                     }
                   </div>
-                  <span className="text-slate-500 text-sm">{row.seo}</span>
+                  <span className="text-slate-900 text-sm">{row.seo}</span>
                 </div>
               </div>
             ))}
@@ -414,9 +413,9 @@ export default function LandingPage() {
             {/* Footer CTA */}
             <div className="bg-white shadow-sm px-5 py-4 text-center border-t border-slate-200">
               <p className="text-slate-500 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
-              <Link href="#planes" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
+              <a href="#planes" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
                 Auditar mi marca en ChatGPT →
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -602,12 +601,12 @@ export default function LandingPage() {
           <p className="sm:hidden text-slate-700 text-base leading-relaxed mb-10">
             Cada día que la iA recomienda a otro, es un cliente que no llegó a ti.
           </p>
-          <Link
+          <a
             href="#planes"
             className="inline-flex items-center gap-2 px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all"
           >
             Auditar mi marca ahora →
-          </Link>
+          </a>
           <p className="text-slate-500 text-sm sm:text-xs mt-5">Diagnóstico $190.000 CLP · Resultado en menos de 60 segundos</p>
         </div>
       </section>
