@@ -121,6 +121,9 @@ export async function shareReport(params: {
     body: JSON.stringify(params),
   })
   const data = await res.json()
+  if (!res.ok || !data.code) {
+    throw new Error(data.detail ?? data.error ?? 'Error al crear el informe compartido')
+  }
   return data.code as string
 }
 
