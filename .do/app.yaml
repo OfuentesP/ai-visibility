@@ -1,0 +1,97 @@
+# DigitalOcean App Platform — spec de la app.
+# Crear:      doctl apps create --spec .do/app.yaml   (o panel → Create App → "Import from app spec")
+# Actualizar: doctl apps update <APP_ID> --spec .do/app.yaml
+#
+# Un solo dominio: el sitio estático sirve "/" y FastAPI recibe "/api/*"
+# (preserve_path_prefix mantiene el prefijo, que es como están definidas las rutas).
+# Así el frontend llama a su propio origen y no depende de CORS.
+#
+# Los secretos NO van aquí: se cargan en el panel (Settings → App-Level/Component
+# Environment Variables) después del primer deploy.
+
+name: ai-visibility
+region: sfo  # Supabase está en us-west-2 (Oregon): menor latencia backend↔BD
+
+domains:
+  - domain: ai-visibility.cl
+    type: PRIMARY
+  - domain: www.ai-visibility.cl
+    type: ALIAS
+
+ingress:
+  rules:
+    - component:
+        name: api
+        preserve_path_prefix: true
+      match:
+        path:
+          prefix: /api
+    - component:
+        name: web
+      match:
+        path:
+          prefix: /
+
+static_sites:
+  - name: web
+    github:
+      repo: OfuentesP/ai-visibility
+      branch: main
+      deploy_on_push: true
+    environment_slug: node-js
+    build_command: npm ci && npm run build
+    output_dir: out
+    error_document: 404.html
+    envs:
+      # Next inyecta NEXT_PUBLIC_* en el bundle al compilar → BUILD_TIME.
+      # APP_URL = dominio primario (o *.ondigitalocean.app si aún no hay dominio).
+      - key: NEXT_PUBLIC_API_URL
+        value: ${APP_URL}
+        scope: BUILD_TIME
+      - key: NEXT_PUBLIC_ADMIN_PASSWORD
+        type: SECRET
+        scope: BUILD_TIME
+
+services:
+  - name: api
+    github:
+      repo: OfuentesP/ai-visibility
+      branch: main
+      deploy_on_push: true
+    source_dir: backend
+    environment_slug: python
+    run_command: uvicorn main:app --host 0.0.0.0 --port 8080 --proxy-headers --forwarded-allow-ips='*'
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-1gb
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 20
+      period_seconds: 30
+      timeout_seconds: 10
+      failure_threshold: 5
+    envs:
+      - key: DATABASE_URL
+        type: SECRET
+        scope: RUN_TIME
+      - key: OPENAI_API_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: OPENAI_ADMIN_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: GEMINI_API_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: RESEND_API_KEY
+        type: SECRET
+        scope: RUN_TIME
+      - key: DEMO_EMAILS
+        scope: RUN_TIME
+        value: ""
+      - key: GEMINI_MAX_CONCURRENCY
+        scope: RUN_TIME
+        value: "3"
+      - key: GEMINI_MIN_INTERVAL_MS
+        scope: RUN_TIME
+        value: "0"
