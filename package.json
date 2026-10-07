@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@prisma/client": "^5.8.0",
-    "@tremor/react": "^3.18.7",
     "axios": "^1.6.5",
     "clsx": "^2.0.0",
     "dotenv": "^16.3.1",
@@ -37,5 +36,8 @@
     "prisma": "^5.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
