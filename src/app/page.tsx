@@ -141,7 +141,7 @@ export default function LandingPage() {
         </p>
         <div className="flex justify-center w-full">
           <a
-            href="#planes"
+            href="/auditar/"
             className="w-full sm:w-auto px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all text-center"
           >
             Auditar mi marca →
@@ -176,7 +176,7 @@ export default function LandingPage() {
               <p className="text-slate-700 text-base leading-relaxed mb-8">
                 La Ai sintetiza <strong className="text-slate-900">una sola respuesta</strong>. Si tu marca no está en esa síntesis, no entras al proceso de decisión — ni siquiera para perderlo.
               </p>
-              <a href="#planes" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
+              <a href="/auditar/" className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-sm hover:shadow-md transition-all">
                 Ver cómo me cita ChatGPT y Gemini →
               </a>
             </div>
@@ -263,7 +263,7 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href="#planes" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
+            <a href="/auditar/" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-all">
               Quiero mi informe →
             </a>
           </div>
@@ -413,7 +413,7 @@ export default function LandingPage() {
             {/* Footer CTA */}
             <div className="bg-white shadow-sm px-5 py-4 text-center border-t border-slate-200">
               <p className="text-slate-500 text-sm mb-2">Protege tu cuota de mercado en ChatGPT hoy.</p>
-              <a href="#planes" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
+              <a href="/auditar/" className="text-indigo-600 hover:text-indigo-600 text-sm font-medium transition-colors">
                 Auditar mi marca en ChatGPT →
               </a>
             </div>
@@ -602,7 +602,7 @@ export default function LandingPage() {
             Cada día que la Ai recomienda a otro, es un cliente que no llegó a ti.
           </p>
           <a
-            href="#planes"
+            href="/auditar/"
             className="inline-flex items-center gap-2 px-10 py-4 rounded-md bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md hover:shadow-lg transition-all"
           >
             Auditar mi marca ahora →
