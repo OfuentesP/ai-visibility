@@ -76,13 +76,13 @@ export default function AuditarPage() {
           <div className="bg-white shadow-sm border border-indigo-700/50 rounded-sm max-w-sm w-full p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
             <p className="text-xs sm:text-[10px] font-mono text-indigo-600 uppercase tracking-widest mb-3">Plan gratuito</p>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Alcanzaste el límite de auditorías gratuitas</h3>
-            <p className="text-slate-500 text-sm leading-relaxed mb-5">
+            <p className="text-slate-600 text-sm leading-relaxed mb-5">
               Has usado tus 2 auditorías gratuitas. Para continuar analizando marcas y URLs sin límite, escríbenos y te habilitamos acceso completo.
             </p>
             <a href="mailto:contacto@ai-visibility.cl?subject=Acceso%20completo%20AI%20Visibility" className="block w-full text-center py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-sm transition mb-2">
               Solicitar acceso completo →
             </a>
-            <button onClick={() => setShowFreemiumModal(false)} className="w-full text-slate-500 text-xs hover:text-slate-700 transition py-1">Cerrar</button>
+            <button onClick={() => setShowFreemiumModal(false)} className="w-full text-slate-600 text-xs hover:text-slate-700 transition py-1">Cerrar</button>
           </div>
         </div>
       )}
@@ -109,10 +109,10 @@ export default function AuditarPage() {
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Ai Visibility<span className="text-sky-600">.</span></h1>
-                <p className="text-slate-500 text-xs font-light tracking-wide">Auditoría de posicionamiento en motores de búsqueda con Ai</p>
+                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Ai Visibility<span className="text-sky-700">.</span></h1>
+                <p className="text-slate-600 text-xs font-light tracking-wide">Auditoría de posicionamiento en motores de búsqueda con Ai</p>
                 {brand.result && (
-                  <p className="text-xs sm:text-[10px] font-mono text-slate-500 mt-1.5">
+                  <p className="text-xs sm:text-[10px] font-mono text-slate-600 mt-1.5">
                     {new Date().toLocaleDateString('es-CL')} · {new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 )}
@@ -126,7 +126,7 @@ export default function AuditarPage() {
             {/* User identity */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 pb-5 border-b border-slate-200">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Tu nombre</label>
+                <label className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Tu nombre</label>
                 <input
                   type="text" placeholder="María González" value={userName} maxLength={100}
                   onChange={e => setUserName(e.target.value)}
@@ -134,7 +134,7 @@ export default function AuditarPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Correo de contacto</label>
+                <label className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Correo de contacto</label>
                 <input
                   type="email" placeholder="maria@empresa.cl" value={userEmail} maxLength={200}
                   onChange={e => setUserEmail(e.target.value)}
@@ -153,7 +153,7 @@ export default function AuditarPage() {
                         {Array.from({ length: quota.limit }).map((_, i) => (
                           <span key={i} className={`w-2 h-2 rounded-full ${i < quota.used ? 'bg-orange-500' : 'bg-slate-700'}`} />
                         ))}
-                        <span className="text-xs sm:text-[10px] font-mono text-slate-500 ml-0.5">{quota.used} de {quota.limit} auditorías usadas</span>
+                        <span className="text-xs sm:text-[10px] font-mono text-slate-600 ml-0.5">{quota.used} de {quota.limit} auditorías usadas</span>
                       </>
                     )}
                   </div>
@@ -165,23 +165,23 @@ export default function AuditarPage() {
             <div className="flex gap-1 mb-5 bg-white border border-slate-200 rounded-sm p-1 w-fit">
               <button
                 onClick={() => { setMode('brand'); setError('') }}
-                className={`px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'brand' ? 'bg-slate-700 text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'brand' ? 'bg-slate-700 text-slate-900' : 'text-slate-600 hover:text-slate-700'}`}
               >Por marca</button>
               <button
                 onClick={() => { setMode('url'); setError('') }}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'url' ? 'bg-slate-700 text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'url' ? 'bg-slate-700 text-slate-900' : 'text-slate-600 hover:text-slate-700'}`}
               >
                 <Globe className="w-3 h-3" /> Por URL
               </button>
               <button
                 onClick={() => { setMode('compare'); setError('') }}
-                className={`hidden flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'compare' ? 'bg-slate-700 text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`hidden flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'compare' ? 'bg-slate-700 text-slate-900' : 'text-slate-600 hover:text-slate-700'}`}
               >
                 <Search className="w-3 h-3" /> Comparar
               </button>
               <button
                 onClick={() => { setMode('cita'); setError('') }}
-                className={`hidden flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'cita' ? 'bg-slate-700 text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`hidden flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-semibold tracking-wide transition ${mode === 'cita' ? 'bg-slate-700 text-slate-900' : 'text-slate-600 hover:text-slate-700'}`}
               >
                 <span className="text-xs">✦</span> Oportunidades
               </button>
@@ -222,14 +222,14 @@ export default function AuditarPage() {
 
             {/* Loading indicator */}
             {isLoading && (
-              <motion.div id="zone-loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-3 p-3 bg-slate-100 border border-slate-300 rounded-sm text-slate-500 text-xs flex items-center gap-2">
+              <motion.div id="zone-loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-3 p-3 bg-slate-100 border border-slate-300 rounded-sm text-slate-600 text-xs flex items-center gap-2">
                 <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse" />
                 {loadingPhase}
               </motion.div>
             )}
 
             {/* Error */}
-            {error && <div id="zone-error" className="mt-4 p-3 bg-red-950/40 border border-red-800/50 rounded-sm text-red-200 text-sm font-medium">{error}</div>}
+            {error && <div id="zone-error" className="mt-4 p-3 bg-red-50 border border-red-200 rounded-sm text-red-700 text-sm font-medium">{error}</div>}
           </motion.div>
 
           {/* ── Citability results ──────────────────────────────────────────── */}
@@ -238,9 +238,9 @@ export default function AuditarPage() {
               <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }} className="bg-white shadow-sm border border-slate-200 rounded-sm px-6 py-5">
                 <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
                   <div className="flex-1">
-                    <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Directorio de Citabilidad</p>
+                    <p className="text-xs uppercase tracking-widest text-slate-600 mb-1">Directorio de Citabilidad</p>
                     <h2 className="text-slate-900 font-semibold text-lg">{cita.citaResult.marca} · {cita.citaResult.categoria}</h2>
-                    <p className="text-slate-500 text-sm mt-1">{cita.citaResult.resumen}</p>
+                    <p className="text-slate-600 text-sm mt-1">{cita.citaResult.resumen}</p>
                   </div>
                   <div className="flex gap-4 shrink-0">
                     {[
@@ -249,13 +249,13 @@ export default function AuditarPage() {
                       { label: 'Alta', count: cita.citaResult.total_altas, color: 'rose' },
                     ].map(({ label, count, color }) => (
                       <div key={label} className="flex flex-col items-center">
-                        <span className={`text-2xl font-light tabular-nums text-${color}-400`}>{count}</span>
-                        <span className={`text-xs sm:text-[10px] uppercase tracking-wide text-${color}-600`}>{label}</span>
+                        <span className={`text-2xl font-light tabular-nums text-${color}-700`}>{count}</span>
+                        <span className={`text-xs sm:text-[10px] uppercase tracking-wide text-slate-600`}>{label}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-4 text-xs text-slate-500">
+                <div className="flex flex-wrap gap-4 text-xs text-slate-600">
                   <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />Dificultad baja — publica esta semana</span>
                   <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />Dificultad media — vale el esfuerzo</span>
                   <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-rose-500 inline-block" />Dominado — requiere diferenciación fuerte</span>
@@ -264,7 +264,7 @@ export default function AuditarPage() {
               {cita.citaResult.territorios.map((t, i) => {
                 const colorMap: Record<string, { bar: string; badge: string; border: string }> = {
                   baja:  { bar: 'bg-emerald-500', badge: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20', border: 'border-emerald-300' },
-                  media: { bar: 'bg-amber-500',   badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',     border: 'border-amber-300' },
+                  media: { bar: 'bg-amber-500',   badge: 'bg-amber-500/10 text-amber-700 border-amber-500/20',     border: 'border-amber-300' },
                   alta:  { bar: 'bg-rose-500',    badge: 'bg-rose-500/10 text-rose-600 border-rose-500/20',       border: 'border-rose-300' },
                 }
                 const c = colorMap[t.nivel] ?? colorMap.media
@@ -281,18 +281,18 @@ export default function AuditarPage() {
                             <span className={`text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full border ${c.badge}`}>
                               {t.nivel === 'baja' ? 'OPORTUNIDAD' : t.nivel === 'media' ? 'COMPETIDO' : 'DOMINADO'}
                             </span>
-                            <span className="text-xs tabular-nums text-slate-500">{t.dificultad}</span>
+                            <span className="text-xs tabular-nums text-slate-600">{t.dificultad}</span>
                           </div>
                         </div>
-                        <p className="text-slate-500 text-xs mb-2">{t.razon}</p>
+                        <p className="text-slate-600 text-xs mb-2">{t.razon}</p>
                         {t.marcas_mencionadas.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-2">
-                            {t.marcas_mencionadas.slice(0, 5).map((m, j) => <span key={j} className="text-xs sm:text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded">{m}</span>)}
+                            {t.marcas_mencionadas.slice(0, 5).map((m, j) => <span key={j} className="text-xs sm:text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded">{m}</span>)}
                           </div>
                         )}
                         {t.nivel !== 'alta' && (
                           <div className="mt-2 pt-2 border-t border-slate-200">
-                            <p className="text-xs text-slate-700"><span className="text-emerald-500 font-semibold mr-1">→</span>{t.recomendacion}</p>
+                            <p className="text-xs text-slate-700"><span className="text-emerald-700 font-semibold mr-1">→</span>{t.recomendacion}</p>
                           </div>
                         )}
                       </div>
@@ -301,7 +301,7 @@ export default function AuditarPage() {
                 )
               })}
               <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="border-t border-slate-200 pt-3">
-                <p className="text-slate-500 text-xs sm:text-[10px] font-mono">Gap analysis generado por GPT-4o-mini · {cita.citaResult.territorios.length} territorios auditados · {new Date().toLocaleString('es-CL')}</p>
+                <p className="text-slate-600 text-xs sm:text-[10px] font-mono">Gap analysis generado por GPT-4o-mini · {cita.citaResult.territorios.length} territorios auditados · {new Date().toLocaleString('es-CL')}</p>
               </motion.div>
             </motion.div>
           )}
@@ -319,20 +319,20 @@ export default function AuditarPage() {
                           const isWinner = cmp.compareResult!.marca_recomendada.toLowerCase().includes(marca.toLowerCase())
                           return (
                             <div key={marca} className="flex flex-col items-center">
-                              <span className={`text-3xl font-light tabular-nums ${isWinner ? 'text-sky-600' : 'text-slate-500'}`}>{score}</span>
+                              <span className={`text-3xl font-light tabular-nums ${isWinner ? 'text-sky-700' : 'text-slate-600'}`}>{score}</span>
                               <div className="w-20 h-1.5 bg-slate-100/60 rounded-full overflow-hidden mt-1.5">
                                 <div className={`h-full rounded-full transition-all duration-700 ${isWinner ? 'bg-sky-500' : 'bg-slate-600'}`} style={{ width: `${score}%` }} />
                               </div>
-                              <p className={`text-xs mt-1 font-semibold ${isWinner ? 'text-sky-600' : 'text-slate-500'}`}>{marca}</p>
+                              <p className={`text-xs mt-1 font-semibold ${isWinner ? 'text-sky-700' : 'text-slate-600'}`}>{marca}</p>
                             </div>
                           )
                         })}
                       </div>
                       <div className="flex-1">
-                        <p className="text-xs uppercase tracking-widest text-slate-500 mb-1">Veredicto de la Ai</p>
+                        <p className="text-xs uppercase tracking-widest text-slate-600 mb-1">Veredicto de la Ai</p>
                         <p className="text-slate-800 text-sm leading-relaxed">{cmp.compareResult.veredicto_ia}</p>
-                        <p className="text-slate-500 text-xs mt-2">
-                          <span className="font-semibold text-sky-600">{cmp.compareResult.marca_recomendada}</span>
+                        <p className="text-slate-600 text-xs mt-2">
+                          <span className="font-semibold text-sky-700">{cmp.compareResult.marca_recomendada}</span>
                           {' — '}{cmp.compareResult.razon_recomendacion}
                         </p>
                       </div>
@@ -348,19 +348,19 @@ export default function AuditarPage() {
                   <div key={marca} className={`border rounded-sm overflow-hidden ${isWinner ? 'border-sky-300 bg-sky-50' : 'border-slate-200 bg-white shadow-sm'}`}>
                     <div className={`px-5 py-3 border-b flex items-center justify-between ${isWinner ? 'border-sky-300' : 'border-slate-200'}`}>
                       <h3 className={`font-semibold text-sm ${isWinner ? 'text-sky-700' : 'text-slate-700'}`}>{marca}</h3>
-                      {isWinner && <span className="text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-600 border border-sky-500/30">Ai prefiere</span>}
+                      {isWinner && <span className="text-xs sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-700 border border-sky-500/30">Ai prefiere</span>}
                     </div>
                     <div className="px-5 py-4 space-y-3">
                       {ventajas.length > 0 && (
                         <div>
-                          <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-500/70 mb-1.5">Ventajas</p>
-                          <ul className="space-y-1.5">{ventajas.map((v, i) => <li key={i} className="flex items-start gap-2 text-xs text-slate-700"><span className="text-emerald-500 shrink-0 mt-0.5">+</span>{v}</li>)}</ul>
+                          <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-700 mb-1.5">Ventajas</p>
+                          <ul className="space-y-1.5">{ventajas.map((v, i) => <li key={i} className="flex items-start gap-2 text-xs text-slate-700"><span className="text-emerald-700 shrink-0 mt-0.5">+</span>{v}</li>)}</ul>
                         </div>
                       )}
                       {debilidades.length > 0 && (
                         <div>
-                          <p className="text-xs sm:text-[10px] uppercase tracking-widest text-rose-600/70 mb-1.5">Debilidades</p>
-                          <ul className="space-y-1.5">{debilidades.map((d, i) => <li key={i} className="flex items-start gap-2 text-xs text-slate-500"><span className="text-rose-600 shrink-0 mt-0.5">−</span>{d}</li>)}</ul>
+                          <p className="text-xs sm:text-[10px] uppercase tracking-widest text-rose-600 mb-1.5">Debilidades</p>
+                          <ul className="space-y-1.5">{debilidades.map((d, i) => <li key={i} className="flex items-start gap-2 text-xs text-slate-600"><span className="text-rose-600 shrink-0 mt-0.5">−</span>{d}</li>)}</ul>
                         </div>
                       )}
                     </div>
@@ -368,7 +368,7 @@ export default function AuditarPage() {
                 ))}
               </motion.div>
               <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="border-t border-slate-200 pt-3">
-                <p className="text-slate-500 text-xs sm:text-[10px] font-mono">Análisis generado por GPT-4o-mini · {cmp.compareResult.categoria} · {new Date().toLocaleString('es-CL')}</p>
+                <p className="text-slate-600 text-xs sm:text-[10px] font-mono">Análisis generado por GPT-4o-mini · {cmp.compareResult.categoria} · {new Date().toLocaleString('es-CL')}</p>
               </motion.div>
             </motion.div>
           )}
@@ -501,19 +501,19 @@ export default function AuditarPage() {
           {mode === 'brand' && brand.result && (
             <motion.div id="zone-footer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="border-t border-slate-200 bg-white p-8 mt-10">
               <div className="max-w-5xl mx-auto">
-                <p className="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-4">Metodología y Fuentes</p>
+                <p className="text-slate-600 text-xs uppercase tracking-widest font-semibold mb-4">Metodología y Fuentes</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div>
-                    <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">Motor de Inteligencia</p>
-                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• OpenAI GPT-4o-mini<br />• Análisis Multimodelo<br />• Contexto Regional Chile</p>
+                    <p className="text-slate-600 text-xs font-semibold uppercase tracking-wide mb-2">Motor de Inteligencia</p>
+                    <p className="text-slate-600 text-xs font-mono leading-relaxed">• OpenAI GPT-4o-mini<br />• Análisis Multimodelo<br />• Contexto Regional Chile</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">Fuentes de Verdad</p>
-                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones Ai</p>
+                    <p className="text-slate-600 text-xs font-semibold uppercase tracking-wide mb-2">Fuentes de Verdad</p>
+                    <p className="text-slate-600 text-xs font-mono leading-relaxed">• Google Trends RT (CL)<br />• SERP Data en Tiempo Real<br />• Índice de Menciones Ai</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 text-xs sm:text-[10px] font-semibold uppercase tracking-wide mb-2">Metodología</p>
-                    <p className="text-slate-500 text-xs font-mono leading-relaxed">• Synthetic Users Simulation<br />• Score 0–100 Normalizado<br />• PAS: Problema → Solución</p>
+                    <p className="text-slate-600 text-xs sm:text-[10px] font-semibold uppercase tracking-wide mb-2">Metodología</p>
+                    <p className="text-slate-600 text-xs font-mono leading-relaxed">• Synthetic Users Simulation<br />• Score 0–100 Normalizado<br />• PAS: Problema → Solución</p>
                   </div>
                 </div>
                 <p className="text-slate-800 text-xs sm:text-[10px] font-mono mt-6">Datos actualizados: {new Date().toLocaleString('es-CL')}</p>

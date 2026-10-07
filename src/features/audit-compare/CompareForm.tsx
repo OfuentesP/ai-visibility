@@ -18,7 +18,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
-          <label htmlFor="compare-marca-a" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca A (tuya)</label>
+          <label htmlFor="compare-marca-a" className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Marca A (tuya)</label>
           <input
             id="compare-marca-a"
             type="text"
@@ -30,7 +30,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
           />
         </div>
         <div>
-          <label htmlFor="compare-marca-b" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Marca B (rival)</label>
+          <label htmlFor="compare-marca-b" className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Marca B (rival)</label>
           <input
             id="compare-marca-b"
             type="text"
@@ -42,7 +42,7 @@ export function CompareForm({ compareA, compareB, compareCategoria, compareLoadi
           />
         </div>
         <div>
-          <label htmlFor="compare-categoria" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Categoría</label>
+          <label htmlFor="compare-categoria" className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Categoría</label>
           <input
             id="compare-categoria"
             type="text"

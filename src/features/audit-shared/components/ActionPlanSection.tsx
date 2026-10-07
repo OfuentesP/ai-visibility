@@ -16,8 +16,8 @@ interface Props {
 
 const AREA_CONFIG: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
   'Marketing / Contenido': { icon: <Megaphone className="w-3.5 h-3.5" />, label: 'Contenido', color: 'text-violet-700 bg-violet-500/10 border-violet-500/20' },
-  'TI / Desarrollo':       { icon: <Code2 className="w-3.5 h-3.5" />,    label: 'Técnico',   color: 'text-sky-600 bg-sky-500/10 border-sky-500/20' },
-  'PR / Agencia':          { icon: <Globe className="w-3.5 h-3.5" />,    label: 'PR & Medios', color: 'text-teal-400 bg-teal-500/10 border-teal-500/20' },
+  'TI / Desarrollo':       { icon: <Code2 className="w-3.5 h-3.5" />,    label: 'Técnico',   color: 'text-sky-700 bg-sky-500/10 border-sky-500/20' },
+  'PR / Agencia':          { icon: <Globe className="w-3.5 h-3.5" />,    label: 'PR & Medios', color: 'text-teal-700 bg-teal-500/10 border-teal-500/20' },
 }
 
 function buildSnippet(tactica: string, concepto: string, marca: string): string {
@@ -47,7 +47,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
   const areaCfg = AREA_CONFIG[action.area_responsable || ''] ?? {
     icon: null,
     label: action.area_responsable || 'Equipo',
-    color: 'text-slate-500 bg-slate-100/60 border-slate-300',
+    color: 'text-slate-600 bg-slate-100/60 border-slate-300',
   }
   const concepto = action.concepto_objetivo || 'tu concepto aquí'
   const snippet = buildSnippet(action.tactica_tecnica || '', concepto, marca)
@@ -66,7 +66,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
         }`}
         onClick={() => { setExpanded(v => !v); if (expanded) setShowCode(false) }}
       >
-        <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>
+        <span className={`text-sm font-mono tabular-nums shrink-0 w-5 ${isTop ? 'text-amber-700 font-bold' : 'text-slate-600'}`}>
           {index + 1}.
         </span>
         <div className="flex-1 min-w-0">
@@ -74,7 +74,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
             {concepto.charAt(0).toUpperCase() + concepto.slice(1)}
           </p>
           <div className="flex items-center gap-2 mt-0.5">
-            <p className="text-slate-500 text-xs truncate">{action.tactica_tecnica}</p>
+            <p className="text-slate-600 text-xs truncate">{action.tactica_tecnica}</p>
             {action.area_responsable && (
               <span className={`hidden sm:inline text-xs sm:text-[10px] font-semibold px-1.5 py-px rounded border shrink-0 ${areaCfg.color.split(' ').slice(0, 3).join(' ')}`}>
                 {areaCfg.label}
@@ -84,7 +84,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {action.tiempo_indexacion_ia && (
-            <span className="hidden sm:inline text-xs sm:text-[10px] font-mono text-slate-500 border border-slate-300/60 px-1.5 py-0.5 rounded">
+            <span className="hidden sm:inline text-xs sm:text-[10px] font-mono text-slate-600 border border-slate-300/60 px-1.5 py-0.5 rounded">
               {action.tiempo_indexacion_ia.split('(')[0].trim()}
             </span>
           )}
@@ -93,9 +93,9 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
           ) : action.ice_score >= 5 ? (
             <span className="text-xs text-amber-600">→ Medio</span>
           ) : (
-            <span className="text-xs text-slate-500">Complementaria</span>
+            <span className="text-xs text-slate-600">Complementaria</span>
           )}
-          <span className={`text-slate-500 text-xs transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}>›</span>
+          <span className={`text-slate-600 text-xs transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}>›</span>
         </div>
       </div>
 
@@ -110,10 +110,10 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
                 <p className="text-sm text-slate-700 leading-snug">{action.riesgo_inaccion}</p>
               </div>
             ) : (
-              <p className="text-sm text-slate-500 leading-snug">{concepto}</p>
+              <p className="text-sm text-slate-600 leading-snug">{concepto}</p>
             )}
             {action.area_responsable && (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-600">
                 Responsable: <span className="text-slate-700">{action.area_responsable}</span>
               </p>
             )}
@@ -125,8 +125,8 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
                 onClick={(e) => { e.stopPropagation(); setShowCode(v => !v) }}
                 className="w-full flex items-center justify-between px-5 py-2.5 text-left hover:bg-slate-100/30 transition-colors"
               >
-                <span className="text-xs font-medium text-slate-500 hover:text-slate-700 transition-colors">Ver cómo implementarlo</span>
-                <span className={`text-slate-500 text-xs transition-transform duration-200 ${showCode ? 'rotate-90' : ''}`}>›</span>
+                <span className="text-xs font-medium text-slate-600 hover:text-slate-700 transition-colors">Ver cómo implementarlo</span>
+                <span className={`text-slate-600 text-xs transition-transform duration-200 ${showCode ? 'rotate-90' : ''}`}>›</span>
               </button>
 
               {showCode && (
@@ -135,7 +135,7 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
                     <ol className="space-y-2.5 pt-1">
                       {action.pasos_ejecucion.map((paso, pi) => (
                         <li key={pi} className="flex items-start gap-3">
-                          <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-0.5 w-4 shrink-0 select-none">{pi + 1}.</span>
+                          <span className="text-xs sm:text-[11px] font-mono text-slate-600 pt-0.5 w-4 shrink-0 select-none">{pi + 1}.</span>
                           <span className="text-sm text-slate-700 leading-snug">{paso}</span>
                         </li>
                       ))}
@@ -144,13 +144,13 @@ function ActionRow({ action, index, isTop, marca }: { action: PlanAccionItem; in
                   {snippet && (
                     <div className="bg-white border border-slate-200 rounded-sm overflow-hidden">
                       <div className="flex items-center justify-between px-4 py-2 bg-slate-50/60 border-b border-slate-200">
-                        <span className="flex items-center gap-2 font-mono text-xs text-slate-500">
-                          <Terminal className="w-3 h-3 text-sky-500" />
+                        <span className="flex items-center gap-2 font-mono text-xs text-slate-600">
+                          <Terminal className="w-3 h-3 text-sky-700" />
                           Código listo para copiar
                         </span>
                         <button
                           onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(snippet) }}
-                          className="flex items-center gap-1 text-xs sm:text-[10px] text-slate-500 hover:text-sky-600 transition-colors font-mono"
+                          className="flex items-center gap-1 text-xs sm:text-[10px] text-slate-600 hover:text-sky-700 transition-colors font-mono"
                         >
                           <Download className="w-3 h-3" /> Copiar
                         </button>
@@ -185,8 +185,8 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
   return (
     <>
       <motion.div variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">{sectionIndex}</span>
-        <span className="text-sm text-slate-500 font-medium">Plan de acción</span>
+        <span className="text-xs font-mono text-slate-600 shrink-0">{sectionIndex}</span>
+        <span className="text-sm text-slate-600 font-medium">Plan de acción</span>
         <div className="flex-1 h-px bg-slate-100/30" />
       </motion.div>
 
@@ -196,16 +196,16 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
       >
         <div className="px-6 py-4 border-b border-slate-200">
           <h3 className="text-base font-semibold text-slate-900">Qué necesitamos hacer y quién lo ejecuta</h3>
-          <p className="text-slate-500 text-sm mt-0.5">{subtitle}</p>
+          <p className="text-slate-600 text-sm mt-0.5">{subtitle}</p>
         </div>
 
         {topAction && (
           <div className="px-6 pt-4 pb-2">
             <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 border border-amber-300 rounded-sm">
-              <span className="text-amber-400 font-bold shrink-0 mt-0.5">✦</span>
+              <span className="text-amber-700 font-bold shrink-0 mt-0.5">✦</span>
               <div>
-                <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">Empezar aquí</p>
-                <p className="text-amber-100 text-sm font-semibold leading-snug">{topAction.tactica_tecnica}</p>
+                <p className="text-xs uppercase tracking-widest text-amber-700 mb-1">Empezar aquí</p>
+                <p className="text-amber-900 text-sm font-semibold leading-snug">{topAction.tactica_tecnica}</p>
                 <p className="text-amber-700 text-xs mt-1 truncate" title={topAction.concepto_objetivo}>
                   {topAction.concepto_objetivo.charAt(0).toUpperCase() + topAction.concepto_objetivo.slice(1)} · {topAction.tiempo_indexacion_ia.split('(')[0].trim()}
                 </p>
@@ -223,7 +223,7 @@ export function ActionPlanSection({ planAccion, marca, sinMencion, totalQueries,
         {planAccion.roi_estimado && (
           <div className="border-t border-slate-200/60 px-5 py-4">
             <div className="flex items-start gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-sm">
-              <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <TrendingUp className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
               <p className="text-slate-700 text-sm leading-relaxed">{planAccion.roi_estimado}</p>
             </div>
           </div>

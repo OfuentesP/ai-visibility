@@ -58,14 +58,14 @@ export function ShareOfVoiceChart({
               return (
                 <g>
                   {!isGhost && (
-                    <text x={x - 118} y={y} dy={4} textAnchor="end" fill={rank === 1 ? '#fbbf24' : '#475569'} fontWeight={700} fontSize={9} fontFamily="ui-monospace, monospace">
+                    <text x={x - 118} y={y} dy={4} textAnchor="end" fill={rank === 1 ? '#b45309' : '#64748b'} fontWeight={700} fontSize={9} fontFamily="ui-monospace, monospace">
                       #{rank}
                     </text>
                   )}
                   <text
                     x={x - 4} y={y} dy={4} textAnchor="end"
-                    fill={isGhost ? '#334155' : entry?.isUser ? '#38bdf8' : entry?.isWinner ? '#fbbf24' : '#94a3b8'}
-                    fontWeight={entry?.isUser && !isGhost ? 700 : 400}
+                    fill={isGhost ? '#475569' : entry?.isUser ? '#0369a1' : entry?.isWinner ? '#b45309' : '#334155'}
+                    fontWeight={(entry?.isUser || entry?.isWinner) && !isGhost ? 700 : 500}
                     fontSize={11}
                     fontStyle={isGhost ? 'italic' : 'normal'}
                   >
@@ -79,7 +79,7 @@ export function ShareOfVoiceChart({
           />
 
           <Tooltip
-            cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+            cursor={{ fill: 'rgba(15,23,42,0.04)' }}
             content={(props) => {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const { active, payload } = props as any
@@ -116,7 +116,7 @@ export function ShareOfVoiceChart({
             }}
           />
 
-          <Bar dataKey="score" radius={[0, 4, 4, 0]} maxBarSize={16} background={{ fill: '#0f172a', radius: 4 }}>
+          <Bar dataKey="score" radius={[0, 4, 4, 0]} maxBarSize={16} background={{ fill: '#f1f5f9', radius: 4 }}>
             {chartData.map((entry, idx) => {
               const isDominant = entry.isWinner && entry.score >= 90
               return (
@@ -131,7 +131,7 @@ export function ShareOfVoiceChart({
                       ? `url(#${dominantGradId})`
                       : entry.isWinner
                       ? '#b45309'
-                      : `rgba(51, 65, 85, ${Math.max(0.65 - idx * 0.07, 0.15)})`
+                      : `rgba(71, 85, 105, ${Math.max(0.75 - idx * 0.05, 0.35)})`
                   }
                 />
               )
@@ -145,7 +145,7 @@ export function ShareOfVoiceChart({
                 const isDominant = entry?.isWinner && entry.score >= 90
                 if (entry?.ghost) {
                   return (
-                    <text x={(x ?? 0) + 8} y={(y ?? 0) + (height ?? 0) / 2} dy={4} fill="#334155" fontSize={11} fontFamily="ui-sans-serif, system-ui" fontStyle="italic">
+                    <text x={(x ?? 0) + 8} y={(y ?? 0) + (height ?? 0) / 2} dy={4} fill="#475569" fontSize={11} fontFamily="ui-sans-serif, system-ui" fontStyle="italic">
                       {ghostLabel ?? `${userBrandName} — no aparece`}
                     </text>
                   )
@@ -155,7 +155,7 @@ export function ShareOfVoiceChart({
                     x={(x ?? 0) + (width ?? 0) + 8}
                     y={(y ?? 0) + (height ?? 0) / 2}
                     dy={4}
-                    fill={entry?.isUser ? '#38bdf8' : isDominant ? '#fb923c' : '#64748b'}
+                    fill={entry?.isUser ? '#0369a1' : isDominant ? '#c2410c' : '#475569'}
                     fontWeight={entry?.isUser || isDominant ? 700 : 400}
                     fontSize={11}
                     fontFamily="ui-monospace, monospace"
@@ -178,15 +178,15 @@ export function ShareOfVoiceChart({
       </ResponsiveContainer>
 
       <div className="flex items-center gap-5 mt-4 px-1">
-        <span className="flex items-center gap-1.5 text-xs text-sky-600">
+        <span className="flex items-center gap-1.5 text-xs text-sky-700">
           <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-sky-500 to-indigo-500 shrink-0" />
           Tu marca
         </span>
-        <span className="flex items-center gap-1.5 text-xs text-orange-400">
+        <span className="flex items-center gap-1.5 text-xs text-orange-700">
           <span className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-orange-600 to-orange-400 shrink-0" />
           Líder actual
         </span>
-        <span className="flex items-center gap-1.5 text-xs text-amber-500/70">
+        <span className="flex items-center gap-1.5 text-xs text-amber-700">
           <span className="w-4 border-t border-dashed border-amber-500/60 shrink-0" />
           Promedio del mercado
         </span>

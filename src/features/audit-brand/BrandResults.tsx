@@ -30,7 +30,7 @@ interface Props {
 
 function getScoreTextColor(estado: string) {
   if (estado === 'visible') return 'text-emerald-700'
-  if (estado === 'en_riesgo') return 'text-orange-400'
+  if (estado === 'en_riesgo') return 'text-orange-700'
   return 'text-rose-600'
 }
 function getScoreBarColor(estado: string) {
@@ -62,8 +62,8 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
   const theme = isAtacar
     ? { bg: 'bg-rose-50', border: 'border-rose-500/30', bar: 'bg-rose-500', icon: <AlertTriangle className="w-5 h-5 text-rose-600" /> }
     : isDefender
-    ? { bg: 'bg-amber-50', border: 'border-amber-200', bar: 'bg-amber-500', icon: <TriangleAlert className="w-5 h-5 text-amber-500" /> }
-    : { bg: 'bg-emerald-50', border: 'border-emerald-200', bar: 'bg-emerald-500', icon: <ShieldCheck className="w-5 h-5 text-emerald-500" /> }
+    ? { bg: 'bg-amber-50', border: 'border-amber-200', bar: 'bg-amber-500', icon: <TriangleAlert className="w-5 h-5 text-amber-700" /> }
+    : { bg: 'bg-emerald-50', border: 'border-emerald-200', bar: 'bg-emerald-500', icon: <ShieldCheck className="w-5 h-5 text-emerald-700" /> }
   const score = d.invisibilidad_score ?? 0
   const marcasRivales = d.marcas_mencionadas?.filter((m: string) => m.toLowerCase() !== brand.toLowerCase()).slice(0, 2) ?? []
   const rivales = marcasRivales.length >= 2 ? `${marcasRivales[0]} y ${marcasRivales[1]}` : marcasRivales[0] || ganador
@@ -93,7 +93,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
   const strokeColor = estado === 'visible' ? '#10b981' : estado === 'en_riesgo' ? '#f97316' : '#f43f5e'
   const label = rawScore === 0 ? 'Riesgo Crítico' : estado === 'visible' ? 'Visible' : estado === 'en_riesgo' ? 'En Riesgo' : 'Invisible'
   const sent = d.sentimiento
-  const sentColor = sent === 'positivo' ? 'text-emerald-700' : sent === 'negativo' ? 'text-rose-600' : 'text-yellow-400'
+  const sentColor = sent === 'positivo' ? 'text-emerald-700' : sent === 'negativo' ? 'text-rose-600' : 'text-amber-700'
   const sentBg = sent === 'positivo' ? 'bg-emerald-50 border-emerald-300' : sent === 'negativo' ? 'bg-rose-50 border-rose-300' : 'bg-yellow-50 border-yellow-300'
   const sentLabel = sent === 'positivo' ? 'Positivo' : sent === 'negativo' ? 'Negativo / Riesgo de Alucinación' : 'Neutral'
 
@@ -123,7 +123,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
               <p className={`font-semibold ${up ? 'text-emerald-700' : 'text-rose-700'}`}>
                 {up ? `Subiste ${delta} puntos` : `Bajaste ${Math.abs(delta)} puntos`} en {days} días
               </p>
-              <p className="text-slate-500 text-xs font-mono">Score anterior: {Math.round(prev)} → Score actual: {curr}</p>
+              <p className="text-slate-600 text-xs font-mono">Score anterior: {Math.round(prev)} → Score actual: {curr}</p>
             </div>
           </div>
         )
@@ -139,13 +139,13 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             <text x="64" y="76" textAnchor="middle" fill="#64748b" fontSize="10">/100</text>
           </svg>
           <div>
-            <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">AI Readiness Score</p>
+            <p className="text-xs sm:text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-1">AI Readiness Score</p>
             <p className="text-lg font-semibold" style={{ color: strokeColor }}>{label}</p>
-            <p className="text-slate-500 text-xs mt-2 leading-relaxed">Nivel de preparación de {brand} para la era generativa</p>
+            <p className="text-slate-600 text-xs mt-2 leading-relaxed">Nivel de preparación de {brand} para la era generativa</p>
           </div>
         </div>
         <div className={`border rounded-sm p-6 ${sentBg}`}>
-          <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Percepción de la Ai (Contexto Semántico)</p>
+          <p className="text-xs sm:text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-3">Percepción de la Ai (Contexto Semántico)</p>
           <div className="flex items-center gap-2 mb-3">
             <span className={`text-xs font-semibold px-2.5 py-1 rounded border ${sentBg} ${sentColor}`}>{sentLabel}</span>
           </div>
@@ -155,8 +155,8 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
 
       {/* 01 · Resumen Ejecutivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">01</span>
-        <span className="text-sm text-slate-500 font-medium">Resumen ejecutivo</span>
+        <span className="text-xs font-mono text-slate-600 shrink-0">01</span>
+        <span className="text-sm text-slate-600 font-medium">Resumen ejecutivo</span>
         <div className="flex-1 h-px bg-slate-100/30" />
       </motion.div>
       <motion.div id="zone-veredicto" variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 24 } } }}
@@ -168,7 +168,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             <div className="shrink-0 flex flex-col items-center md:items-start">
               <div className="flex items-baseline gap-1">
                 <span className={`text-4xl font-light tabular-nums ${getScoreTextColor(d.estado_invisibilidad)}`}>{d.invisibilidad_score}</span>
-                <span className="text-slate-500 text-base">/ 100</span>
+                <span className="text-slate-600 text-base">/ 100</span>
               </div>
               <div className="w-28 bg-slate-100/60 h-1.5 rounded-full overflow-hidden mt-2">
                 <div className={`h-full rounded-full ${getScoreBarColor(d.estado_invisibilidad)} transition-all duration-700`} style={{ width: `${d.invisibilidad_score}%` }} />
@@ -179,7 +179,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                 <div className="mt-0.5">{theme.icon}</div>
                 <div>
                   <h2 className="text-base font-semibold text-slate-900 leading-snug">{titulo}</h2>
-                  <p className="text-slate-500 text-sm mt-1 leading-relaxed">{subtitulo}</p>
+                  <p className="text-slate-600 text-sm mt-1 leading-relaxed">{subtitulo}</p>
                   {accion && <p className="text-slate-700 text-sm mt-3"><span className="font-semibold">Siguiente paso:</span> {accion}{impacto ? `. ${impacto}.` : '.'}</p>}
                 </div>
               </div>
@@ -192,17 +192,17 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
       {d.marcas_mencionadas.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
-            <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la Ai cuando tu cliente busca?</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">02</span>
+            <span className="text-sm text-slate-600 font-medium">¿A quién recomienda la Ai cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-share-of-voice" variants={fadeUp} className="bg-white border border-slate-200 rounded-sm p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
-                <h3 className="text-sm font-semibold text-slate-900">¿A quién recomienda la Ai para <span className="text-slate-500 font-normal italic">&ldquo;{result.prompt_original}&rdquo;</span>?</h3>
-                <p className="text-slate-500 text-xs mt-1">Marcas ordenadas por relevancia en la respuesta</p>
+                <h3 className="text-sm font-semibold text-slate-900">¿A quién recomienda la Ai para <span className="text-slate-600 font-normal italic">&ldquo;{result.prompt_original}&rdquo;</span>?</h3>
+                <p className="text-slate-600 text-xs mt-1">Marcas ordenadas por relevancia en la respuesta</p>
               </div>
-              <span className="text-xs font-mono text-slate-500 bg-slate-100 border border-slate-300 px-2 py-1 rounded shrink-0">{d.marcas_mencionadas.length} marcas</span>
+              <span className="text-xs font-mono text-slate-600 bg-slate-100 border border-slate-300 px-2 py-1 rounded shrink-0">{d.marcas_mencionadas.length} marcas</span>
             </div>
             <ShareOfVoiceChart
               chartData={chartData}
@@ -214,13 +214,13 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             />
             {result.texto_original_ia && (
               <div className="mt-3">
-                <button onClick={() => setShowRawOutput(!showRawOutput)} className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-500 hover:text-slate-700 transition-colors">
+                <button onClick={() => setShowRawOutput(!showRawOutput)} className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-600 hover:text-slate-700 transition-colors">
                   <Terminal className="w-3 h-3" />
                   {showRawOutput ? 'Ocultar respuesta original' : 'Ver respuesta original de la Ai'}
                 </button>
                 {showRawOutput && (
                   <div className="mt-2 p-3 bg-slate-50/80 border border-slate-200 rounded-sm max-h-40 overflow-y-auto">
-                    <p className="text-slate-500 text-xs sm:text-[11px] font-mono leading-relaxed whitespace-pre-wrap">{result.texto_original_ia}</p>
+                    <p className="text-slate-600 text-xs sm:text-[11px] font-mono leading-relaxed whitespace-pre-wrap">{result.texto_original_ia}</p>
                   </div>
                 )}
               </div>
@@ -231,16 +231,16 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
 
       {/* 03 · Diagnóstico Competitivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">03</span>
-        <span className="text-sm text-slate-500 font-medium">Diagnóstico Competitivo</span>
+        <span className="text-xs font-mono text-slate-600 shrink-0">03</span>
+        <span className="text-sm text-slate-600 font-medium">Diagnóstico Competitivo</span>
         <div className="flex-1 h-px bg-slate-100/30" />
       </motion.div>
       <motion.div id="zone-diferenciacion" variants={fadeUp} className="bg-white border border-slate-200 rounded-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 flex items-start gap-3">
           <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-rose-500 to-violet-600 shrink-0" />
           <div>
-            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
-            <h3 className="text-base font-semibold text-slate-900">Por qué <span className="text-amber-400">{rival}</span> aparece donde tú no</h3>
+            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 mb-1">Diagnóstico Competitivo</p>
+            <h3 className="text-base font-semibold text-slate-900">Por qué <span className="text-amber-700">{rival}</span> aparece donde tú no</h3>
           </div>
         </div>
         <div className="grid md:grid-cols-5 gap-0 border-b border-slate-200/60">
@@ -249,18 +249,18 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             <ul className="space-y-1.5">
               {(d.percepciones_genericas?.length > 0 ? d.percepciones_genericas : ['Analizando…']).slice(0, 3).map((c: string, bi: number) => (
                 <li key={bi} className="flex items-start gap-2">
-                  <span className="text-rose-600/70 text-xs mt-0.5 shrink-0">·</span>
+                  <span className="text-rose-600 text-xs mt-0.5 shrink-0">·</span>
                   <span className="text-sm text-slate-700 leading-snug">{c}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="md:col-span-3 px-5 py-4 border-l-2 border-l-amber-600/40">
-            <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">Por qué prefieren a {rival}</p>
+            <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-amber-700 mb-3">Por qué prefieren a {rival}</p>
             <ul className="space-y-1.5">
               {(d.conceptos_faltantes?.length > 0 ? d.conceptos_faltantes : ['Analizando…']).slice(0, 3).map((c: string, bi: number) => (
                 <li key={bi} className="flex items-start gap-2">
-                  <span className="text-amber-500/70 text-xs mt-0.5 shrink-0">·</span>
+                  <span className="text-amber-700 text-xs mt-0.5 shrink-0">·</span>
                   <span className="text-sm text-slate-700 leading-snug">{c}</span>
                 </li>
               ))}
@@ -269,12 +269,12 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
         </div>
         {d.competitor_advantage && d.competitor_advantage.filas.length > 0 && (
           <div className="px-5 pb-4 pt-4">
-            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">Dónde exactamente te gana</p>
+            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 font-semibold mb-3">Dónde exactamente te gana</p>
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
-                  <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
+                  <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
+                  <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
                   <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-rose-600 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
                 </tr>
               </thead>
@@ -282,7 +282,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                 {d.competitor_advantage.filas.map((fila, i) => (
                   <tr key={i} className="border-b border-slate-200/40 last:border-0">
                     <td className="py-3.5 pr-6 align-top"><span className="text-sm font-semibold text-slate-900">{fila.atributo_ganador}</span></td>
-                    <td className="py-3.5 pr-6 align-top"><span className="text-sm text-slate-500">{fila.fuente_de_verdad}</span></td>
+                    <td className="py-3.5 pr-6 align-top"><span className="text-sm text-slate-600">{fila.fuente_de_verdad}</span></td>
                     <td className="py-3.5 align-top"><span className="text-sm text-rose-700">{fila.gap_nuestra_marca}</span></td>
                   </tr>
                 ))}
@@ -290,8 +290,8 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
             </table>
             {d.competitor_advantage.conclusion && (
               <div className="mt-3 flex items-start gap-2 px-4 py-3 bg-slate-100/40 border border-slate-300/40 rounded-sm">
-                <span className="text-slate-500 text-sm shrink-0 mt-0.5">→</span>
-                <p className="text-slate-500 text-sm sm:text-xs leading-relaxed">{d.competitor_advantage.conclusion}</p>
+                <span className="text-slate-600 text-sm shrink-0 mt-0.5">→</span>
+                <p className="text-slate-600 text-sm sm:text-xs leading-relaxed">{d.competitor_advantage.conclusion}</p>
               </div>
             )}
           </div>
@@ -302,8 +302,8 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
       {d.territorios_desatendidos && d.territorios_desatendidos.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
-            <span className="text-sm text-slate-500 font-medium">Temas donde la Ai no tiene un ganador claro</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">04</span>
+            <span className="text-sm text-slate-600 font-medium">Temas donde la Ai no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-territorios" variants={fadeUp} className="bg-white border border-slate-200 rounded-sm overflow-hidden">
@@ -312,7 +312,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
               <div>
                 <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-700 font-semibold mb-1">Contenido sin dueño</p>
                 <h3 className="text-base font-semibold text-slate-900">Temas donde la Ai no tiene un ganador claro</h3>
-                <p className="text-slate-500 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
+                <p className="text-slate-600 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
               </div>
             </div>
             <div className="divide-y divide-slate-800/50">
@@ -320,30 +320,30 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                 const n = t.nivel_oportunidad
                 const esAlza = t.crecimiento_trends?.startsWith('+')
                 const esBaja = t.crecimiento_trends?.startsWith('-')
-                const opp = n === 'Alto' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' } : n === 'Medio' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
+                const opp = n === 'Alto' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' } : n === 'Medio' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-700 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
                 return (
                   <div key={idx} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="text-xs sm:text-[11px] font-mono text-slate-600 pt-1 w-5 shrink-0 select-none">{String(idx + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-2">
                         <p className="text-sm font-semibold text-slate-900 leading-snug">{t.topico_emergente}</p>
                         <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${opp.cls}`}>{opp.label}</span>
                         {t.crecimiento_trends && (
-                          <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${esAlza ? 'bg-amber-500/10 text-amber-700 border-amber-500/30' : esBaja ? 'bg-rose-500/10 text-rose-700 border-rose-500/30' : 'bg-slate-100/60 text-slate-500 border-slate-300'}`}>
+                          <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${esAlza ? 'bg-amber-500/10 text-amber-700 border-amber-500/30' : esBaja ? 'bg-rose-500/10 text-rose-700 border-rose-500/30' : 'bg-slate-100/60 text-slate-600 border-slate-300'}`}>
                             {t.crecimiento_trends}
                           </span>
                         )}
                       </div>
-                      <p className="text-slate-500 text-sm leading-relaxed">{t.porque_es_oportunidad}</p>
-                      {t.intension_usuario && <p className="text-slate-500 text-xs mt-1.5 italic">Intención: {t.intension_usuario}</p>}
+                      <p className="text-slate-600 text-sm leading-relaxed">{t.porque_es_oportunidad}</p>
+                      {t.intension_usuario && <p className="text-slate-600 text-xs mt-1.5 italic">Intención: {t.intension_usuario}</p>}
                     </div>
                   </div>
                 )
               })}
             </div>
             <div className="border-t border-slate-200/60 px-6 py-3 flex items-center gap-2">
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-500/60 shrink-0" />
-              <p className="text-xs text-slate-500">El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.</p>
+              <TrendingUp className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+              <p className="text-xs text-slate-600">El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.</p>
             </div>
           </motion.div>
         </>
@@ -353,17 +353,17 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
       {(trendsLoading || (trendsResult && trendsResult.length > 0)) && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">05</span>
-            <span className="text-sm text-slate-500 font-medium">Cómo buscan en Google</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">05</span>
+            <span className="text-sm text-slate-600 font-medium">Cómo buscan en Google</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-google-trends" variants={fadeUp} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-0.5">Así buscan en Google</h3>
-                <p className="text-slate-500 text-xs">Búsquedas reales de alta demanda en Chile relacionadas con las queries de tus usuarios sintéticos</p>
+                <p className="text-slate-600 text-xs">Búsquedas reales de alta demanda en Chile relacionadas con las queries de tus usuarios sintéticos</p>
               </div>
-              <span className="text-xs sm:text-[10px] font-mono text-slate-500 bg-slate-100 border border-slate-300 px-2 py-1 rounded shrink-0">Google Trends · CL</span>
+              <span className="text-xs sm:text-[10px] font-mono text-slate-600 bg-slate-100 border border-slate-300 px-2 py-1 rounded shrink-0">Google Trends · CL</span>
             </div>
             {trendsLoading && (
               <div className="space-y-2">
@@ -379,15 +379,15 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                     const isTop = idx === 0
                     return (
                       <div key={idx} className="flex items-center gap-3 group">
-                        <span className={`shrink-0 text-xs sm:text-[10px] font-mono w-4 text-right ${isTop ? 'text-amber-400 font-bold' : 'text-slate-500'}`}>{idx + 1}</span>
+                        <span className={`shrink-0 text-xs sm:text-[10px] font-mono w-4 text-right ${isTop ? 'text-amber-700 font-bold' : 'text-slate-600'}`}>{idx + 1}</span>
                         <div className="flex-1 min-w-0 relative">
                           <div className={`absolute inset-y-0 left-0 rounded-sm transition-all duration-500 ${isTop ? 'bg-amber-500/15' : 'bg-slate-700/25'}`} style={{ width: `${barWidth}%` }} />
                           <div className="relative flex items-center justify-between gap-2 px-2.5 py-1.5">
                             <span className={`text-xs truncate ${isTop ? 'text-amber-700 font-medium' : 'text-slate-700'}`}>{item.query}</span>
-                            <span className={`text-xs sm:text-[10px] font-mono tabular-nums ${isTop ? 'text-amber-400' : 'text-slate-500'}`}>{item.value}</span>
+                            <span className={`text-xs sm:text-[10px] font-mono tabular-nums ${isTop ? 'text-amber-700' : 'text-slate-600'}`}>{item.value}</span>
                           </div>
                         </div>
-                        <span className="shrink-0 text-[9px] text-slate-500 max-w-[100px] truncate hidden md:block group-hover:text-slate-500 transition-colors" title={item.fuente}>← {item.fuente.split('?')[0].slice(0, 35)}{item.fuente.length > 35 ? '…' : ''}</span>
+                        <span className="shrink-0 text-[9px] text-slate-600 max-w-[100px] truncate hidden md:block group-hover:text-slate-600 transition-colors" title={item.fuente}>← {item.fuente.split('?')[0].slice(0, 35)}{item.fuente.length > 35 ? '…' : ''}</span>
                       </div>
                     )
                   })}
@@ -395,11 +395,11 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
               )
             })()}
             {!trendsLoading && trendsResult && trendsResult.length === 0 && (
-              <p className="text-slate-500 text-xs py-2">Google Trends no devolvió datos para estas queries.</p>
+              <p className="text-slate-600 text-xs py-2">Google Trends no devolvió datos para estas queries.</p>
             )}
             <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-200/60">
-              <span className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-500"><span className="w-2 h-2 rounded-sm bg-amber-500/40 shrink-0" /> #1 Mayor interés</span>
-              <span className="text-xs sm:text-[10px] text-slate-500">Escala 0–100 relativa al pico del período (7 días)</span>
+              <span className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-600"><span className="w-2 h-2 rounded-sm bg-amber-500/40 shrink-0" /> #1 Mayor interés</span>
+              <span className="text-xs sm:text-[10px] text-slate-600">Escala 0–100 relativa al pico del período (7 días)</span>
             </div>
           </motion.div>
         </>
@@ -409,14 +409,14 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
       {(discoveryLoading || discoveryResult) && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">06</span>
-            <span className="text-sm text-slate-500 font-medium">Plan de acción</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">06</span>
+            <span className="text-sm text-slate-600 font-medium">Plan de acción</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-plan-recuperacion" variants={fadeUp} className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200">
               <h3 className="text-base font-semibold text-slate-900">Qué hacer ahora</h3>
-              {discoveryLoading && <p className="text-slate-500 text-sm mt-0.5">Simulando búsquedas asociadas a &ldquo;{query}&rdquo;…</p>}
+              {discoveryLoading && <p className="text-slate-600 text-sm mt-0.5">Simulando búsquedas asociadas a &ldquo;{query}&rdquo;…</p>}
               {discoveryResult && discoveryResult.oportunidades_auditadas.length > 0 && (() => {
                 const ops = discoveryResult.oportunidades_auditadas
                 const FAKE_SET = new Set(['múltiples competidores', 'empate técnico'])
@@ -424,7 +424,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                 const losses = validOps.filter(op => { const pos = op.resultado_auditoria.posicion_mi_marca; return !(pos === 1 || pos === 2) }).length
                 const valid = validOps.length
                 return (
-                  <p className="text-slate-500 text-sm mt-0.5">
+                  <p className="text-slate-600 text-sm mt-0.5">
                     {valid === 0 ? `Simulamos ${ops.length} búsquedas sobre "${query}"` : losses === 0 ? `Dominas las ${valid} búsquedas sobre "${query}"` : losses === valid ? `No apareces en ${valid} búsquedas sobre "${query}"` : `Pierdes ${losses} de ${valid} búsquedas sobre "${query}"`}
                   </p>
                 )
@@ -456,7 +456,7 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                       <div key={idx} className={`rounded-sm border px-4 py-3 ${op.isWin ? 'bg-emerald-50 border-emerald-200' : op.ganador ? 'bg-white/40 border-rose-200' : 'bg-amber-50 border-amber-300'}`}>
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1 min-w-0">
-                            <p className="text-slate-500 text-xs mb-1">{iconos[idx] || '👤'} {nombre}{op.necesidad_principal && <span className="text-slate-500"> · {op.necesidad_principal.split(',')[0]}</span>}</p>
+                            <p className="text-slate-600 text-xs mb-1">{iconos[idx] || '👤'} {nombre}{op.necesidad_principal && <span className="text-slate-600"> · {op.necesidad_principal.split(',')[0]}</span>}</p>
                             <p className="text-slate-800 text-sm leading-relaxed">{preguntaCorta}</p>
                           </div>
                           <div className="shrink-0 text-right mt-0.5">
@@ -464,8 +464,8 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                               <span className={`text-sm font-semibold ${esMiMarca ? 'text-emerald-700' : 'text-rose-600'}`}>{esMiMarca ? `✓ ${brand}` : op.ganador}</span>
                             ) : (
                               <div className="flex flex-col items-end">
-                                <span className="text-amber-400 text-xs font-semibold">Territorio libre</span>
-                                <span className="text-slate-500 text-xs sm:text-[10px]">Ninguna marca satisface</span>
+                                <span className="text-amber-700 text-xs font-semibold">Territorio libre</span>
+                                <span className="text-slate-600 text-xs sm:text-[10px]">Ninguna marca satisface</span>
                               </div>
                             )}
                           </div>
@@ -483,12 +483,12 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
                 <ActionPlanSection planAccion={d.plan_accion} marca={brand} sectionIndex="" />
               </div>
             ) : (
-              <p className="text-slate-500 text-sm px-5 py-4">Ejecuta un análisis para ver las acciones recomendadas.</p>
+              <p className="text-slate-600 text-sm px-5 py-4">Ejecuta un análisis para ver las acciones recomendadas.</p>
             )}
             {!discoveryLoading && d.plan_accion?.roi_estimado && (
               <div className="px-6 pb-5">
                 <div className="flex items-start gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-sm">
-                  <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <TrendingUp className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                   <p className="text-slate-700 text-sm leading-relaxed">{d.plan_accion.roi_estimado}</p>
                 </div>
               </div>
@@ -499,21 +499,21 @@ export function BrandResults({ result, brand, query, userEmail, userName, discov
 
       {/* Herramientas de indexación */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="bg-white shadow-sm border border-slate-200 rounded-sm p-6">
-        <p className="text-xs sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Herramientas Oficiales Gratuitas</p>
+        <p className="text-xs sm:text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-1">Herramientas Oficiales Gratuitas</p>
         <h3 className="text-sm font-semibold text-slate-900 mb-4">Fuerza la indexación en LLMs — hazlo tú mismo</h3>
         <div className="grid sm:grid-cols-2 gap-4">
           <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 p-4 bg-slate-100/60 border border-slate-300 rounded-sm hover:border-indigo-500/50 hover:bg-slate-100 transition-colors group">
             <Globe className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-medium text-slate-900 group-hover:text-slate-900">Conectar con ChatGPT</p>
-              <p className="text-slate-500 text-xs mt-0.5">Bing Webmaster Tools → IndexNow</p>
+              <p className="text-slate-600 text-xs mt-0.5">Bing Webmaster Tools → IndexNow</p>
             </div>
           </a>
           <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 p-4 bg-slate-100/60 border border-slate-300 rounded-sm hover:border-emerald-500/50 hover:bg-slate-100 transition-colors group">
             <Search className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-medium text-slate-900 group-hover:text-slate-900">Conectar con Gemini</p>
-              <p className="text-slate-500 text-xs mt-0.5">Google Search Console → Inspección de URL</p>
+              <p className="text-slate-600 text-xs mt-0.5">Google Search Console → Inspección de URL</p>
             </div>
           </a>
         </div>

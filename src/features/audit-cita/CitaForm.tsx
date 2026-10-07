@@ -14,7 +14,7 @@ export function CitaForm({ citaMarca, citaCategoria, citaLoading, onChangeMarca,
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label htmlFor="cita-marca" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Tu marca</label>
+          <label htmlFor="cita-marca" className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Tu marca</label>
           <input
             id="cita-marca"
             type="text"
@@ -26,7 +26,7 @@ export function CitaForm({ citaMarca, citaCategoria, citaLoading, onChangeMarca,
           />
         </div>
         <div>
-          <label htmlFor="cita-categoria" className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Categoría de producto</label>
+          <label htmlFor="cita-categoria" className="block text-xs font-semibold text-slate-600 mb-2 uppercase tracking-wide">Categoría de producto</label>
           <input
             id="cita-categoria"
             type="text"
@@ -38,7 +38,7 @@ export function CitaForm({ citaMarca, citaCategoria, citaLoading, onChangeMarca,
           />
         </div>
       </div>
-      <p className="text-slate-500 text-xs mb-4">
+      <p className="text-slate-600 text-xs mb-4">
         Generamos 12 queries de nicho, auditamos qué marcas menciona la Ai y priorizamos donde puedes entrar más fácilmente.
       </p>
       <button

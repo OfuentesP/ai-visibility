@@ -40,7 +40,7 @@ export function ExportBar({ userEmail, userName, marca, query, score, modo, getS
     <div className="border-t border-slate-200 pt-6 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
         <p className="text-sm font-semibold text-slate-800">¿Quieres guardar este informe?</p>
-        <p className="text-xs text-slate-500 mt-0.5">
+        <p className="text-xs text-slate-600 mt-0.5">
           {state === 'error'
             ? <span className="text-rose-600">{errorMsg}</span>
             : state === 'sent'

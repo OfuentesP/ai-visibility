@@ -46,7 +46,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
   })
   const topCompetitor = Object.entries(ganadorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'la competencia'
   const topActions = urlResult.plan_accion?.vehiculos.flatMap(v => v.acciones).sort((a, b) => b.ice_score - a.ice_score).slice(0, 3) ?? []
-  const scoreColor = score === 0 ? 'text-rose-600' : score < 60 ? 'text-amber-400' : 'text-emerald-700'
+  const scoreColor = score === 0 ? 'text-rose-600' : score < 60 ? 'text-amber-700' : 'text-emerald-700'
   const accentBorder = score === 0 ? 'border-l-rose-500' : score < 60 ? 'border-l-amber-500' : 'border-l-emerald-500'
 
   // Chart data
@@ -86,7 +86,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
               <p className={`font-semibold ${up ? 'text-emerald-700' : 'text-rose-700'}`}>
                 {up ? `Subiste ${delta}%` : `Bajaste ${Math.abs(delta)}%`} de visibilidad en {days} días
               </p>
-              <p className="text-slate-500 text-xs font-mono">Visibilidad anterior: {prev}% → actual: {curr}%</p>
+              <p className="text-slate-600 text-xs font-mono">Visibilidad anterior: {prev}% → actual: {curr}%</p>
             </div>
           </div>
         )
@@ -94,8 +94,8 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
 
       {/* 01 · Resumen Ejecutivo */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">01</span>
-        <span className="text-sm text-slate-500 font-medium">Resumen ejecutivo</span>
+        <span className="text-xs font-mono text-slate-600 shrink-0">01</span>
+        <span className="text-sm text-slate-600 font-medium">Resumen ejecutivo</span>
         <div className="flex-1 h-px bg-slate-100/30" />
       </motion.div>
       <motion.div variants={{ hidden: { opacity: 0, y: -8 }, visible: { opacity: 1, y: 0 } }}
@@ -103,12 +103,12 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
       >
         <div className="px-6 pt-5 pb-4 border-b border-slate-200 flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs text-slate-500 mb-0.5">{urlResult.marca} · {urlResult.mercado}</p>
-            <p className="text-xs font-mono text-slate-500">{urlResult.categoria}</p>
+            <p className="text-xs text-slate-600 mb-0.5">{urlResult.marca} · {urlResult.mercado}</p>
+            <p className="text-xs font-mono text-slate-600">{urlResult.categoria}</p>
           </div>
           <div className="text-right shrink-0">
             <p className={`text-3xl font-bold font-mono tabular-nums ${scoreColor}`}>{score}<span className="text-lg">%</span></p>
-            <p className="text-xs sm:text-[10px] text-slate-500 uppercase tracking-widest">visibilidad en Ai</p>
+            <p className="text-xs sm:text-[10px] text-slate-600 uppercase tracking-widest">visibilidad en Ai</p>
           </div>
         </div>
         <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800/60">
@@ -118,14 +118,14 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
               <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">
                 {invisible === 0 ? 'Apareces en todas las búsquedas de Ai' : invisible === urlResult.total_queries ? 'La Ai no te menciona en ninguna búsqueda' : `De cada ${urlResult.total_queries} búsquedas con Ai, ${invisible} no te incluyen`}
               </p>
-              <p className="text-sm text-slate-500 leading-relaxed">{invisible === 0 ? 'Mantén y expande tu posición.' : `Esas consultas las gana ${topCompetitor}.`}</p>
+              <p className="text-sm text-slate-600 leading-relaxed">{invisible === 0 ? 'Mantén y expande tu posición.' : `Esas consultas las gana ${topCompetitor}.`}</p>
             </div>
           </div>
           <div className="px-5 py-5 flex gap-3 items-start">
-            <span className="text-amber-400 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
+            <span className="text-amber-700 text-base font-bold leading-none mt-0.5 shrink-0">②</span>
             <div>
-              <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">La Ai elige a <span className="text-amber-400">{topCompetitor}</span> en esas búsquedas</p>
-              <p className="text-sm text-slate-500 leading-relaxed">Tiene más presencia en las fuentes que la Ai consulta.</p>
+              <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">La Ai elige a <span className="text-amber-700">{topCompetitor}</span> en esas búsquedas</p>
+              <p className="text-sm text-slate-600 leading-relaxed">Tiene más presencia en las fuentes que la Ai consulta.</p>
             </div>
           </div>
           <div className="px-5 py-5 flex gap-3 items-start">
@@ -134,7 +134,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
               <p className="text-sm font-semibold text-slate-900 leading-snug mb-1">
                 {topActions.length > 0 ? `${topActions.length} acciones concretas para recuperar posición` : 'Plan de recuperación disponible más abajo'}
               </p>
-              <p className="text-sm text-slate-500 leading-relaxed">
+              <p className="text-sm text-slate-600 leading-relaxed">
                 {topActions[0]?.tiempo_indexacion_ia ? `Primera acción visible en ${topActions[0].tiempo_indexacion_ia.split('(')[0].trim()}` : 'Ver plan detallado más abajo'}
               </p>
             </div>
@@ -142,10 +142,10 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
         </div>
         {urlResult.diferenciadores.length > 0 && (
           <div className="border-t border-slate-200/60 px-6 py-3">
-            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-2">Diferenciadores que la Ai no menciona</p>
+            <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 mb-2">Diferenciadores que la Ai no menciona</p>
             <div className="flex flex-wrap gap-2">
               {urlResult.diferenciadores.slice(0, 4).map((dif, i) => (
-                <span key={i} className="text-xs text-slate-500 bg-slate-100/50 border border-slate-300/60 rounded px-2.5 py-1">{dif}</span>
+                <span key={i} className="text-xs text-slate-600 bg-slate-100/50 border border-slate-300/60 rounded px-2.5 py-1">{dif}</span>
               ))}
             </div>
           </div>
@@ -156,14 +156,14 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
       {hasMentions && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">02</span>
-            <span className="text-sm text-slate-500 font-medium">¿A quién recomienda la Ai cuando tu cliente busca?</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">02</span>
+            <span className="text-sm text-slate-600 font-medium">¿A quién recomienda la Ai cuando tu cliente busca?</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-url-share-of-voice" variants={fadeUp} className="bg-white border border-slate-200 rounded-sm p-6">
             <div className="mb-5">
               <h3 className="text-sm font-semibold text-slate-900">¿A quién recomienda la Ai cuando tu cliente busca?</h3>
-              <p className="text-slate-500 text-sm mt-1">Estas son las marcas que aparecen cuando un comprador real le pregunta a ChatGPT, Gemini o Perplexity.</p>
+              <p className="text-slate-600 text-sm mt-1">Estas son las marcas que aparecen cuando un comprador real le pregunta a ChatGPT, Gemini o Perplexity.</p>
             </div>
             <ShareOfVoiceChart
               chartData={chartData}
@@ -181,16 +181,16 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
       {urlResult.competitive_deep_dive?.competidor && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">03</span>
-            <span className="text-sm text-slate-500 font-medium">Diagnóstico Competitivo</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">03</span>
+            <span className="text-sm text-slate-600 font-medium">Diagnóstico Competitivo</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-url-competitive-deep-dive" variants={fadeUp} className="bg-white border border-slate-200 rounded-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200 flex items-start gap-3">
               <div className="w-1 self-stretch rounded-full bg-gradient-to-b from-rose-500 to-violet-600 shrink-0" />
               <div>
-                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-1">Diagnóstico Competitivo</p>
-                <h3 className="text-base font-semibold text-slate-900">Por qué <span className="text-amber-400">{urlResult.competitive_deep_dive.competidor}</span> aparece donde tú no</h3>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 mb-1">Diagnóstico Competitivo</p>
+                <h3 className="text-base font-semibold text-slate-900">Por qué <span className="text-amber-700">{urlResult.competitive_deep_dive.competidor}</span> aparece donde tú no</h3>
               </div>
             </div>
             <div className="grid md:grid-cols-5 gap-0 border-b border-slate-200/60">
@@ -199,18 +199,18 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
                 <ul className="space-y-1.5">
                   {(urlResult.competitive_deep_dive.percepcion_nuestra_marca ?? '').split(/\.\s+/).map(s => s.replace(/\.$/, '').trim()).filter(s => s.length > 8).slice(0, 3).map((bullet, bi) => (
                     <li key={bi} className="flex items-start gap-2">
-                      <span className="text-rose-600/70 text-xs mt-0.5 shrink-0">·</span>
+                      <span className="text-rose-600 text-xs mt-0.5 shrink-0">·</span>
                       <span className="text-sm text-slate-700 leading-snug">{bullet}.</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="md:col-span-3 px-5 py-4 border-l-2 border-l-amber-600/40">
-                <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-amber-400 mb-3">Por qué prefieren a {urlResult.competitive_deep_dive.competidor}</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest font-semibold text-amber-700 mb-3">Por qué prefieren a {urlResult.competitive_deep_dive.competidor}</p>
                 <ul className="space-y-1.5">
                   {(urlResult.competitive_deep_dive.mensaje_competidor ?? '').split(/\.\s+/).map(s => s.replace(/\.$/, '').trim()).filter(s => s.length > 8).slice(0, 3).map((bullet, bi) => (
                     <li key={bi} className="flex items-start gap-2">
-                      <span className="text-amber-500/70 text-xs mt-0.5 shrink-0">·</span>
+                      <span className="text-amber-700 text-xs mt-0.5 shrink-0">·</span>
                       <span className="text-sm text-slate-700 leading-snug">{bullet}.</span>
                     </li>
                   ))}
@@ -219,12 +219,12 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
             </div>
             {urlResult.competitive_deep_dive.tabla_atributos?.length > 0 && (
               <div className="px-5 pb-4 pt-4">
-                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 font-semibold mb-3">Dónde exactamente te gana</p>
+                <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 font-semibold mb-3">Dónde exactamente te gana</p>
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-slate-200">
-                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
-                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 font-semibold pb-2 pr-6 w-[28%]">Qué tiene</th>
+                      <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 font-semibold pb-2 pr-6 w-[32%]">Dónde está publicado</th>
                       <th className="text-left text-xs sm:text-[10px] uppercase tracking-widest text-rose-600 font-semibold pb-2 w-[40%]">Clientes que te pierdes</th>
                     </tr>
                   </thead>
@@ -232,7 +232,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
                     {urlResult.competitive_deep_dive.tabla_atributos.map((row, ri) => (
                       <tr key={ri} className="border-b border-slate-200/40 last:border-0">
                         <td className="py-3.5 pr-6 align-top"><span className="text-sm font-semibold text-slate-900">{row.atributo}</span></td>
-                        <td className="py-3.5 pr-6 align-top"><span className="text-sm text-slate-500">{row.autoridad_digital}</span></td>
+                        <td className="py-3.5 pr-6 align-top"><span className="text-sm text-slate-600">{row.autoridad_digital}</span></td>
                         <td className="py-3.5 align-top"><span className="text-sm text-rose-700">{row.impacto_comercial}</span></td>
                       </tr>
                     ))}
@@ -248,8 +248,8 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
       {urlResult.untapped_territories && urlResult.untapped_territories.length > 0 && (
         <>
           <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-            <span className="text-xs font-mono text-slate-500 shrink-0">04</span>
-            <span className="text-sm text-slate-500 font-medium">Temas donde la Ai no tiene un ganador claro</span>
+            <span className="text-xs font-mono text-slate-600 shrink-0">04</span>
+            <span className="text-sm text-slate-600 font-medium">Temas donde la Ai no tiene un ganador claro</span>
             <div className="flex-1 h-px bg-slate-100/30" />
           </motion.div>
           <motion.div id="zone-url-untapped-territories" variants={fadeUp} className="bg-white border border-emerald-200 rounded-sm overflow-hidden">
@@ -258,30 +258,30 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
               <div>
                 <p className="text-xs sm:text-[10px] uppercase tracking-widest text-emerald-700 font-semibold mb-1">Contenido sin dueño</p>
                 <h3 className="text-base font-semibold text-slate-900">Temas donde la Ai no tiene un ganador claro</h3>
-                <p className="text-slate-500 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
+                <p className="text-slate-600 text-sm mt-1 leading-relaxed">Ningún competidor tiene contenido de autoridad en estas búsquedas.</p>
               </div>
             </div>
             <div className="divide-y divide-slate-800/50">
               {urlResult.untapped_territories.map((territory, ti) => {
                 const n = territory.nivel_competencia_ia
-                const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' } : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-300 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
+                const cfg = n === 'Nula' ? { label: 'Sin competencia', cls: 'bg-emerald-500/15 text-emerald-700 border-emerald-500/40' } : n === 'Muy baja' ? { label: 'Fácil de ganar', cls: 'bg-teal-500/15 text-teal-700 border-teal-500/40' } : { label: 'Moderada', cls: 'bg-sky-500/10 text-sky-700 border-sky-500/30' }
                 return (
                   <div key={ti} className="flex items-start gap-4 px-5 py-4">
-                    <span className="text-xs sm:text-[11px] font-mono text-slate-500 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
+                    <span className="text-xs sm:text-[11px] font-mono text-slate-600 pt-1 w-5 shrink-0 select-none">{String(ti + 1).padStart(2, '0')}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-3 mb-2">
                         <p className="text-sm font-semibold text-slate-900 leading-snug">{territory.titulo}</p>
                         <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${cfg.cls}`}>{cfg.label}</span>
                       </div>
-                      <p className="text-slate-500 text-sm leading-relaxed">{territory.justificacion_negocio}</p>
+                      <p className="text-slate-600 text-sm leading-relaxed">{territory.justificacion_negocio}</p>
                     </div>
                   </div>
                 )
               })}
             </div>
             <div className="border-t border-slate-200/60 px-6 py-3 flex items-center gap-2">
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-500/60 shrink-0" />
-              <p className="text-xs text-slate-500">El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.</p>
+              <TrendingUp className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+              <p className="text-xs text-slate-600">El plan de acción de abajo prioriza cuál de estos temas atacar primero y cómo hacerlo.</p>
             </div>
           </motion.div>
         </>
@@ -300,8 +300,8 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
 
       {/* 06 · Evidencia */}
       <motion.div variants={fade} className="flex items-center gap-3 px-1 mt-10 mb-3">
-        <span className="text-xs font-mono text-slate-500 shrink-0">06</span>
-        <span className="text-sm text-slate-500 font-medium">Exportar informe</span>
+        <span className="text-xs font-mono text-slate-600 shrink-0">06</span>
+        <span className="text-sm text-slate-600 font-medium">Exportar informe</span>
         <div className="flex-1 h-px bg-slate-100/30" />
       </motion.div>
       <motion.div variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }} className="bg-white shadow-sm border border-slate-200 rounded-sm overflow-hidden">
@@ -311,11 +311,11 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
         >
           <div className="flex items-center gap-3">
             <span className="text-sm font-semibold text-slate-700">Ver los prompts exactos que usamos para este análisis</span>
-            <span className="text-xs sm:text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">{urlResult.total_queries} perfiles</span>
+            <span className="text-xs sm:text-[10px] font-mono text-slate-600 bg-slate-100 px-2 py-0.5 rounded">{urlResult.total_queries} perfiles</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">{showPerfilesDetalle ? 'Cerrar' : 'Ver evidencia →'}</span>
-            <span className={`text-slate-500 text-xs transition-transform ${showPerfilesDetalle ? 'rotate-180' : ''}`}>▾</span>
+            <span className="text-xs text-slate-600">{showPerfilesDetalle ? 'Cerrar' : 'Ver evidencia →'}</span>
+            <span className={`text-slate-600 text-xs transition-transform ${showPerfilesDetalle ? 'rotate-180' : ''}`}>▾</span>
           </div>
         </button>
         {showPerfilesDetalle && (
@@ -325,11 +325,11 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
                 <div className="px-5 py-3 flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm font-semibold text-slate-900">{r.arquetipo}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">Busca: <span className="text-slate-500">{r.driver}</span></p>
+                    <p className="text-xs text-slate-600 mt-0.5">Busca: <span className="text-slate-600">{r.driver}</span></p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     {r.sentimiento && (
-                      <span className={`text-xs sm:text-[10px] font-semibold px-2 py-0.5 rounded border ${r.sentimiento === 'positivo' ? 'bg-emerald-50 text-emerald-700 border-emerald-700/30' : r.sentimiento === 'negativo' ? 'bg-rose-50 text-rose-600 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'}`}>
+                      <span className={`text-xs sm:text-[10px] font-semibold px-2 py-0.5 rounded border ${r.sentimiento === 'positivo' ? 'bg-emerald-50 text-emerald-700 border-emerald-700/30' : r.sentimiento === 'negativo' ? 'bg-rose-50 text-rose-600 border-rose-300' : 'bg-slate-100 text-slate-600 border-slate-300'}`}>
                         {r.sentimiento === 'positivo' ? '😊' : r.sentimiento === 'negativo' ? '😞' : '😐'} {r.sentimiento}
                       </span>
                     )}
@@ -340,11 +340,11 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
                 </div>
                 <div className="px-5 pb-4 space-y-3">
                   <div className="bg-white shadow-sm border border-slate-200 rounded-sm px-3 py-2.5">
-                    <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-2">Intención de Búsqueda Simulada</p>
+                    <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 mb-2">Intención de Búsqueda Simulada</p>
                     <ul className="space-y-1">
                       {queryToBullets(r.query).map((bullet, bi) => (
-                        <li key={bi} className="flex items-start gap-1.5 text-xs text-slate-500">
-                          <span className="text-slate-500 shrink-0 mt-0.5">•</span><span>{bullet}</span>
+                        <li key={bi} className="flex items-start gap-1.5 text-xs text-slate-600">
+                          <span className="text-slate-600 shrink-0 mt-0.5">•</span><span>{bullet}</span>
                         </li>
                       ))}
                     </ul>
@@ -356,18 +356,18 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
                     const hidden = r.marcas_mencionadas.length - visible.length
                     return (
                       <div>
-                        <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-500 mb-1.5">La Ai recomienda a</p>
+                        <p className="text-xs sm:text-[10px] uppercase tracking-widest text-slate-600 mb-1.5">La Ai recomienda a</p>
                         <div className="flex flex-wrap gap-1.5 items-center">
                           {visible.map((m, j) => {
                             const isWinner = j === 0
                             const isOurBrand = m.toLowerCase() === urlResult.marca.toLowerCase()
                             return (
-                              <span key={j} className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border ${isOurBrand ? 'bg-sky-50 text-sky-600 border-sky-700/40' : isWinner ? 'bg-amber-50 text-amber-400 border-amber-300' : 'bg-slate-100 text-slate-500 border-slate-300'}`}>
+                              <span key={j} className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border ${isOurBrand ? 'bg-sky-50 text-sky-700 border-sky-700/40' : isWinner ? 'bg-amber-50 text-amber-700 border-amber-300' : 'bg-slate-100 text-slate-600 border-slate-300'}`}>
                                 {isWinner && !isOurBrand && <span>👑</span>}{m}
                               </span>
                             )
                           })}
-                          {hidden > 0 && <span className="text-xs sm:text-[10px] text-slate-500">+{hidden} más</span>}
+                          {hidden > 0 && <span className="text-xs sm:text-[10px] text-slate-600">+{hidden} más</span>}
                         </div>
                       </div>
                     )
@@ -375,18 +375,18 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
                   {!r.mencionada && (
                     <div className="flex items-start gap-2 p-2.5 bg-rose-50 border border-rose-200 rounded-sm">
                       <AlertTriangle className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" />
-                      <p className="text-rose-700/80 text-xs">Este comprador no te encuentra. La Ai recomienda a <span className="font-semibold text-rose-700">{r.marca_ganadora || 'la competencia'}</span>.</p>
+                      <p className="text-rose-700 text-xs">Este comprador no te encuentra. La Ai recomienda a <span className="font-semibold text-rose-700">{r.marca_ganadora || 'la competencia'}</span>.</p>
                     </div>
                   )}
                   {r.snippet && (
                     <div>
-                      <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-500 hover:text-slate-700 transition-colors">
+                      <button onClick={() => setShowUrlSnippet(prev => ({ ...prev, [i]: !prev[i] }))} className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-600 hover:text-slate-700 transition-colors">
                         <Terminal className="w-3 h-3" />
                         {showUrlSnippet[i] ? 'Ocultar respuesta original' : 'Ver respuesta original de la Ai'}
                       </button>
                       {showUrlSnippet[i] && (
                         <div className="mt-2 p-3 bg-slate-50/80 border border-slate-200 rounded-sm max-h-40 overflow-y-auto">
-                          <p className="text-slate-500 text-xs sm:text-[11px] font-mono leading-relaxed whitespace-pre-wrap">{r.snippet}</p>
+                          <p className="text-slate-600 text-xs sm:text-[11px] font-mono leading-relaxed whitespace-pre-wrap">{r.snippet}</p>
                         </div>
                       )}
                     </div>
@@ -400,7 +400,7 @@ export function UrlResults({ urlResult, urlInput, userEmail, userName, hideExpor
 
       {/* Footer metadata */}
       <motion.div variants={fade} className="pt-2">
-        <p className="text-slate-500 text-xs sm:text-[10px] font-mono">
+        <p className="text-slate-600 text-xs sm:text-[10px] font-mono">
           Análisis generado por Ai · {new Date().toLocaleDateString('es-CL')} · {urlResult.total_queries} tipos de cliente · {urlResult.mercado}
         </p>
       </motion.div>
