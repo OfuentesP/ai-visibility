@@ -3,8 +3,11 @@
 import { useEffect, useState } from 'react'
 import { CheckCircle2, Loader2, AlertTriangle, HelpCircle, Pencil, ExternalLink } from 'lucide-react'
 
+type Cambio = { donde: string; tipo: 'modificado' | 'agregado' | 'eliminado'; antes: string; despues: string }
+
 type Estado = {
   estado: 'publicando' | 'publicado' | 'error' | 'desconocido' | 'no_configurado'
+  cambios?: { tipo: 'contenido' | 'tecnico'; lista: Cambio[]; mas?: number } | null
   paso?: number
   pasos_total?: number
   iniciado?: string
@@ -26,6 +29,50 @@ const fecha = (iso?: string) => {
   const mismoDia = d.toLocaleDateString('es-CL', { timeZone: 'America/Santiago' }) ===
     hoy.toLocaleDateString('es-CL', { timeZone: 'America/Santiago' })
   return mismoDia ? 'hoy' : d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long', timeZone: 'America/Santiago' })
+}
+
+function Cambios({ cambios, titulo }: { cambios: Estado['cambios']; titulo: string }) {
+  if (!cambios) return null
+  if (cambios.tipo === 'tecnico' || cambios.lista.length === 0) {
+    return (
+      <p className="text-slate-500 text-sm mt-4 pt-4 border-t border-slate-100">
+        Es un ajuste técnico del sitio: no cambia textos de la página.
+      </p>
+    )
+  }
+  return (
+    <div className="mt-4 pt-4 border-t border-slate-100">
+      <p className="text-xs sm:text-[11px] text-slate-500 uppercase tracking-widest mb-3">{titulo}</p>
+      <ul className="space-y-3">
+        {cambios.lista.map((c, i) => (
+          <li key={i} className="text-sm">
+            <p className="text-slate-500 text-xs mb-1">{c.donde}</p>
+            {c.tipo === 'modificado' && (c.antes.length + c.despues.length > 50) && (
+              <div className="space-y-1.5 leading-relaxed">
+                <p className="bg-rose-50 text-rose-800 px-2 py-1 rounded-sm"><span className="font-semibold">Antes: </span><span className="line-through decoration-rose-400">{c.antes || '(vacío)'}</span></p>
+                <p className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-sm"><span className="font-semibold">Ahora: </span>{c.despues || '(vacío)'}</p>
+              </div>
+            )}
+            {c.tipo === 'modificado' && (c.antes.length + c.despues.length <= 50) && (
+              <p className="leading-relaxed">
+                <span className="bg-rose-50 text-rose-800 line-through decoration-rose-400 px-1.5 py-0.5 rounded-sm">{c.antes || '(vacío)'}</span>
+                <span className="text-slate-400 mx-1.5" aria-hidden>→</span>
+                <span className="sr-only"> cambió a </span>
+                <span className="bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded-sm font-medium">{c.despues || '(vacío)'}</span>
+              </p>
+            )}
+            {c.tipo === 'agregado' && (
+              <p><span className="text-emerald-700 font-semibold">Agregado: </span><span className="text-slate-800">{c.despues}</span></p>
+            )}
+            {c.tipo === 'eliminado' && (
+              <p><span className="text-rose-700 font-semibold">Eliminado: </span><span className="text-slate-800 line-through decoration-rose-400">{c.antes}</span></p>
+            )}
+          </li>
+        ))}
+      </ul>
+      {!!cambios.mas && <p className="text-slate-500 text-xs mt-3">…y {cambios.mas} cambio{cambios.mas === 1 ? '' : 's'} más.</p>}
+    </div>
+  )
 }
 
 export function EstadoPublicacion() {
@@ -76,18 +123,22 @@ export function EstadoPublicacion() {
                 <Loader2 className="animate-spin text-amber-600 shrink-0 mt-0.5" size={26} />
                 <div>
                   <p className="text-lg font-bold text-slate-900">Publicando tu cambio…</p>
-                  <p className="text-slate-600 text-sm">Paso {paso} de {total} · empezó a las {hora(data.iniciado)}</p>
+                  <p className="text-slate-600 text-sm">
+                    {paso === 0 ? 'Preparando la publicación' : `Paso ${paso} de ${total}`} · empezó a las {hora(data.iniciado)}
+                  </p>
                 </div>
               </div>
               <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={paso}>
                 <div className="h-full bg-amber-500 transition-all duration-700" style={{ width: `${Math.max(8, (paso / total) * 100)}%` }} />
               </div>
               <p className="text-slate-500 text-sm mt-3">Puedes dejar esta página abierta: se actualiza sola.</p>
+              <Cambios cambios={data.cambios} titulo="Qué se está publicando" />
             </div>
           )}
 
           {data?.estado === 'publicado' && (
-            <div className="flex items-start gap-3">
+            <div>
+              <div className="flex items-start gap-3">
               <CheckCircle2 className="text-emerald-600 shrink-0 mt-0.5" size={26} />
               <div>
                 <p className="text-lg font-bold text-slate-900">Publicado. Ya se ve en la web.</p>
@@ -96,11 +147,14 @@ export function EstadoPublicacion() {
                   Si acabas de guardar y la hora es anterior a tu cambio, espera unos segundos: la publicación tarda un momento en empezar.
                 </p>
               </div>
+              </div>
+              <Cambios cambios={data.cambios} titulo="Qué cambió" />
             </div>
           )}
 
           {data?.estado === 'error' && (
-            <div className="flex items-start gap-3">
+            <div>
+              <div className="flex items-start gap-3">
               <AlertTriangle className="text-rose-600 shrink-0 mt-0.5" size={26} />
               <div>
                 <p className="text-lg font-bold text-slate-900">Hubo un problema al publicar.</p>
@@ -109,6 +163,8 @@ export function EstadoPublicacion() {
                   Avísale a Oscar.
                 </p>
               </div>
+              </div>
+              <Cambios cambios={data.cambios} titulo="Qué se intentó publicar" />
             </div>
           )}
 
