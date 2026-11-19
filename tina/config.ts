@@ -45,6 +45,30 @@ export default defineConfig({
   schema: {
     collections: [
       {
+        name: 'sitio',
+        label: 'Datos generales del sitio',
+        path: 'content',
+        format: 'json',
+        match: { include: 'sitio' },
+        ui: { allowedActions: { create: false, delete: false } },
+        fields: [
+          text('whatsapp', 'Número de WhatsApp', 'Con código de país, sin "+" ni espacios. Ej: 56912345678. Se usa en TODO el sitio: botón verde flotante, footer y botones de los planes.'),
+          textarea('whatsappMensaje', 'Mensaje precargado de WhatsApp', 'Lo que aparece escrito al tocar el botón verde flotante o el ícono del footer. (Los planes tienen su propio mensaje.)'),
+          text('whatsappBotonTexto', 'Texto del botón verde flotante', 'Aparece al pasar el mouse sobre el botón. Ej: ¿Hablamos?'),
+          textarea('footerDescripcion', 'Descripción de la empresa (footer)'),
+          group('direccion', 'Dirección (footer y Google)', [
+            text('calle', 'Calle y número'),
+            { type: 'string', name: 'edificio', label: 'Edificio / oficina (opcional)' },
+            text('comuna', 'Comuna'),
+            text('ciudad', 'Ciudad'),
+            text('region', 'Región'),
+          ]),
+          { type: 'string', name: 'footerNota', label: 'Nota al pie (opcional)', description: 'Va después de "© 2026 Ai Visibility ·" al final de cada página.' },
+          text('instagram', 'Link de Instagram', 'Dirección completa, empezando con https://'),
+          text('linkedin', 'Link de LinkedIn', 'Dirección completa, empezando con https://'),
+        ],
+      },
+      {
         name: 'home',
         label: 'Página de inicio',
         path: 'content',
@@ -55,8 +79,6 @@ export default defineConfig({
           allowedActions: { create: false, delete: false },
         },
         fields: [
-          text('whatsapp', 'Número de WhatsApp', 'Con código de país y sin "+" ni espacios. Ej: 56912345678. Se usa en los botones de los planes.'),
-
           group('hero', '1 · Portada (lo primero que se ve)', [
             text('antetitulo', 'Antetítulo', ANTETITULO),
             text('tituloLinea1', 'Título — primera línea'),

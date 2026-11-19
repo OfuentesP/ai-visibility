@@ -3,6 +3,7 @@ import { Check, X, Minus, Search, Users, PieChart, Terminal } from 'lucide-react
 import { FaqAccordionServer } from '@/components/FaqAccordionServer'
 // Contenido editable desde /admin (TinaCMS). El diseño vive aquí; los textos en content/home.json.
 import home from '../../content/home.json'
+import { whatsappUrl } from '@/lib/sitio'
 
 export const metadata = {
   title: 'Ai Visibility | Plataforma de Optimización para Motores Generativos (GEO)',
@@ -92,9 +93,6 @@ const estilosPlan = {
     boton: 'bg-violet-600 hover:bg-violet-500 text-white',
   },
 } as const
-
-const whatsappUrl = (mensaje: string) =>
-  `https://wa.me/${home.whatsapp}?text=${encodeURIComponent(mensaje)}`
 
 export default function LandingPage() {
   return (

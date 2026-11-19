@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { sitio, whatsappUrl } from '@/lib/sitio'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -18,13 +19,12 @@ export default function Footer() {
               <span className="text-slate-800 text-sm font-semibold">Ai Visibility</span>
             </div>
             <p className="text-slate-500 text-sm sm:text-xs leading-relaxed max-w-xs">
-              Plataforma de auditoría para Generative Engine Optimization (GEO).
-              Mide el Share of Model de tu marca en ChatGPT, Perplexity y Claude.
+              {sitio.footerDescripcion}
             </p>
             <p className="text-slate-700 text-sm sm:text-xs mt-3 leading-relaxed">
-              Alonso de Córdova 5870<br />
-              Edificio Quantum, Las Condes<br />
-              Santiago, Chile
+              {sitio.direccion.calle}<br />
+              {[sitio.direccion.edificio, sitio.direccion.comuna].filter(Boolean).join(', ')}<br />
+              {`${sitio.direccion.ciudad}, Chile`}
             </p>
           </div>
 
@@ -73,11 +73,11 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-slate-200/40 pt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <p className="text-slate-500 text-xs sm:text-[11px] font-mono">
-            © {year} Ai Visibility · Datos procesados con GPT-4o · Chile
+            {`© ${year} Ai Visibility${sitio.footerNota ? ` · ${sitio.footerNota}` : ''}`}
           </p>
           <div className="flex items-center gap-5">
             <a
-              href="https://wa.me/56997065555?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20sobre%20Ai%20Visibility"
+              href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -88,7 +88,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="https://www.instagram.com/ai_visibility_latam/"
+              href={sitio.instagram}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -101,7 +101,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="https://www.linkedin.com/company/ai-visibility-latam/"
+              href={sitio.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"

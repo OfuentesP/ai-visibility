@@ -1,0 +1,16 @@
+{
+  "whatsapp": "56997065555",
+  "whatsappMensaje": "Hola, quiero saber más sobre Ai Visibility",
+  "whatsappBotonTexto": "¿Hablamos?",
+  "footerDescripcion": "Plataforma de auditoría para Generative Engine Optimization (GEO). Mide el Share of Model de tu marca en ChatGPT, Perplexity y Claude.",
+  "direccion": {
+    "calle": "Alonso de Córdova 5870",
+    "edificio": "Edificio Quantum",
+    "comuna": "Las Condes",
+    "ciudad": "Santiago",
+    "region": "Región Metropolitana"
+  },
+  "footerNota": "Datos procesados con GPT-4o · Chile",
+  "instagram": "https://www.instagram.com/ai_visibility_latam/",
+  "linkedin": "https://www.linkedin.com/company/ai-visibility-latam/"
+}

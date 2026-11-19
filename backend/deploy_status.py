@@ -3,7 +3,7 @@
 Consulta el último deploy en DigitalOcean App Platform y devuelve solo lo necesario
 (fase, progreso, horas y qué textos cambiaron). El token de DigitalOcean nunca sale del backend.
 
-"Qué cambió" se calcula comparando content/home.json entre el commit desplegado y su
+"Qué cambió" se calcula comparando los JSON de content/ entre el commit desplegado y su
 padre (el repo es público; GITHUB_TOKEN es opcional y solo sube el límite de la API).
 
 Env:
@@ -29,7 +29,11 @@ _cambios_cache: dict[str, dict] = {}  # sha -> resultado (un commit nunca cambia
 _EN_CURSO = {"PENDING_BUILD", "BUILDING", "PENDING_DEPLOY", "DEPLOYING"}
 _PUBLICADO = {"ACTIVE", "SUPERSEDED"}
 
-CONTENT_PATH = "content/home.json"
+# archivo -> prefijo (None = la primera clave es una sección del home)
+CONTENT_FILES = {
+    "content/home.json": None,
+    "content/sitio.json": "Datos generales",
+}
 MAX_CAMBIOS = 12
 MAX_TEXTO = 160
 
@@ -66,6 +70,12 @@ _CAMPOS = {
     "sello": "Sello", "estilo": "Color de la tarjeta", "precio": "Precio", "unidad": "Bajo el precio",
     "incluye": "Qué incluye", "mensajeWhatsapp": "Mensaje de WhatsApp", "nota": "Nota",
     "grupos": "", "preguntas": "", "pregunta": "Pregunta", "respuesta": "Respuesta",
+    # Datos generales (content/sitio.json)
+    "whatsapp": "Número de WhatsApp", "whatsappMensaje": "Mensaje precargado de WhatsApp",
+    "whatsappBotonTexto": "Texto del botón verde", "footerDescripcion": "Descripción de la empresa",
+    "direccion": "Dirección", "calle": "Calle y número", "edificio": "Edificio / oficina",
+    "comuna": "Comuna", "ciudad": "Ciudad", "region": "Región", "footerNota": "Nota al pie",
+    "instagram": "Instagram", "linkedin": "LinkedIn",
 }
 _NOMBRE_ITEM = ("nombre", "titulo", "pregunta")
 
@@ -92,6 +102,8 @@ def _diff(antes: Any, despues: Any, ruta: list[str], out: list[dict]) -> None:
         return
     if isinstance(antes, dict) and isinstance(despues, dict):
         for k in list(antes.keys()) + [k for k in despues if k not in antes]:
+            if not ruta and k not in despues:
+                continue  # sección/campo raíz eliminado = cambio de estructura (código), no de contenido
             etiqueta = _SECCIONES.get(k) if not ruta else _CAMPOS.get(k, k)
             _diff(antes.get(k), despues.get(k), ruta + ([etiqueta] if etiqueta else []), out)
         return
@@ -120,22 +132,24 @@ async def _cambios_de_commit(client: httpx.AsyncClient, repo: str, sha: str) -> 
     r = await client.get(f"https://api.github.com/repos/{repo}/commits/{sha}", headers=headers)
     r.raise_for_status()
     commit = r.json()
-    archivos = [f.get("filename") for f in commit.get("files") or []]
+    archivos = {f.get("filename") for f in commit.get("files") or []}
     parents = commit.get("parents") or []
-    if CONTENT_PATH not in archivos or not parents:
-        res = {"tipo": "tecnico", "lista": []}
+    lista: list[dict] = []
+    if parents:
+        raw = "https://raw.githubusercontent.com/{repo}/{ref}/{path}"
+        for path, prefijo in CONTENT_FILES.items():
+            if path not in archivos:
+                continue
+            ra = await client.get(raw.format(repo=repo, ref=parents[0]["sha"], path=path))
+            if ra.status_code == 404:  # el archivo se creó en este commit: no hay "antes"
+                continue
+            rd = await client.get(raw.format(repo=repo, ref=sha, path=path))
+            ra.raise_for_status(); rd.raise_for_status()
+            _diff(ra.json(), rd.json(), [prefijo] if prefijo else [], lista)
+    if lista:
+        res = {"tipo": "contenido", "lista": lista[:MAX_CAMBIOS], "mas": max(0, len(lista) - MAX_CAMBIOS)}
     else:
-        raw = "https://raw.githubusercontent.com/{repo}/{ref}/" + CONTENT_PATH
-        ra = await client.get(raw.format(repo=repo, ref=parents[0]["sha"]))
-        rd = await client.get(raw.format(repo=repo, ref=sha))
-        rd.raise_for_status()
-        if ra.status_code == 404:  # el archivo se creó en este commit: no hay "antes"
-            res = {"tipo": "tecnico", "lista": []}
-        else:
-            ra.raise_for_status()
-            lista: list[dict] = []
-            _diff(ra.json(), rd.json(), [], lista)
-            res = {"tipo": "contenido", "lista": lista[:MAX_CAMBIOS], "mas": max(0, len(lista) - MAX_CAMBIOS)}
+        res = {"tipo": "tecnico", "lista": []}
     _cambios_cache[sha] = res
     return res
 
