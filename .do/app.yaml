@@ -51,6 +51,13 @@ static_sites:
       - key: NEXT_PUBLIC_ADMIN_PASSWORD
         type: SECRET
         scope: BUILD_TIME
+      # TinaCMS (editor de contenidos en /admin/). Valores en app.tina.io → proyecto.
+      - key: NEXT_PUBLIC_TINA_CLIENT_ID
+        type: SECRET
+        scope: BUILD_TIME
+      - key: TINA_TOKEN
+        type: SECRET
+        scope: BUILD_TIME
 
 services:
   - name: api

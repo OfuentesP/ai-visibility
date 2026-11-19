@@ -1,0 +1,293 @@
+{
+  "whatsapp": "56997065555",
+  "hero": {
+    "antetitulo": "Generative Engine Optimization · Share of Model",
+    "tituloLinea1": "¿Te menciona la Ai",
+    "tituloLinea2": "cuando alguien busca",
+    "tituloDestacado": "lo que tú vendes?",
+    "descripcion": "Mide tu **Share of Model**: cuántas veces ChatGPT, Perplexity y Gemini recomiendan tu marca frente a la competencia. Recibe un diagnóstico claro y un plan de acción GEO para mejorarlo.",
+    "descripcionMovil": "Mide tu **Share of Model**: cuántas veces ChatGPT, Perplexity y Gemini recomiendan tu marca, con un plan para mejorarlo.",
+    "botonTexto": "Auditar mi marca Gratis →",
+    "motores": [
+      "ChatGPT · GPT-4o",
+      "Perplexity AI",
+      "Google Gemini",
+      "Claude Anthropic"
+    ]
+  },
+  "puntoCiego": {
+    "antetitulo": "El punto ciego de tu estrategia",
+    "tituloIntro": "Mientras mejoras tu landing,",
+    "titulo": "ChatGPT y Gemini ya le recomendaron otra marca a tu cliente.",
+    "texto": "La Ai sintetiza **una sola respuesta**. Si tu marca no está en esa síntesis, no entras al proceso de decisión — ni siquiera para perderlo.",
+    "botonTexto": "Ver cómo me cita ChatGPT y Gemini →",
+    "ejemploPregunta": "¿Cuál es el mejor proveedor de impresoras 3D y toners para empresas en Santiago?",
+    "ejemploIntro": "Basado en reseñas y autoridad técnica, las mejores opciones en Santiago son:",
+    "ejemploRecomendado": "Toner Chile — Recomendado",
+    "ejemploOtro": "3D Studio Santiago",
+    "ejemploAlerta": "**Tu marca no fue mencionada.** El tráfico se fue 100% a la competencia."
+  },
+  "metodologia": {
+    "antetitulo": "Cómo trabajamos",
+    "titulo": "No es magia. Es ingeniería inversa.",
+    "subtitulo": "4 pasos auditables para ir del diagnóstico al código que la Ai lee.",
+    "subtituloMovil": "4 pasos del diagnóstico al código.",
+    "etiquetaDestacado": "Nuestro core",
+    "pasos": [
+      {
+        "titulo": "Mapeamos tu mercado",
+        "descripcion": "Identificamos las preguntas reales que tus clientes le hacen a la Ai sobre tu categoría.",
+        "destacado": false
+      },
+      {
+        "titulo": "Te auditamos en ChatGPT, Perplexity y Gemini",
+        "descripcion": "Simulamos a tus compradores reales para ver qué dice cada motor cuando preguntan por lo que tú vendes.",
+        "destacado": true
+      },
+      {
+        "titulo": "Te mostramos quién se lleva tu venta",
+        "descripcion": "Recibes tu Share of Model real, el sentimiento de marca y el competidor exacto que la Ai recomienda en tu lugar.",
+        "destacado": false
+      },
+      {
+        "titulo": "Te entregamos qué tocar primero",
+        "descripcion": "Plan priorizado por ICE + código JSON-LD listo para copiar y pegar. Tu equipo de TI lo implementa el mismo día.",
+        "destacado": false
+      }
+    ]
+  },
+  "entregables": {
+    "antetitulo": "Qué te llevas",
+    "titulo": "Un informe que tu equipo puede ejecutar mañana",
+    "tituloMovil": "Un informe que se ejecuta",
+    "items": [
+      {
+        "icono": "◉",
+        "titulo": "AI Readiness Score (0–100)",
+        "descripcion": "Un puntaje y un estado: Riesgo Crítico, En Riesgo o Visible. La métrica que llevas al directorio."
+      },
+      {
+        "icono": "◈",
+        "titulo": "Cómo te cita ChatGPT",
+        "descripcion": "Tu posición exacta, el sentimiento de la mención (positivo, neutral o riesgo de alucinación) y la marca ganadora que recomienda en tu lugar."
+      },
+      {
+        "icono": "△",
+        "titulo": "Brecha semántica",
+        "descripcion": "Los conceptos y temas que la Ai asocia a tu competencia y no a ti. La hoja de ruta de contenido que sí tienes que crear."
+      },
+      {
+        "icono": "▶",
+        "titulo": "Plan ICE con ejecutor",
+        "descripcion": "Acciones priorizadas por Impacto, Confianza y Esfuerzo. Cada una con quién la ejecuta (TI, marketing, agencia) + JSON-LD listo para copiar."
+      }
+    ],
+    "botonTexto": "Quiero mi informe →"
+  },
+  "diagnostico": {
+    "antetitulo": "Ejemplo de diagnóstico real",
+    "titulo": "Lo que tu informe revela — con precisión quirúrgica",
+    "texto": "No decimos \"mejora tu presencia digital\". Te decimos exactamente qué fuente de datos le falta a la Ai para recomendarte.",
+    "tarjetas": [
+      {
+        "etiqueta": "Foros y comunidades",
+        "icono": "⚠",
+        "titulo": "Sin menciones en Reddit Chile ni Reclamos.cl",
+        "descripcion": "Perplexity valida la confianza de una marca usando foros y reviews de usuarios reales. Sin menciones en estas fuentes, la Ai no tiene evidencia social para recomendarte."
+      },
+      {
+        "etiqueta": "Datos estructurados",
+        "icono": "✗",
+        "titulo": "Sin Schema JSON-LD en tu homepage",
+        "descripcion": "ChatGPT extrae datos estructurados de tu sitio para describir tu negocio. Sin JSON-LD, la Ai infiere quién eres desde fuentes de terceros — y puede equivocarse."
+      },
+      {
+        "etiqueta": "Autoridad en medios",
+        "icono": "✗",
+        "titulo": "0 menciones en medios indexados (90 días)",
+        "descripcion": "Tu competencia aparece citada en La Tercera, Emol y Pulso. La Ai usa esas citas como señal de autoridad. Quien no aparece en medios que la Ai indexa, no existe para ella."
+      }
+    ],
+    "datos": [
+      "14 fuentes analizadas",
+      "3 arquetipos de comprador simulados",
+      "Tiempo de análisis: 47s",
+      "Motor: ChatGPT GPT-4o"
+    ]
+  },
+  "comparativa": {
+    "antetitulo": "GEO vs SEO",
+    "titulo": "¿Por qué el SEO tradicional ya no es suficiente?",
+    "texto": "Pagar una agencia SEO no garantiza que ChatGPT sepa quién eres. El juego cambió de **\"buscar listas\"** a **\"recibir respuestas\"**.",
+    "nosotrosEtiqueta": "Plataforma GEO",
+    "nosotrosNombre": "Ai Visibility",
+    "otrosEtiqueta": "Marketing tradicional",
+    "otrosNombre": "Agencia SEO",
+    "filas": [
+      {
+        "nombre": "Métricas de éxito",
+        "nosotros": "Share of Model (SoM) y citas en Ai",
+        "otros": "Posición en los 10 links de Google",
+        "iconoOtros": "minus"
+      },
+      {
+        "nombre": "Motores auditados",
+        "nosotros": "ChatGPT · Gemini próximamente",
+        "otros": "Solo Google Search",
+        "iconoOtros": "minus"
+      },
+      {
+        "nombre": "Análisis de sentimiento",
+        "nosotros": "Sí — positivo, neutral, alucinación",
+        "otros": "No (solo volumen y clics)",
+        "iconoOtros": "x"
+      },
+      {
+        "nombre": "Estrategia técnica",
+        "nosotros": "JSON-LD, RAG y densidad de entidad",
+        "otros": "Keywords, backlinks y meta tags",
+        "iconoOtros": "minus"
+      },
+      {
+        "nombre": "El objetivo final",
+        "nosotros": "Ser la recomendación única de la Ai",
+        "otros": "Pelear por clics en una lista",
+        "iconoOtros": "x"
+      }
+    ],
+    "pieTexto": "Protege tu cuota de mercado en ChatGPT hoy.",
+    "pieBoton": "Auditar mi marca en ChatGPT →"
+  },
+  "planes": {
+    "antetitulo": "Planes",
+    "titulo": "Cuatro formas de trabajar con Ai Visibility",
+    "texto": "Desde un diagnóstico puntual hasta la creación y medición mes a mes. Empieza por donde lo necesites.",
+    "items": [
+      {
+        "nombre": "Diagnóstico",
+        "sello": "Disponible ahora",
+        "estilo": "principal",
+        "precio": "$190.000",
+        "unidad": "CLP · pago único",
+        "descripcion": "La radiografía de cómo te ve la Ai hoy frente a tu competencia. Punto de partida con datos, no opiniones.",
+        "incluye": [
+          "Share of Model vs competidores",
+          "Plan de acción con tácticas ICE",
+          "Código JSON-LD listo para copiar",
+          "Análisis de sentimiento",
+          "Informe compartible"
+        ],
+        "botonTexto": "Empezar diagnóstico →",
+        "mensajeWhatsapp": "Hola, me interesa el Diagnóstico de Ai Visibility"
+      },
+      {
+        "nombre": "Asesoría",
+        "sello": "",
+        "estilo": "normal",
+        "precio": "$290.000",
+        "unidad": "CLP · pago único",
+        "descripcion": "Una sesión con tu equipo para definir qué contenido crear, cómo y en qué orden. Sales con un plan, no con apuntes.",
+        "incluye": [
+          "Diagnóstico previo incluido",
+          "Sesión 1:1 con tu equipo (90 min)",
+          "Roadmap de prioridades de contenido",
+          "Recomendaciones por canal y motor",
+          "Reporte ejecutivo descargable"
+        ],
+        "botonTexto": "Conversemos →",
+        "mensajeWhatsapp": "Hola, me interesa la Asesoría de Ai Visibility"
+      },
+      {
+        "nombre": "Capacitación",
+        "sello": "",
+        "estilo": "normal",
+        "precio": "$490.000",
+        "unidad": "CLP · programa de 3 clases",
+        "descripcion": "Tu equipo interno aprende a crear contenido que la Ai recomiende — sin depender de una agencia externa cada mes.",
+        "incluye": [
+          "Diagnóstico inicial incluido",
+          "3 sesiones en vivo (90 min c/u)",
+          "Crear contenido que la Ai cite",
+          "Estructura técnica para que la Ai lea",
+          "Material y grabaciones descargables"
+        ],
+        "botonTexto": "Reservar cupos →",
+        "mensajeWhatsapp": "Hola, me interesa la Capacitación de Ai Visibility"
+      },
+      {
+        "nombre": "Plan Mensual",
+        "sello": "Más completo",
+        "estilo": "premium",
+        "precio": "$690.000",
+        "unidad": "CLP · por mes",
+        "descripcion": "Trabajamos junto a tu equipo todos los meses: objetivos, contenidos y medición. La forma sostenida de mover tu Share of Model.",
+        "incluye": [
+          "Diagnóstico inicial incluido",
+          "Definición de objetivos mensuales",
+          "Creación de contenidos mensuales",
+          "Implementación técnica continua",
+          "Reporte y reunión de avances mensual"
+        ],
+        "botonTexto": "Conversemos →",
+        "mensajeWhatsapp": "Hola, me interesa el Plan Mensual de Ai Visibility"
+      }
+    ],
+    "nota": "Valores referenciales en CLP"
+  },
+  "faq": {
+    "antetitulo": "Preguntas Frecuentes",
+    "titulo": "Todo lo que necesitas saber sobre GEO",
+    "grupos": [
+      {
+        "titulo": "Conceptos clave",
+        "preguntas": [
+          {
+            "pregunta": "¿Qué es Generative Engine Optimization (GEO)?",
+            "respuesta": "Generative Engine Optimization (GEO) es el proceso técnico y estratégico de optimizar la presencia de una marca para que sea recomendada por modelos de lenguaje de gran escala (LLMs) y motores de respuesta generativa, como ChatGPT, Perplexity, Claude y Gemini. A diferencia del SEO, GEO se enfoca en entidades, contexto semántico y recuperación de información (RAG)."
+          },
+          {
+            "pregunta": "¿Cuál es la diferencia entre SEO y GEO?",
+            "respuesta": "El SEO tradicional busca posicionar enlaces en una lista de resultados de Google basándose en palabras clave. El GEO busca posicionar tu marca como la \"respuesta definitiva\" dentro de un texto conversacional generado por Ai, donde no hay listas de enlaces, sino una única recomendación directa."
+          },
+          {
+            "pregunta": "¿Qué es el Share of Model (SoM)?",
+            "respuesta": "El Share of Model (SoM) es la métrica de nueva generación que reemplaza al \"Share of Voice\". Representa el porcentaje exacto de veces que un modelo de Ai cita a tu marca en comparación con tus competidores directos cuando se le pregunta sobre tu industria, productos o servicios."
+          },
+          {
+            "pregunta": "¿Por qué mi marca no aparece en ChatGPT o Perplexity?",
+            "respuesta": "Los LLMs construyen sus respuestas basándose en sus datos de entrenamiento y en fuentes indexadas en tiempo real. Si tu marca no aparece, se debe a falta de densidad de entidades, ausencia en fuentes de alta autoridad (medios, foros técnicos) o carencia de datos estructurados legibles para máquinas en tu propio sitio web."
+          }
+        ]
+      },
+      {
+        "titulo": "Estrategia y resultados",
+        "preguntas": [
+          {
+            "pregunta": "¿Cómo evalúa Ai Visibility mi presencia en la Ai?",
+            "respuesta": "Ai Visibility realiza auditorías automatizadas simulando las consultas que harían tus clientes ideales. La plataforma consulta a los principales LLMs en tiempo real y extrae métricas clave: si tu marca es mencionada, el análisis de sentimiento, tu porcentaje de visibilidad y qué competidor está dominando las respuestas."
+          },
+          {
+            "pregunta": "¿Pueden garantizar que apareceré siempre como la marca #1?",
+            "respuesta": "No, y desconfía de quien lo prometa. Los LLMs son probabilísticos. Lo que garantizamos es una metodología técnica que aumenta tu densidad de entidad y tus probabilidades matemáticas de ser recomendado: desde JSON-LD hasta PR en medios que la Ai indexa como fuentes de autoridad."
+          },
+          {
+            "pregunta": "¿Cuánto tiempo tarda en hacer efecto la optimización GEO?",
+            "respuesta": "La inyección de JSON-LD es legible por la Ai en 48 horas. Para que los modelos ajusten sus respuestas de recuperación (RAG), suele tomar entre 3 y 6 semanas ver un aumento sostenido. El Digital PR en medios autorizados puede impactar Perplexity en 24–48 horas."
+          },
+          {
+            "pregunta": "¿Por qué la auditoría Beta se centra en ChatGPT?",
+            "respuesta": "Porque concentra más del 80% de las consultas generativas B2B y B2C en Chile. Priorizamos dominar el motor principal antes de diluir esfuerzos. Además, optimizar tu JSON-LD para OpenAI mejora automáticamente tu legibilidad para Gemini, que está en nuestra hoja de ruta."
+          }
+        ]
+      }
+    ]
+  },
+  "cierre": {
+    "antetitulo": "Última llamada",
+    "titulo": "Tu competencia ya está optimizando para la Ai.",
+    "texto": "Cada día que la Ai recomienda a otro, es un cliente que no llegó a ti. Empieza con un diagnóstico claro de dónde estás hoy.",
+    "textoMovil": "Cada día que la Ai recomienda a otro, es un cliente que no llegó a ti.",
+    "botonTexto": "Auditar mi marca ahora →",
+    "nota": "Diagnóstico $190.000 CLP · Resultado en menos de 60 segundos"
+  }
+}

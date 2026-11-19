@@ -46,3 +46,7 @@ __pycache__/
 *.pyo
 venv/
 .venv/
+
+# tinacms (panel generado en build)
+/public/admin
+tina/__generated__
