@@ -96,6 +96,13 @@ services:
       - key: DEMO_EMAILS
         scope: RUN_TIME
         value: ""
+      # Página /estado/: el backend consulta el último deploy (token de SOLO LECTURA).
+      - key: DO_API_TOKEN
+        type: SECRET
+        scope: RUN_TIME
+      - key: DO_APP_ID
+        scope: RUN_TIME
+        value: abf9c8be-9f93-4cdc-91bf-33d28a9927cd
       - key: GEMINI_MAX_CONCURRENCY
         scope: RUN_TIME
         value: "3"

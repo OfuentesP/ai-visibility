@@ -279,6 +279,10 @@ async def health_check(db: Session = Depends(get_db)):
     }
 
 
+from deploy_status import router as deploy_status_router  # noqa: E402
+app.include_router(deploy_status_router)
+
+
 @app.get("/api/info")
 async def api_info():
     """Información de la API"""
